@@ -1,28 +1,17 @@
 "use client"
 
-import * as React from "react"
-import { Separator as SeparatorPrimitive } from "radix-ui"
+import { Separator as Divider, type SeparatorProps } from "react-aria-components"
+import { twMerge } from "tailwind-merge"
 
-import { cn } from "@/lib/utils"
-
-function Separator({
-  className,
-  orientation = "horizontal",
-  decorative = true,
-  ...props
-}: React.ComponentProps<typeof SeparatorPrimitive.Root>) {
+export function Separator({ orientation = "horizontal", className, ...props }: SeparatorProps) {
   return (
-    <SeparatorPrimitive.Root
-      data-slot="separator"
-      decorative={decorative}
-      orientation={orientation}
-      className={cn(
-        "shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch",
-        className
+    <Divider
+      className={twMerge(
+        "shrink-0 border-0 bg-border forced-colors:bg-[ButtonBorder]",
+        orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
+        className,
       )}
       {...props}
     />
   )
 }
-
-export { Separator }
