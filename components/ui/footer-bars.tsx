@@ -7,10 +7,6 @@ const SUBWAY_BARS = ["#0039A6", "#FF6319", "#00933C", "#FCCC0A", "#752F82"]
 export function FooterBars({ className }: { className?: string }) {
   return (
     <div className={cn("w-full", className)}>
-      <div className="pt-2">
-        <Separator />
-      </div>
-
       <div className="mt-4 flex items-center justify-center gap-2">
         {SUBWAY_BARS.map((c) => (
           <span

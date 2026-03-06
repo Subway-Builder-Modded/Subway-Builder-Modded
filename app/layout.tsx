@@ -4,6 +4,7 @@ import "./global.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import AppNavbar from "@/components/app-navbar"
 import { FooterBars } from "@/components/ui/footer-bars"
+import AppFooter from "@/components/app-footer"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -39,9 +40,12 @@ export default function RootLayout({
           <div className="min-h-screen pt-14">
             <AppNavbar/>
             <main>{children}</main>
-            <div className="mx-auto flex items-center justify-center">
-              <FooterBars />
-            </div>
+            <footer className="mt-24 border-t border-border/50 bg-background backdrop-blur-sm">
+              <div className="mx-auto flex items-center justify-center">
+                <FooterBars />
+              </div>
+              <AppFooter />
+            </footer>
           </div>
         </ThemeProvider>
       </body>
