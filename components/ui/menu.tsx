@@ -31,7 +31,6 @@ import {
   dropdownSectionStyles,
 } from "./dropdown"
 import { PopoverContent, type PopoverContentProps } from "./popover"
-import { NavbarPopoverContent, type NavbarPopoverContentProps } from "./navbar-popover"
 
 const Menu = (props: MenuTriggerPrimitiveProps) => <MenuTriggerPrimitive {...props} />
 
@@ -60,17 +59,7 @@ const MenuTrigger = ({ className, ref, ...props }: MenuTriggerProps) => (
 
 interface MenuContentProps<T>
   extends MenuPrimitiveProps<T>,
-    Pick<
-      PopoverContentProps,
-      | "placement"
-      | "offset"
-      | "crossOffset"
-      | "triggerRef"
-      | "isOpen"
-      | "onOpenChange"
-      | "shouldFlip"
-    > {
-  nonModal?: boolean
+    Pick<PopoverContentProps, "placement"> {
   className?: string
   popover?: Pick<
     PopoverContentProps,
@@ -84,11 +73,7 @@ interface MenuContentProps<T>
     | "isOpen"
     | "onOpenChange"
     | "shouldFlip"
-  > &
-    Pick<
-      NavbarPopoverContentProps,
-      "shouldCloseOnScroll" | "shouldCloseOnInteractOutside" | "isNonModal"
-    >
+  >
 }
 
 const menuContentStyles = tv({
@@ -98,48 +83,21 @@ const menuContentStyles = tv({
 const MenuContent = <T extends object>({
   className,
   placement,
-  offset,
-  crossOffset,
-  triggerRef,
-  isOpen,
-  onOpenChange,
-  shouldFlip,
   popover,
-  nonModal,
   ...props
 }: MenuContentProps<T>) => {
-  const PopoverImpl: React.ComponentType<any> = nonModal ? NavbarPopoverContent : PopoverContent
-
-  // Allow either the injected top-level props OR explicit overrides via popover={}
-  const resolvedTriggerRef = (popover as any)?.triggerRef ?? triggerRef
-  const resolvedIsOpen = (popover as any)?.isOpen ?? isOpen
-  const resolvedOnOpenChange = (popover as any)?.onOpenChange ?? onOpenChange
-  const resolvedPlacement = (popover as any)?.placement ?? placement
-  const resolvedOffset = (popover as any)?.offset ?? offset
-  const resolvedCrossOffset = (popover as any)?.crossOffset ?? crossOffset
-  const resolvedShouldFlip = (popover as any)?.shouldFlip ?? shouldFlip
-
-    return (
-    <PopoverImpl
-      className={twMerge("min-w-32 *:data-[slot=popover-inner]:overflow-hidden", popover?.className)}
-      placement={resolvedPlacement}
-      offset={resolvedOffset}
-      crossOffset={resolvedCrossOffset}
-      triggerRef={resolvedTriggerRef}
-      isOpen={resolvedIsOpen}
-      onOpenChange={resolvedOnOpenChange}
-      shouldFlip={resolvedShouldFlip}
-      isNonModal={(popover as any)?.isNonModal ?? nonModal}
-      shouldCloseOnScroll={(popover as any)?.shouldCloseOnScroll ?? false}
-      shouldCloseOnInteractOutside={(popover as any)?.shouldCloseOnInteractOutside}
-      {...(popover as any)}
+  return (
+    <PopoverContent
+      className={cx("min-w-32 *:data-[slot=popover-inner]:overflow-hidden", popover?.className)}
+      placement={placement}
+      {...popover}
     >
       <MenuPrimitive
         data-slot="menu-content"
         className={menuContentStyles({ className })}
         {...props}
       />
-    </PopoverImpl>
+    </PopoverContent>
   )
 }
 

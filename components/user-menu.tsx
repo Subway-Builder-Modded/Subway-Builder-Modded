@@ -30,7 +30,7 @@ export function UserMenu() {
           src="https://intentui.com/images/avatar/cobain.jpg"
         />
       </MenuTrigger>
-      <MenuContent placement="bottom right" className="min-w-60 sm:min-w-56" shouldBlockScroll={false} isNonModal>
+      <MenuContent placement="bottom right" className="min-w-60 sm:min-w-56">
         <MenuSection>
           <MenuHeader separator>
             <span className="block">Kurt Cobain</span>
