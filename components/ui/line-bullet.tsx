@@ -1,57 +1,80 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-type LineBulletSize = "sm" | "md" | "lg"
+export type LineBulletShape = "circle" | "diamond" | "triangle"
+export type LineBulletSize = "sm" | "md" | "lg" | "xl"
 
 export interface LineBulletProps extends React.HTMLAttributes<HTMLDivElement> {
-  letter: string
+  bullet: string
   color: string
+  textColor: string
+  shape?: LineBulletShape
   size?: LineBulletSize
 }
 
-const sizeMap: Record<LineBulletSize, { box: string; text: string }> = {
-  sm: { box: "w-[34px] h-[34px]", text: "text-[15px]" },
-  md: { box: "w-[38px] h-[38px]", text: "text-[19px]" },
-  lg: { box: "w-[44px] h-[44px]", text: "text-[23px]" },
-}
+const sizeMap = {
+  sm: { box: "2rem", text: "1rem" },
+  md: { box: "2.5rem", text: "1.25rem" },
+  lg: { box: "3rem", text: "1.5rem" },
+  xl: { box: "3.5rem", text: "1.75rem" },
+} as const
 
-const opticalOffset: Record<string, { x: number; y: number }> = {
-  D: { x: 0, y: 1.5 },
-  O: { x: 0, y: 1.0 },
-  Q: { x: 0, y: 1.0 },
-  C: { x: 0, y: 1.25 },
-  G: { x: 0, y: 1.25 },
-  U: { x: 0, y: 1.25 },
-  M: { x: 0, y: 1.0 },
-  I: { x: 0, y: 1.0 },
-}
-
-export function LineBullet({ letter, color, size = "md", className, ...props }: LineBulletProps) {
+export function LineBullet({
+  bullet,
+  color,
+  textColor,
+  shape = "circle",
+  size = "sm",
+  className,
+  style,
+  ...props
+}: LineBulletProps) {
   const s = sizeMap[size]
-  const glyph = (letter || "").slice(0, 2).toUpperCase()
-  const off = opticalOffset[glyph] ?? { x: 0, y: 1.2 }
 
   return (
     <div
       {...props}
-      className={cn(
-        "flex shrink-0 items-center justify-center rounded-full text-white select-none",
-        s.box,
-        className,
-      )}
+      className={cn("relative", className)}
       style={{
-        backgroundColor: color,
-        fontFamily: "HelveticaNeueBullet, Helvetica, Arial, system-ui, sans-serif",
-        fontWeight: 700,
+        height: s.box,
+        ...style,
       }}
-      aria-label={`Line ${glyph}`}
-      title={`Line ${glyph}`}
     >
-      <span
-        className={cn(s.text)}
+      <div
+        className={cn(
+          "flex items-center justify-center font-bold",
+          "select-none overflow-hidden",
+          "font-mta",
+          "cursor-pointer hover:opacity-80",
+          shape === "circle" && "rounded-full",
+          shape === "triangle" && "[clip-path:polygon(50%_0%,0%_100%,100%_100%)]",
+        )}
+        style={{
+          backgroundColor: color,
+          minWidth: s.box,
+          height: s.box,
+          fontSize: s.text,
+          color: textColor,
+          padding: shape === "triangle" ? "0" : "0 0.25rem",
+          transform: shape === "diamond" ? "rotate(45deg) scale(0.707107)" : undefined,
+        }}
+        aria-label={`Route ${bullet}`}
+        title={`Route ${bullet}`}
       >
-        {glyph}
-      </span>
+        <span
+          style={{
+            lineHeight: "0",
+            transform:
+              shape === "diamond"
+                ? "rotate(-45deg) translateY(0.02rem)"
+                : shape === "triangle"
+                ? "translateY(0.1rem)"
+                : undefined,
+          }}
+        >
+          {bullet}
+        </span>
+      </div>
     </div>
   )
 }

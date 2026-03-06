@@ -181,24 +181,30 @@ function HomepageCard({ item }: { item: HomeItem }) {
           "focus-visible:ring-2 focus-visible:ring-ring/40",
         )}
       >
-        <div className="flex h-full flex-col px-6 pb-2 pt-1">
+        <div className="flex h-full flex-col px-6 pb-2 pt-5">
           <div className="min-h-[90px]">
-            <div className="flex h-[66px] items-center gap-4">
-              <div className="shrink-0">
-                <LineBullet letter={item.letter} color={item.bullet} size="md" />
+            <div className="flex items-start gap-3">
+              <div className="mt-1 shrink-0">
+                <LineBullet
+                  bullet={(item.letter || "").slice(0, 2).toUpperCase()}
+                  color={item.bullet}
+                  textColor={pickTextColor(item.bullet)}
+                  shape="circle"
+                  size="sm"
+                />
               </div>
 
               <div className="min-w-0">
                 <CardTitle className="text-xl font-semibold leading-[1.18] pb-[2px] sm:text-2xl">
                   <span className="line-clamp-2">{item.title}</span>
                 </CardTitle>
+
+                <div className="mt-3 h-[2px] w-16 rounded-full opacity-70" style={{ backgroundColor: item.bullet }} />
               </div>
             </div>
-
-            <div className="mt-2 h-[2px] w-16 rounded-full opacity-70" style={{ backgroundColor: item.bullet }} />
           </div>
 
-          <div className="mt-5 flex-1">
+          <div className="mt-1 flex-1">
             <p className="text-lg font-medium leading-relaxed text-muted-foreground">
               <span className="line-clamp-3">{item.description}</span>
             </p>
@@ -207,4 +213,21 @@ function HomepageCard({ item }: { item: HomeItem }) {
       </Card>
     </Link>
   )
+}
+
+function pickTextColor(hex: string) {
+  const rgb = hexToRgb(hex)
+  if (!rgb) return "#FFFFFF"
+  const luminance = (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b) / 255
+  return luminance > 0.72 ? "#000000" : "#FFFFFF"
+}
+
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const raw = (hex || "").trim().replace("#", "")
+  if (raw.length !== 6) return null
+  const r = parseInt(raw.slice(0, 2), 16)
+  const g = parseInt(raw.slice(2, 4), 16)
+  const b = parseInt(raw.slice(4, 6), 16)
+  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) return null
+  return { r, g, b }
 }
