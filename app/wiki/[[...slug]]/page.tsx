@@ -12,6 +12,12 @@ import {
   Warning,
   Caution,
   Danger,
+  Info,
+  Success,
+  Question,
+  Bug,
+  Example,
+  Announcement,
 } from "@/components/ui/admonition"
 import {
   Breadcrumb,
@@ -130,6 +136,12 @@ export default async function WikiPage({
       Warning,
       Caution,
       Danger,
+      Info,
+      Success,
+      Question,
+      Bug,
+      Example,
+      Announcement,
     },
   })
 

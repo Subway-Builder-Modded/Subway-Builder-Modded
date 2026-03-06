@@ -18,6 +18,12 @@ import {
   Warning,
   Caution,
   Danger,
+  Info,
+  Success,
+  Question,
+  Bug,
+  Example,
+  Announcement,
 } from "@/components/ui/admonition"
 
 const components: MDXComponents = {
@@ -28,6 +34,12 @@ const components: MDXComponents = {
   Warning,
   Caution,
   Danger,
+  Info,
+  Success,
+  Question,
+  Bug,
+  Example,
+  Announcement,
   a: ({ href = "", ...props }) => (
     <Link
       href={href}
