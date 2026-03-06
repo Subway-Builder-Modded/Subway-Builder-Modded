@@ -1,5 +1,5 @@
 import {
-  RailSymbol,
+  TrainTrack,
   FolderCode,
   MapPinPlus,
   GitPullRequestArrow,
@@ -42,7 +42,7 @@ export const WIKI_INSTANCES: WikiInstance[] = [
     id: "railyard",
     label: "Railyard",
     basePath: "/wiki/railyard",
-    icon: RailSymbol,
+    icon: TrainTrack,
     accentClassName: "text-emerald-400",
     accentSurfaceClassName: "bg-emerald-500/14 border-emerald-500/30",
     accentSurfaceHoverClassName: "hover:bg-emerald-500/18",

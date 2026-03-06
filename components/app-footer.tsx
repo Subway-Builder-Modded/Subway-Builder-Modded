@@ -7,7 +7,7 @@ import {
   BookText,
   Megaphone,
   Trophy,
-  RailSymbol,
+  TrainTrack,
   Download,
   Map,
   Unplug,
@@ -72,7 +72,7 @@ export default function AppFooter() {
 
             <div>
               <div className="mb-4 flex items-center gap-2">
-                <RailSymbol className="size-5 stroke-[2.25] text-foreground md:size-6" />
+                <TrainTrack className="size-5 stroke-[2.25] text-foreground md:size-6" />
                 <h3 className="text-base font-bold text-foreground md:text-lg">Railyard</h3>
               </div>
 

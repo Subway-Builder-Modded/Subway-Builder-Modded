@@ -15,20 +15,17 @@ export default async function WikiCatchAllLayout({
   const resolved = resolveWikiRoute(slug)
 
   if (!resolved) {
-    return <section className="w-full px-4 pt-8 pb-12 md:px-6 md:pt-10">{children}</section>
+    return <section className="w-full px-4 pb-12 md:px-6">{children}</section>
   }
 
   const tree = await getSidebarTree(resolved.instance, resolved.version)
 
   return (
-    <section className="w-full px-4 pt-8 pb-12 md:px-6 md:pt-10">
-      <SidebarProvider
-        defaultOpen
-        className="relative min-h-[calc(100svh-10rem)] w-full items-stretch"
-      >
+    <section className="w-full px-4 pb-12 md:px-6">
+      <SidebarProvider defaultOpen className="w-full items-start">
         <AppWikiSidebar tree={tree} />
-        <SidebarInset className="min-h-[calc(100svh-10rem)] md:ml-0">
-          <div className="mx-auto w-full max-w-6xl px-5 py-6 md:px-8 md:py-8">
+        <SidebarInset className="min-w-0 md:ml-0">
+          <div className="mx-auto w-full max-w-6xl px-5 py-6 md:px-8 md:py-6">
             {children}
           </div>
         </SidebarInset>

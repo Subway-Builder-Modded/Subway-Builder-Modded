@@ -35,12 +35,12 @@ export type ResolvedWikiRoute = {
 }
 
 export function isLatestVersion(instance: WikiInstance, versionValue: string) {
-  return !!instance.currentVersion && instance.currentVersion === versionValue
+  return !!instance.latestVersion && instance.latestVersion === versionValue
 }
 
 export function buildBaseHomeHref(instance: WikiInstance, version?: string | null) {
   if (instance.versioned) {
-    const resolvedVersion = version ?? instance.currentVersion
+    const resolvedVersion = version ?? instance.latestVersion
     return `${instance.basePath}/${resolvedVersion}/home`
   }
 
@@ -50,17 +50,17 @@ export function buildBaseHomeHref(instance: WikiInstance, version?: string | nul
 export function resolveWikiRoute(slug?: string[]): ResolvedWikiRoute | null {
   const parts = slug ?? []
   const [instanceId, maybeVersion, ...rest] = parts
+
   if (!instanceId) return null
 
   const instance = getWikiInstanceById(instanceId)
   if (!instance) return null
 
   if (!instance.versioned) {
-    const docSlug = [maybeVersion, ...rest].filter(Boolean).join("/") || null
     return {
       instance,
       version: null,
-      docSlug,
+      docSlug: [maybeVersion, ...rest].filter(Boolean).join("/") || null,
     }
   }
 
@@ -69,7 +69,7 @@ export function resolveWikiRoute(slug?: string[]): ResolvedWikiRoute | null {
 
   return {
     instance,
-    version: hasExplicitVersion ? maybeVersion : instance.currentVersion ?? null,
+    version: hasExplicitVersion ? maybeVersion : instance.latestVersion ?? null,
     docSlug: hasExplicitVersion
       ? rest.join("/") || null
       : [maybeVersion, ...rest].filter(Boolean).join("/") || null,
@@ -97,7 +97,7 @@ export function getActiveVersionFromPathname(
 
   return (
     instance.versions.find((version) => version.value === maybeVersion) ??
-    instance.versions.find((version) => version.value === instance.currentVersion) ??
+    instance.versions.find((version) => version.value === instance.latestVersion) ??
     instance.versions[0]
   )
 }
@@ -116,4 +116,41 @@ export function buildDocHref(
   }
 
   return `${instance.basePath}/${docPath}`
+}
+
+export function getDocSlugFromPathname(
+  instance: WikiInstance,
+  pathname: string
+): string | null {
+  if (!pathname.startsWith(instance.basePath)) return null
+
+  const afterBase = pathname.slice(instance.basePath.length)
+  const parts = afterBase.split("/").filter(Boolean)
+
+  if (!instance.versioned) {
+    return parts.join("/") || null
+  }
+
+  const versionValues = new Set(instance.versions?.map((v) => v.value) ?? [])
+  const maybeVersion = parts[0]
+  const hasExplicitVersion = !!maybeVersion && versionValues.has(maybeVersion)
+
+  const docParts = hasExplicitVersion ? parts.slice(1) : parts
+  return docParts.join("/") || null
+}
+
+export function buildVersionedDocHref(
+  instance: WikiInstance,
+  versionValue: string,
+  pathname: string
+) {
+  const docSlug = getDocSlugFromPathname(instance, pathname)
+
+  if (!instance.versioned) {
+    return docSlug ? buildDocHref(instance, null, docSlug) : buildBaseHomeHref(instance)
+  }
+
+  return docSlug
+    ? buildDocHref(instance, versionValue, docSlug)
+    : buildBaseHomeHref(instance, versionValue)
 }

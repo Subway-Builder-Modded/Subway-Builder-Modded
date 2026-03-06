@@ -12,7 +12,7 @@ import {
   BugIcon,
   FlaskConicalIcon,
   MegaphoneIcon,
-  GemIcon,
+  ArchiveX,
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -37,8 +37,8 @@ const admonitionVariants = cva(
           "border-l-cyan-500 bg-cyan-500/5 text-cyan-900 dark:bg-cyan-500/10 dark:text-cyan-200 [&>svg]:text-cyan-500",
         success:
           "border-l-green-500 bg-green-500/5 text-green-900 dark:bg-green-500/10 dark:text-green-200 [&>svg]:text-green-500",
-        question:
-          "border-l-indigo-500 bg-indigo-500/5 text-indigo-900 dark:bg-indigo-500/10 dark:text-indigo-200 [&>svg]:text-indigo-500",
+        deprecated:
+          "border-l-zinc-500 bg-zinc-500/5 text-zinc-900 dark:bg-zinc-500/10 dark:text-zinc-200 [&>svg]:text-zinc-500",
         bug:
           "border-l-pink-500 bg-pink-500/5 text-pink-900 dark:bg-pink-500/10 dark:text-pink-200 [&>svg]:text-pink-500",
         example:
@@ -64,7 +64,7 @@ const admonitionTitleVariants = cva("font-semibold", {
       danger: "text-red-700 dark:text-red-300",
       info: "text-cyan-700 dark:text-cyan-300",
       success: "text-green-700 dark:text-green-300",
-      question: "text-indigo-700 dark:text-indigo-300",
+      deprecated: "text-zinc-700 dark:text-zinc-300",
       bug: "text-pink-700 dark:text-pink-300",
       example: "text-sky-700 dark:text-sky-300",
       announcement: "text-fuchsia-700 dark:text-fuchsia-300",
@@ -91,7 +91,7 @@ const icons: Record<
   danger: ShieldAlertIcon,
   info: InfoIcon,
   success: CircleCheckBigIcon,
-  question: CircleHelpIcon,
+  deprecated: ArchiveX,
   bug: BugIcon,
   example: FlaskConicalIcon,
   announcement: MegaphoneIcon,
@@ -106,7 +106,7 @@ const labels: Record<AdmonitionVariant, string> = {
   danger: "Danger",
   info: "Info",
   success: "Success",
-  question: "Question",
+  deprecated: "Deprecated",
   bug: "Bug",
   example: "Example",
   announcement: "Announcement",
@@ -186,8 +186,8 @@ function Success(props: Omit<AdmonitionProps, "variant">) {
   return <Admonition variant="success" {...props} />
 }
 
-function Question(props: Omit<AdmonitionProps, "variant">) {
-  return <Admonition variant="question" {...props} />
+function Deprecated(props: Omit<AdmonitionProps, "variant">) {
+  return <Admonition variant="deprecated" {...props} />
 }
 
 function Bug(props: Omit<AdmonitionProps, "variant">) {
@@ -212,7 +212,7 @@ export {
   Danger,
   Info,
   Success,
-  Question,
+  Deprecated,
   Bug,
   Example,
   Announcement,

@@ -16,14 +16,13 @@ import {
   SidebarContent,
   SidebarHeader,
   SidebarInput,
-  SidebarSeparator,
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar"
 import { cn } from "@/lib/utils"
 import {
   buildBaseHomeHref,
-  buildVersionHref,
+  buildVersionedDocHref,
   getActiveInstanceFromPathname,
   getActiveVersionFromPathname,
   isLatestVersion,
@@ -55,17 +54,24 @@ function useOnClickOutside(
   }, [ref, handler])
 }
 
-function useSidebarToggleOutside() {
+function SidebarRailTrigger() {
   const { state } = useSidebar()
 
   return (
     <SidebarTrigger
       className={cn(
-        "fixed top-24 left-3 z-40 hidden h-10 w-10 items-center justify-center rounded-r-xl rounded-l-md border border-border bg-card/95 text-muted-foreground shadow-md backdrop-blur transition-all duration-200 hover:scale-[1.03] hover:bg-card hover:text-foreground md:flex",
-        state === "expanded" && "hidden"
+        "fixed top-20 z-40 flex h-14 w-10 items-center justify-center border border-border bg-card/95 text-muted-foreground shadow-md backdrop-blur transition-all duration-200 hover:bg-card hover:text-foreground",
+        state === "expanded"
+          ? "left-[calc(16rem-1px)] rounded-r-xl border-l-0"
+          : "left-0 rounded-r-xl border-l-0"
       )}
     >
-      <PanelLeftCloseIcon className="size-4 rotate-180" />
+      <PanelLeftCloseIcon
+        className={cn(
+          "size-4 transition-transform duration-200",
+          state === "collapsed" && "rotate-180"
+        )}
+      />
     </SidebarTrigger>
   )
 }
@@ -233,7 +239,7 @@ function InstanceSwitcher({
               href={buildBaseHomeHref(instance)}
               className={cn(
                 "flex items-center gap-3 px-3 py-2 transition-all duration-150",
-                isActive ? "bg-card" : cn("hover:text-foreground", instance.accentSurfaceHoverClassName)
+                isActive ? "bg-card" : instance.accentSurfaceHoverClassName
               )}
             >
               <InstanceIcon instance={instance} />
@@ -253,11 +259,13 @@ function InstanceSwitcher({
 function VersionSwitcher({
   activeInstance,
   activeVersion,
+  pathname,
   open,
   setOpen,
 }: {
   activeInstance: WikiInstance
   activeVersion: NonNullable<ReturnType<typeof getActiveVersionFromPathname>>
+  pathname: string
   open: boolean
   setOpen: (value: boolean) => void
 }) {
@@ -294,7 +302,7 @@ function VersionSwitcher({
           return (
             <NextLink
               key={version.value}
-              href={buildVersionHref(activeInstance, version.value)}
+              href={buildVersionedDocHref(activeInstance, version.value, pathname)}
               className={cn(
                 "flex items-center gap-3 px-3 py-2 transition-all duration-150",
                 isActive
@@ -324,14 +332,6 @@ function VersionSwitcher({
   )
 }
 
-function ExpandedCollapseButton() {
-  return (
-    <SidebarTrigger className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-all duration-200 hover:scale-[1.03] hover:bg-muted hover:text-foreground">
-      <PanelLeftCloseIcon className="size-4" />
-    </SidebarTrigger>
-  )
-}
-
 function filterTree(entries: WikiSidebarEntry[], query: string): WikiSidebarEntry[] {
   if (!query.trim()) return entries
 
@@ -344,7 +344,7 @@ function filterTree(entries: WikiSidebarEntry[], query: string): WikiSidebarEntr
       }
 
       const categoryMatches = entry.title.toLowerCase().includes(q)
-      const filteredChildren = categoryMatches ? entry.items : filterTree(entry.items, query)
+      const filteredChildren = categoryMatches ? entry.items : filterTree(entry.items, q)
 
       if (!categoryMatches && filteredChildren.length === 0) return null
 
@@ -356,33 +356,29 @@ function filterTree(entries: WikiSidebarEntry[], query: string): WikiSidebarEntr
     .filter(Boolean) as WikiSidebarEntry[]
 }
 
-function collectActiveCategoryKeys(entries: WikiSidebarEntry[], pathname: string, out = new Set<string>()) {
+function entryHasActiveDescendant(entry: WikiSidebarEntry, pathname: string): boolean {
+  if (entry.kind === "page") {
+    return pathname === entry.href
+  }
+
+  return entry.items.some((child) => entryHasActiveDescendant(child, pathname))
+}
+
+function collectActiveCategoryKeys(
+  entries: WikiSidebarEntry[],
+  pathname: string,
+  out = new Set<string>()
+) {
   for (const entry of entries) {
     if (entry.kind !== "category") continue
 
-    const selfActive = !!entry.href && (pathname === entry.href || pathname.startsWith(`${entry.href}/`))
-    const childActive = entry.items.some((child) =>
-      child.kind === "page"
-        ? pathname === child.href
-        : !!child.href && (pathname === child.href || pathname.startsWith(`${child.href}/`))
-    )
+    const childActive = entry.items.some((child) => entryHasActiveDescendant(child, pathname))
+    if (childActive) out.add(entry.key)
 
-    if (selfActive || childActive) out.add(entry.key)
     collectActiveCategoryKeys(entry.items, pathname, out)
   }
 
   return out
-}
-
-function NavIndicator({ active }: { active: boolean }) {
-  return (
-    <span
-      className={cn(
-        "absolute left-0 top-1/2 h-5 w-[2px] -translate-y-1/2 rounded-full transition-all duration-150",
-        active ? "bg-primary opacity-100" : "bg-primary opacity-0"
-      )}
-    />
-  )
 }
 
 function SidebarNavEntry({
@@ -403,29 +399,30 @@ function SidebarNavEntry({
 
     return (
       <li className="relative">
-        <NavIndicator active={isActive} />
         <NextLink
           href={entry.href}
           className={cn(
-            "block rounded-md px-3 py-1.5 text-[15px] transition-colors",
+            "relative block rounded-md px-3 py-1.5 text-[15px] transition-colors",
             depth > 0 && "ml-4",
             isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
           )}
         >
-          {entry.title}
+          <span
+            className={cn(
+              "absolute left-0 top-1.5 bottom-1.5 w-[2px] rounded-full bg-primary transition-all duration-200",
+              isActive ? "opacity-100" : "opacity-0"
+            )}
+          />
+          <span className="block truncate">{entry.title}</span>
         </NextLink>
       </li>
     )
   }
 
   const isOpen = openKeys.has(entry.key)
-  const isActive =
-    (!!entry.href && (pathname === entry.href || pathname.startsWith(`${entry.href}/`))) ||
-    entry.items.some((child) =>
-      child.kind === "page"
-        ? pathname === child.href
-        : !!child.href && (pathname === child.href || pathname.startsWith(`${child.href}/`))
-    )
+  const descendantActive = entry.items.some((child) => entryHasActiveDescendant(child, pathname))
+  const selfActive = !!entry.href && pathname === entry.href
+  const showCategoryActive = !isOpen && (selfActive || descendantActive)
 
   const toggle = () => {
     setOpenKeys((prev) => {
@@ -436,29 +433,46 @@ function SidebarNavEntry({
     })
   }
 
-  const MainComp = entry.href ? NextLink : "div"
-  const mainProps =
-    entry.href
-      ? {
-          href: entry.href,
-          onClick: () => {
-            setOpenKeys((prev) => {
-              const next = new Set(prev)
-              next.add(entry.key)
-              return next
-            })
-          },
-        }
-      : {}
+  const onMainClick = (event: React.MouseEvent) => {
+    setOpenKeys((prev) => {
+      const next = new Set(prev)
+
+      if (!entry.href) {
+        if (next.has(entry.key)) next.delete(entry.key)
+        else next.add(entry.key)
+        return next
+      }
+
+      if (pathname === entry.href) {
+        event.preventDefault()
+        if (next.has(entry.key)) next.delete(entry.key)
+        else next.add(entry.key)
+        return next
+      }
+
+      next.add(entry.key)
+      return next
+    })
+  }
+
+  const MainComp = entry.href ? NextLink : "button"
+  const mainProps = entry.href
+    ? { href: entry.href, onClick: onMainClick }
+    : { type: "button" as const, onClick: onMainClick }
 
   return (
     <li className="relative">
-      <NavIndicator active={isActive} />
-      <div className={cn("group flex items-center", depth > 0 && "ml-4")}>
+      <div className={cn("group relative flex items-center", depth > 0 && "ml-4")}>
+        <span
+          className={cn(
+            "absolute left-0 top-1.5 bottom-1.5 w-[2px] rounded-full bg-primary transition-all duration-200",
+            showCategoryActive ? "opacity-100" : "opacity-0"
+          )}
+        />
         <MainComp
           className={cn(
-            "min-w-0 flex-1 rounded-md px-3 py-1.5 text-[15px] transition-colors",
-            isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+            "min-w-0 flex-1 rounded-md px-3 py-1.5 text-left text-[15px] transition-colors",
+            showCategoryActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
           )}
           {...mainProps}
         >
@@ -469,7 +483,7 @@ function SidebarNavEntry({
           type="button"
           aria-label={isOpen ? `Collapse ${entry.title}` : `Expand ${entry.title}`}
           onClick={toggle}
-          className="mr-1 flex size-7 items-center justify-center rounded-full text-muted-foreground transition-all duration-150 hover:bg-muted hover:text-foreground group-hover:bg-muted"
+          className="mr-1 flex size-7 items-center justify-center rounded-full text-muted-foreground transition-all duration-150 hover:bg-muted hover:text-foreground group-hover:bg-muted group-hover:text-foreground"
         >
           <ChevronDown
             className={cn("size-4 transition-transform duration-200", isOpen && "rotate-180")}
@@ -504,13 +518,10 @@ function SidebarNavEntry({
 
 export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
   const pathname = usePathname()
-  const { state } = useSidebar()
-
   const activeInstance = React.useMemo(
     () => getActiveInstanceFromPathname(pathname),
     [pathname]
   )
-
   const activeVersion = React.useMemo(
     () => getActiveVersionFromPathname(activeInstance, pathname),
     [activeInstance, pathname]
@@ -551,19 +562,14 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
 
   return (
     <>
-      {useSidebarToggleOutside()}
+      <SidebarRailTrigger />
 
       <Sidebar
         collapsible="offcanvas"
         variant="sidebar"
-        className="border-r border-border bg-sidebar"
+        className="sticky top-14 h-[calc(100svh-3.5rem)] self-start overflow-visible border-r border-border bg-sidebar"
       >
-        <SidebarHeader className="sticky top-0 z-10 gap-4 border-b border-border bg-sidebar px-4 pt-6 pb-3">
-          <div className="flex items-center justify-between gap-2">
-            <div className="text-sm font-semibold text-foreground">Documentation</div>
-            {state === "expanded" ? <ExpandedCollapseButton /> : null}
-          </div>
-
+        <SidebarHeader className="gap-3 border-b border-border bg-sidebar px-4 pt-3 pb-3">
           <div ref={switcherAreaRef} className="space-y-3">
             <InstanceSwitcher
               activeInstance={activeInstance}
@@ -575,6 +581,7 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
               <VersionSwitcher
                 activeInstance={activeInstance}
                 activeVersion={activeVersion}
+                pathname={pathname}
                 open={openDropdown === "version"}
                 setOpen={(value) => setOpenDropdown(value ? "version" : null)}
               />
@@ -582,7 +589,7 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
           </div>
         </SidebarHeader>
 
-        <SidebarContent className="px-4 py-4">
+        <SidebarContent className="min-h-0 px-4 py-4">
           <div className="relative mb-5">
             <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
             <SidebarInput
@@ -594,7 +601,7 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
           </div>
 
           <nav aria-label="Wiki navigation">
-            <ul className="space-y-1">
+            <ul className="space-y-0.5">
               {filteredEntries.map((entry) => (
                 <SidebarNavEntry
                   key={entry.key}

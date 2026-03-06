@@ -264,17 +264,20 @@ export async function getWikiBreadcrumbs(slug?: string[]): Promise<WikiBreadcrum
   const resolved = resolveWikiRoute(slug)
   if (!resolved) return [{ label: "Wiki", href: "/wiki" }]
 
+  const items: WikiBreadcrumbItem[] = [{ label: "Wiki", href: "/wiki" }]
+
+  const isHomePage = resolved.docSlug === "home"
+
+  items.push({
+    label: resolved.instance.label,
+    href: isHomePage
+      ? undefined
+      : buildBaseHomeHref(resolved.instance, resolved.version),
+  })
+
+  if (!resolved.docSlug || isHomePage) return items
+
   const dir = getInstanceContentDir(resolved.instance, resolved.version)
-  const items: WikiBreadcrumbItem[] = [
-    { label: "Wiki", href: "/wiki" },
-    {
-      label: resolved.instance.label,
-      href: buildBaseHomeHref(resolved.instance, resolved.version),
-    },
-  ]
-
-  if (!resolved.docSlug) return items
-
   const segments = resolved.docSlug.split("/").filter(Boolean)
 
   for (let i = 0; i < segments.length; i++) {

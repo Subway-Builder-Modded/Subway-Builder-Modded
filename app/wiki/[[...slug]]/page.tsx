@@ -5,21 +5,6 @@ import { notFound, redirect } from "next/navigation"
 import { compileMDX } from "next-mdx-remote/rsc"
 
 import {
-  Admonition,
-  Note,
-  Tip,
-  Important,
-  Warning,
-  Caution,
-  Danger,
-  Info,
-  Success,
-  Question,
-  Bug,
-  Example,
-  Announcement,
-} from "@/components/ui/admonition"
-import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -28,6 +13,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { WikiOnThisPage } from "@/components/ui/on-this-page"
+import { useMDXComponents } from "@/mdx-components"
 import {
   extractTocHeadings,
   getWikiBreadcrumbs,
@@ -128,21 +114,7 @@ export default async function WikiPage({
     options: {
       parseFrontmatter: true,
     },
-    components: {
-      Admonition,
-      Note,
-      Tip,
-      Important,
-      Warning,
-      Caution,
-      Danger,
-      Info,
-      Success,
-      Question,
-      Bug,
-      Example,
-      Announcement,
-    },
+    components: useMDXComponents(),
   })
 
   return (
@@ -171,11 +143,13 @@ export default async function WikiPage({
 
         {frontmatter?.title ? (
           <header className="mb-8">
-            <h1 className="text-4xl font-black tracking-tight">{frontmatter.title}</h1>
+            <h1 className="text-4xl font-black tracking-tight">
+              {frontmatter.title}
+            </h1>
           </header>
         ) : null}
 
-        <div className="prose prose-neutral dark:prose-invert max-w-none">
+        <div className="max-w-none space-y-1">
           {content}
         </div>
       </article>

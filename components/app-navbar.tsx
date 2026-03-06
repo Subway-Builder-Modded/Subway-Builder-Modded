@@ -26,7 +26,7 @@ import {
   BookText,
   Megaphone,
   Trophy,
-  RailSymbol,
+  TrainTrack,
   Download,
   Map,
   Unplug
@@ -103,7 +103,7 @@ export default function AppNavbar(props: NavbarProps) {
                       data-[state=open]:ring-emerald-300
                     "
                   >
-                    <RailSymbol className="size-5 md:size-4 text-primary" />
+                    <TrainTrack className="size-5 md:size-4 text-primary" />
                     <span className="font-semibold tracking-wide">Railyard</span>
                   </NavigationMenuTrigger>
 
