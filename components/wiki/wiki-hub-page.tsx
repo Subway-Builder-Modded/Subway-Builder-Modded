@@ -9,8 +9,6 @@ import { WIKI_INSTANCES, type WikiInstance } from "@/lib/wiki-config"
 import { buildBaseHomeHref } from "@/lib/wiki-shared"
 import { cn } from "@/lib/utils"
 
-// ─── Color helpers ────────────────────────────────────────────────────────────
-
 function hexToRgb(hex: string) {
   const h = hex.replace("#", "")
   return {
@@ -25,34 +23,74 @@ function hexAlpha(hex: string, alpha: number) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
-/** Returns #000000 or #ffffff, whichever is more readable on the given background. */
 function pickTextColor(hex: string) {
   const { r, g, b } = hexToRgb(hex)
   return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.72 ? "#000000" : "#ffffff"
 }
 
+const INSTANCE_THEME_COLORS = {
+  railyard: {
+    accent: "#00D492",
+    base: "#032D23",
+    mid: "#00A97A",
+  },
+  "template-mod": {
+    accent: "#A684FF",
+    base: "#311362",
+    mid: "#7D52E8",
+  },
+  "creating-custom-maps": {
+    accent: "#51A2FF",
+    base: "#192754",
+    mid: "#2E6FCC",
+  },
+  contributing: {
+    accent: "#FFB900",
+    base: "#471F07",
+    mid: "#C98600",
+  },
+  legacy: {
+    accent: "#FF637E",
+    base: "#4D091C",
+    mid: "#C93A57",
+  },
+} satisfies Record<
+  string,
+  {
+    accent: string
+    base: string
+    mid: string
+  }
+>
+
 /**
- * Derives all card/bullet colors for a wiki instance.
+ * Dark mode:
+ *   text = accent
+ *   bg   = base
  *
- * Dark mode:  card bg = secondary, card text = primary
- * Light mode: card bg = primary,   card text = secondary
+ * Light mode:
+ *   text = base
+ *   bg   = accent
  *
- * The bullet is always the inverse of the card (so it stands out on both
- * backgrounds): dark bg → primary bullet; light bg → secondary bullet.
+ * mid stays static across themes
  */
 function getColors(instance: WikiInstance, isDark: boolean) {
-  const { primaryHex, secondaryHex } = instance
+  const theme = INSTANCE_THEME_COLORS[instance.id] ?? {
+    accent: instance.primaryHex,
+    base: instance.secondaryHex,
+    mid: instance.primaryHex,
+  }
 
-  const cardBg = isDark ? secondaryHex : primaryHex
-  const cardText = isDark ? primaryHex : secondaryHex
-  const bulletBg = isDark ? primaryHex : secondaryHex
-  const bulletText = pickTextColor(bulletBg)
+  const cardBg = isDark ? theme.base : theme.accent
+  const cardText = isDark ? theme.accent : theme.base
+
+  const bulletBg = theme.mid
+  const bulletText = isDark ? theme.base : theme.accent
+
   const borderColor = hexAlpha(cardText, 0.3)
 
   return { cardBg, cardText, bulletBg, bulletText, borderColor }
 }
-
-// ─── Components ───────────────────────────────────────────────────────────────
 
 function chunkRows<T>(arr: T[], size: number): T[][] {
   const out: T[][] = []
@@ -109,7 +147,6 @@ function WikiHubCard({ instance, isDark }: { instance: WikiInstance; isDark: boo
         style={{ backgroundColor: cardBg, borderColor }}
       >
         <div className="flex h-full flex-col px-6 pb-5 pt-4">
-          {/* Line bullet with instance label — always inverse of card for contrast */}
           <div className="mb-4">
             <LineBullet
               bullet={instance.label}
@@ -120,7 +157,6 @@ function WikiHubCard({ instance, isDark }: { instance: WikiInstance; isDark: boo
             />
           </div>
 
-          {/* Placeholder image — border matches card text color */}
           <div className="mb-4">
             <WikiCardImagePlaceholder
               instance={instance}
@@ -129,7 +165,6 @@ function WikiHubCard({ instance, isDark }: { instance: WikiInstance; isDark: boo
             />
           </div>
 
-          {/* Description */}
           <p className="text-sm leading-relaxed opacity-80" style={{ color: cardText }}>
             {WIKI_DESCRIPTIONS[instance.id]}
           </p>
@@ -138,8 +173,6 @@ function WikiHubCard({ instance, isDark }: { instance: WikiInstance; isDark: boo
     </Link>
   )
 }
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
 
 const WIKI_DESCRIPTIONS: Record<string, string> = {
   railyard:
@@ -154,15 +187,13 @@ const WIKI_DESCRIPTIONS: Record<string, string> = {
     "Legacy documentation covering older installation methods and compatibility guides for previous releases.",
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export function WikiHubPage() {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme !== "light"
   const rows = chunkRows(WIKI_INSTANCES, 3)
 
   return (
-    <section className="px-7 pb-12 pt-16 sm:pb-16 sm:pt-24">
+    <section className="px-7 pb-8 pt-8 sm:pb-8 sm:pt-8">
       <div className="mb-12 text-center">
         <h1 className="text-4xl font-black tracking-tight sm:text-5xl">Wiki</h1>
         <p className="mt-3 text-lg text-muted-foreground">
