@@ -160,8 +160,12 @@ function AnimatedRow({ children }: { children: React.ReactNode }) {
   const outOpacity = useTransform(outProgress, [0, 1], [1, 0])
   const outX = useTransform(outProgress, [0, 1], [0, -28])
 
-  const opacity = useTransform([inOpacity, outOpacity], ([a, b]) => Math.min(a, b))
-  const x = useTransform([inX, outX], ([a, b]) => (b < 0 ? b : a))
+  const opacity = useTransform(() => Math.min(inOpacity.get(), outOpacity.get()))
+  const x = useTransform(() => {
+    const a = inX.get()
+    const b = outX.get()
+    return b < 0 ? b : a
+  })
 
   return (
     <motion.div ref={rowRef} style={{ opacity, x }}>

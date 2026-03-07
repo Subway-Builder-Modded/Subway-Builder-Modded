@@ -316,3 +316,48 @@ export async function getWikiDocTitle(slug?: string[]) {
   const frontmatter = await readFrontmatter(filePath)
   return frontmatter?.title ?? null
 }
+
+export async function getAllWikiDocSlugs(): Promise<string[][]> {
+  const allSlugs: string[][] = []
+
+  async function collectMdxPaths(dir: string, prefix: string[] = []) {
+    if (!exists(dir)) return
+
+    const entries = await fs.promises.readdir(dir, { withFileTypes: true })
+
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name)
+
+      if (entry.isDirectory()) {
+        await collectMdxPaths(fullPath, [...prefix, entry.name])
+        continue
+      }
+
+      if (!entry.isFile() || !entry.name.endsWith(".mdx")) continue
+
+      const basename = entry.name.replace(/\.mdx$/, "")
+
+      if (basename === "index") {
+        if (prefix.length > 0) {
+          allSlugs.push(prefix)
+        }
+      } else {
+        allSlugs.push([...prefix, basename])
+      }
+    }
+  }
+
+  for (const instance of WIKI_INSTANCES) {
+    if (instance.versioned) {
+      for (const version of instance.versions ?? []) {
+        const baseDir = path.join(CONTENT_ROOT, instance.id, version.value)
+        await collectMdxPaths(baseDir, [instance.id, version.value])
+      }
+    } else {
+      const baseDir = path.join(CONTENT_ROOT, instance.id)
+      await collectMdxPaths(baseDir, [instance.id])
+    }
+  }
+
+  return allSlugs
+}

@@ -18,11 +18,23 @@ import {
   extractTocHeadings,
   getWikiBreadcrumbs,
   getWikiDocTitle,
+  getAllWikiDocSlugs,
   resolveWikiDocFilePath,
   type WikiFrontmatter,
 } from "@/lib/wiki.server"
 import { WIKI_INSTANCES } from "@/lib/wiki-config"
 import { buildBaseHomeHref, resolveWikiRoute } from "@/lib/wiki-shared"
+
+export const dynamicParams = false
+
+export async function generateStaticParams() {
+  const slugs = await getAllWikiDocSlugs()
+
+  return [
+    { slug: [] }, // generates /wiki
+    ...slugs.map((slug) => ({ slug })),
+  ]
+}
 
 export async function generateMetadata({
   params,
