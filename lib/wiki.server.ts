@@ -9,7 +9,7 @@ import remarkGfm from "remark-gfm"
 import rehypeExternalLinks from "rehype-external-links"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import remarkDirective from "remark-directive"
-import remarkCodeTitles from "remark-code-titles"
+import remarkFlexibleCodeTitles from "remark-flexible-code-titles"
 import remarkAdmonitionDirectives from "@/lib/remark-admonition-directives"
 
 import { WIKI_INSTANCES, getSidebarOrder, type WikiInstance } from "@/lib/wiki-config"
@@ -80,7 +80,7 @@ async function readFrontmatter(filePath: string) {
         remarkPlugins: [
           remarkGfm,
           remarkHeadingId,
-          remarkCodeTitles,
+          remarkFlexibleCodeTitles,
           remarkDirective,
           remarkAdmonitionDirectives,
         ],

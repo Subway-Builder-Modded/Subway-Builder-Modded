@@ -6,7 +6,7 @@ import { compileMDX } from "next-mdx-remote/rsc"
 import { remarkHeadingId } from "remark-custom-heading-id"
 import rehypePrettyCode from "rehype-pretty-code"
 import remarkGfm from "remark-gfm"
-import remarkCodeTitles from "remark-code-titles"
+import remarkFlexibleCodeTitles from "remark-flexible-code-titles"
 import rehypeExternalLinks from "rehype-external-links"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import remarkDirective from "remark-directive"
@@ -176,7 +176,7 @@ export default async function WikiPage({
         remarkPlugins: [
           remarkGfm,
           remarkHeadingId,
-          remarkCodeTitles,
+          remarkFlexibleCodeTitles,
           remarkDirective,
           remarkAdmonitionDirectives,
         ],
