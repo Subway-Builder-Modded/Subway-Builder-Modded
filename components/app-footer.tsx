@@ -16,7 +16,7 @@ import {
 export default function AppFooter() {
   return (
     <footer className="bg-sidebar">
-      <div className="mx-auto max-w-7xl px-4 py-8">
+      <div className="px-4 py-8">
         <div className="grid gap-10 md:grid-cols-[max-content_1fr] md:gap-x-24 md:items-center">
           <div className="flex flex-col items-start gap-3">
             <div className="flex items-center gap-2 pl-8">
@@ -36,7 +36,7 @@ export default function AppFooter() {
             </p>
           </div>
 
-          <div className="grid gap-10 sm:grid-cols-2 md:justify-self-center md:gap-x-60">
+          <div className="grid gap-10 sm:grid-cols-2 md:justify-self-end md:gap-x-[clamp(2rem,5vw,8rem)]">
             <div>
               <div className="mb-4 flex items-center gap-2">
                 <MapPin className="size-5 stroke-[2.25] text-foreground md:size-6" />
