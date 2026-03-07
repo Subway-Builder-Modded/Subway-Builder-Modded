@@ -44,19 +44,13 @@ function MdxLink({
   children,
   ...props
 }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
-  const isInternal = href.startsWith("/")
   const isHash = href.startsWith("#")
-
-  if (isInternal) {
-    return (
-      <Link
-        href={href}
-        className="font-medium text-primary underline underline-offset-4"
-      >
-        {children}
-      </Link>
-    )
-  }
+  const isInternal = href.startsWith("/")
+  const isExternal =
+    href.startsWith("http://") ||
+    href.startsWith("https://") ||
+    href.startsWith("mailto:") ||
+    href.startsWith("tel:")
 
   if (isHash) {
     return (
@@ -70,12 +64,36 @@ function MdxLink({
     )
   }
 
+  if (isInternal) {
+    return (
+      <Link
+        href={href}
+        className="font-medium text-primary underline underline-offset-4"
+        {...props}
+      >
+        {children}
+      </Link>
+    )
+  }
+
+  if (isExternal) {
+    return (
+      <a
+        href={href}
+        className="font-medium text-primary underline underline-offset-4"
+        target="_blank"
+        rel="noreferrer"
+        {...props}
+      >
+        {children}
+      </a>
+    )
+  }
+
   return (
     <a
       href={href}
       className="font-medium text-primary underline underline-offset-4"
-      target="_blank"
-      rel="noreferrer"
       {...props}
     >
       {children}

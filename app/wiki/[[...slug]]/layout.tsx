@@ -1,8 +1,8 @@
 import type { ReactNode } from "react"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppWikiSidebar } from "@/components/app-sidebar"
-import { getSidebarTree } from "@/lib/wiki.server"
 import { resolveWikiRoute } from "@/lib/wiki-shared"
+import { getAllWikiDocSlugs, getSidebarTree } from "@/lib/wiki.server"
 
 export default async function WikiCatchAllLayout({
   children,
@@ -20,10 +20,26 @@ export default async function WikiCatchAllLayout({
 
   const tree = await getSidebarTree(resolved.instance, resolved.version)
 
+    const allSlugs = await getAllWikiDocSlugs()
+
+  const versionDocSlugs = resolved.instance.versioned
+    ? Object.fromEntries(
+        (resolved.instance.versions ?? []).map((version) => [
+          version.value,
+          allSlugs
+            .filter(
+              (parts) =>
+                parts[0] === resolved.instance.id && parts[1] === version.value
+            )
+            .map((parts) => parts.slice(2).join("/") || "home"),
+        ])
+      )
+    : {}
+
   return (
     <section className="w-full">
-      <SidebarProvider defaultOpen className="w-full items-start">
-        <AppWikiSidebar tree={tree} />
+      <SidebarProvider defaultOpen className="w-full">
+        <AppWikiSidebar tree={tree} versionDocSlugs={versionDocSlugs} />
         <SidebarInset className="min-w-0 md:ml-0">
           <div className="mx-auto w-full max-w-7xl px-5 py-6 md:px-8 md:py-6">
             {children}
@@ -33,4 +49,3 @@ export default async function WikiCatchAllLayout({
     </section>
   )
 }
-

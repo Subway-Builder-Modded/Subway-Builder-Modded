@@ -216,7 +216,6 @@ function Sidebar({
       data-side={side}
       data-slot="sidebar"
     >
-      {/* This is what handles the sidebar gap on desktop */}
       <div
         data-slot="sidebar-gap"
         className={cn(
@@ -232,8 +231,7 @@ function Sidebar({
         data-slot="sidebar-container"
         data-side={side}
         className={cn(
-          "sticky top-14 z-10 hidden h-[calc(100svh-3.5rem)] w-(--sidebar-width) overflow-visible transition-[width,translate] duration-200 ease-linear translate-y-[calc(var(--footer-offset,0px)*-1)] data-[side=left]:group-data-[collapsible=offcanvas]:-translate-x-full data-[side=right]:group-data-[collapsible=offcanvas]:translate-x-full md:flex",
-          // Adjust the padding for floating and inset variants.
+          "sticky top-14 z-10 hidden h-[calc(100svh-3.5rem)] w-(--sidebar-width) overflow-visible transition-[width,translate] duration-200 ease-linear data-[side=left]:group-data-[collapsible=offcanvas]:-translate-x-full data-[side=right]:group-data-[collapsible=offcanvas]:translate-x-full md:flex",
           variant === "floating" || variant === "inset"
             ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"
             : "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l",

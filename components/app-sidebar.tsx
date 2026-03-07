@@ -19,6 +19,7 @@ import {
   buildVersionedDocHref,
   getActiveInstanceFromPathname,
   getActiveVersionFromPathname,
+  getDocSlugFromPathname,
   isLatestVersion,
   type WikiSidebarEntry,
   type WikiSidebarTree,
@@ -27,6 +28,7 @@ import { WIKI_INSTANCES, type WikiInstance, type WikiVersion } from "@/lib/wiki-
 
 type AppWikiSidebarProps = {
   tree?: WikiSidebarTree
+  versionDocSlugs?: Record<string, string[]>
 }
 
 type OpenDropdown = "instance" | "version" | null
@@ -39,11 +41,17 @@ const SIDEBAR_HOVER_TEXT_CLASS: Record<WikiInstance["id"], string> = {
   legacy: "hover:text-rose-400",
 }
 
-function toBaseFromHoverClassName(className: string) {
-  return className
-    .split(" ")
-    .map((token) => (token.startsWith("hover:") ? token.slice(6) : token))
-    .join(" ")
+const INSTANCE_INDICATOR_BG_CLASS: Record<WikiInstance["id"], string> = {
+  railyard: "bg-emerald-400",
+  "template-mod": "bg-violet-400",
+  "creating-custom-maps": "bg-blue-400",
+  contributing: "bg-amber-400",
+  legacy: "bg-rose-400",
+}
+
+function normalizePath(path: string) {
+  if (path === "/") return path
+  return path.replace(/\/+$/, "")
 }
 
 function useOnClickOutside(
@@ -62,7 +70,11 @@ function useOnClickOutside(
   }, [ref, handler])
 }
 
-function InstanceIcon({ instance }: { instance: WikiInstance }) {
+function InstanceIcon({
+  instance,
+}: {
+  instance: WikiInstance
+}) {
   const Icon = instance.icon
 
   return (
@@ -72,7 +84,7 @@ function InstanceIcon({ instance }: { instance: WikiInstance }) {
         instance.accentIconSurfaceClassName
       )}
     >
-      <Icon className={cn("size-4", instance.accentClassName)} />
+      <Icon className={cn("size-4 transition-colors duration-150", instance.accentClassName)} />
     </div>
   )
 }
@@ -80,9 +92,11 @@ function InstanceIcon({ instance }: { instance: WikiInstance }) {
 function VersionIcon({
   instance,
   version,
+  dropdown = false,
 }: {
   instance: WikiInstance
   version: WikiVersion
+  dropdown?: boolean
 }) {
   const Icon = version.icon ?? (isLatestVersion(instance, version.value) ? Tag : Archive)
   const latest = isLatestVersion(instance, version.value)
@@ -91,13 +105,25 @@ function VersionIcon({
     <div
       className={cn(
         "flex size-8 shrink-0 items-center justify-center rounded-lg border transition-colors duration-150",
-        latest ? instance.accentIconSurfaceClassName : "border-border/80 bg-muted"
+        dropdown
+          ? latest
+            ? instance.accentIconSurfaceClassName
+            : "border-zinc-500/35 bg-zinc-500/12"
+          : latest
+            ? instance.accentIconSurfaceClassName
+            : "border-border/80 bg-muted"
       )}
     >
       <Icon
         className={cn(
-          "size-4",
-          latest ? instance.accentClassName : "text-muted-foreground"
+          "size-4 transition-colors duration-150",
+          dropdown
+            ? latest
+              ? instance.accentClassName
+              : "text-zinc-300"
+            : latest
+              ? instance.accentClassName
+              : "text-muted-foreground"
         )}
       />
     </div>
@@ -178,7 +204,7 @@ function DropdownPanel({
         open ? "mt-2 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
       )}
     >
-      <div className="min-h-0 overflow-hidden">
+      <div className="min-h-0 overflow-x-visible overflow-y-hidden">
         <div className="overflow-hidden rounded-xl border border-border bg-popover shadow-xl">
           {children}
         </div>
@@ -187,13 +213,145 @@ function DropdownPanel({
   )
 }
 
-function getInstanceRowClassName(instance: WikiInstance, isActive: boolean) {
+function getInstanceRowClassName(instance: WikiInstance) {
   return cn(
-    "flex items-center gap-3 px-3 py-2 transition-all duration-150",
-    isActive
-      ? cn(instance.accentSurfaceClassName, toBaseFromHoverClassName(instance.accentSurfaceHoverClassName))
-      : instance.accentSurfaceHoverClassName
+    "group/dropdown-item flex items-center gap-3 bg-popover px-3 py-2 text-foreground transition-all duration-150",
+    instance.accentSurfaceHoverClassName
   )
+}
+
+function getVersionRowClassName(instance: WikiInstance, version: WikiVersion) {
+  return cn(
+    "group/dropdown-item flex items-center gap-3 bg-popover px-3 py-2 text-foreground transition-all duration-150",
+    isLatestVersion(instance, version.value)
+      ? instance.accentSurfaceHoverClassName
+      : "hover:bg-zinc-500/12"
+  )
+}
+
+function entryIsSelfActive(entry: WikiSidebarEntry, pathname: string): boolean {
+  if (entry.kind === "page") {
+    return normalizePath(pathname) === normalizePath(entry.href)
+  }
+
+  return !!entry.href && normalizePath(pathname) === normalizePath(entry.href)
+}
+
+function entryHasActiveDescendant(entry: WikiSidebarEntry, pathname: string): boolean {
+  if (entry.kind === "page") {
+    return normalizePath(pathname) === normalizePath(entry.href)
+  }
+
+  return entry.items.some((child) => {
+    if (child.kind === "page") {
+      return normalizePath(pathname) === normalizePath(child.href)
+    }
+
+    return entryIsSelfActive(child, pathname) || entryHasActiveDescendant(child, pathname)
+  })
+}
+
+function collectCategoryKeys(entry: WikiSidebarEntry, out = new Set<string>()) {
+  if (entry.kind !== "category") return out
+
+  out.add(entry.key)
+
+  for (const child of entry.items) {
+    collectCategoryKeys(child, out)
+  }
+
+  return out
+}
+
+function removeCategoryBranch(entry: WikiSidebarEntry, openKeys: Set<string>) {
+  const next = new Set(openKeys)
+  const keysToRemove = collectCategoryKeys(entry)
+
+  keysToRemove.forEach((key) => next.delete(key))
+  return next
+}
+
+function collectActiveCategoryKeys(
+  entries: WikiSidebarEntry[],
+  pathname: string,
+  out = new Set<string>()
+) {
+  for (const entry of entries) {
+    if (entry.kind !== "category") continue
+
+    const selfActive = entryIsSelfActive(entry, pathname)
+    const childActive = entry.items.some((child) =>
+      child.kind === "page"
+        ? normalizePath(pathname) === normalizePath(child.href)
+        : entryIsSelfActive(child, pathname) || entryHasActiveDescendant(child, pathname)
+    )
+
+    if (selfActive || childActive) out.add(entry.key)
+
+    collectActiveCategoryKeys(entry.items, pathname, out)
+  }
+
+  return out
+}
+
+function findActiveEntry(
+  entries: WikiSidebarEntry[],
+  pathname: string,
+  openKeys: Set<string>
+): WikiSidebarEntry | null {
+  const normalizedPathname = normalizePath(pathname)
+
+  for (const entry of entries) {
+    if (entry.kind === "page") {
+      if (normalizedPathname === normalizePath(entry.href)) return entry
+      continue
+    }
+
+    const selfActive = entryIsSelfActive(entry, normalizedPathname)
+    const descendantActive = entry.items.some((child) =>
+      child.kind === "page"
+        ? normalizedPathname === normalizePath(child.href)
+        : entryIsSelfActive(child, normalizedPathname) ||
+          entryHasActiveDescendant(child, normalizedPathname)
+    )
+
+    if (!selfActive && !descendantActive) continue
+
+    if (openKeys.has(entry.key)) {
+      const deeper = findActiveEntry(entry.items, normalizedPathname, openKeys)
+      return deeper ?? entry
+    }
+
+    return entry
+  }
+
+  return null
+}
+
+function SidebarActiveIndicator({
+  active,
+  className,
+}: {
+  active: boolean
+  className: string
+}) {
+  return (
+    <span
+      className={cn(
+        "absolute top-1.5 right-0 bottom-1.5 w-[2px] rounded-full transition-all duration-200",
+        className,
+        active ? "opacity-100" : "opacity-0"
+      )}
+    />
+  )
+}
+
+function getSidebarDepthClassName(depth: number) {
+  if (depth <= 0) return ""
+  if (depth === 1) return "pl-6"
+  if (depth === 2) return "pl-9"
+  if (depth === 3) return "pl-12"
+  return "pl-13"
 }
 
 function InstanceSwitcher({
@@ -232,7 +390,8 @@ function InstanceSwitcher({
             <NextLink
               key={instance.id}
               href={buildBaseHomeHref(instance)}
-              className={getInstanceRowClassName(instance, isActive)}
+              aria-current={isActive ? "page" : undefined}
+              className={getInstanceRowClassName(instance)}
             >
               <InstanceIcon instance={instance} />
               <div className="min-w-0 flex-1 pr-1">
@@ -248,40 +407,22 @@ function InstanceSwitcher({
   )
 }
 
-function getVersionHoverClassName(instance: WikiInstance, version: WikiVersion) {
-  if (isLatestVersion(instance, version.value)) {
-    return instance.accentSurfaceHoverClassName
-  }
-
-  return cn("hover:bg-zinc-500/12", "dark:hover:bg-zinc-400/18")
-}
-
-function getVersionRowClassName(
-  instance: WikiInstance,
-  version: WikiVersion,
-  isActive: boolean
-) {
-  const hoverClassName = getVersionHoverClassName(instance, version)
-
-  return cn(
-    "flex items-center gap-3 px-3 py-2 transition-all duration-150",
-    isActive ? toBaseFromHoverClassName(hoverClassName) : hoverClassName
-  )
-}
-
 function VersionSwitcher({
   activeInstance,
   activeVersion,
   pathname,
   open,
   setOpen,
+  versionDocSlugs,
 }: {
   activeInstance: WikiInstance
   activeVersion: NonNullable<ReturnType<typeof getActiveVersionFromPathname>>
   pathname: string
   open: boolean
   setOpen: (value: boolean) => void
+  versionDocSlugs?: Record<string, string[]>
 }) {
+  const currentDocSlug = getDocSlugFromPathname(activeInstance, pathname) ?? "home"
   if (!activeInstance.versioned || !activeInstance.versions?.length) return null
 
   return (
@@ -309,16 +450,21 @@ function VersionSwitcher({
 
       <DropdownPanel open={open}>
         {activeInstance.versions.map((version) => {
+          const targetDocSlugs = versionDocSlugs?.[version.value] ?? []
+          const targetHref = targetDocSlugs.includes(currentDocSlug)
+            ? buildVersionedDocHref(activeInstance, version.value, pathname)
+            : buildBaseHomeHref(activeInstance, version.value)
           const isActive = version.value === activeVersion.value
           const latest = isLatestVersion(activeInstance, version.value)
 
           return (
             <NextLink
               key={version.value}
-              href={buildVersionedDocHref(activeInstance, version.value, pathname)}
-              className={getVersionRowClassName(activeInstance, version, isActive)}
+              href={targetHref}
+              aria-current={isActive ? "page" : undefined}
+              className={getVersionRowClassName(activeInstance, version)}
             >
-              <VersionIcon instance={activeInstance} version={version} />
+              <VersionIcon instance={activeInstance} version={version} dropdown />
               <div className="min-w-0 flex-1 pr-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-[15px] font-semibold leading-tight text-foreground">
@@ -338,66 +484,6 @@ function VersionSwitcher({
   )
 }
 
-function entryHasActiveDescendant(entry: WikiSidebarEntry, pathname: string): boolean {
-  if (entry.kind === "page") {
-    return pathname === entry.href
-  }
-
-  return entry.items.some((child) => entryHasActiveDescendant(child, pathname))
-}
-
-function collectActiveCategoryKeys(
-  entries: WikiSidebarEntry[],
-  pathname: string,
-  out = new Set<string>()
-) {
-  for (const entry of entries) {
-    if (entry.kind !== "category") continue
-
-    const childActive = entry.items.some((child) => entryHasActiveDescendant(child, pathname))
-    if (childActive) out.add(entry.key)
-
-    collectActiveCategoryKeys(entry.items, pathname, out)
-  }
-
-  return out
-}
-
-function findActiveEntry(
-  entries: WikiSidebarEntry[],
-  pathname: string,
-  openKeys: Set<string>
-): WikiSidebarEntry | null {
-  for (const entry of entries) {
-    if (entry.kind === "page") {
-      if (pathname === entry.href) return entry
-    } else {
-      const selfActive = !!entry.href && pathname === entry.href
-      const descendantActive = entry.items.some((child) => entryHasActiveDescendant(child, pathname))
-
-      if (selfActive || descendantActive) {
-        if (openKeys.has(entry.key)) {
-          const deeper = findActiveEntry(entry.items, pathname, openKeys)
-          if (deeper) return deeper
-        }
-        return entry
-      }
-    }
-  }
-  return null
-}
-
-function SidebarActiveIndicator({ active }: { active: boolean }) {
-  return (
-    <span
-      className={cn(
-        "absolute top-1.5 right-0 bottom-1.5 w-[2px] rounded-full bg-primary transition-all duration-150",
-        active ? "opacity-100" : "opacity-0"
-      )}
-    />
-  )
-}
-
 function SidebarNavEntry({
   entry,
   pathname,
@@ -406,6 +492,7 @@ function SidebarNavEntry({
   depth = 0,
   activeIndicatorKey,
   activeTextClassName,
+  activeIndicatorClassName,
   hoverTextClassName,
 }: {
   entry: WikiSidebarEntry
@@ -415,6 +502,7 @@ function SidebarNavEntry({
   depth?: number
   activeIndicatorKey: string | null
   activeTextClassName: string
+  activeIndicatorClassName: string
   hoverTextClassName: string
 }) {
   if (entry.kind === "page") {
@@ -422,12 +510,12 @@ function SidebarNavEntry({
 
     return (
       <li className="relative">
-        <SidebarActiveIndicator active={showIndicator} />
+        <SidebarActiveIndicator active={showIndicator} className={activeIndicatorClassName} />
         <NextLink
           href={entry.href}
           className={cn(
             "relative block rounded-md px-3 py-1.5 pr-5 text-[15px] transition-colors",
-            depth > 0 && "ml-4",
+            getSidebarDepthClassName(depth),
             showIndicator
               ? cn("font-medium", activeTextClassName)
               : cn("text-white", hoverTextClassName)
@@ -444,30 +532,33 @@ function SidebarNavEntry({
 
   const toggle = () => {
     setOpenKeys((prev) => {
+      if (prev.has(entry.key)) {
+        return removeCategoryBranch(entry, prev)
+      }
+
       const next = new Set(prev)
-      if (next.has(entry.key)) next.delete(entry.key)
-      else next.add(entry.key)
+      next.add(entry.key)
       return next
     })
   }
 
-  const onMainClick = (event: React.MouseEvent) => {
+  const onMainClick = () => {
     setOpenKeys((prev) => {
-      const next = new Set(prev)
-
       if (!entry.href) {
-        if (next.has(entry.key)) next.delete(entry.key)
-        else next.add(entry.key)
+        if (prev.has(entry.key)) {
+          return removeCategoryBranch(entry, prev)
+        }
+
+        const next = new Set(prev)
+        next.add(entry.key)
         return next
       }
 
-      if (pathname === entry.href) {
-        event.preventDefault()
-        if (next.has(entry.key)) next.delete(entry.key)
-        else next.add(entry.key)
-        return next
+      if (prev.has(entry.key)) {
+        return prev
       }
 
+      const next = new Set(prev)
       next.add(entry.key)
       return next
     })
@@ -475,15 +566,17 @@ function SidebarNavEntry({
 
   const labelClassName = cn(
     "min-w-0 flex-1 rounded-md px-3 py-1.5 pr-5 text-left text-[15px] transition-colors",
+    getSidebarDepthClassName(depth),
     showIndicator
       ? cn("font-medium", activeTextClassName)
       : cn("text-white", hoverTextClassName)
   )
 
   return (
-    <li className="relative">
-      <SidebarActiveIndicator active={showIndicator} />
-      <div className={cn("group relative flex items-center", depth > 0 && "ml-4")}>
+    <li>
+      <div className="group relative flex w-full items-center">
+        <SidebarActiveIndicator active={showIndicator} className={activeIndicatorClassName} />
+
         {entry.href ? (
           <NextLink href={entry.href} onClick={onMainClick} className={labelClassName}>
             <span className="truncate">{entry.title}</span>
@@ -524,6 +617,7 @@ function SidebarNavEntry({
                 depth={depth + 1}
                 activeIndicatorKey={activeIndicatorKey}
                 activeTextClassName={activeTextClassName}
+                activeIndicatorClassName={activeIndicatorClassName}
                 hoverTextClassName={hoverTextClassName}
               />
             ))}
@@ -534,7 +628,7 @@ function SidebarNavEntry({
   )
 }
 
-export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
+export function AppWikiSidebar({ tree, versionDocSlugs }: AppWikiSidebarProps) {
   const pathname = usePathname()
   const { isMobile, state, toggleSidebar } = useSidebar()
 
@@ -548,7 +642,9 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
   )
 
   const [openDropdown, setOpenDropdown] = React.useState<OpenDropdown>(null)
-  const [openKeys, setOpenKeys] = React.useState<Set<string>>(new Set())
+  const [openKeys, setOpenKeys] = React.useState<Set<string>>(() =>
+    collectActiveCategoryKeys(tree?.entries ?? [], pathname)
+  )
 
   const switcherAreaRef = React.useRef<HTMLDivElement | null>(null)
   useOnClickOutside(switcherAreaRef, () => setOpenDropdown(null))
@@ -557,6 +653,7 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") setOpenDropdown(null)
     }
+
     window.addEventListener("keydown", onKeyDown)
     return () => window.removeEventListener("keydown", onKeyDown)
   }, [])
@@ -565,14 +662,9 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
     setOpenDropdown(null)
   }, [pathname])
 
-  React.useEffect(() => {
-    const activeKeys = collectActiveCategoryKeys(tree?.entries ?? [], pathname)
-    setOpenKeys((prev) => {
-      const next = new Set(prev)
-      activeKeys.forEach((key) => next.add(key))
-      return next
-    })
-  }, [pathname, tree?.entries])
+  React.useLayoutEffect(() => {
+    setOpenKeys(collectActiveCategoryKeys(tree?.entries ?? [], pathname))
+  }, [tree?.entries, pathname])
 
   const activeIndicatorKey = React.useMemo(() => {
     const entry = findActiveEntry(tree?.entries ?? [], pathname, openKeys)
@@ -582,6 +674,7 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
   const footerOffset = useFooterOffset()
   const isCollapsed = state === "collapsed"
   const hoverTextClassName = SIDEBAR_HOVER_TEXT_CLASS[activeInstance.id]
+  const activeIndicatorClassName = INSTANCE_INDICATOR_BG_CLASS[activeInstance.id]
 
   return (
     <>
@@ -589,7 +682,6 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
         collapsible="offcanvas"
         variant="sidebar"
         className="overflow-visible border-r border-border bg-sidebar"
-        style={{ "--footer-offset": `${footerOffset}px` } as React.CSSProperties}
       >
         <SidebarHeader className="gap-3 border-b border-border bg-sidebar px-6 pt-3 pb-3">
           <div ref={switcherAreaRef} className="space-y-3">
@@ -606,12 +698,13 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
                 pathname={pathname}
                 open={openDropdown === "version"}
                 setOpen={(value) => setOpenDropdown(value ? "version" : null)}
+                versionDocSlugs={versionDocSlugs}
               />
             ) : null}
           </div>
         </SidebarHeader>
 
-        <SidebarContent className="min-h-0 px-4 py-4">
+        <SidebarContent className="min-h-0 pl-4 pr-0 py-4">
           <nav aria-label="Wiki navigation">
             <ul className="space-y-0.5">
               {(tree?.entries ?? []).map((entry) => (
@@ -623,6 +716,7 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
                   setOpenKeys={setOpenKeys}
                   activeIndicatorKey={activeIndicatorKey}
                   activeTextClassName={activeInstance.accentClassName}
+                  activeIndicatorClassName={activeIndicatorClassName}
                   hoverTextClassName={hoverTextClassName}
                 />
               ))}
@@ -656,4 +750,3 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
     </>
   )
 }
-

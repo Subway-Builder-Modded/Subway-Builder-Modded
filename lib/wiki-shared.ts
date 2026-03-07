@@ -30,6 +30,7 @@ export type ResolvedWikiRoute = {
   instance: WikiInstance
   version: string | null
   docSlug: string | null
+  requestedVersion: string | null
 }
 
 export function isLatestVersion(instance: WikiInstance, versionValue: string) {
@@ -59,18 +60,24 @@ export function resolveWikiRoute(slug?: string[]): ResolvedWikiRoute | null {
       instance,
       version: null,
       docSlug: [maybeVersion, ...rest].filter(Boolean).join("/") || null,
+      requestedVersion: null,
     }
   }
 
+  const requestedVersion = maybeVersion ?? null
+  const normalizedVersion =
+    requestedVersion === "latest" ? instance.latestVersion ?? null : requestedVersion
+
   const versionValues = new Set(instance.versions?.map((v) => v.value) ?? [])
-  const hasExplicitVersion = !!maybeVersion && versionValues.has(maybeVersion)
+  const hasExplicitVersion = !!normalizedVersion && versionValues.has(normalizedVersion)
 
   return {
     instance,
-    version: hasExplicitVersion ? maybeVersion : instance.latestVersion ?? null,
+    version: hasExplicitVersion ? normalizedVersion : instance.latestVersion ?? null,
     docSlug: hasExplicitVersion
       ? rest.join("/") || null
       : [maybeVersion, ...rest].filter(Boolean).join("/") || null,
+    requestedVersion,
   }
 }
 

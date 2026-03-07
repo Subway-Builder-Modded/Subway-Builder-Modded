@@ -23,7 +23,7 @@ import {
   type WikiFrontmatter,
 } from "@/lib/wiki.server"
 import { WIKI_INSTANCES } from "@/lib/wiki-config"
-import { buildBaseHomeHref, resolveWikiRoute } from "@/lib/wiki-shared"
+import { buildBaseHomeHref, buildDocHref, resolveWikiRoute } from "@/lib/wiki-shared"
 
 export const dynamicParams = false
 
@@ -33,23 +33,37 @@ export async function generateStaticParams() {
   const baseRouteSlugs = WIKI_INSTANCES.flatMap((instance) => {
     if (!instance.versioned) return [[instance.id]]
 
-    const versionRoots = (instance.versions ?? []).map((version) => [
-      instance.id,
-      version.value,
+    const versionRoots = (instance.versions ?? []).flatMap((version) => [
+      [instance.id, version.value],
+      [instance.id, "latest"],
     ])
 
     return [[instance.id], ...versionRoots]
+  })
+
+  const latestAliasSlugs = WIKI_INSTANCES.flatMap((instance) => {
+    if (!instance.versioned) return []
+
+    return slugs
+      .filter(
+        (parts) =>
+          parts[0] === instance.id &&
+          parts[1] &&
+          instance.versions?.some((version) => version.value === parts[1])
+      )
+      .map((parts) => [parts[0], "latest", ...parts.slice(2)])
   })
 
   const allParamKeys = new Set<string>([
     "",
     ...baseRouteSlugs.map((parts) => parts.join("/")),
     ...slugs.map((parts) => parts.join("/")),
+    ...latestAliasSlugs.map((parts) => parts.join("/")),
   ])
 
-  return Array.from(allParamKeys).map((key) =>
-    key === "" ? { slug: [] } : { slug: key.split("/") }
-  )
+  return Array.from(allParamKeys).map((key) => ({
+    slug: key === "" ? [""] : key.split("/"),
+  }))
 }
 
 export async function generateMetadata({
@@ -58,14 +72,15 @@ export async function generateMetadata({
   params: Promise<{ slug?: string[] }>
 }): Promise<Metadata> {
   const { slug } = await params
+  const normalizedSlug = slug?.filter(Boolean)
 
-  if (!slug?.length) {
+  if (!normalizedSlug?.length) {
     return {
       title: "Wiki | Subway Builder Modded",
     }
   }
 
-  const resolved = resolveWikiRoute(slug)
+  const resolved = resolveWikiRoute(normalizedSlug)
 
   if (!resolved?.docSlug) {
     return {
@@ -75,7 +90,7 @@ export async function generateMetadata({
     }
   }
 
-  const title = await getWikiDocTitle(slug)
+  const title = await getWikiDocTitle(normalizedSlug)
 
   return {
     title: title
@@ -118,23 +133,32 @@ export default async function WikiPage({
   params: Promise<{ slug?: string[] }>
 }) {
   const { slug } = await params
+  const normalizedSlug = slug?.filter(Boolean)
 
-  if (!slug?.length) {
+  if (!normalizedSlug?.length) {
     return <WikiIndexPage />
   }
 
-  const resolved = resolveWikiRoute(slug)
+  const resolved = resolveWikiRoute(normalizedSlug)
   if (!resolved) notFound()
+
+  if (resolved.instance.versioned && resolved.requestedVersion === "latest") {
+    if (resolved.docSlug) {
+      redirect(buildDocHref(resolved.instance, resolved.version, resolved.docSlug))
+    }
+
+    redirect(buildBaseHomeHref(resolved.instance, resolved.version))
+  }
 
   if (!resolved.docSlug) {
     redirect(buildBaseHomeHref(resolved.instance, resolved.version))
   }
 
-  const filePath = await resolveWikiDocFilePath(slug)
+  const filePath = await resolveWikiDocFilePath(normalizedSlug)
   if (!filePath) notFound()
 
   const source = await fs.readFile(filePath, "utf8")
-  const breadcrumbs = await getWikiBreadcrumbs(slug)
+  const breadcrumbs = await getWikiBreadcrumbs(normalizedSlug)
   const toc = await extractTocHeadings(filePath)
 
   const { content, frontmatter } = await compileMDX<WikiFrontmatter>({
@@ -182,8 +206,11 @@ export default async function WikiPage({
         </div>
       </article>
 
-      <WikiOnThisPage headings={toc} />
+      <aside className="hidden xl:block">
+        <div className="sticky top-20 max-h-[calc(100svh-5rem)] overflow-y-auto">
+          <WikiOnThisPage headings={toc} />
+        </div>
+      </aside>
     </div>
   )
 }
-
