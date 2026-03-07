@@ -4,6 +4,10 @@ import {
   CodeXml,
   CirclePlus,
   PackagePlus,
+  MapPlus,
+  Sparkles,
+  FolderClock,
+  Bug,
   type LucideIcon,
 } from "lucide-react"
 
@@ -13,7 +17,11 @@ import { cn } from "@/lib/utils"
 const ICONS = {
   CodeXml,
   CirclePlus,
-  PackagePlus
+  PackagePlus,
+  MapPlus,
+  Sparkles,
+  FolderClock,
+  Bug,
 } satisfies Record<string, LucideIcon>
 
 type WikiCardIconName = keyof typeof ICONS

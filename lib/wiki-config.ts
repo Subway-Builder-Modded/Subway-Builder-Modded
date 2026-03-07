@@ -91,7 +91,15 @@ export const WIKI_INSTANCES: WikiInstance[] = [
         value: "v1.0",
         label: "v1.0",
         icon: Tag,
-        sidebarOrder: ["home"],
+        sidebarOrder: [
+          "home",
+          "getting-started",
+          "project-structure",
+          "common-patterns",
+          "react-components",
+          "debugging",
+          "type-reference",
+        ],
       },
     ],
   },
@@ -105,7 +113,11 @@ export const WIKI_INSTANCES: WikiInstance[] = [
     accentSurfaceHoverClassName: "hover:bg-blue-500/18",
     accentIconSurfaceClassName: "bg-blue-950/80 border-blue-700/50",
     versioned: false,
-    sidebarOrder: ["home"],
+    sidebarOrder: [
+      "home",
+      "creating-custom-maps",
+      "custom-map-optional-features",
+    ],
   },
   {
     id: "contributing",
@@ -117,7 +129,9 @@ export const WIKI_INSTANCES: WikiInstance[] = [
     accentSurfaceHoverClassName: "hover:bg-amber-500/18",
     accentIconSurfaceClassName: "bg-amber-950/80 border-amber-700/50",
     versioned: false,
-    sidebarOrder: ["home"],
+    sidebarOrder: [
+      "home",
+    ],
   },
   {
     id: "legacy",
@@ -129,7 +143,12 @@ export const WIKI_INSTANCES: WikiInstance[] = [
     accentSurfaceHoverClassName: "hover:bg-rose-500/18",
     accentIconSurfaceClassName: "bg-rose-950/80 border-rose-700/50",
     versioned: false,
-    sidebarOrder: ["home"],
+    sidebarOrder: [
+      "home",
+      "map-installation-guide",
+      "legacy-map-installation-guide",
+      "troubleshooting",
+    ],
   },
 ]
 

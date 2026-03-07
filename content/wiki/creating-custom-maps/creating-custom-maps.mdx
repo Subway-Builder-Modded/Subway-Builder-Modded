@@ -96,118 +96,142 @@ From here, it's time to set up our demand generator configuration. Create a file
 In this file, include the following parameters:
 
 ```json
-    city : string, the city you're modeling.
-           Example: "Rochester"
-    airport : list of strings, IATA codes for the local airport
-                               Note: The first listed airport is used here to uniquely identify a city.
-              Example: ["ROC"]
-    states : string or list of strings, two-letter code for the state(s) your map covers.
-            Example: "ny"
-            Example: ["md", "dc", "va"]
-    year : int, the year you want to use for the LODES data.  At the time of writing, it must be within 2002-2023.
-           Example: 2022
-    bbox : list of ints, the [min_lon, min_lat, max_lon, max_lat] boundary for the city.
-           Example: [-77.8216, 43.0089, -77.399, 43.3117],
-    cbd_bbox : list of ints, exactly like `bbox` except for the Central Business District.
-                             Can be used to reduce clustering for the downtown area.
-                             To disable, set this to null.
-               Example: null
+    city :                      string, the city you're modeling.
+                                Example: "Rochester"
 
-    HUMAN_READABLE : (optional) bool, determines whether to make the output demand_data.json file have indentation
-                                      structure for readability (true) or not to minimize file size (false).
-                      Default: false
-    MAX_WORKERS : (optional) int, sets the number of workers to use for parallel processing.
-                   Default: None (total number of CPU threads)
-    MAXPOPSIZE : int, maximum size any pop can be.
-                      Pops larger than this value are split into multiple pops to follow this setting.
-                 Example: 200
-    CALCULATE_ROUTES : bool, determines whether to calculate commuting routes.
-                             Recommended to set this to false when initially testing out boundaries and clustering.
-                             NOTE: It can take a long time to calculate routes!  Small cities are 15-30 minutes
-                                   on a 16 core machine, which means ~1-2 hours on a 4 core machine!
-                       Example: true
-    SMALL_THRESHOLD : int, maximum pop size considered for agglomerative clustering.
-                           Pops smaller than this size will be merged with other nearby pops that work at the
-                           same location.
-                      Example: 100
-    DISTANCE_THRESHOLD_NONCBD : float, distance threshold in degrees to consider when clustering.
-                                       This is applied outside the CBD, or if the CBD is not used, then applied
-                                       everywhere.
-                                       Note that you will get demand points separated by less than this value,
-                                       so do not use this value as a "minimum separation" parameter.
+    airport :                   list of strings, IATA codes for the local airport.
+                                Note: The first listed airport is used here to uniquely identify a city.
+                                Example: ["ROC"]
+
+    states :                    string or list of strings, two-letter code for the state(s) your map covers.
+                                Example: "ny"
+                                Example: ["md", "dc", "va"]
+
+    year :                      int, the year you want to use for the LODES data.  At the time of writing, it must
+                                be within 2002-2023.
+                                Example: 2022
+
+    bbox :                      list of ints, the [min_lon, min_lat, max_lon, max_lat] boundary for the city.
+                                Example: [-77.8216, 43.0089, -77.399, 43.3117],
+
+    cbd_bbox :                  list of ints, exactly like `bbox` except for the Central Business District. Can be used
+                                to reduce clustering for the downtown area. To disable, set this to null.
+                                Example: null
+
+    HUMAN_READABLE :            bool, determines whether to make the output demand_data.json file have indentation
+                                structure for readability (true) or not to minimize file size (false). (optional)
+                                Default: false
+
+    MAX_WORKERS :               int, sets the number of workers to use for parallel processing. (optional)
+                                Default: None (total number of CPU threads)
+
+    MAXPOPSIZE :                int, maximum size any pop can be. Pops larger than this value are split into multiple
+                                pops to follow this setting.
+                                Example: 200
+
+    CALCULATE_ROUTES :          bool, determines whether to calculate commuting routes. Recommended to set this to
+                                false when initially testing out boundaries and clustering.
+                                NOTE: It can take a long time to calculate routes! Small cities are 15-30 minutes
+                                on a 16 core machine, which means ~1-2 hours on a 4 core machine!
+                                Example: true
+
+    SMALL_THRESHOLD :           int, maximum pop size considered for agglomerative clustering. Pops smaller than this
+                                size will be merged with other nearby pops that work at the same location.
+                                Example: 100
+
+    DISTANCE_THRESHOLD_NONCBD : float, distance threshold in degrees to consider when clustering. This is applied
+                                outside the CBD, or if the CBD is not used, then applied everywhere. Note that you
+                                will get demand points separated by less than this value, so do not use this value
+                                as a "minimum separation" parameter.
                                 Example: 0.1
-    DISTANCE_THRESHOLD_CBD : float, like `DISTANCE_THRESHOLD_NONCBD` but applied within the CBD defined by
-                                    `cbd_bbox`.
-                             Example: 0.05
-    DEMAND_FACTOR: float, multiply all LODES pop sizes by this factor.
-                          This parameter is only offered to make cities with small number of commutes viable.
-                          In general it is recommended to use a value of 1.
-                          Example: 2
 
-    point_locs_to_move : list of list of floats, coordinates in [lon, lat] of demand points that you want to move
-                                                 for whatever reason (over water, overlapping, etc.).
-                                                 Must correspond exactly to the order used in `moved_point_locs`.
-                                                 To not use this, set it to []
-                         Example: [[-77.69260, 43.29925], [-77.69280, 43.28780], [-77.74163, 43.30533],
-                                   [-77.76616, 43.29830], [-77.75377, 43.29501], [-77.73190, 43.29221],
-                                   [-77.71047, 43.28571], [-77.53833, 43.22158]]
-    moved_point_locs : list of list of floats, coordinates in [lon, lat] where you want to move the
-                                               demand points to.
-                                               Must correspond exactly to the order used in `point_locs_to_move`.
-                       Example: [[-77.69253, 43.29669], [-77.69224, 43.28529], [-77.73431, 43.30351],
-                                 [-77.76969, 43.29365], [-77.75209, 43.29262], [-77.72819, 43.29165],
-                                 [-77.71078, 43.28141], [-77.54152, 43.22132]]
+    DISTANCE_THRESHOLD_CBD :    float, like `DISTANCE_THRESHOLD_NONCBD` but applied within the CBD defined by
+                               `cbd_bbox`.
+                                Example: 0.05
 
-    airport_daily_passengers : (optional) list of ints, number of daily passengers at the city's airports.
-                               Example: [7000]
-    airport_loc : list of list of floats, coordinates in [lon, lat] of the city's airports.
-                  Example: [[-77.67166, 43.12919]]
-    airport_required_locs : list of list of list of floats, coordinates in [lon, lat] where you want airports'
-                                                    travelers to reside.  One pop will be placed at the
-                                                    demand bubble closest to each specified coordinate.
-                                                    If you don't care to set this, then use [] and the code
-                                                    will decide automatically.
-                            Example: [[[-77.61298,  43.15729], [-77.60688,  43.15614], [-77.58936,  43.1547 ],
-                                       [-77.59342,  43.15564], [-77.6741 ,  43.21029], [-77.61647,  43.10564],
-                                       [-77.61391,  43.08771], [-77.55086,  43.11299], [-77.57981,  43.19774],
-                                       [-77.4567 ,  43.2146 ], [-77.44227,  43.21617], [-77.68496,  43.18599],
-                                       [-77.64286,  43.0601 ], [-77.65179,  43.05802], [-77.44922,  43.01093],
-                                       [-77.51514,  43.09333]]]
-    air_pop_size_req : list of ints, size of airports' pops assigned by `airport_required_locs`.
-                            Note that if this exceeds `MAXPOPSIZE` then each pop will be split into multiple
-                            smaller pops.
-                       Example: [200]
-    air_pop_size_remain : list of ints, size of airports' pops assigned automatically by the code.
-                              Note that if this exceeds `MAXPOPSIZE` then each pop will be split into multiple
-                              smaller pops.
-                          Example: [150]
+    DEMAND_FACTOR: float,       multiply all LODES pop sizes by this factor. This parameter is only offered to make
+                                cities with small number of commutes viable. In general it is recommended to use a
+                                value of 1.
+                                Example: 2
 
-    universities : list of strings, 2-4 letter identifier for each university considered.
-                                    All subsequent university-related parameters must correspond exactly to
-                                    this ordering.
-                   Example: ["UR", "RIT", "SJF", "NU", "RWU"],
-    univ_loc : list of list of floats, coordinates for each university's demand bubble.
-               Example: [[-77.62668, 43.12989], [-77.67629, 43.08389], [-77.51239, 43.11575],
-                         [-77.51873, 43.10218], [-77.79857, 43.12568]]
-    univ_merge_within : list of ints, distance in meters to merge any nearby demand points into the new university
-                                      demand point.
-                   Example: [0, 350, 300, 0, 0]
-    students : list of ints, number of students that attend each campus.
-               Example: [11946, 17166, 4000, 2500, 1500]
-    perc_oncampus : list of floats, percentage of students that live in on-campus housing for each university.
-                    Example: [0.45, 0.4, 0.33, 0.5, 0.6]
-    univ_pop_size : list of ints, size of each pop created for each university.
-                    Example: [75, 75, 75, 75, 75]
-    univ_perc_travel : list of list of floats, fraction of students that live [on campus, off campus] that travel
-                                               on an average day.
+    point_locs_to_move :        list of list of floats, coordinates in [lon, lat] of demand points that you want to
+                                move for whatever reason (over water, overlapping, etc.). Must correspond exactly to
+                                the order used in `moved_point_locs`. To not use this, set it to [].
+                                Example: [[-77.69260, 43.29925], [-77.69280, 43.28780], [-77.74163, 43.30533],
+                                          [-77.76616, 43.29830], [-77.75377, 43.29501], [-77.73190, 43.29221],
+                                          [-77.71047, 43.28571], [-77.53833, 43.22158]]
+
+    moved_point_locs :          list of list of floats, coordinates in [lon, lat] where you want to move the
+                                demand points to. Must correspond exactly to the order used in `point_locs_to_move`.
+                                Example: [[-77.69253, 43.29669], [-77.69224, 43.28529], [-77.73431, 43.30351],
+                                          [-77.76969, 43.29365], [-77.75209, 43.29262], [-77.72819, 43.29165],
+                                          [-77.71078, 43.28141], [-77.54152, 43.22132]]
+
+    airport_daily_passengers :  list of ints, number of daily passengers at the city's airports. (optional)
+                                Example: [7000]
+
+    airport_loc :               list of list of floats, coordinates in [lon, lat] of the city's airports.
+                                Example: [[-77.67166, 43.12919]]
+
+    airport_required_locs :     list of list of list of floats, coordinates in [lon, lat] where you want airports'
+                                travelers to reside. One pop will be placed at the demand bubble closest to each
+                                specified coordinate. If you don't care to set this, then use [] and the codewill
+                                decide automatically.
+                                Example: [[[-77.61298,  43.15729], [-77.60688,  43.15614], [-77.58936,  43.1547 ],
+                                           [-77.59342,  43.15564], [-77.6741 ,  43.21029], [-77.61647,  43.10564],
+                                           [-77.61391,  43.08771], [-77.55086,  43.11299], [-77.57981,  43.19774],
+                                           [-77.4567 ,  43.2146 ], [-77.44227,  43.21617], [-77.68496,  43.18599],
+                                           [-77.64286,  43.0601 ], [-77.65179,  43.05802], [-77.44922,  43.01093],
+                                           [-77.51514,  43.09333]]]
+
+    air_pop_size_req :          list of ints, size of airports' pops assigned by `airport_required_locs`.
+                                Note that if this exceeds `MAXPOPSIZE` then each pop will be split into multiple
+                                smaller pops.
+                                Example: [200]
+
+    air_pop_size_remain :       list of ints, size of airports' pops assigned automatically by the code.
+                                Note that if this exceeds `MAXPOPSIZE` then each pop will be split into multiple
+                                smaller pops.
+                                Example: [150]
+
+    universities :              list of strings, 2-4 letter identifier for each university considered.
+                                All subsequent university-related parameters must correspond exactly to
+                                this ordering.
+                                Example: ["UR", "RIT", "SJF", "NU", "RWU"],
+
+    univ_loc :                  list of list of floats, coordinates for each university's demand bubble.
+                                Example: [[-77.62668, 43.12989], [-77.67629, 43.08389], [-77.51239, 43.11575],
+                                          [-77.51873, 43.10218], [-77.79857, 43.12568]]
+
+    univ_merge_within :         list of ints, distance in meters to merge any nearby demand points into the new
+                                university demand point.
+                                Example: [0, 350, 300, 0, 0]
+
+    students :                  list of ints, number of students that attend each campus.
+                                Example: [11946, 17166, 4000, 2500, 1500]
+
+    perc_oncampus :             list of floats, percentage of students that live in on-campus housing for each
+                                university.
+                                Example: [0.45, 0.4, 0.33, 0.5, 0.6]
+
+    univ_pop_size :             list of ints, size of each pop created for each university.
+                                Example: [75, 75, 75, 75, 75]
+
+    univ_perc_travel :          list of list of floats, fraction of students that live [on campus, off campus]
+                                that travel on an average day.
                                 Default: [0.3, 0.5]
 
-    entertainment : list of strings, short identifiers for each entertainment location
-    ent_loc : list of list of floats, coordinates in [lon, lat] for each entertainment location
-    ent_req_residences : list of list of list of floats, like `airport_required_locs` but for
-                                                         entertainment locations
-    ent_size : list of ints, number of daily visitors to each entertainment location
-    ent_pop_size : list of ints, size of each pop created for each entertainment location
+    entertainment :             list of strings, short identifiers for each entertainment location
+
+    ent_loc :                   list of list of floats, coordinates in [lon, lat] for each entertainment
+                                location
+
+    ent_req_residences :        list of list of list of floats, like `airport_required_locs` but for
+                                entertainment locations
+
+    ent_size :                  list of ints, number of daily visitors to each entertainment location
+
+    ent_pop_size :              list of ints, size of each pop created for each entertainment location
 ```
 
 Once you set that up, run:
@@ -240,118 +264,142 @@ From here, it's time to set up our demand generator configuration. Create a file
 In this file, include the following parameters:
 
 ```json
-    city : string, the city you're modeling.
-           Example: "Rochester"
-    airport : list of strings, IATA codes for the local airport
-                               Note: The first listed airport is used here to uniquely identify a city.
-              Example: ["ROC"]
-    states : string or list of strings, two-letter code for the state(s) your map covers.
-            Example: "ny"
-            Example: ["md", "dc", "va"]
-    year : int, the year you want to use for the LODES data.  At the time of writing, it must be within 2002-2023.
-           Example: 2022
-    bbox : list of ints, the [min_lon, min_lat, max_lon, max_lat] boundary for the city.
-           Example: [-77.8216, 43.0089, -77.399, 43.3117],
-    cbd_bbox : list of ints, exactly like `bbox` except for the Central Business District.
-                             Can be used to reduce clustering for the downtown area.
-                             To disable, set this to null.
-               Example: null
+    city :                      string, the city you're modeling.
+                                Example: "Rochester"
 
-    HUMAN_READABLE : (optional) bool, determines whether to make the output demand_data.json file have indentation
-                                      structure for readability (true) or not to minimize file size (false).
-                      Default: false
-    MAX_WORKERS : (optional) int, sets the number of workers to use for parallel processing.
-                   Default: None (total number of CPU threads)
-    MAXPOPSIZE : int, maximum size any pop can be.
-                      Pops larger than this value are split into multiple pops to follow this setting.
-                 Example: 200
-    CALCULATE_ROUTES : bool, determines whether to calculate commuting routes.
-                             Recommended to set this to false when initially testing out boundaries and clustering.
-                             NOTE: It can take a long time to calculate routes!  Small cities are 15-30 minutes
-                                   on a 16 core machine, which means ~1-2 hours on a 4 core machine!
-                       Example: true
-    SMALL_THRESHOLD : int, maximum pop size considered for agglomerative clustering.
-                           Pops smaller than this size will be merged with other nearby pops that work at the
-                           same location.
-                      Example: 100
-    DISTANCE_THRESHOLD_NONCBD : float, distance threshold in degrees to consider when clustering.
-                                       This is applied outside the CBD, or if the CBD is not used, then applied
-                                       everywhere.
-                                       Note that you will get demand points separated by less than this value,
-                                       so do not use this value as a "minimum separation" parameter.
+    airport :                   list of strings, IATA codes for the local airport.
+                                Note: The first listed airport is used here to uniquely identify a city.
+                                Example: ["ROC"]
+
+    states :                    string or list of strings, two-letter code for the state(s) your map covers.
+                                Example: "ny"
+                                Example: ["md", "dc", "va"]
+
+    year :                      int, the year you want to use for the LODES data.  At the time of writing, it must
+                                be within 2002-2023.
+                                Example: 2022
+
+    bbox :                      list of ints, the [min_lon, min_lat, max_lon, max_lat] boundary for the city.
+                                Example: [-77.8216, 43.0089, -77.399, 43.3117],
+
+    cbd_bbox :                  list of ints, exactly like `bbox` except for the Central Business District. Can be used
+                                to reduce clustering for the downtown area. To disable, set this to null.
+                                Example: null
+
+    HUMAN_READABLE :            bool, determines whether to make the output demand_data.json file have indentation
+                                structure for readability (true) or not to minimize file size (false). (optional)
+                                Default: false
+
+    MAX_WORKERS :               int, sets the number of workers to use for parallel processing. (optional)
+                                Default: None (total number of CPU threads)
+
+    MAXPOPSIZE :                int, maximum size any pop can be. Pops larger than this value are split into multiple
+                                pops to follow this setting.
+                                Example: 200
+
+    CALCULATE_ROUTES :          bool, determines whether to calculate commuting routes. Recommended to set this to
+                                false when initially testing out boundaries and clustering.
+                                NOTE: It can take a long time to calculate routes! Small cities are 15-30 minutes
+                                on a 16 core machine, which means ~1-2 hours on a 4 core machine!
+                                Example: true
+
+    SMALL_THRESHOLD :           int, maximum pop size considered for agglomerative clustering. Pops smaller than this
+                                size will be merged with other nearby pops that work at the same location.
+                                Example: 100
+
+    DISTANCE_THRESHOLD_NONCBD : float, distance threshold in degrees to consider when clustering. This is applied
+                                outside the CBD, or if the CBD is not used, then applied everywhere. Note that you
+                                will get demand points separated by less than this value, so do not use this value
+                                as a "minimum separation" parameter.
                                 Example: 0.1
-    DISTANCE_THRESHOLD_CBD : float, like `DISTANCE_THRESHOLD_NONCBD` but applied within the CBD defined by
-                                    `cbd_bbox`.
-                             Example: 0.05
-    DEMAND_FACTOR: float, multiply all LODES pop sizes by this factor.
-                          This parameter is only offered to make cities with small number of commutes viable.
-                          In general it is recommended to use a value of 1.
-                          Example: 2
 
-    point_locs_to_move : list of list of floats, coordinates in [lon, lat] of demand points that you want to move
-                                                 for whatever reason (over water, overlapping, etc.).
-                                                 Must correspond exactly to the order used in `moved_point_locs`.
-                                                 To not use this, set it to []
-                         Example: [[-77.69260, 43.29925], [-77.69280, 43.28780], [-77.74163, 43.30533],
-                                   [-77.76616, 43.29830], [-77.75377, 43.29501], [-77.73190, 43.29221],
-                                   [-77.71047, 43.28571], [-77.53833, 43.22158]]
-    moved_point_locs : list of list of floats, coordinates in [lon, lat] where you want to move the
-                                               demand points to.
-                                               Must correspond exactly to the order used in `point_locs_to_move`.
-                       Example: [[-77.69253, 43.29669], [-77.69224, 43.28529], [-77.73431, 43.30351],
-                                 [-77.76969, 43.29365], [-77.75209, 43.29262], [-77.72819, 43.29165],
-                                 [-77.71078, 43.28141], [-77.54152, 43.22132]]
+    DISTANCE_THRESHOLD_CBD :    float, like `DISTANCE_THRESHOLD_NONCBD` but applied within the CBD defined by
+                               `cbd_bbox`.
+                                Example: 0.05
 
-    airport_daily_passengers : (optional) list of ints, number of daily passengers at the city's airports.
-                               Example: [7000]
-    airport_loc : list of list of floats, coordinates in [lon, lat] of the city's airports.
-                  Example: [[-77.67166, 43.12919]]
-    airport_required_locs : list of list of list of floats, coordinates in [lon, lat] where you want airports'
-                                                    travelers to reside.  One pop will be placed at the
-                                                    demand bubble closest to each specified coordinate.
-                                                    If you don't care to set this, then use [] and the code
-                                                    will decide automatically.
-                            Example: [[[-77.61298,  43.15729], [-77.60688,  43.15614], [-77.58936,  43.1547 ],
-                                       [-77.59342,  43.15564], [-77.6741 ,  43.21029], [-77.61647,  43.10564],
-                                       [-77.61391,  43.08771], [-77.55086,  43.11299], [-77.57981,  43.19774],
-                                       [-77.4567 ,  43.2146 ], [-77.44227,  43.21617], [-77.68496,  43.18599],
-                                       [-77.64286,  43.0601 ], [-77.65179,  43.05802], [-77.44922,  43.01093],
-                                       [-77.51514,  43.09333]]]
-    air_pop_size_req : list of ints, size of airports' pops assigned by `airport_required_locs`.
-                            Note that if this exceeds `MAXPOPSIZE` then each pop will be split into multiple
-                            smaller pops.
-                       Example: [200]
-    air_pop_size_remain : list of ints, size of airports' pops assigned automatically by the code.
-                              Note that if this exceeds `MAXPOPSIZE` then each pop will be split into multiple
-                              smaller pops.
-                          Example: [150]
+    DEMAND_FACTOR: float,       multiply all LODES pop sizes by this factor. This parameter is only offered to make
+                                cities with small number of commutes viable. In general it is recommended to use a
+                                value of 1.
+                                Example: 2
 
-    universities : list of strings, 2-4 letter identifier for each university considered.
-                                    All subsequent university-related parameters must correspond exactly to
-                                    this ordering.
-                   Example: ["UR", "RIT", "SJF", "NU", "RWU"],
-    univ_loc : list of list of floats, coordinates for each university's demand bubble.
-               Example: [[-77.62668, 43.12989], [-77.67629, 43.08389], [-77.51239, 43.11575],
-                         [-77.51873, 43.10218], [-77.79857, 43.12568]]
-    univ_merge_within : list of ints, distance in meters to merge any nearby demand points into the new university
-                                      demand point.
-                   Example: [0, 350, 300, 0, 0]
-    students : list of ints, number of students that attend each campus.
-               Example: [11946, 17166, 4000, 2500, 1500]
-    perc_oncampus : list of floats, percentage of students that live in on-campus housing for each university.
-                    Example: [0.45, 0.4, 0.33, 0.5, 0.6]
-    univ_pop_size : list of ints, size of each pop created for each university.
-                    Example: [75, 75, 75, 75, 75]
-    univ_perc_travel : list of list of floats, fraction of students that live [on campus, off campus] that travel
-                                               on an average day.
+    point_locs_to_move :        list of list of floats, coordinates in [lon, lat] of demand points that you want to
+                                move for whatever reason (over water, overlapping, etc.). Must correspond exactly to
+                                the order used in `moved_point_locs`. To not use this, set it to [].
+                                Example: [[-77.69260, 43.29925], [-77.69280, 43.28780], [-77.74163, 43.30533],
+                                          [-77.76616, 43.29830], [-77.75377, 43.29501], [-77.73190, 43.29221],
+                                          [-77.71047, 43.28571], [-77.53833, 43.22158]]
+
+    moved_point_locs :          list of list of floats, coordinates in [lon, lat] where you want to move the
+                                demand points to. Must correspond exactly to the order used in `point_locs_to_move`.
+                                Example: [[-77.69253, 43.29669], [-77.69224, 43.28529], [-77.73431, 43.30351],
+                                          [-77.76969, 43.29365], [-77.75209, 43.29262], [-77.72819, 43.29165],
+                                          [-77.71078, 43.28141], [-77.54152, 43.22132]]
+
+    airport_daily_passengers :  list of ints, number of daily passengers at the city's airports. (optional)
+                                Example: [7000]
+
+    airport_loc :               list of list of floats, coordinates in [lon, lat] of the city's airports.
+                                Example: [[-77.67166, 43.12919]]
+
+    airport_required_locs :     list of list of list of floats, coordinates in [lon, lat] where you want airports'
+                                travelers to reside. One pop will be placed at the demand bubble closest to each
+                                specified coordinate. If you don't care to set this, then use [] and the codewill
+                                decide automatically.
+                                Example: [[[-77.61298,  43.15729], [-77.60688,  43.15614], [-77.58936,  43.1547 ],
+                                           [-77.59342,  43.15564], [-77.6741 ,  43.21029], [-77.61647,  43.10564],
+                                           [-77.61391,  43.08771], [-77.55086,  43.11299], [-77.57981,  43.19774],
+                                           [-77.4567 ,  43.2146 ], [-77.44227,  43.21617], [-77.68496,  43.18599],
+                                           [-77.64286,  43.0601 ], [-77.65179,  43.05802], [-77.44922,  43.01093],
+                                           [-77.51514,  43.09333]]]
+
+    air_pop_size_req :          list of ints, size of airports' pops assigned by `airport_required_locs`.
+                                Note that if this exceeds `MAXPOPSIZE` then each pop will be split into multiple
+                                smaller pops.
+                                Example: [200]
+
+    air_pop_size_remain :       list of ints, size of airports' pops assigned automatically by the code.
+                                Note that if this exceeds `MAXPOPSIZE` then each pop will be split into multiple
+                                smaller pops.
+                                Example: [150]
+
+    universities :              list of strings, 2-4 letter identifier for each university considered.
+                                All subsequent university-related parameters must correspond exactly to
+                                this ordering.
+                                Example: ["UR", "RIT", "SJF", "NU", "RWU"],
+
+    univ_loc :                  list of list of floats, coordinates for each university's demand bubble.
+                                Example: [[-77.62668, 43.12989], [-77.67629, 43.08389], [-77.51239, 43.11575],
+                                          [-77.51873, 43.10218], [-77.79857, 43.12568]]
+
+    univ_merge_within :         list of ints, distance in meters to merge any nearby demand points into the new
+                                university demand point.
+                                Example: [0, 350, 300, 0, 0]
+
+    students :                  list of ints, number of students that attend each campus.
+                                Example: [11946, 17166, 4000, 2500, 1500]
+
+    perc_oncampus :             list of floats, percentage of students that live in on-campus housing for each
+                                university.
+                                Example: [0.45, 0.4, 0.33, 0.5, 0.6]
+
+    univ_pop_size :             list of ints, size of each pop created for each university.
+                                Example: [75, 75, 75, 75, 75]
+
+    univ_perc_travel :          list of list of floats, fraction of students that live [on campus, off campus]
+                                that travel on an average day.
                                 Default: [0.3, 0.5]
 
-    entertainment : list of strings, short identifiers for each entertainment location
-    ent_loc : list of list of floats, coordinates in [lon, lat] for each entertainment location
-    ent_req_residences : list of list of list of floats, like `airport_required_locs` but for
-                                                         entertainment locations
-    ent_size : list of ints, number of daily visitors to each entertainment location
-    ent_pop_size : list of ints, size of each pop created for each entertainment location
+    entertainment :             list of strings, short identifiers for each entertainment location
+
+    ent_loc :                   list of list of floats, coordinates in [lon, lat] for each entertainment
+                                location
+
+    ent_req_residences :        list of list of list of floats, like `airport_required_locs` but for
+                                entertainment locations
+
+    ent_size :                  list of ints, number of daily visitors to each entertainment location
+
+    ent_pop_size :              list of ints, size of each pop created for each entertainment location
 ```
 
 Once you set that up, run:
@@ -384,118 +432,142 @@ From here, it's time to set up our demand generator configuration. Create a file
 In this file, include the following parameters:
 
 ```json
-    city : string, the city you're modeling.
-           Example: "Rochester"
-    airport : list of strings, IATA codes for the local airport
-                               Note: The first listed airport is used here to uniquely identify a city.
-              Example: ["ROC"]
-    states : string or list of strings, two-letter code for the state(s) your map covers.
-            Example: "ny"
-            Example: ["md", "dc", "va"]
-    year : int, the year you want to use for the LODES data.  At the time of writing, it must be within 2002-2023.
-           Example: 2022
-    bbox : list of ints, the [min_lon, min_lat, max_lon, max_lat] boundary for the city.
-           Example: [-77.8216, 43.0089, -77.399, 43.3117],
-    cbd_bbox : list of ints, exactly like `bbox` except for the Central Business District.
-                             Can be used to reduce clustering for the downtown area.
-                             To disable, set this to null.
-               Example: null
+    city :                      string, the city you're modeling.
+                                Example: "Rochester"
 
-    HUMAN_READABLE : (optional) bool, determines whether to make the output demand_data.json file have indentation
-                                      structure for readability (true) or not to minimize file size (false).
-                      Default: false
-    MAX_WORKERS : (optional) int, sets the number of workers to use for parallel processing.
-                   Default: None (total number of CPU threads)
-    MAXPOPSIZE : int, maximum size any pop can be.
-                      Pops larger than this value are split into multiple pops to follow this setting.
-                 Example: 200
-    CALCULATE_ROUTES : bool, determines whether to calculate commuting routes.
-                             Recommended to set this to false when initially testing out boundaries and clustering.
-                             NOTE: It can take a long time to calculate routes!  Small cities are 15-30 minutes
-                                   on a 16 core machine, which means ~1-2 hours on a 4 core machine!
-                       Example: true
-    SMALL_THRESHOLD : int, maximum pop size considered for agglomerative clustering.
-                           Pops smaller than this size will be merged with other nearby pops that work at the
-                           same location.
-                      Example: 100
-    DISTANCE_THRESHOLD_NONCBD : float, distance threshold in degrees to consider when clustering.
-                                       This is applied outside the CBD, or if the CBD is not used, then applied
-                                       everywhere.
-                                       Note that you will get demand points separated by less than this value,
-                                       so do not use this value as a "minimum separation" parameter.
+    airport :                   list of strings, IATA codes for the local airport.
+                                Note: The first listed airport is used here to uniquely identify a city.
+                                Example: ["ROC"]
+
+    states :                    string or list of strings, two-letter code for the state(s) your map covers.
+                                Example: "ny"
+                                Example: ["md", "dc", "va"]
+
+    year :                      int, the year you want to use for the LODES data.  At the time of writing, it must
+                                be within 2002-2023.
+                                Example: 2022
+
+    bbox :                      list of ints, the [min_lon, min_lat, max_lon, max_lat] boundary for the city.
+                                Example: [-77.8216, 43.0089, -77.399, 43.3117],
+
+    cbd_bbox :                  list of ints, exactly like `bbox` except for the Central Business District. Can be used
+                                to reduce clustering for the downtown area. To disable, set this to null.
+                                Example: null
+
+    HUMAN_READABLE :            bool, determines whether to make the output demand_data.json file have indentation
+                                structure for readability (true) or not to minimize file size (false). (optional)
+                                Default: false
+
+    MAX_WORKERS :               int, sets the number of workers to use for parallel processing. (optional)
+                                Default: None (total number of CPU threads)
+
+    MAXPOPSIZE :                int, maximum size any pop can be. Pops larger than this value are split into multiple
+                                pops to follow this setting.
+                                Example: 200
+
+    CALCULATE_ROUTES :          bool, determines whether to calculate commuting routes. Recommended to set this to
+                                false when initially testing out boundaries and clustering.
+                                NOTE: It can take a long time to calculate routes! Small cities are 15-30 minutes
+                                on a 16 core machine, which means ~1-2 hours on a 4 core machine!
+                                Example: true
+
+    SMALL_THRESHOLD :           int, maximum pop size considered for agglomerative clustering. Pops smaller than this
+                                size will be merged with other nearby pops that work at the same location.
+                                Example: 100
+
+    DISTANCE_THRESHOLD_NONCBD : float, distance threshold in degrees to consider when clustering. This is applied
+                                outside the CBD, or if the CBD is not used, then applied everywhere. Note that you
+                                will get demand points separated by less than this value, so do not use this value
+                                as a "minimum separation" parameter.
                                 Example: 0.1
-    DISTANCE_THRESHOLD_CBD : float, like `DISTANCE_THRESHOLD_NONCBD` but applied within the CBD defined by
-                                    `cbd_bbox`.
-                             Example: 0.05
-    DEMAND_FACTOR: float, multiply all LODES pop sizes by this factor.
-                          This parameter is only offered to make cities with small number of commutes viable.
-                          In general it is recommended to use a value of 1.
-                          Example: 2
 
-    point_locs_to_move : list of list of floats, coordinates in [lon, lat] of demand points that you want to move
-                                                 for whatever reason (over water, overlapping, etc.).
-                                                 Must correspond exactly to the order used in `moved_point_locs`.
-                                                 To not use this, set it to []
-                         Example: [[-77.69260, 43.29925], [-77.69280, 43.28780], [-77.74163, 43.30533],
-                                   [-77.76616, 43.29830], [-77.75377, 43.29501], [-77.73190, 43.29221],
-                                   [-77.71047, 43.28571], [-77.53833, 43.22158]]
-    moved_point_locs : list of list of floats, coordinates in [lon, lat] where you want to move the
-                                               demand points to.
-                                               Must correspond exactly to the order used in `point_locs_to_move`.
-                       Example: [[-77.69253, 43.29669], [-77.69224, 43.28529], [-77.73431, 43.30351],
-                                 [-77.76969, 43.29365], [-77.75209, 43.29262], [-77.72819, 43.29165],
-                                 [-77.71078, 43.28141], [-77.54152, 43.22132]]
+    DISTANCE_THRESHOLD_CBD :    float, like `DISTANCE_THRESHOLD_NONCBD` but applied within the CBD defined by
+                               `cbd_bbox`.
+                                Example: 0.05
 
-    airport_daily_passengers : (optional) list of ints, number of daily passengers at the city's airports.
-                               Example: [7000]
-    airport_loc : list of list of floats, coordinates in [lon, lat] of the city's airports.
-                  Example: [[-77.67166, 43.12919]]
-    airport_required_locs : list of list of list of floats, coordinates in [lon, lat] where you want airports'
-                                                    travelers to reside.  One pop will be placed at the
-                                                    demand bubble closest to each specified coordinate.
-                                                    If you don't care to set this, then use [] and the code
-                                                    will decide automatically.
-                            Example: [[[-77.61298,  43.15729], [-77.60688,  43.15614], [-77.58936,  43.1547 ],
-                                       [-77.59342,  43.15564], [-77.6741 ,  43.21029], [-77.61647,  43.10564],
-                                       [-77.61391,  43.08771], [-77.55086,  43.11299], [-77.57981,  43.19774],
-                                       [-77.4567 ,  43.2146 ], [-77.44227,  43.21617], [-77.68496,  43.18599],
-                                       [-77.64286,  43.0601 ], [-77.65179,  43.05802], [-77.44922,  43.01093],
-                                       [-77.51514,  43.09333]]]
-    air_pop_size_req : list of ints, size of airports' pops assigned by `airport_required_locs`.
-                            Note that if this exceeds `MAXPOPSIZE` then each pop will be split into multiple
-                            smaller pops.
-                       Example: [200]
-    air_pop_size_remain : list of ints, size of airports' pops assigned automatically by the code.
-                              Note that if this exceeds `MAXPOPSIZE` then each pop will be split into multiple
-                              smaller pops.
-                          Example: [150]
+    DEMAND_FACTOR: float,       multiply all LODES pop sizes by this factor. This parameter is only offered to make
+                                cities with small number of commutes viable. In general it is recommended to use a
+                                value of 1.
+                                Example: 2
 
-    universities : list of strings, 2-4 letter identifier for each university considered.
-                                    All subsequent university-related parameters must correspond exactly to
-                                    this ordering.
-                   Example: ["UR", "RIT", "SJF", "NU", "RWU"],
-    univ_loc : list of list of floats, coordinates for each university's demand bubble.
-               Example: [[-77.62668, 43.12989], [-77.67629, 43.08389], [-77.51239, 43.11575],
-                         [-77.51873, 43.10218], [-77.79857, 43.12568]]
-    univ_merge_within : list of ints, distance in meters to merge any nearby demand points into the new university
-                                      demand point.
-                   Example: [0, 350, 300, 0, 0]
-    students : list of ints, number of students that attend each campus.
-               Example: [11946, 17166, 4000, 2500, 1500]
-    perc_oncampus : list of floats, percentage of students that live in on-campus housing for each university.
-                    Example: [0.45, 0.4, 0.33, 0.5, 0.6]
-    univ_pop_size : list of ints, size of each pop created for each university.
-                    Example: [75, 75, 75, 75, 75]
-    univ_perc_travel : list of list of floats, fraction of students that live [on campus, off campus] that travel
-                                               on an average day.
+    point_locs_to_move :        list of list of floats, coordinates in [lon, lat] of demand points that you want to
+                                move for whatever reason (over water, overlapping, etc.). Must correspond exactly to
+                                the order used in `moved_point_locs`. To not use this, set it to [].
+                                Example: [[-77.69260, 43.29925], [-77.69280, 43.28780], [-77.74163, 43.30533],
+                                          [-77.76616, 43.29830], [-77.75377, 43.29501], [-77.73190, 43.29221],
+                                          [-77.71047, 43.28571], [-77.53833, 43.22158]]
+
+    moved_point_locs :          list of list of floats, coordinates in [lon, lat] where you want to move the
+                                demand points to. Must correspond exactly to the order used in `point_locs_to_move`.
+                                Example: [[-77.69253, 43.29669], [-77.69224, 43.28529], [-77.73431, 43.30351],
+                                          [-77.76969, 43.29365], [-77.75209, 43.29262], [-77.72819, 43.29165],
+                                          [-77.71078, 43.28141], [-77.54152, 43.22132]]
+
+    airport_daily_passengers :  list of ints, number of daily passengers at the city's airports. (optional)
+                                Example: [7000]
+
+    airport_loc :               list of list of floats, coordinates in [lon, lat] of the city's airports.
+                                Example: [[-77.67166, 43.12919]]
+
+    airport_required_locs :     list of list of list of floats, coordinates in [lon, lat] where you want airports'
+                                travelers to reside. One pop will be placed at the demand bubble closest to each
+                                specified coordinate. If you don't care to set this, then use [] and the codewill
+                                decide automatically.
+                                Example: [[[-77.61298,  43.15729], [-77.60688,  43.15614], [-77.58936,  43.1547 ],
+                                           [-77.59342,  43.15564], [-77.6741 ,  43.21029], [-77.61647,  43.10564],
+                                           [-77.61391,  43.08771], [-77.55086,  43.11299], [-77.57981,  43.19774],
+                                           [-77.4567 ,  43.2146 ], [-77.44227,  43.21617], [-77.68496,  43.18599],
+                                           [-77.64286,  43.0601 ], [-77.65179,  43.05802], [-77.44922,  43.01093],
+                                           [-77.51514,  43.09333]]]
+
+    air_pop_size_req :          list of ints, size of airports' pops assigned by `airport_required_locs`.
+                                Note that if this exceeds `MAXPOPSIZE` then each pop will be split into multiple
+                                smaller pops.
+                                Example: [200]
+
+    air_pop_size_remain :       list of ints, size of airports' pops assigned automatically by the code.
+                                Note that if this exceeds `MAXPOPSIZE` then each pop will be split into multiple
+                                smaller pops.
+                                Example: [150]
+
+    universities :              list of strings, 2-4 letter identifier for each university considered.
+                                All subsequent university-related parameters must correspond exactly to
+                                this ordering.
+                                Example: ["UR", "RIT", "SJF", "NU", "RWU"],
+
+    univ_loc :                  list of list of floats, coordinates for each university's demand bubble.
+                                Example: [[-77.62668, 43.12989], [-77.67629, 43.08389], [-77.51239, 43.11575],
+                                          [-77.51873, 43.10218], [-77.79857, 43.12568]]
+
+    univ_merge_within :         list of ints, distance in meters to merge any nearby demand points into the new
+                                university demand point.
+                                Example: [0, 350, 300, 0, 0]
+
+    students :                  list of ints, number of students that attend each campus.
+                                Example: [11946, 17166, 4000, 2500, 1500]
+
+    perc_oncampus :             list of floats, percentage of students that live in on-campus housing for each
+                                university.
+                                Example: [0.45, 0.4, 0.33, 0.5, 0.6]
+
+    univ_pop_size :             list of ints, size of each pop created for each university.
+                                Example: [75, 75, 75, 75, 75]
+
+    univ_perc_travel :          list of list of floats, fraction of students that live [on campus, off campus]
+                                that travel on an average day.
                                 Default: [0.3, 0.5]
 
-    entertainment : list of strings, short identifiers for each entertainment location
-    ent_loc : list of list of floats, coordinates in [lon, lat] for each entertainment location
-    ent_req_residences : list of list of list of floats, like `airport_required_locs` but for
-                                                         entertainment locations
-    ent_size : list of ints, number of daily visitors to each entertainment location
-    ent_pop_size : list of ints, size of each pop created for each entertainment location
+    entertainment :             list of strings, short identifiers for each entertainment location
+
+    ent_loc :                   list of list of floats, coordinates in [lon, lat] for each entertainment
+                                location
+
+    ent_req_residences :        list of list of list of floats, like `airport_required_locs` but for
+                                entertainment locations
+
+    ent_size :                  list of ints, number of daily visitors to each entertainment location
+
+    ent_pop_size :              list of ints, size of each pop created for each entertainment location
 ```
 
 Once you set that up, run:
