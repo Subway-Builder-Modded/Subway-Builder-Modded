@@ -3,18 +3,14 @@
 import * as React from "react"
 import NextLink from "next/link"
 import { usePathname } from "next/navigation"
-import {
-  Archive,
-  ChevronDown,
-  PanelLeftCloseIcon,
-  Tag,
-} from "lucide-react"
+import { Archive, ChevronDown, PanelLeftCloseIcon, Tag } from "lucide-react"
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
-  SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { cn } from "@/lib/utils"
 import { useFooterOffset } from "@/hooks/use-footer-offset"
@@ -35,6 +31,21 @@ type AppWikiSidebarProps = {
 
 type OpenDropdown = "instance" | "version" | null
 
+const SIDEBAR_HOVER_TEXT_CLASS: Record<WikiInstance["id"], string> = {
+  railyard: "hover:text-emerald-400",
+  "template-mod": "hover:text-violet-400",
+  "creating-custom-maps": "hover:text-blue-400",
+  contributing: "hover:text-amber-400",
+  legacy: "hover:text-rose-400",
+}
+
+function toBaseFromHoverClassName(className: string) {
+  return className
+    .split(" ")
+    .map((token) => (token.startsWith("hover:") ? token.slice(6) : token))
+    .join(" ")
+}
+
 function useOnClickOutside(
   ref: React.RefObject<HTMLElement | null>,
   handler: () => void
@@ -49,20 +60,6 @@ function useOnClickOutside(
     document.addEventListener("mousedown", handlePointerDown)
     return () => document.removeEventListener("mousedown", handlePointerDown)
   }, [ref, handler])
-}
-
-function SidebarRailTrigger() {
-  return (
-    <SidebarTrigger
-      className={cn(
-        "absolute top-6 -right-10 z-[-1] flex h-14 w-10 items-center justify-center rounded-r-xl border border-l-0 border-border bg-card/95 text-muted-foreground shadow-md backdrop-blur transition-colors duration-200 hover:bg-card hover:text-foreground"
-      )}
-    >
-      <PanelLeftCloseIcon
-        className="size-4 transition-transform duration-200 group-data-[state=collapsed]:rotate-180"
-      />
-    </SidebarTrigger>
-  )
 }
 
 function InstanceIcon({ instance }: { instance: WikiInstance }) {
@@ -190,6 +187,15 @@ function DropdownPanel({
   )
 }
 
+function getInstanceRowClassName(instance: WikiInstance, isActive: boolean) {
+  return cn(
+    "flex items-center gap-3 px-3 py-2 transition-all duration-150",
+    isActive
+      ? cn(instance.accentSurfaceClassName, toBaseFromHoverClassName(instance.accentSurfaceHoverClassName))
+      : instance.accentSurfaceHoverClassName
+  )
+}
+
 function InstanceSwitcher({
   activeInstance,
   open,
@@ -226,12 +232,7 @@ function InstanceSwitcher({
             <NextLink
               key={instance.id}
               href={buildBaseHomeHref(instance)}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2 transition-all duration-150",
-                isActive
-                  ? cn(instance.accentSurfaceClassName)
-                  : instance.accentSurfaceHoverClassName
-              )}
+              className={getInstanceRowClassName(instance, isActive)}
             >
               <InstanceIcon instance={instance} />
               <div className="min-w-0 flex-1 pr-1">
@@ -248,14 +249,23 @@ function InstanceSwitcher({
 }
 
 function getVersionHoverClassName(instance: WikiInstance, version: WikiVersion) {
-  const latest = isLatestVersion(instance, version.value)
-  if (latest) {
+  if (isLatestVersion(instance, version.value)) {
     return instance.accentSurfaceHoverClassName
   }
-  // Non-latest: use a lighter version of the deprecated surface color in dark mode
+
+  return cn("hover:bg-zinc-500/12", "dark:hover:bg-zinc-400/18")
+}
+
+function getVersionRowClassName(
+  instance: WikiInstance,
+  version: WikiVersion,
+  isActive: boolean
+) {
+  const hoverClassName = getVersionHoverClassName(instance, version)
+
   return cn(
-    "hover:bg-zinc-500/12",
-    "dark:hover:bg-zinc-400/18"
+    "flex items-center gap-3 px-3 py-2 transition-all duration-150",
+    isActive ? toBaseFromHoverClassName(hoverClassName) : hoverClassName
   )
 }
 
@@ -306,16 +316,7 @@ function VersionSwitcher({
             <NextLink
               key={version.value}
               href={buildVersionedDocHref(activeInstance, version.value, pathname)}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2 transition-all duration-150",
-                isActive
-                  ? cn(
-                      latest
-                        ? activeInstance.accentSurfaceClassName.replace("/14", "/10")
-                        : "bg-zinc-500/12 dark:bg-zinc-400/14"
-                    )
-                  : getVersionHoverClassName(activeInstance, version)
-              )}
+              className={getVersionRowClassName(activeInstance, version, isActive)}
             >
               <VersionIcon instance={activeInstance} version={version} />
               <div className="min-w-0 flex-1 pr-1">
@@ -379,11 +380,22 @@ function findActiveEntry(
           const deeper = findActiveEntry(entry.items, pathname, openKeys)
           if (deeper) return deeper
         }
-        if (selfActive || descendantActive) return entry
+        return entry
       }
     }
   }
   return null
+}
+
+function SidebarActiveIndicator({ active }: { active: boolean }) {
+  return (
+    <span
+      className={cn(
+        "absolute top-1.5 right-0 bottom-1.5 w-[2px] rounded-full bg-primary transition-all duration-150",
+        active ? "opacity-100" : "opacity-0"
+      )}
+    />
+  )
 }
 
 function SidebarNavEntry({
@@ -393,6 +405,8 @@ function SidebarNavEntry({
   setOpenKeys,
   depth = 0,
   activeIndicatorKey,
+  activeTextClassName,
+  hoverTextClassName,
 }: {
   entry: WikiSidebarEntry
   pathname: string
@@ -400,26 +414,25 @@ function SidebarNavEntry({
   setOpenKeys: React.Dispatch<React.SetStateAction<Set<string>>>
   depth?: number
   activeIndicatorKey: string | null
+  activeTextClassName: string
+  hoverTextClassName: string
 }) {
   if (entry.kind === "page") {
     const showIndicator = activeIndicatorKey === entry.key
 
     return (
       <li className="relative">
+        <SidebarActiveIndicator active={showIndicator} />
         <NextLink
           href={entry.href}
           className={cn(
-            "relative block rounded-md px-3 py-1.5 text-[15px] transition-colors",
+            "relative block rounded-md px-3 py-1.5 pr-5 text-[15px] transition-colors",
             depth > 0 && "ml-4",
-            showIndicator ? "text-primary" : "text-muted-foreground hover:text-foreground"
+            showIndicator
+              ? cn("font-medium", activeTextClassName)
+              : cn("text-white", hoverTextClassName)
           )}
         >
-          <span
-            className={cn(
-              "absolute left-0 top-1.5 bottom-1.5 w-[2px] rounded-full bg-primary transition-all duration-300",
-              showIndicator ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
-            )}
-          />
           <span className="block truncate">{entry.title}</span>
         </NextLink>
       </li>
@@ -461,33 +474,22 @@ function SidebarNavEntry({
   }
 
   const labelClassName = cn(
-    "min-w-0 flex-1 rounded-md px-3 py-1.5 text-left text-[15px] transition-colors",
-    showIndicator ? "text-primary" : "text-muted-foreground hover:text-foreground"
+    "min-w-0 flex-1 rounded-md px-3 py-1.5 pr-5 text-left text-[15px] transition-colors",
+    showIndicator
+      ? cn("font-medium", activeTextClassName)
+      : cn("text-white", hoverTextClassName)
   )
 
   return (
     <li className="relative">
+      <SidebarActiveIndicator active={showIndicator} />
       <div className={cn("group relative flex items-center", depth > 0 && "ml-4")}>
-        <span
-          className={cn(
-            "absolute left-0 top-1.5 bottom-1.5 w-[2px] rounded-full bg-primary transition-all duration-300",
-            showIndicator ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
-          )}
-        />
         {entry.href ? (
-          <NextLink
-            href={entry.href}
-            onClick={onMainClick}
-            className={labelClassName}
-          >
+          <NextLink href={entry.href} onClick={onMainClick} className={labelClassName}>
             <span className="truncate">{entry.title}</span>
           </NextLink>
         ) : (
-          <button
-            type="button"
-            onClick={onMainClick}
-            className={labelClassName}
-          >
+          <button type="button" onClick={onMainClick} className={labelClassName}>
             <span className="truncate">{entry.title}</span>
           </button>
         )}
@@ -496,7 +498,7 @@ function SidebarNavEntry({
           type="button"
           aria-label={isOpen ? `Collapse ${entry.title}` : `Expand ${entry.title}`}
           onClick={toggle}
-          className="mr-1 flex size-7 items-center justify-center rounded-full text-muted-foreground transition-all duration-150 hover:bg-muted hover:text-foreground group-hover:bg-muted group-hover:text-foreground"
+          className="mr-1 flex size-7 items-center justify-center rounded-full text-white/70 transition-all duration-150 hover:bg-muted hover:text-white group-hover:bg-muted group-hover:text-white"
         >
           <ChevronDown
             className={cn("size-4 transition-transform duration-200", isOpen && "rotate-180")}
@@ -521,6 +523,8 @@ function SidebarNavEntry({
                 setOpenKeys={setOpenKeys}
                 depth={depth + 1}
                 activeIndicatorKey={activeIndicatorKey}
+                activeTextClassName={activeTextClassName}
+                hoverTextClassName={hoverTextClassName}
               />
             ))}
           </ul>
@@ -532,6 +536,8 @@ function SidebarNavEntry({
 
 export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
   const pathname = usePathname()
+  const { isMobile, state, toggleSidebar } = useSidebar()
+
   const activeInstance = React.useMemo(
     () => getActiveInstanceFromPathname(pathname),
     [pathname]
@@ -574,6 +580,8 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
   }, [tree?.entries, pathname, openKeys])
 
   const footerOffset = useFooterOffset()
+  const isCollapsed = state === "collapsed"
+  const hoverTextClassName = SIDEBAR_HOVER_TEXT_CLASS[activeInstance.id]
 
   return (
     <>
@@ -581,7 +589,6 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
         collapsible="offcanvas"
         variant="sidebar"
         className="overflow-visible border-r border-border bg-sidebar"
-        trigger={<SidebarRailTrigger />}
         style={{ "--footer-offset": `${footerOffset}px` } as React.CSSProperties}
       >
         <SidebarHeader className="gap-3 border-b border-border bg-sidebar px-6 pt-3 pb-3">
@@ -615,12 +622,38 @@ export function AppWikiSidebar({ tree }: AppWikiSidebarProps) {
                   openKeys={openKeys}
                   setOpenKeys={setOpenKeys}
                   activeIndicatorKey={activeIndicatorKey}
+                  activeTextClassName={activeInstance.accentClassName}
+                  hoverTextClassName={hoverTextClassName}
                 />
               ))}
             </ul>
           </nav>
         </SidebarContent>
+
+        <SidebarFooter className="border-t border-border px-3 py-2">
+          <button
+            type="button"
+            aria-label="Collapse sidebar"
+            onClick={toggleSidebar}
+            className="ml-auto hidden h-9 w-9 items-center justify-center rounded-lg border border-border bg-card/90 text-muted-foreground shadow-sm transition-colors hover:bg-card hover:text-foreground md:flex"
+          >
+            <PanelLeftCloseIcon className="size-4" />
+          </button>
+        </SidebarFooter>
       </Sidebar>
+
+      {!isMobile && isCollapsed ? (
+        <button
+          type="button"
+          aria-label="Expand sidebar"
+          onClick={toggleSidebar}
+          className="fixed left-4 z-30 hidden h-10 w-10 items-center justify-center rounded-lg border border-border bg-card/95 text-muted-foreground shadow-md backdrop-blur transition-colors hover:bg-card hover:text-foreground md:flex"
+          style={{ bottom: `calc(${footerOffset}px + 1rem)` }}
+        >
+          <PanelLeftCloseIcon className="size-4 rotate-180" />
+        </button>
+      ) : null}
     </>
   )
 }
+

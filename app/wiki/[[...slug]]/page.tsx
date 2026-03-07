@@ -30,10 +30,26 @@ export const dynamicParams = false
 export async function generateStaticParams() {
   const slugs = await getAllWikiDocSlugs()
 
-  return [
-    { slug: [] }, // generates /wiki
-    ...slugs.map((slug) => ({ slug })),
-  ]
+  const baseRouteSlugs = WIKI_INSTANCES.flatMap((instance) => {
+    if (!instance.versioned) return [[instance.id]]
+
+    const versionRoots = (instance.versions ?? []).map((version) => [
+      instance.id,
+      version.value,
+    ])
+
+    return [[instance.id], ...versionRoots]
+  })
+
+  const allParamKeys = new Set<string>([
+    "",
+    ...baseRouteSlugs.map((parts) => parts.join("/")),
+    ...slugs.map((parts) => parts.join("/")),
+  ])
+
+  return Array.from(allParamKeys).map((key) =>
+    key === "" ? { slug: [] } : { slug: key.split("/") }
+  )
 }
 
 export async function generateMetadata({
@@ -130,7 +146,7 @@ export default async function WikiPage({
   })
 
   return (
-    <div className="flex gap-10">
+    <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_19rem] xl:gap-14 2xl:gap-20">
       <article className="min-w-0 max-w-3xl flex-1">
         <Breadcrumb className="mb-5">
           <BreadcrumbList>
@@ -170,3 +186,4 @@ export default async function WikiPage({
     </div>
   )
 }
+
