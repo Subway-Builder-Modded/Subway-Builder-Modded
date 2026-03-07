@@ -36,7 +36,7 @@ export default function AppFooter() {
             </p>
           </div>
 
-          <div className="grid gap-10 sm:grid-cols-2 md:justify-self-end md:gap-x-[clamp(2rem,5vw,8rem)]">
+          <div className="grid gap-10 sm:grid-cols-2 md:justify-self-end md:mr-8 md:gap-x-[clamp(2rem,5vw,8rem)]">
             <div>
               <div className="mb-4 flex items-center gap-2">
                 <MapPin className="size-5 stroke-[2.25] text-foreground md:size-6" />
@@ -108,11 +108,11 @@ export default function AppFooter() {
         <div className="my-8 border-t" />
 
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground md:pl-8">
             © Subway Builder Modded {new Date().getFullYear()}. Not affiliated with Subway Builder or Redistricter, LLC. All content is community-created and shared under appropriate licenses.
           </p>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 md:mr-12">
             <Link
                 href="https://discord.gg/jrNQpbytUQ"
                 aria-label="Discord"
