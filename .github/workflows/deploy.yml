@@ -2,8 +2,7 @@ name: Deploy Subway Builder Site
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   deploy:
@@ -13,17 +12,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: latest
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run build
+      - name: Build
+        run: pnpm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
