@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useMemo, useRef, useState, useLayoutEffect, useCallback } from "react"
 import { motion, useScroll, useTransform } from "motion/react"
+import { TrainTrack } from "lucide-react"
 
 import { Card, CardTitle } from "@/components/ui/card"
 import { LineBullet } from "@/components/ui/line-bullet"
@@ -27,32 +28,32 @@ const HOMEPAGE_ITEMS: HomeItem[] = [
     href: "/railyard",
   },
   {
-    id: "install",
-    letter: "I",
-    title: "Installing Maps",
-    description: "Step-by-step guide to installing custom maps using Kronifer's Map Patcher.",
-    href: "/wiki/maps/map-installation-guide",
+    id: "template-mod-docs",
+    letter: "T",
+    title: "Template Mod Documentation",
+    description: "View the docs for the Subway Builder Modded Template Mod.",
+    href: "/wiki/template-mod/latest/home",
   },
   {
-    id: "create",
-    letter: "C",
-    title: "Making Custom Maps",
+    id: "making-custom-maps",
+    letter: "M",
+    title: "Creating Custom Maps",
     description: "The complete guide to creating, packaging, and distributing custom Subway Builder maps.",
-    href: "/modding-docs/creating-maps/making-custom-maps",
+    href: "/modding-docs/creating-custom-maps/home",
   },
   {
     id: "updates",
     letter: "U",
     title: "Updates & Changelogs",
-    description: "Stay up to date with new releases from the Subway Builder Modded Team.",
+    description: "Stay up to date with the latest releases from Subway Builder Modded.",
     href: "/updates",
   },
   {
-    id: "modding",
-    letter: "D",
-    title: "Modding Documentation",
-    description: "Build your own mods using our Mod Template.",
-    href: "/modding-docs/template-mod/getting-started",
+    id: "credits",
+    letter: "C",
+    title: "Credits",
+    description: "Subway Builder Modded is a community-driven project made possible by dedicated contributors.",
+    href: "/credits",
   },
 ]
 
@@ -269,17 +270,30 @@ function HomepageCard({
   registerHeading: (node: HTMLDivElement | null) => void
   registerTitle: (node: HTMLDivElement | null) => void
 }) {
+  const isRailyard = item.id === "railyard"
+  const bulletColor = isRailyard ? "#00A97A" : NON_THEMED_LINE_BULLET.bulletColor
+  const bulletTextColor = isRailyard ? "#032D23" : NON_THEMED_LINE_BULLET.textColor
+
   return (
     <Link href={item.href} className="block h-full outline-none">
       <Card
         className={cn(
-          "group h-full overflow-hidden border border-border bg-card will-change-transform",
+          "group relative isolate h-full overflow-hidden border border-border bg-card will-change-transform",
           "transition-transform duration-300",
-          "hover:-translate-y-1 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-white/5",
+          !isRailyard && "hover:-translate-y-1 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-white/5",
           "focus-visible:ring-2 focus-visible:ring-ring/40",
+          isRailyard && [
+            "border-emerald-400/70 bg-gradient-to-b from-emerald-400/30 via-emerald-500/20 to-emerald-600/30",
+            "ring-1 ring-emerald-400/70 shadow-[0_0_14px_hsl(var(--primary)/0.3)]",
+            "hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-500/35 dark:hover:shadow-emerald-300/25",
+            "hover:ring-emerald-300/80",
+            "before:pointer-events-none before:absolute before:inset-x-5 before:top-1 before:h-10 before:rounded-full before:bg-gradient-to-b before:from-white/35 before:to-transparent before:blur-md",
+            "after:pointer-events-none after:absolute after:inset-[1px] after:rounded-[inherit] after:border after:border-emerald-200/25",
+            "focus-visible:ring-emerald-300/70",
+          ],
         )}
       >
-        <div className="flex h-full flex-col px-6 pb-2 pt-3">
+        <div className="relative z-10 flex h-full flex-col px-6 pb-2 pt-3">
           <div
             className="flex items-center"
             style={headingHeight > 0 ? { minHeight: `${headingHeight}px` } : undefined}
@@ -291,9 +305,11 @@ function HomepageCard({
                   style={titleHeight > 0 ? { height: `${titleHeight}px` } : undefined}
                 >
                   <LineBullet
-                    bullet={(item.letter || "").slice(0, 2).toUpperCase()}
-                    color={NON_THEMED_LINE_BULLET.bulletColor}
-                    textColor={NON_THEMED_LINE_BULLET.textColor}
+                    bullet={
+                      isRailyard ? <TrainTrack className="size-3.5" aria-hidden="true" /> : (item.letter || "").slice(0, 2).toUpperCase()
+                    }
+                    color={bulletColor}
+                    textColor={bulletTextColor}
                     shape="circle"
                     size="sm"
                   />
@@ -306,7 +322,10 @@ function HomepageCard({
                   >
                     <CardTitle
                       ref={registerTitle}
-                      className="pb-[2px] text-xl font-semibold leading-[1.18] sm:text-2xl"
+                      className={cn(
+                        "pb-[2px] text-xl font-semibold leading-[1.18] sm:text-2xl",
+                        isRailyard && "text-foreground",
+                      )}
                     >
                       {item.title}
                     </CardTitle>
@@ -314,7 +333,7 @@ function HomepageCard({
 
                   <div
                     className="mt-3 h-[2px] w-16 rounded-full opacity-70"
-                    style={{ backgroundColor: NON_THEMED_LINE_BULLET.bulletColor }}
+                    style={{ backgroundColor: bulletColor }}
                   />
                 </div>
               </div>
@@ -322,7 +341,7 @@ function HomepageCard({
           </div>
 
           <div className="mt-3 flex-1">
-            <p className="text-lg font-medium leading-relaxed text-muted-foreground">
+            <p className={cn("text-lg font-medium leading-relaxed", isRailyard ? "text-foreground" : "text-muted-foreground")}>
               <span className="line-clamp-3">{item.description}</span>
             </p>
           </div>
@@ -331,3 +350,6 @@ function HomepageCard({
     </Link>
   )
 }
+
+
+

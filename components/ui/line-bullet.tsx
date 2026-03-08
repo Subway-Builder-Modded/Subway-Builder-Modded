@@ -5,7 +5,7 @@ export type LineBulletShape = "circle" | "diamond" | "triangle"
 export type LineBulletSize = "sm" | "md" | "lg" | "xl"
 
 export interface LineBulletProps extends React.HTMLAttributes<HTMLDivElement> {
-  bullet: string
+  bullet: React.ReactNode
   color: string
   textColor: string
   hoverColor?: string
@@ -35,6 +35,10 @@ export function LineBullet({
 }: LineBulletProps) {
   const s = sizeMap[size]
   const resolvedHoverColor = hoverColor ?? color
+  const bulletLabel =
+    typeof bullet === "string" || typeof bullet === "number"
+      ? String(bullet)
+      : "symbol"
 
   return (
     <div
@@ -67,7 +71,7 @@ export function LineBullet({
           padding: shape === "triangle" ? "0" : "0 0.25rem",
           transform: shape === "diamond" ? "rotate(45deg) scale(0.707107)" : undefined,
         }}
-        aria-label={`Route ${bullet}`}
+        aria-label={`Route ${bulletLabel}`}
       >
         <span
           style={{
