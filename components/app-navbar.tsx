@@ -1,5 +1,6 @@
 "use client"
 import { usePathname } from "next/navigation"
+import { ThemeToggleMenu } from "@/components/theme-toggle-menu"
 import { Avatar } from "@/components/ui/avatar"
 import { Link } from "@/components/ui/link"
 import {
@@ -29,7 +30,7 @@ import {
   TrainTrack,
   Download,
   Map,
-  Unplug
+  Unplug,
 } from "lucide-react"
 
 const railyard = [
@@ -110,10 +111,7 @@ export default function AppNavbar(props: NavbarProps) {
                   <NavigationMenuContent className="min-w-56 !bg-background ring-1 ring-border rounded-xl shadow-lg">
                     <ul className="grid gap-y-1 p-1">
                       {railyard.map((item) => {
-                        const Icon =
-                          item.id === 1 ? Download :
-                          item.id === 2 ? Map :
-                          Unplug
+                        const Icon = item.id === 1 ? Download : item.id === 2 ? Map : Unplug
 
                         return (
                           <li key={item.id}>
@@ -176,6 +174,8 @@ export default function AppNavbar(props: NavbarProps) {
               }}
             />
           </Link>
+
+          <ThemeToggleMenu className={socialLinkClassName} />
         </NavbarSection>
       </Navbar>
 
@@ -214,6 +214,8 @@ export default function AppNavbar(props: NavbarProps) {
             }}
           />
         </a>
+
+        <ThemeToggleMenu className={socialLinkClassName} />
       </NavbarMobile>
     </NavbarProvider>
   )

@@ -272,7 +272,7 @@ function HomepageCard({
 }) {
   const isRailyard = item.id === "railyard"
   const bulletColor = isRailyard ? "#00A97A" : NON_THEMED_LINE_BULLET.bulletColor
-  const bulletTextColor = isRailyard ? "#032D23" : NON_THEMED_LINE_BULLET.textColor
+  const bulletTextColor = isRailyard ? "#FFFFFF" : NON_THEMED_LINE_BULLET.textColor
 
   return (
     <Link href={item.href} className="block h-full outline-none">
@@ -350,6 +350,4 @@ function HomepageCard({
     </Link>
   )
 }
-
-
 

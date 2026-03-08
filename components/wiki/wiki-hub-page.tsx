@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useTheme } from "next-themes"
+import type { CSSProperties } from "react"
 import { BookText } from "lucide-react"
 
 import { Card } from "@/components/ui/card"
@@ -24,9 +24,15 @@ function hexAlpha(hex: string, alpha: number) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
-function pickTextColor(hex: string) {
-  const { r, g, b } = hexToRgb(hex)
-  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.72 ? "#000000" : "#ffffff"
+function mixHex(a: string, b: string, t: number) {
+  const ca = hexToRgb(a)
+  const cb = hexToRgb(b)
+  const clampT = Math.max(0, Math.min(1, t))
+  const toHex = (v: number) => Math.round(v).toString(16).padStart(2, "0")
+  const r = ca.r + (cb.r - ca.r) * clampT
+  const g = ca.g + (cb.g - ca.g) * clampT
+  const b2 = ca.b + (cb.b - ca.b) * clampT
+  return `#${toHex(r)}${toHex(g)}${toHex(b2)}`
 }
 
 const INSTANCE_THEME_COLORS = {
@@ -64,33 +70,49 @@ const INSTANCE_THEME_COLORS = {
   }
 >
 
-/**
- * Dark mode:
- *   text = accent
- *   bg   = base
- *
- * Light mode:
- *   text = base
- *   bg   = accent
- *
- * mid stays static across themes
- */
-function getColors(instance: WikiInstance, isDark: boolean) {
+type CardThemeColors = {
+  cardBgLight: string
+  cardBgDark: string
+  titleTextLight: string
+  titleTextDark: string
+  bulletBgLight: string
+  bulletBgDark: string
+  borderColorLight: string
+  borderColorDark: string
+  imageBorderLight: string
+  imageBorderDark: string
+}
+
+function getColors(instance: WikiInstance): CardThemeColors {
   const theme = INSTANCE_THEME_COLORS[instance.id] ?? {
     accent: instance.primaryHex,
     base: instance.secondaryHex,
     mid: instance.primaryHex,
   }
 
-  const cardBg = isDark ? theme.base : theme.accent
-  const cardText = isDark ? theme.accent : theme.base
+  const cardBgLight = theme.accent
+  const cardBgDark = theme.base
+  const titleTextLight = theme.base
+  const titleTextDark = theme.accent
+  const bulletBgLight = mixHex(cardBgLight, titleTextLight, 0.30)
+  const bulletBgDark = mixHex(cardBgDark, titleTextDark, 0.30)
+  const imageBorderLight = bulletBgLight
+  const imageBorderDark = bulletBgDark
+  const borderColorLight = hexAlpha(titleTextLight, 0.3)
+  const borderColorDark = hexAlpha(titleTextDark, 0.3)
 
-  const bulletBg = theme.mid
-  const bulletText = isDark ? theme.base : theme.accent
-
-  const borderColor = hexAlpha(cardText, 0.3)
-
-  return { cardBg, cardText, bulletBg, bulletText, borderColor }
+  return {
+    cardBgLight,
+    cardBgDark,
+    titleTextLight,
+    titleTextDark,
+    bulletBgLight,
+    bulletBgDark,
+    borderColorLight,
+    borderColorDark,
+    imageBorderLight,
+    imageBorderDark,
+  }
 }
 
 function chunkRows<T>(arr: T[], size: number): T[][] {
@@ -123,18 +145,29 @@ function WikiCardImagePlaceholder({
   )
 }
 
-function WikiCardRow({ items, isDark }: { items: WikiInstance[]; isDark: boolean }) {
+function WikiCardRow({ items }: { items: WikiInstance[] }) {
   return (
     <div className="grid items-stretch justify-center gap-7 [grid-template-columns:repeat(auto-fit,minmax(280px,340px))]">
       {items.map((instance) => (
-        <WikiHubCard key={instance.id} instance={instance} isDark={isDark} />
+        <WikiHubCard key={instance.id} instance={instance} />
       ))}
     </div>
   )
 }
 
-function WikiHubCard({ instance, isDark }: { instance: WikiInstance; isDark: boolean }) {
-  const { cardBg, cardText, bulletBg, bulletText, borderColor } = getColors(instance, isDark)
+function WikiHubCard({ instance }: { instance: WikiInstance }) {
+  const {
+    cardBgLight,
+    cardBgDark,
+    titleTextLight,
+    titleTextDark,
+    bulletBgLight,
+    bulletBgDark,
+    borderColorLight,
+    borderColorDark,
+    imageBorderLight,
+    imageBorderDark,
+  } = getColors(instance)
 
   return (
     <Link href={buildBaseHomeHref(instance)} className="block h-full outline-none">
@@ -144,15 +177,29 @@ function WikiHubCard({ instance, isDark }: { instance: WikiInstance; isDark: boo
           "border ring-0 transition-transform duration-300",
           "hover:-translate-y-1 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-white/5",
           "focus-visible:ring-2 focus-visible:ring-ring/40",
+          "hub-theme-card",
         )}
-        style={{ backgroundColor: cardBg, borderColor }}
+        style={
+          {
+            ["--hub-card-bg-light" as string]: cardBgLight,
+            ["--hub-card-bg-dark" as string]: cardBgDark,
+            ["--hub-card-title-light" as string]: titleTextLight,
+            ["--hub-card-title-dark" as string]: titleTextDark,
+            ["--hub-card-bullet-light" as string]: bulletBgLight,
+            ["--hub-card-bullet-dark" as string]: bulletBgDark,
+            ["--hub-card-border-light" as string]: borderColorLight,
+            ["--hub-card-border-dark" as string]: borderColorDark,
+            ["--hub-card-image-border-light" as string]: imageBorderLight,
+            ["--hub-card-image-border-dark" as string]: imageBorderDark,
+          } as CSSProperties
+        }
       >
         <div className="flex h-full flex-col px-6 pb-5 pt-4">
           <div className="mb-4">
             <LineBullet
               bullet={instance.label}
-              color={bulletBg}
-              textColor={bulletText}
+              color="var(--hub-card-bullet)"
+              textColor="var(--foreground)"
               shape="circle"
               size="md"
             />
@@ -161,12 +208,12 @@ function WikiHubCard({ instance, isDark }: { instance: WikiInstance; isDark: boo
           <div className="mb-4">
             <WikiCardImagePlaceholder
               instance={instance}
-              borderColor={cardText}
-              iconColor={cardText}
+              borderColor="var(--hub-card-image-border)"
+              iconColor="var(--hub-card-title)"
             />
           </div>
 
-          <p className="text-center text-sm leading-relaxed opacity-80" style={{ color: cardText }}>
+          <p className="text-center text-sm leading-relaxed opacity-80" style={{ color: "var(--hub-card-title)" }}>
             {WIKI_DESCRIPTIONS[instance.id]}
           </p>
         </div>
@@ -189,8 +236,6 @@ const WIKI_DESCRIPTIONS: Record<string, string> = {
 }
 
 export function WikiHubPage() {
-  const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme !== "light"
   const rows = chunkRows(WIKI_INSTANCES, 3)
 
   return (
@@ -209,10 +254,12 @@ export function WikiHubPage() {
 
       <div className="space-y-7">
         {rows.map((row, idx) => (
-          <WikiCardRow key={idx} items={row} isDark={isDark} />
+          <WikiCardRow key={idx} items={row} />
         ))}
       </div>
     </section>
   )
 }
+
+
 

@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useTheme } from "next-themes"
+import type { CSSProperties } from "react"
 import { Megaphone } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { LineBullet } from "@/components/ui/line-bullet"
@@ -22,19 +22,54 @@ function hexAlpha(hex: string, alpha: number) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
-/**
- * Dark:  text = primaryHex (bright), bg = secondaryHex (deep)
- * Light: text = secondaryHex (deep), bg = primaryHex (bright)
- * mid stays constant – used for the title banner background
- */
-function getColors(project: UpdateProject, isDark: boolean) {
-  const cardBg    = isDark ? project.secondaryHex : project.primaryHex
-  const cardText  = isDark ? project.primaryHex   : project.secondaryHex
-  const bulletBg  = project.midHex
-  const bulletText = isDark ? project.secondaryHex : project.primaryHex
-  const borderColor = hexAlpha(cardText, 0.3)
+function mixHex(a: string, b: string, t: number) {
+  const ca = hexToRgb(a)
+  const cb = hexToRgb(b)
+  const clampT = Math.max(0, Math.min(1, t))
+  const toHex = (v: number) => Math.round(v).toString(16).padStart(2, "0")
+  const r = ca.r + (cb.r - ca.r) * clampT
+  const g = ca.g + (cb.g - ca.g) * clampT
+  const b2 = ca.b + (cb.b - ca.b) * clampT
+  return `#${toHex(r)}${toHex(g)}${toHex(b2)}`
+}
 
-  return { cardBg, cardText, bulletBg, bulletText, borderColor }
+type CardThemeColors = {
+  cardBgLight: string
+  cardBgDark: string
+  titleTextLight: string
+  titleTextDark: string
+  bulletBgLight: string
+  bulletBgDark: string
+  borderColorLight: string
+  borderColorDark: string
+  imageBorderLight: string
+  imageBorderDark: string
+}
+
+function getColors(project: UpdateProject): CardThemeColors {
+  const cardBgLight = project.primaryHex
+  const cardBgDark = project.secondaryHex
+  const titleTextLight = project.secondaryHex
+  const titleTextDark = project.primaryHex
+  const bulletBgLight = mixHex(cardBgLight, titleTextLight, 0.30)
+  const bulletBgDark = mixHex(cardBgDark, titleTextDark, 0.30)
+  const imageBorderLight = bulletBgLight
+  const imageBorderDark = bulletBgDark
+  const borderColorLight = hexAlpha(titleTextLight, 0.3)
+  const borderColorDark = hexAlpha(titleTextDark, 0.3)
+
+  return {
+    cardBgLight,
+    cardBgDark,
+    titleTextLight,
+    titleTextDark,
+    bulletBgLight,
+    bulletBgDark,
+    borderColorLight,
+    borderColorDark,
+    imageBorderLight,
+    imageBorderDark,
+  }
 }
 
 function UpdateCardImagePlaceholder({
@@ -63,12 +98,21 @@ function UpdateCardImagePlaceholder({
 
 function UpdateHubCard({
   project,
-  isDark,
 }: {
   project: UpdateProject
-  isDark: boolean
 }) {
-  const { cardBg, cardText, bulletBg, bulletText, borderColor } = getColors(project, isDark)
+  const {
+    cardBgLight,
+    cardBgDark,
+    titleTextLight,
+    titleTextDark,
+    bulletBgLight,
+    bulletBgDark,
+    borderColorLight,
+    borderColorDark,
+    imageBorderLight,
+    imageBorderDark,
+  } = getColors(project)
 
   return (
     <Link href={project.basePath} className="block h-full outline-none">
@@ -78,15 +122,29 @@ function UpdateHubCard({
           "border ring-0 transition-transform duration-300",
           "hover:-translate-y-1 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-white/5",
           "focus-visible:ring-2 focus-visible:ring-ring/40",
+          "hub-theme-card",
         )}
-        style={{ backgroundColor: cardBg, borderColor }}
+        style={
+          {
+            ["--hub-card-bg-light" as string]: cardBgLight,
+            ["--hub-card-bg-dark" as string]: cardBgDark,
+            ["--hub-card-title-light" as string]: titleTextLight,
+            ["--hub-card-title-dark" as string]: titleTextDark,
+            ["--hub-card-bullet-light" as string]: bulletBgLight,
+            ["--hub-card-bullet-dark" as string]: bulletBgDark,
+            ["--hub-card-border-light" as string]: borderColorLight,
+            ["--hub-card-border-dark" as string]: borderColorDark,
+            ["--hub-card-image-border-light" as string]: imageBorderLight,
+            ["--hub-card-image-border-dark" as string]: imageBorderDark,
+          } as CSSProperties
+        }
       >
         <div className="flex h-full flex-col px-6 pb-5 pt-4">
           <div className="mb-4">
             <LineBullet
               bullet={project.label}
-              color={bulletBg}
-              textColor={bulletText}
+              color="var(--hub-card-bullet)"
+              textColor="var(--foreground)"
               shape="circle"
               size="md"
             />
@@ -95,12 +153,12 @@ function UpdateHubCard({
           <div className="mb-4">
             <UpdateCardImagePlaceholder
               project={project}
-              borderColor={cardText}
-              iconColor={cardText}
+              borderColor="var(--hub-card-image-border)"
+              iconColor="var(--hub-card-title)"
             />
           </div>
 
-          <p className="text-center text-sm leading-relaxed opacity-80" style={{ color: cardText }}>
+          <p className="text-center text-sm leading-relaxed opacity-80" style={{ color: "var(--hub-card-title)" }}>
             {project.description}
           </p>
         </div>
@@ -110,9 +168,6 @@ function UpdateHubCard({
 }
 
 export function UpdatesHubPage() {
-  const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme !== "light"
-
   return (
     <section className="px-7 pb-8 pt-8 sm:pb-8 sm:pt-8">
       <div className="mb-12 text-center">
@@ -129,7 +184,7 @@ export function UpdatesHubPage() {
 
       <div className="grid items-stretch justify-center gap-7 [grid-template-columns:repeat(auto-fit,minmax(280px,340px))]">
         {UPDATE_PROJECTS.map((project) => (
-          <UpdateHubCard key={project.id} project={project} isDark={isDark} />
+          <UpdateHubCard key={project.id} project={project} />
         ))}
       </div>
     </section>

@@ -16,7 +16,7 @@ export default function NotFound() {
         <TrainFront
           aria-hidden="true"
           strokeWidth={1.5}
-          className="h-auto w-[min(88vw,52rem)] text-zinc-800"
+          className="h-auto w-[min(88vw,52rem)] text-zinc-400"
         />
       </div>
 
@@ -55,3 +55,4 @@ export default function NotFound() {
     </main>
   )
 }
+

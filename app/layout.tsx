@@ -17,13 +17,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              '(function(){try{var d=document.documentElement;var stored=localStorage.getItem("theme");var theme=stored&&stored!=="system"?stored:(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");d.classList.remove("light","dark");d.classList.add(theme);d.style.colorScheme=theme;}catch(_){}})();',
+          }}
+        />
+      </head>
       <body className="antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <div className="flex min-h-screen flex-col pt-14">
             <AppNavbar />
             <main className="flex-1">{children}</main>

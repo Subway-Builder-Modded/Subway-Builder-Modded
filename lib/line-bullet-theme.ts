@@ -1,20 +1,20 @@
 const DEFAULT_BULLET_THEME = {
-  bulletColor: "#FFFFFF",
-  textColor: "#000000",
+  bulletColor: "#000000",
+  textColor: "#FFFFFF",
 } as const
 
 const THEMED_BULLET_COLORS: Record<string, { bulletColor: string; textColor: string }> = {
   railyard: {
     bulletColor: "#00A97A",
-    textColor: "#032D23",
+    textColor: "#FFFFFF",
   },
   "template-mod": {
     bulletColor: "#7D52E8",
-    textColor: "#311362",
+    textColor: "#FFFFFF",
   },
   "creating-custom-maps": {
     bulletColor: "#2E6FCC",
-    textColor: "#192754",
+    textColor: "#FFFFFF",
   },
   contributing: {
     bulletColor: "#C98600",
@@ -22,7 +22,7 @@ const THEMED_BULLET_COLORS: Record<string, { bulletColor: string; textColor: str
   },
   legacy: {
     bulletColor: "#C93A57",
-    textColor: "#4D091C",
+    textColor: "#FFFFFF",
   },
 } as const
 
@@ -32,3 +32,4 @@ export function getLineBulletTheme(themeId?: string | null) {
 }
 
 export const NON_THEMED_LINE_BULLET = DEFAULT_BULLET_THEME
+
