@@ -133,8 +133,8 @@ export default async function UpdatePage({
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-              "mb-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl px-6 py-3",
-              "font-mta text-2xl font-bold sm:text-3xl",
+              "mb-5 flex min-h-10 w-full items-center justify-center gap-2 rounded-2xl px-4 py-2",
+              "font-mta text-xl font-bold",
               "transition-transform duration-200 hover:scale-[1.02]",
             )}
             style={{ backgroundColor: project.midHex, color: project.secondaryHex }}
@@ -144,7 +144,7 @@ export default async function UpdatePage({
           </a>
         ) : (
           <div
-            className="mb-5 flex min-h-12 w-full items-center justify-center rounded-2xl px-6 py-3 font-mta text-2xl font-bold sm:text-3xl"
+            className="mb-5 flex min-h-10 w-full items-center justify-center rounded-2xl px-4 py-2 font-mta text-xl font-bold"
             style={{ backgroundColor: project.midHex, color: project.secondaryHex }}
           >
             {title}
