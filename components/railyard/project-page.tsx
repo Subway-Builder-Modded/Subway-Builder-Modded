@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useMemo } from "react"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { ExternalLink, Download, Users, ChevronLeft, ChevronRight, X, ArrowDownToLine } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -64,8 +65,14 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
 
-  const browseLabel = type === "mods" ? "Mods" : "Maps"
-  const browseHref = `/railyard/${type}`
+  const searchParams = useSearchParams()
+  const from = searchParams.get("from")
+  const browseHref = useMemo(() => {
+    if (!from) return "/railyard/browse"
+    const decoded = decodeURIComponent(from)
+    return decoded.startsWith("/railyard/browse") ? decoded : "/railyard/browse"
+  }, [from])
+  const browseLabel = "Browse"
   const isMap = item ? isMapManifest(item) : false
   const mapItem = item as MapManifest | null
 

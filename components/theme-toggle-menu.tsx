@@ -131,22 +131,22 @@ export function ThemeToggleMenu({ className }: { className: string }) {
       root.classList.add("theme-switching-menu")
 
       if (typeof doc.startViewTransition === "function") {
+        setOpen(false)
         const transition = doc.startViewTransition(applyTheme)
         transition.finished.finally(endSwitch)
-        setOpen(true)
         return
       }
 
       root.classList.add("theme-transitioning")
+      setOpen(false)
       applyTheme()
       transitionTimeoutRef.current = window.setTimeout(endSwitch, 220)
-      setOpen(true)
     },
     [currentTheme, endSwitch, lockMenuColors, resolvedTheme, setTheme],
   )
 
   const handleOpenChange = React.useCallback((nextOpen: boolean) => {
-    if (!nextOpen && (isTriggerHoveredRef.current || isContentHoveredRef.current || isSwitchingThemeRef.current)) {
+    if (!nextOpen && (isTriggerHoveredRef.current || isContentHoveredRef.current)) {
       return
     }
     setOpen(nextOpen)

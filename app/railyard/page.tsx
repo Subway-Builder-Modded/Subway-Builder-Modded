@@ -4,8 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { motion, useScroll, useTransform } from "motion/react"
-import { ChevronDown, ArrowRight, Map as MapIcon, Package, CheckCircle } from "lucide-react"
-import type { Metadata } from "next"
+import { ChevronDown, ArrowRight, Map as MapIcon, Package, CheckCircle, TrainTrack } from "lucide-react"
 
 import { Card } from "@/components/ui/card"
 import { LineBullet } from "@/components/ui/line-bullet"
@@ -15,7 +14,6 @@ import { cn } from "@/lib/utils"
 
 // ─── Data ──────────────────────────────────────────────────────────────────
 
-const SUBWAY_BARS = ["#0039A6", "#FF6319", "#00933C", "#FCCC0A", "#752F82"]
 
 interface DownloadEntry {
   os: string
@@ -28,13 +26,13 @@ interface DownloadEntry {
 }
 
 const DOWNLOAD_TEMPLATE: DownloadEntry[] = [
-  { os: "Windows", arch: "x64",       label: "Windows Installer (x64)",   type: ".exe",      size: "—", link: "#", assetName: "windows-amd64-installer.exe" },
-  { os: "Windows", arch: "x64",       label: "Windows Portable (x64)",    type: ".zip",      size: "—", link: "#", assetName: "windows-amd64-portable.zip" },
-  { os: "Windows", arch: "arm64",     label: "Windows Installer (ARM64)", type: ".exe",      size: "—", link: "#", assetName: "windows-arm64-installer.exe" },
-  { os: "Windows", arch: "arm64",     label: "Windows Portable (ARM64)",  type: ".zip",      size: "—", link: "#", assetName: "windows-arm64-portable.zip" },
-  { os: "macOS",   arch: "universal", label: "macOS (Universal)",         type: ".dmg",      size: "—", link: "#", assetName: "macos-universal.dmg" },
-  { os: "macOS",   arch: "universal", label: "macOS Zip (Universal)",     type: ".zip",      size: "—", link: "#", assetName: "macos-universal.zip" },
-  { os: "Linux",   arch: "x64",       label: "Linux (x64)",              type: ".AppImage", size: "—", link: "#", assetName: "linux-amd64.AppImage" },
+  { os: "Windows", arch: "x64",       label: "Windows (x64) - Installer",   type: ".exe",      size: "—", link: "#", assetName: "windows-amd64-installer.exe" },
+  { os: "Windows", arch: "x64",       label: "Windows (x64) - Portable",    type: ".zip",      size: "—", link: "#", assetName: "windows-amd64-portable.zip" },
+  { os: "Windows", arch: "arm64",     label: "Windows (ARM64) - Installer", type: ".exe",      size: "—", link: "#", assetName: "windows-arm64-installer.exe" },
+  { os: "Windows", arch: "arm64",     label: "Windows (ARM64) - Portable",  type: ".zip",      size: "—", link: "#", assetName: "windows-arm64-portable.zip" },
+  { os: "macOS",   arch: "universal", label: "macOS - Universal",           type: ".dmg",      size: "—", link: "#", assetName: "macos-universal.dmg" },
+  { os: "macOS",   arch: "universal", label: "macOS (ZIP) - Universal",     type: ".zip",      size: "—", link: "#", assetName: "macos-universal.zip" },
+  { os: "Linux",   arch: "x64",       label: "Linux (x64)",                 type: ".AppImage", size: "—", link: "#", assetName: "linux-amd64.AppImage" },
 ]
 
 const RELEASE_API = "https://api.github.com/repos/Subway-Builder-Modded/Railyard/releases/latest"
@@ -63,26 +61,29 @@ function getDownloadCatalog(downloads: DownloadEntry[]) {
   return Array.from(byOS.entries()).map(([os, items]) => ({ os, downloads: items }))
 }
 
-function detectOS(): string {
-  if (typeof navigator === "undefined") return "Windows"
+function detectPlatform(): { os: DownloadEntry["os"]; arch: DownloadEntry["arch"] } {
+  if (typeof navigator === "undefined") return { os: "Windows", arch: "x64" }
+
   const ua = navigator.userAgent.toLowerCase()
-  if (ua.includes("mac")) return "macOS"
-  if (ua.includes("linux")) return "Linux"
-  return "Windows"
+  const platform = navigator.platform.toLowerCase()
+  const isArm = /arm|aarch64/.test(ua) || /arm|aarch64/.test(platform)
+
+  if (ua.includes("mac")) return { os: "macOS", arch: "universal" }
+  if (ua.includes("linux")) return { os: "Linux", arch: "x64" }
+  return { os: "Windows", arch: isArm ? "arm64" : "x64" }
 }
 
 function pickNativeDownload(downloads: DownloadEntry[]): DownloadEntry {
-  const os = detectOS()
-  // Prefer the first entry for the detected OS (installer on Windows, .dmg on macOS, AppImage on Linux)
-  return downloads.find((d) => d.os === os) ?? downloads[0]
+  const platform = detectPlatform()
+  return downloads.find((d) => d.os === platform.os && d.arch === platform.arch)
+    ?? downloads.find((d) => d.os === platform.os)
+    ?? downloads[0]
 }
 
 const FEATURES = [
   {
     id: "browse",
     letter: "C",
-    color: "#1335A1",
-    textColor: "#FFFFFF",
     title: "Custom Cities",
     desc: "Browse community-made maps of cities from around the world and install them at the press of a button.",
     bullets: [
@@ -94,8 +95,6 @@ const FEATURES = [
   {
     id: "install",
     letter: "M",
-    color: "#93683A",
-    textColor: "#FFFFFF",
     title: "Mod Browser",
     desc: "Discover and install gameplay mods to enhance your Subway Builder experience.",
     bullets: [
@@ -107,8 +106,6 @@ const FEATURES = [
   {
     id: "manage",
     letter: "S",
-    color: "#F5CF46",
-    textColor: "#000000",
     title: "Intuitive Interface",
     desc: "A clean, friendly UI designed to make managing your Subway Builder content effortless.",
     bullets: [
@@ -120,8 +117,6 @@ const FEATURES = [
   {
     id: "updates",
     letter: "F",
-    color: "#ED6D32",
-    textColor: "#FFFFFF",
     title: "Profile Management",
     desc: "Manage your game profiles and keep your setups organized. (Coming soon)",
     bullets: [
@@ -172,7 +167,7 @@ export default function RailyardPage() {
 
   useEffect(() => {
     setHasMounted(true)
-    setSelectedOS(detectOS())
+    setSelectedOS(detectPlatform().os)
 
     // Fetch latest release assets from GitHub
     fetch(RELEASE_API)
@@ -216,32 +211,34 @@ export default function RailyardPage() {
     <main className="min-h-screen bg-background text-foreground">
 
       {/* ─── Hero ─────────────────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative h-svh overflow-hidden">
-        <motion.div
-          className="absolute inset-0"
-          style={{ scale: heroScale, y: heroY }}
-          aria-hidden="true"
-        >
-          <Image
-            src="/images/home/light.png"
-            alt=""
-            fill
-            priority
-            className="object-cover dark:hidden"
-          />
-          <Image
-            src="/images/home/dark.png"
-            alt=""
-            fill
-            priority
-            className="hidden object-cover dark:block"
-          />
-        </motion.div>
+      <section ref={heroRef} className="relative h-svh">
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div
+            className="absolute inset-0"
+            style={{ scale: heroScale, y: heroY }}
+            aria-hidden="true"
+          >
+            <Image
+              src="/images/home/light.png"
+              alt=""
+              fill
+              priority
+              className="object-cover dark:hidden"
+            />
+            <Image
+              src="/images/home/dark.png"
+              alt=""
+              fill
+              priority
+              className="hidden object-cover dark:block"
+            />
+          </motion.div>
 
-        {/* Overlays */}
-        <div className="absolute inset-0 bg-white/12 dark:bg-black/45" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/90" />
-        <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
+          {/* Overlays */}
+          <div className="absolute inset-0 bg-white/8 dark:bg-black/42" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
+        </div>
 
         {/* Hero content */}
         <div className="relative z-10 flex h-full items-end px-[clamp(1.5rem,5vw,4rem)] pb-[max(env(safe-area-inset-bottom),clamp(3rem,12svh,8rem))]">
@@ -250,45 +247,46 @@ export default function RailyardPage() {
             className="w-full max-w-[min(92vw,44rem)]"
           >
             {/* Title */}
-            <h1 className="text-[clamp(3rem,min(10vw,12svh),7rem)] font-black leading-[0.9] tracking-[-0.04em]">
-              Railyard
+            <h1 className="inline-flex items-center gap-4 -translate-y-2 text-[clamp(3rem,min(10vw,12svh),7rem)] font-black leading-[0.9] tracking-[-0.04em]">
+              <TrainTrack aria-hidden="true" className="size-[0.72em]" />
+              <span>Railyard</span>
             </h1>
 
-            <p className="mt-3 max-w-[30rem] text-pretty text-[clamp(1rem,min(2.2vw,2.4svh),1.2rem)] leading-[1.45] text-muted-foreground">
+            <p className="mt-4 max-w-[30rem] text-pretty text-[clamp(1rem,min(2.2vw,2.4svh),1.2rem)] leading-[1.45] text-muted-foreground">
               The easiest way to discover, install, and manage Subway Builder community content.
             </p>
 
             {/* Download button group */}
-            <div ref={dropdownRef} className="mt-6 relative flex items-center gap-0">
-              <a
-                href={nativeDownload.link}
-                className={cn(
-                  "inline-flex items-center gap-2 px-5 py-2.5 rounded-l-lg text-sm font-semibold transition-all",
-                  "bg-emerald-500 text-white hover:bg-emerald-400",
-                  "shadow-[0_0_16px_rgba(16,185,129,0.4)]"
-                )}
-              >
-                Download for {nativeDownload.os === "macOS" ? nativeDownload.label.replace("macOS ", "") === "Apple Silicon" ? "macOS" : "macOS" : nativeDownload.os}
-              </a>
-              <button
-                type="button"
-                onClick={() => setMenuOpen((v) => !v)}
-                aria-label="More download options"
-                aria-expanded={menuOpen}
-                className={cn(
-                  "flex items-center justify-center w-9 h-full min-h-[2.625rem] rounded-r-lg border-l border-emerald-400/50 transition-all",
-                  "bg-emerald-500 text-white hover:bg-emerald-400",
-                  "shadow-[0_0_16px_rgba(16,185,129,0.4)]"
-                )}
-              >
-                <ChevronDown
-                  className={cn("h-4 w-4 transition-transform", menuOpen && "rotate-180")}
-                  aria-hidden="true"
-                />
-              </button>
+            <div ref={dropdownRef} className="relative mt-6 inline-flex z-[120]">
+              <div className="inline-flex overflow-hidden rounded-lg shadow-[0_0_16px_rgba(16,185,129,0.4)]">
+                <a
+                  href={nativeDownload.link}
+                  className={cn(
+                    "inline-flex items-center px-5 py-2.5 text-sm font-semibold transition-colors",
+                    "bg-emerald-500 text-white hover:bg-emerald-400"
+                  )}
+                >
+                  Download for {nativeDownload.label}
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setMenuOpen((v) => !v)}
+                  aria-label="More download options"
+                  aria-expanded={menuOpen}
+                  className={cn(
+                    "flex w-9 items-center justify-center border-l border-emerald-400/50 transition-colors",
+                    "bg-emerald-500 text-white hover:bg-emerald-400"
+                  )}
+                >
+                  <ChevronDown
+                    className={cn("h-4 w-4 transition-transform", menuOpen && "rotate-180")}
+                    aria-hidden="true"
+                  />
+                </button>
+              </div>
 
               {menuOpen && (
-                <div className="absolute top-full left-0 mt-1.5 z-50 min-w-[220px] rounded-lg border border-border bg-popover shadow-lg py-1 ring-1 ring-foreground/10">
+                <div className="absolute left-0 top-full z-[130] mt-1.5 min-w-[320px] rounded-lg border border-border bg-popover py-1 shadow-lg ring-1 ring-foreground/10">
                   {downloads.map((dl) => (
                     <a
                       key={dl.label}
@@ -307,7 +305,7 @@ export default function RailyardPage() {
             {/* Stats strip */}
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <Link
-                href="/railyard/maps"
+                href="/railyard/browse?type=maps"
                 className="flex items-center gap-2.5 px-4 py-2 rounded-lg border border-border/70 bg-background/60 backdrop-blur-sm hover:bg-accent/60 transition-colors group"
               >
                 <MapIcon className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" aria-hidden="true" />
@@ -317,7 +315,7 @@ export default function RailyardPage() {
                 </span>
               </Link>
               <Link
-                href="/railyard/mods"
+                href="/railyard/browse?type=mods"
                 className="flex items-center gap-2.5 px-4 py-2 rounded-lg border border-border/70 bg-background/60 backdrop-blur-sm hover:bg-accent/60 transition-colors group"
               >
                 <Package className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" aria-hidden="true" />
@@ -354,8 +352,8 @@ export default function RailyardPage() {
                   <div className="flex items-start gap-4">
                     <LineBullet
                       bullet={feature.letter}
-                      color={feature.color}
-                      textColor={feature.textColor}
+                      color="#10B981"
+                      textColor="#FFFFFF"
                       shape="circle"
                       size="md"
                       className="shrink-0 mt-0.5"
@@ -366,7 +364,7 @@ export default function RailyardPage() {
                       <ul className="mt-3 space-y-1.5">
                         {feature.bullets.map((bullet) => (
                           <li key={bullet} className="flex items-start gap-2 text-sm text-muted-foreground">
-                            <CheckCircle className="h-3.5 w-3.5 mt-0.5 shrink-0 text-emerald-500/70" aria-hidden="true" />
+                            <CheckCircle className="h-3.5 w-3.5 mt-0.5 shrink-0 text-emerald-500" aria-hidden="true" />
                             {bullet}
                           </li>
                         ))}
@@ -397,13 +395,13 @@ export default function RailyardPage() {
                   onMouseEnter={() => setActiveStop(stop.id)}
                   onFocus={() => setActiveStop(stop.id)}
                   className={cn(
-                    "text-left p-5 rounded-xl border transition-all duration-200 outline-none",
+                    "flex h-full flex-col text-left p-5 rounded-xl border transition-all duration-200 outline-none",
                     active
                       ? "border-emerald-400/60 bg-emerald-500/5 shadow-[0_0_14px_rgba(16,185,129,0.12)] ring-1 ring-emerald-400/40"
                       : "border-border hover:border-border/80 hover:bg-accent/40"
                   )}
                 >
-                  <div className="flex items-center gap-3 mb-2">
+                  <div className="mb-2 flex min-h-7 items-center gap-3">
                     <span
                       className={cn(
                         "flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold transition-colors",
@@ -414,7 +412,7 @@ export default function RailyardPage() {
                     </span>
                     <h3 className="font-semibold text-foreground">{stop.title}</h3>
                   </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{stop.desc}</p>
+                  <p className="pt-0.5 text-sm text-muted-foreground leading-relaxed">{stop.desc}</p>
                 </button>
               )
             })}
@@ -488,16 +486,6 @@ export default function RailyardPage() {
           </div>
         </div>
 
-        {/* Subway color bars footer */}
-        <div className="mt-16 flex items-center justify-center gap-2.5">
-          {SUBWAY_BARS.map((c) => (
-            <span
-              key={c}
-              className="h-1.5 w-[clamp(1.75rem,3.5vw,2.5rem)] rounded-full"
-              style={{ backgroundColor: c }}
-            />
-          ))}
-        </div>
       </section>
     </main>
   )

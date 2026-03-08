@@ -35,8 +35,8 @@ import {
 
 const railyard = [
   { id: 1, label: "Download App", url: "/railyard" },
-  { id: 2, label: "Browse Maps", url: "/railyard/maps" },
-  { id: 3, label: "Browse Mods", url: "/railyard/mods" },
+  { id: 2, label: "Browse Maps", url: "/railyard/browse?type=maps" },
+  { id: 3, label: "Browse Mods", url: "/railyard/browse?type=mods" },
 ]
 
 const socialLinkClassName =

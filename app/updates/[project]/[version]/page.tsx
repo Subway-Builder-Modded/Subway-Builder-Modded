@@ -12,7 +12,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import remarkDirective from "remark-directive"
 import remarkAdmonitionDirectives from "@/lib/remark-admonition-directives"
 import { ArrowLeft, ExternalLink } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import { ReleaseTagBadge } from "@/components/updates/release-tag-badge"
 import { cn } from "@/lib/utils"
 import { UpdateSection } from "@/components/updates/update-section"
 import { useMDXComponents } from "@/mdx-components"
@@ -162,28 +162,13 @@ export default async function UpdatePage({
 
           {{
             release: (
-              <Badge
-                className="border-0 font-semibold"
-                style={{ backgroundColor: "#0969da", color: "#ffffff", height: "auto", padding: "0.2rem 0.65rem", fontSize: "0.8125rem", lineHeight: "1.4" }}
-              >
-                Release
-              </Badge>
+              <ReleaseTagBadge kind="release" size="sm" />
             ),
             beta: (
-              <Badge
-                className="border-0 font-semibold"
-                style={{ backgroundColor: "#9a6700", color: "#ffffff", height: "auto", padding: "0.2rem 0.65rem", fontSize: "0.8125rem", lineHeight: "1.4" }}
-              >
-                Beta
-              </Badge>
+              <ReleaseTagBadge kind="beta" size="sm" />
             ),
             alpha: (
-              <Badge
-                className="border-0 font-semibold"
-                style={{ backgroundColor: "#cf222e", color: "#ffffff", height: "auto", padding: "0.2rem 0.65rem", fontSize: "0.8125rem", lineHeight: "1.4" }}
-              >
-                Alpha
-              </Badge>
+              <ReleaseTagBadge kind="alpha" size="sm" />
             ),
           }[tag]}
         </div>

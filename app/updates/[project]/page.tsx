@@ -2,12 +2,11 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, ChevronRight } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
+import { ReleaseTagBadge } from "@/components/updates/release-tag-badge"
 import { cn } from "@/lib/utils"
-import { getUpdateProjectById, UPDATE_PROJECTS, type UpdateTag } from "@/lib/updates-config"
+import { getUpdateProjectById, UPDATE_PROJECTS } from "@/lib/updates-config"
 import { getAllUpdatesForProject, type UpdateMeta } from "@/lib/updates.server"
-import { GitHubReleases } from "@/components/updates/github-releases"
 
 export const dynamicParams = false
 
@@ -29,38 +28,6 @@ export async function generateMetadata({
     title: `${project.label} Changelogs | Subway Builder Modded`,
     description: `Changelogs and release notes for ${project.label}.`,
   }
-}
-
-const TAG_COLORS: Record<UpdateTag | "latest", string> = {
-  latest:  "#1f883d",
-  release: "#0969da",
-  beta:    "#9a6700",
-  alpha:   "#cf222e",
-}
-
-const TAG_LABELS: Record<UpdateTag | "latest", string> = {
-  latest:  "Latest",
-  release: "Release",
-  beta:    "Beta",
-  alpha:   "Alpha",
-}
-
-function TagBadge({ kind }: { kind: UpdateTag | "latest" }) {
-  return (
-    <Badge
-      className="shrink-0 border-0 font-semibold"
-      style={{
-        backgroundColor: TAG_COLORS[kind],
-        color: "#ffffff",
-        height: "auto",
-        padding: "0.35rem 0.85rem",
-        fontSize: "0.9375rem",
-        lineHeight: "1.4",
-      }}
-    >
-      {TAG_LABELS[kind]}
-    </Badge>
-  )
 }
 
 function VersionCard({
@@ -96,8 +63,8 @@ function VersionCard({
         </div>
 
         <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
-          {isLatest && <TagBadge kind="latest" />}
-          <TagBadge kind={update.tag} />
+          {isLatest && <ReleaseTagBadge kind="latest" />}
+          <ReleaseTagBadge kind={update.tag} />
           <ChevronRight className="size-4 shrink-0 text-muted-foreground/40 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-muted-foreground sm:ml-1" />
         </div>
       </Card>
@@ -114,7 +81,7 @@ export default async function ProjectHubPage({
   const project = getUpdateProjectById(projectId)
   if (!project) notFound()
 
-  const updates = project.githubRepo ? [] : await getAllUpdatesForProject(projectId)
+  const updates = await getAllUpdatesForProject(projectId)
 
   return (
     <section className="px-7 pb-8 pt-8">
@@ -144,9 +111,7 @@ export default async function ProjectHubPage({
         <p className="text-base text-muted-foreground">{project.description}</p>
       </div>
 
-      {project.githubRepo ? (
-        <GitHubReleases repo={project.githubRepo} primaryHex={project.primaryHex} />
-      ) : updates.length === 0 ? (
+      {updates.length === 0 ? (
         <p className="text-center text-muted-foreground">No updates published yet.</p>
       ) : (
         <div className="mx-auto flex max-w-4xl flex-col gap-3">

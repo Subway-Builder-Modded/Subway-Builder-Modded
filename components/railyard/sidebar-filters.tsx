@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
-import { Input } from "@/components/ui/input"
 import type { TypeFilter } from "@/hooks/use-filtered-items"
 
 interface SidebarFiltersProps {
@@ -143,19 +142,18 @@ export function SidebarFilters({
                 <p className="px-2 py-3 text-xs text-muted-foreground text-center">No tags found</p>
               ) : (
                 filteredTags.map((tag) => (
-                  <button
+                  <label
                     key={tag}
-                    type="button"
-                    onClick={() => toggleTag(tag)}
-                    className="w-full flex items-center gap-2 px-2 py-1.5 rounded text-sm hover:bg-accent transition-colors text-left"
+                    className="flex w-full cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-left text-sm transition-colors hover:bg-accent"
                   >
                     <Checkbox
                       checked={selectedTags.includes(tag)}
-                      aria-hidden="true"
-                      tabIndex={-1}
+                      onCheckedChange={() => toggleTag(tag)}
+                      aria-label={`Toggle tag ${tag}`}
+                      className="data-[state=checked]:border-emerald-500 data-[state=checked]:bg-emerald-500 data-[state=checked]:text-white"
                     />
                     <span className="text-xs">{tag}</span>
-                  </button>
+                  </label>
                 ))
               )}
             </div>

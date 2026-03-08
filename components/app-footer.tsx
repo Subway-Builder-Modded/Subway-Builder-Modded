@@ -86,7 +86,7 @@ export default function AppFooter() {
                 </Link>
 
                 <Link
-                  href="/railyard/maps"
+                  href="/railyard/browse?type=maps"
                   className="flex items-center gap-2 text-muted-foreground hover:text-primary"
                 >
                   <Map className="size-4 stroke-[2.25]" />
@@ -94,7 +94,7 @@ export default function AppFooter() {
                 </Link>
 
                 <Link
-                  href="/railyard/mods"
+                  href="/railyard/browse?type=mods"
                   className="flex items-center gap-2 text-muted-foreground hover:text-primary"
                 >
                   <Unplug className="size-4 stroke-[2.25]" />

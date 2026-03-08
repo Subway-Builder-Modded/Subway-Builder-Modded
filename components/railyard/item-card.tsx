@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { usePathname, useSearchParams } from "next/navigation"
 import { Users, Package, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -18,17 +19,18 @@ function isMapManifest(item: ModManifest | MapManifest): item is MapManifest {
 
 export function ItemCard({ type, item }: ItemCardProps) {
   const isMap = isMapManifest(item)
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const from = searchParams.toString() ? `${pathname}?${searchParams.toString()}` : pathname
 
   return (
-    <Link href={`/railyard/${type}/${item.id}`} className="block h-full">
+    <Link href={`/railyard/${type}/${item.id}?from=${encodeURIComponent(from)}`} className="block h-full">
       <article
         className={cn(
           "group relative bg-card border border-border rounded-lg overflow-hidden cursor-pointer transition-all duration-150 hover:border-foreground/20 hover:shadow-sm h-full flex flex-col"
         )}
       >
-        {/* Thumbnail */}
         <div className="relative aspect-video overflow-hidden bg-muted shrink-0">
-          {/* Type pill */}
           <div className="absolute top-2 left-2 z-10">
             <span className="inline-flex items-center gap-1 bg-background/80 backdrop-blur-sm border border-border/50 text-foreground text-xs font-medium px-2 py-0.5 rounded-full">
               {isMap ? (
@@ -47,9 +49,7 @@ export function ItemCard({ type, item }: ItemCardProps) {
           />
         </div>
 
-        {/* Card body */}
         <div className="flex flex-col flex-1 p-4 gap-3">
-          {/* Title row */}
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
               <h3 className="font-semibold text-sm leading-snug text-foreground truncate">
@@ -71,12 +71,10 @@ export function ItemCard({ type, item }: ItemCardProps) {
             )}
           </div>
 
-          {/* Description */}
           <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 flex-1">
             {item.description}
           </p>
 
-          {/* Footer: population + tags */}
           <div className="flex items-end justify-between gap-2 mt-auto">
             {isMap && (item.population ?? 0) > 0 ? (
               <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">

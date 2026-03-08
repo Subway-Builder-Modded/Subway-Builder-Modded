@@ -18,6 +18,14 @@ export const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: "population-desc", label: "Population" },
 ]
 
+export function getSortOptions(type: TypeFilter): { value: SortOption; label: string }[] {
+  if (type === "mods") {
+    return SORT_OPTIONS.filter((option) => option.value !== "population-desc")
+  }
+
+  return SORT_OPTIONS
+}
+
 interface UseFilteredItemsParams {
   mods: ModManifest[]
   maps: MapManifest[]
@@ -68,11 +76,12 @@ export function useFilteredItems({ mods, maps, initialType = "all" }: UseFiltere
   const [query, setQuery] = useState("")
   const [type, setType] = useState<TypeFilter>(initialType)
   const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [sort, setSort] = useState<SortOption>("name-asc")
+  const [sort, setSort] = useState<SortOption>(initialType === "maps" ? "population-desc" : "name-asc")
   const [page, setPage] = useState(1)
   const [perPage, setPerPage] = useState<PerPage>(12)
 
   const prevFiltersRef = useRef({ query, type, selectedTags, sort, perPage })
+
   useEffect(() => {
     const prev = prevFiltersRef.current
     if (
