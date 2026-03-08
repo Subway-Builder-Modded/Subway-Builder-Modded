@@ -159,12 +159,17 @@ export default function RailyardPage() {
   const [activeFeature, setActiveFeature] = useState(FEATURES[0].id)
   const [activeStop, setActiveStop] = useState(WORKFLOW_STOPS[0].id)
   const [selectedOS, setSelectedOS] = useState("Windows")
+  const [hasMounted, setHasMounted] = useState(false)
 
-  const nativeDownload = useMemo(() => pickNativeDownload(downloads), [downloads])
+  const nativeDownload = useMemo(() => {
+    if (!hasMounted) return downloads[0]
+    return pickNativeDownload(downloads)
+  }, [downloads, hasMounted])
   const downloadCatalog = useMemo(() => getDownloadCatalog(downloads), [downloads])
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    setHasMounted(true)
     setSelectedOS(detectOS())
 
     // Fetch latest release assets from GitHub

@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { getUpdateProjectById, UPDATE_PROJECTS, type UpdateTag } from "@/lib/updates-config"
 import { getAllUpdatesForProject, type UpdateMeta } from "@/lib/updates.server"
+import { GitHubReleases } from "@/components/updates/github-releases"
 
 export const dynamicParams = false
 
@@ -113,7 +114,7 @@ export default async function ProjectHubPage({
   const project = getUpdateProjectById(projectId)
   if (!project) notFound()
 
-  const updates = await getAllUpdatesForProject(projectId)
+  const updates = project.githubRepo ? [] : await getAllUpdatesForProject(projectId)
 
   return (
     <section className="px-7 pb-8 pt-8">
@@ -143,7 +144,9 @@ export default async function ProjectHubPage({
         <p className="text-base text-muted-foreground">{project.description}</p>
       </div>
 
-      {updates.length === 0 ? (
+      {project.githubRepo ? (
+        <GitHubReleases repo={project.githubRepo} primaryHex={project.primaryHex} />
+      ) : updates.length === 0 ? (
         <p className="text-center text-muted-foreground">No updates published yet.</p>
       ) : (
         <div className="mx-auto flex max-w-4xl flex-col gap-3">

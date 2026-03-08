@@ -16,6 +16,8 @@ export type UpdateProject = {
   secondaryHex: string
   midHex: string
   accentClassName: string
+  /** If set, the updates page fetches releases from the GitHub API instead of local MDX files. */
+  githubRepo?: string
 }
 
 export const UPDATE_PROJECTS: UpdateProject[] = [
@@ -30,6 +32,7 @@ export const UPDATE_PROJECTS: UpdateProject[] = [
     secondaryHex: "#032D23",
     midHex: "#00A97A",
     accentClassName: "text-emerald-400",
+    githubRepo: "Subway-Builder-Modded/Railyard",
   },
   {
     id: "template-mod",
