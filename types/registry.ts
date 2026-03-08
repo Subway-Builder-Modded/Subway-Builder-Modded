@@ -28,3 +28,16 @@ export type RegistryItemType = "mods" | "maps"
 export type TaggedItem =
   | { type: "mods"; item: ModManifest }
   | { type: "maps"; item: MapManifest }
+
+export interface VersionInfo {
+  version: string
+  name: string
+  changelog: string
+  date: string
+  download_url: string
+  game_version: string
+  sha256: string
+  downloads: number
+  manifest?: string
+  prerelease: boolean
+}
