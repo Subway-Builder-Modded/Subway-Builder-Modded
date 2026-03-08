@@ -20,11 +20,11 @@ type HomeItem = {
 
 const HOMEPAGE_ITEMS: HomeItem[] = [
   {
-    id: "directory",
-    letter: "M",
-    title: "Map Directory",
-    description: "Browse community-made maps from cities around the world.",
-    href: "/wiki/maps/map-directory",
+    id: "railyard",
+    letter: "R",
+    title: "Railyard",
+    description: "All-in-one Map and Mod Manager for Subway Builder.",
+    href: "/railyard",
   },
   {
     id: "install",

@@ -23,7 +23,7 @@ export const UPDATE_PROJECTS: UpdateProject[] = [
     id: "railyard",
     label: "Railyard",
     description:
-      "The custom map and mod distribution platform for Subway Builder. Browse and publish community-made custom maps and mods.",
+      "All-in-one Map and Mod Manager for Subway Builder.",
     basePath: "/updates/railyard",
     icon: TrainTrack,
     primaryHex: "#00D492",
