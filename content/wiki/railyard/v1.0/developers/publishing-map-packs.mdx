@@ -3,7 +3,7 @@ id: publishing-map-packs
 title: Publishing Map Packs
 ---
 
-If you are a map creator and have made multiple maps or are planning to, you can host them all on the same repository via a custom `updates.json` file. In this file, you can place all the necessary information required for Railyard to fetch updates for your map.
+If you are a map creator and have made multiple maps or are planning to, you can host them all on the same repository via a custom `update.json` file. In this file, you can place all the necessary information required for Railyard to fetch updates for your map.
 
 ## Step 1 - Hosting the File {#hosting-the-file}
 In order to make a submission to the Railyard registry, you need to first upload the source code and release to GitHub and link it to Railyard. To do this, create a new GitHub repository. The actual contents can contain the source code for your map/mod.
@@ -16,6 +16,11 @@ The first step is to set up our `update.json` files. You will need several of th
 Create a new folder and call it something like `releases` or `railyard`. This is where your `update.json` files will be located. Create a new file for every map and call it `XXX.json`, where `XXX` is your map's city code. Inside each file, you can place the custom update schema found below and update it to match your mod.
 
 ### Custom Update Schema Template {#custom-update-schema-template}
+
+<Tabs>
+
+<TabItem value="maps-schema" label="Maps" default>
+
 ```json
 {
   "schema_version": 1,
@@ -31,6 +36,33 @@ Create a new folder and call it something like `releases` or `railyard`. This is
   ]
 }
 ```
+
+</ TabItem>
+
+<TabItem value="mods-schema" label="Mods">
+
+For mods, each version entry must also include a `manifest` field pointing to the mod's `manifest.json` for that release. Railyard uses this to validate dependencies without downloading the full ZIP.
+
+```json
+{
+  "schema_version": 1,
+  "versions": [
+    {
+      "version": "1.0.0",
+      "game_version": ">=1.0.0",
+      "date": "2026-02-24",
+      "changelog": "Initial release.",
+      "download": "https://example.com/my-mod/releases/v1.0.0.zip",
+      "sha256": "<your asset's sha256>",
+      "manifest": "https://example.com/my-mod/releases/v1.0.0/manifest.json"
+    }
+  ]
+}
+```
+
+</ TabItem>
+
+</ Tabs>
 
 :::tip
 
@@ -124,7 +156,7 @@ Gallery:      Drag and drop screenshots here, or paste image URLs (one per line)
               browser. At least one image is recommended. (optional)
 ```
 
-For `Custom URL`, place a link to your raw `updates.json` file. You can paste the raw link directly copied from your repository, however, it is instead recommended to deploy it to GitHub pages and paste that link there. This can help some users who may be rate limited. To deploy to GitHub pages, create a new file located at `.github/workflows/deploy-releases.yml`. Paste the following into the file:
+For `Custom URL`, place a link to your raw `update.json` file. You can paste the raw link directly copied from your repository, however, it is instead recommended to deploy it to GitHub pages and paste that link there. This can help some users who may be rate limited. To deploy to GitHub pages, create a new file located at `.github/workflows/deploy-releases.yml`. Paste the following into the file:
 
 ```yml
 name: Deploy update.json to GitHub Pages
@@ -160,7 +192,7 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
-This will automatically deploy your `update.json` files to GitHub Pages. Once you do this, put the direct link to your `updates.json` file for the corresponding map in the `Custom URL` field. Now every time you update your map (and our `updates.json` file), it will automatically deploy the latest `updates.json` file for Railyard to use.
+This will automatically deploy your `update.json` files to GitHub Pages. Once you do this, put the direct link to your `update.json` file for the corresponding map in the `Custom URL` field. Now every time you update your map (and our `update.json` file), it will automatically deploy the latest `update.json` file for Railyard to use.
 
 Once you deploy your `update.json` files and fill out the submission ticket, a Pull Request should automatically be created. A Railyard maintainer will review it and it will be automatically submitted once they do. After that, it will be available on Railyard for everyone to download.
 
