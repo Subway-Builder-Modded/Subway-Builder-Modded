@@ -23,6 +23,8 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table"
+import Markdown from "react-markdown"
+import rehypeRaw from "rehype-raw"
 import { GalleryImage } from "@/components/railyard/gallery-image"
 import { useRegistryItem } from "@/hooks/use-registry-item"
 import { useVersions } from "@/hooks/use-versions"
@@ -222,9 +224,20 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
         </div>
 
         {/* Description */}
-        <p className="mt-4 text-sm text-muted-foreground leading-relaxed whitespace-pre-line max-w-prose">
-          {item.description}
-        </p>
+        <div className="mt-4 text-sm text-muted-foreground leading-relaxed max-w-prose prose prose-sm dark:prose-invert prose-p:my-2 prose-a:text-foreground prose-a:underline">
+          <Markdown
+            rehypePlugins={[rehypeRaw]}
+            components={{
+              a: ({ href, children, ...props }) => (
+                <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+                  {children}
+                </a>
+              ),
+            }}
+          >
+            {item.description}
+          </Markdown>
+        </div>
 
         {/* Tags */}
         {item.tags && item.tags.length > 0 && (
