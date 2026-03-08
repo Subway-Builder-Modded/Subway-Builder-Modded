@@ -82,7 +82,7 @@ function UpdateHubCard({
         <div className="flex h-full flex-col px-6 pb-5 pt-4">
           <div className="mb-4">
             <div
-              className="flex min-h-10 w-full items-center justify-center rounded-2xl px-4 py-2 font-mta text-xl font-bold"
+              className="flex min-h-12 w-full items-center justify-center rounded-2xl px-6 py-3 font-mta text-2xl font-bold"
               style={{ backgroundColor: bulletBg, color: bulletText }}
             >
               {project.label}
