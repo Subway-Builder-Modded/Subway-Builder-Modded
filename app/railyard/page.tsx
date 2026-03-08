@@ -17,42 +17,62 @@ import { cn } from "@/lib/utils"
 
 const SUBWAY_BARS = ["#0039A6", "#FF6319", "#00933C", "#FCCC0A", "#752F82"]
 
-const ALL_DOWNLOADS = [
-  { os: "Windows", arch: "x64",   label: "Windows (x64)",           type: ".zip",      size: "—", link: "#" },
-  { os: "Windows", arch: "arm64", label: "Windows (arm64)",          type: ".zip",      size: "—", link: "#" },
-  { os: "macOS",   arch: "arm64", label: "macOS (Apple Silicon)",    type: ".dmg",      size: "—", link: "#" },
-  { os: "macOS",   arch: "x64",   label: "macOS (Intel)",            type: ".dmg",      size: "—", link: "#" },
-  { os: "Linux",   arch: "x64",   label: "Linux (x64)",              type: ".AppImage", size: "—", link: "#" },
-  { os: "Linux",   arch: "arm64", label: "Linux (arm64)",            type: ".AppImage", size: "—", link: "#" },
+interface DownloadEntry {
+  os: string
+  arch: string
+  label: string
+  type: string
+  size: string
+  link: string
+  assetName: string
+}
+
+const DOWNLOAD_TEMPLATE: DownloadEntry[] = [
+  { os: "Windows", arch: "x64", label: "Windows Installer (x64)",  type: ".exe",      size: "—", link: "#", assetName: "railyard-windows-amd64-installer.exe" },
+  { os: "Windows", arch: "x64", label: "Windows Portable (x64)",   type: ".zip",      size: "—", link: "#", assetName: "railyard-windows-amd64-portable.zip" },
+  { os: "macOS",   arch: "universal", label: "macOS (Universal)",   type: ".dmg",      size: "—", link: "#", assetName: "railyard-macos-universal.dmg" },
+  { os: "macOS",   arch: "universal", label: "macOS Zip (Universal)", type: ".zip",    size: "—", link: "#", assetName: "railyard-macos-universal.zip" },
+  { os: "Linux",   arch: "x64", label: "Linux (x64)",              type: ".AppImage", size: "—", link: "#", assetName: "railyard-linux-amd64.AppImage" },
 ]
 
-function getDownloadCatalog() {
-  const byOS = new Map<string, typeof ALL_DOWNLOADS>()
-  ALL_DOWNLOADS.forEach((d) => {
+const RELEASE_API = "https://api.github.com/repos/Subway-Builder-Modded/Railyard/releases/latest"
+
+function formatBytes(bytes: number): string {
+  if (bytes === 0) return "—"
+  if (bytes >= 1_000_000) return `${(bytes / 1_000_000).toFixed(1)} MB`
+  if (bytes >= 1_000) return `${(bytes / 1_000).toFixed(0)} KB`
+  return `${bytes} B`
+}
+
+function buildDownloads(releaseAssets: { name: string; browser_download_url: string; size: number }[]): DownloadEntry[] {
+  return DOWNLOAD_TEMPLATE.map((entry) => {
+    const asset = releaseAssets.find((a) => a.name === entry.assetName)
+    if (!asset) return entry
+    return { ...entry, link: asset.browser_download_url, size: formatBytes(asset.size) }
+  })
+}
+
+function getDownloadCatalog(downloads: DownloadEntry[]) {
+  const byOS = new Map<string, DownloadEntry[]>()
+  downloads.forEach((d) => {
     if (!byOS.has(d.os)) byOS.set(d.os, [])
     byOS.get(d.os)!.push(d)
   })
-  return Array.from(byOS.entries()).map(([os, downloads]) => ({ os, downloads }))
+  return Array.from(byOS.entries()).map(([os, items]) => ({ os, downloads: items }))
 }
 
-async function detectNativeDownload() {
-  if (typeof navigator === "undefined") return ALL_DOWNLOADS[0]
+function detectOS(): string {
+  if (typeof navigator === "undefined") return "Windows"
   const ua = navigator.userAgent.toLowerCase()
-  let os = "Windows"
-  let arch = "x64"
-  if (ua.includes("mac")) os = "macOS"
-  else if (ua.includes("linux")) os = "Linux"
-  try {
-    if ((navigator as any).userAgentData?.getHighEntropyValues) {
-      const hints = await (navigator as any).userAgentData.getHighEntropyValues(["architecture"])
-      if (hints.architecture === "arm") arch = "arm64"
-    } else if (ua.includes("arm64") || ua.includes("aarch64")) {
-      arch = "arm64"
-    }
-  } catch { /* ignore */ }
-  return ALL_DOWNLOADS.find((d) => d.os === os && d.arch === arch)
-    ?? ALL_DOWNLOADS.find((d) => d.os === os)
-    ?? ALL_DOWNLOADS[0]
+  if (ua.includes("mac")) return "macOS"
+  if (ua.includes("linux")) return "Linux"
+  return "Windows"
+}
+
+function pickNativeDownload(downloads: DownloadEntry[]): DownloadEntry {
+  const os = detectOS()
+  // Prefer the first entry for the detected OS (installer on Windows, .dmg on macOS, AppImage on Linux)
+  return downloads.find((d) => d.os === os) ?? downloads[0]
 }
 
 const FEATURES = [
@@ -133,21 +153,27 @@ export default function RailyardPage() {
   const heroContentY = useTransform(heroExitProgress, [0.22, 0.42], [0, 24])
 
   const [menuOpen, setMenuOpen] = useState(false)
-  const [nativeDownload, setNativeDownload] = useState(ALL_DOWNLOADS[0])
+  const [downloads, setDownloads] = useState<DownloadEntry[]>(DOWNLOAD_TEMPLATE)
   const [mapCount, setMapCount] = useState<number | null>(null)
   const [modCount, setModCount] = useState<number | null>(null)
   const [activeFeature, setActiveFeature] = useState(FEATURES[0].id)
   const [activeStop, setActiveStop] = useState(WORKFLOW_STOPS[0].id)
   const [selectedOS, setSelectedOS] = useState("Windows")
 
-  const downloadCatalog = useMemo(() => getDownloadCatalog(), [])
+  const nativeDownload = useMemo(() => pickNativeDownload(downloads), [downloads])
+  const downloadCatalog = useMemo(() => getDownloadCatalog(downloads), [downloads])
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    detectNativeDownload().then((d) => {
-      setNativeDownload(d)
-      setSelectedOS(d.os)
-    })
+    setSelectedOS(detectOS())
+
+    // Fetch latest release assets from GitHub
+    fetch(RELEASE_API)
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((release: { assets: { name: string; browser_download_url: string; size: number }[] }) => {
+        setDownloads(buildDownloads(release.assets))
+      })
+      .catch(() => { /* keep template with # links */ })
 
     async function fetchCount(url: string, key: string, setValue: (n: number) => void) {
       try {
@@ -172,8 +198,8 @@ export default function RailyardPage() {
   }, [])
 
   const selectedDownloads = useMemo(
-    () => ALL_DOWNLOADS.filter((d) => d.os === selectedOS),
-    [selectedOS]
+    () => downloads.filter((d) => d.os === selectedOS),
+    [downloads, selectedOS]
   )
 
   const mapCountLabel = mapCount == null ? "—" : mapCount.toLocaleString()
@@ -256,7 +282,7 @@ export default function RailyardPage() {
 
               {menuOpen && (
                 <div className="absolute top-full left-0 mt-1.5 z-50 min-w-[220px] rounded-lg border border-border bg-popover shadow-lg py-1 ring-1 ring-foreground/10">
-                  {ALL_DOWNLOADS.map((dl) => (
+                  {downloads.map((dl) => (
                     <a
                       key={dl.label}
                       href={dl.link}
