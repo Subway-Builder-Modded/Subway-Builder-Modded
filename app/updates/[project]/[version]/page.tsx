@@ -122,7 +122,7 @@ export default async function UpdatePage({
       </div>
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <header className="mx-auto mb-8 max-w-2xl text-center">
+      <header className="mx-auto mb-8 -mt-10 max-w-2xl text-center">
         {/*
           Full-width title banner — mirrors the project hub card's title bar:
           a coloured pill spanning the content area. Optionally links to GitHub.
