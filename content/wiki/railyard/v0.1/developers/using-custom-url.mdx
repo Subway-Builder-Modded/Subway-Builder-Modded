@@ -32,6 +32,12 @@ Create a new folder in your repository and call it something like `releases` or 
 }
 ```
 
+:::caution
+
+Versions **must** be in [semantic versioning format](https://semver.org/). `1.0`, `abc`, `version-A`, etc. will not work. Your version must be `X.Y.Z` or `vX.Y.Z`.
+
+:::
+
 To update your map, simply add a new field in the `versions` array and add your update information there. An example can be seen below:
 
 ```json
@@ -80,6 +86,12 @@ For mods, each version entry must also include a `manifest` field pointing to th
   ]
 }
 ```
+
+:::caution
+
+Versions **must** be in [semantic versioning format](https://semver.org/). `1.0`, `abc`, `version-A`, etc. will not work. Your version must be `X.Y.Z` or `vX.Y.Z`.
+
+:::
 
 To update your mod, simply add a new field in the `versions` array and add your update information there. An example can be seen below:
 
