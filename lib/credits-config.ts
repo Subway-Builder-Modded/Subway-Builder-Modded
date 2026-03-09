@@ -34,11 +34,6 @@ export const CREDIT_SECTIONS: CreditSection[] = [
         role: "Creator of the Map Manager and maintainer of Railyard.",
         link: "https://github.com/kronifer",
       },
-      {
-        name: "IMB11",
-        role: "Maintainer of the Template Mod and Railyard and contributor to the Subway Builder Modded website.",
-        link: "https://github.com/IMB11",
-      },
     ],
   },
   {
@@ -51,7 +46,12 @@ export const CREDIT_SECTIONS: CreditSection[] = [
         name: "rslurry",
         role: "Contributor/tester of Railyard and maintainer of the Demand Data Generator.",
         link: "https://github.com/rslurry",
-      }
+      },
+      {
+        name: "IMB11",
+        role: "Initial creator of the Template Mod and Railyard and contributor to the Subway Builder Modded website.",
+        link: "https://github.com/IMB11",
+      },
     ],
   },
   {
