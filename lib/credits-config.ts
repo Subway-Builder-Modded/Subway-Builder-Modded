@@ -21,17 +21,17 @@ export const CREDIT_SECTIONS: CreditSection[] = [
     people: [
       {
         name: "kaicardenas0618",
-        role: "Maintainer of the Subway Builder Modded website and Railyard.",
+        role: "Nothing of note.",
         link: "https://github.com/kaicardenas0618",
       },
       {
         name: "ahkimn",
-        role: "Maintainer of the Subway Builder Modded website, Template Mod, and Railyard.",
+        role: "World-renowned diplomat and peace negotiations expert.",
         link: "https://github.com/ahkimn",
       },
       {
         name: "Kronifer",
-        role: "Creator of the Map Manager and maintainer of Railyard.",
+        role: "Prime minister of Canada and surrounding territories.",
         link: "https://github.com/kronifer",
       },
     ],
