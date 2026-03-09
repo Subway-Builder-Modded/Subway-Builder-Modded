@@ -26,13 +26,13 @@ interface DownloadEntry {
 }
 
 const DOWNLOAD_TEMPLATE: DownloadEntry[] = [
-  { os: "Windows", arch: "x64",       label: "Windows (x64) - Installer",   type: ".exe",      size: "—", link: "#", assetName: "windows-amd64-installer.exe" },
-  { os: "Windows", arch: "x64",       label: "Windows (x64) - Portable",    type: ".zip",      size: "—", link: "#", assetName: "windows-amd64-portable.zip" },
-  { os: "Windows", arch: "arm64",     label: "Windows (ARM64) - Installer", type: ".exe",      size: "—", link: "#", assetName: "windows-arm64-installer.exe" },
-  { os: "Windows", arch: "arm64",     label: "Windows (ARM64) - Portable",  type: ".zip",      size: "—", link: "#", assetName: "windows-arm64-portable.zip" },
-  { os: "macOS",   arch: "universal", label: "macOS - Universal",           type: ".dmg",      size: "—", link: "#", assetName: "macos-universal.dmg" },
-  { os: "macOS",   arch: "universal", label: "macOS (ZIP) - Universal",     type: ".zip",      size: "—", link: "#", assetName: "macos-universal.zip" },
-  { os: "Linux",   arch: "x64",       label: "Linux (x64)",                 type: ".AppImage", size: "—", link: "#", assetName: "linux-amd64.AppImage" },
+  { os: "Windows", arch: "x64",       label: "Windows (x64) - Installer (beta)",   type: ".exe",      size: "—", link: "#", assetName: "windows-amd64-installer.exe" },
+  { os: "Windows", arch: "x64",       label: "Windows (x64) - Portable (beta)",    type: ".zip",      size: "—", link: "#", assetName: "windows-amd64-portable.zip" },
+  { os: "Windows", arch: "arm64",     label: "Windows (ARM64) - Installer (beta)", type: ".exe",      size: "—", link: "#", assetName: "windows-arm64-installer.exe" },
+  { os: "Windows", arch: "arm64",     label: "Windows (ARM64) - Portable (beta)",  type: ".zip",      size: "—", link: "#", assetName: "windows-arm64-portable.zip" },
+  { os: "macOS",   arch: "universal", label: "macOS - Universal (beta)",           type: ".dmg",      size: "—", link: "#", assetName: "macos-universal.dmg" },
+  { os: "macOS",   arch: "universal", label: "macOS (ZIP) - Universal (beta)",     type: ".zip",      size: "—", link: "#", assetName: "macos-universal.zip" },
+  { os: "Linux",   arch: "x64",       label: "Linux (x64) (beta)",                 type: ".AppImage", size: "—", link: "#", assetName: "linux-amd64.AppImage" },
 ]
 
 const RELEASE_API = "https://api.github.com/repos/subway-builder-modded/railyard/releases/latest"
@@ -253,7 +253,7 @@ export default function RailyardPage() {
             </h1>
 
             <p className="mt-4 max-w-[30rem] text-pretty text-[clamp(1rem,min(2.2vw,2.4svh),1.2rem)] leading-[1.45] text-muted-foreground">
-              The easiest way to discover, install, and manage Subway Builder community content.
+              The easiest way to discover, install, and manage Subway Builder community content. Now in beta.
             </p>
 
             {/* Download button group */}
