@@ -67,49 +67,61 @@ You should *likely* only need to do this if you are the creator of a large amoun
 Once you select "`Publish New Map`", a popup window will appear to input some information about the map. The information should be inputted as follows:
 
 ```
-Map ID:      A unique identifier for your map in kebab-case. This is the permanent directory name in the
-              registry and cannot be changed later. Must be unique across all maps, so if another map of the
-              same city already exists, use a distinct ID (e.g. london-detailed, london-mini). Only lowercase
-              letters, numbers, and hyphens allowed.
+Map ID:         A unique identifier for your map in kebab-case. This is the permanent directory name in the
+                 registry and cannot be changed later. Must be unique across all maps, so if another map of the
+                 same city already exists, use a distinct ID (e.g. london-detailed, london-mini). Only lowercase
+                 letters, numbers, and hyphens allowed.
 
-City Name:    The human-readable city name shown in Railyard. This is the title of the map that people will see when
-              downloading it.
+City Name:       The human-readable city name shown in Railyard. This is the title of the map that people will see when
+                 downloading it.
 
-City Code:    2-4 letter IATA/ICAO-style city code used by the game internally. Must be uppercase letters/numbers.
-              Must not clash with vanilla city codes or other registered maps. Check existing maps before choosing
-              a code.
+City Code:       2-4 letter IATA/ICAO-style city code used by the game internally. Must be uppercase letters/numbers.
+                 Must not clash with vanilla city codes or other registered maps. Check existing maps before choosing
+                 a code.
 
-Country Code: ISO 3166-1 alpha-2 country code — two uppercase letters (e.g. US, GB, CA, DE, JP). Used to group maps
-              by country in Railyard. It is REQUIRED that you use ISO codes according to this list:
-              https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes.
+Country Code:    ISO 3166-1 alpha-2 country code — two uppercase letters (e.g. US, GB, CA, DE, JP). Used to group maps
+                 by country in Railyard. It is REQUIRED that you use ISO codes according to this list:
+                 https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes.
 
-Population:   Approximate metropolitan area population. Number only, no commas or separators. Used for display and
-              sorting in Railyard and it doesn't need to be exact.
+Population:      Approximate metropolitan area population. Number only, no commas or separators. Used for display and
+                 sorting in Railyard and it doesn't need to be exact.
 
-Description:  A short description of what your map does. This is shown in the map browser. Mention data quality,
-              notable features, or coverage area.
+Description:     A short description of what your map does. This is shown in the map browser. Mention data quality,
+                 notable features, or coverage area.
 
-Tags:         Select all tags that apply to your map. These help users find your map in the browser.
+Tags:            Select all tags that apply to your map. These help users find your map in the browser.
 
-Data Source:  Enter the data source used to generate the demand data for your map. The source name
-              should use common abbreviations like LODES/INSEE/ONS etc. (optional, defaults to OSM)
+Data Source:     Enter the data source used to generate the demand data for your map. The source name
+                 should use common abbreviations like LODES/INSEE/ONS etc. (optional, defaults to OSM)
 
-Source URL:   URL to your map's source code repository or download page.
+Methodology:
 
-Update Type:  The method used by Railyard to fetch updates for your map. Most maps should use GitHub Releases. Use
-              Custom URL only if you host your own Update JSON file.
+Source Quality:
 
-GitHub Repo:  Required ONLY if using GitHub Releases. The owner/repo path (e.g. username/sb-raleigh) in plaintext, NOT
-              a URL. The repo must exist, have at least one release, and the latest release must contain a .zip asset.
-              Leave blank if you are using Custom URL.
+Level of Detail:
 
-Custom URL:   Required ONLY if you selected Custom URL. The full URL to your self-hosted Update JSON file. The file
-              must follow the Railyard Update JSON schema. Leave blank if using GitHub Releases. The guide for using an 
-              Update JSON can be found at: https://subwaybuildermodded.com/wiki/railyard/v0.1/developers/using-custom-url.
+Source URL:      URL to your map's source code repository or download page.
 
-Gallery:      Drag and drop screenshots here, or paste image URLs (one per line). These will be displayed in the map
-              browser. At least one image is recommended. (optional)
+Update Type:     The method used by Railyard to fetch updates for your map. Most maps should use GitHub Releases. Use
+                 Custom URL only if you host your own Update JSON file.
+
+GitHub Repo:     Required ONLY if using GitHub Releases. The owner/repo path (e.g. username/sb-raleigh) in plaintext, NOT
+                 a URL. The repo must exist, have at least one release, and the latest release must contain a .zip asset.
+                 Leave blank if you are using Custom URL.
+
+Custom URL:      Required ONLY if you selected Custom URL. The full URL to your self-hosted Update JSON file. The file
+                 must follow the Railyard Update JSON schema. Leave blank if using GitHub Releases. The guide for using an 
+                 Update JSON can be found at: https://subwaybuildermodded.com/wiki/railyard/v0.1/developers/using-custom-url.
+
+Gallery:         Drag and drop screenshots here, or paste image URLs (one per line). These will be displayed in the map
+                 browser. At least one image of your demand data is required.
 ```
+
+:::danger[Data Source and Quality]
+
+Railyard requires all map makers to submit the source and quality of their data. This is then used to categorize the data for users looking to download maps. For more detailed information on the specifications of data quality, see [**Data Quality**](/wiki/railyard/v0.1/developers/data-quality).
+
+:::
 
 </TabItem>
 
@@ -147,7 +159,7 @@ Manifest URL: Required ONLY if using Custom URL. The full URL to your mod's mani
               using GitHub Releases (manifest.json should be uploaded as a release asset instead).
 
 Gallery:      Drag and drop screenshots here, or paste image URLs (one per line). These will be displayed in the mod
-              browser. At least one image is recommended. (optional)
+              browser. At least one image is required.
 ```
 
 </TabItem>
