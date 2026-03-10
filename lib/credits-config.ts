@@ -21,12 +21,12 @@ export const CREDIT_SECTIONS: CreditSection[] = [
     people: [
       {
         name: "kaicardenas0618",
-        role: "Nothing of note.",
+        role: `Inventor of the term "history" as well as other terms like "eventful" and "participant".`,
         link: "https://github.com/kaicardenas0618",
       },
       {
         name: "ahkimn",
-        role: "World-renowned diplomat and peace negotiations expert.",
+        role: `Artist of many beautiful art pieces, available at the [art page](/art).`,
         link: "https://github.com/ahkimn",
       },
       {
