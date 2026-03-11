@@ -93,28 +93,56 @@ Population:      Approximate metropolitan area population. Number only, no comma
 Description:     A short description of what your map does. This is shown in the map 
                  browser. Mention notable features, coverage area, etc.
 
+## Data Attestation
+
+Provide details about your map's data source, data source quality, and level of detail.
+Be honest and transparent in your descriptions and please include the methodology you
+used to generate the map's data. See the Data Quality guide for more information
+(https://subwaybuildermodded.com/wiki/railyard/v0.1/developers/data-quality).
+
+Data Source:     Enter the data source used to generate the demand data for your map.
+                 The source name should use common abbreviations like LODES, INSEE,
+                 ONS, etc.
+              
+Source Quality:  Approximate quality of the data source used for your map. Official
+                 government sources are considered high-quality while raw open-source
+                 data is considered low-quality. If your data source includes OSM, we
+                 will not consider that high-quality data.
+
+Level of Detail: Approximate level of detail of your map. Demand resolution at the
+                 level of census blocks is considered high-detail, while neighborhood/
+                 city resolutions are considered low-detail.
+                 
+Methodology:     Description of how demand data was generated for your map. Please include
+                 any details about overcoming data source limitations or any augmentations
+                 done with real-world data.
+
+## Tagging & Image Preview
+
+Railyard allows users to search for maps based on tags and presents a preview image for 
+discovery. Please check whichever tags best represent your map. Note that "Location" is
+required.
+
 Location:        Select the real-world region that your map is located in.
 
-Special Demand:  If your map has any special demand that players should know about, 
-                 select those here. This includes things like entertainment, 
-                 airports, etc.
+Special Demand:  Use these tags only when the map models a meaningful amount of demand
+                 related to the feature.
+                 airports: passenger (non-worker) demand from major airports
+                 entertainment: leisure/tourist demand at stadiums/venues/nightlife
+                 ferries: passenger (non-worker) demand from ferry terminals
+                 hospitals: visitation demand for major medical centers
+                 parks: leisure/tourist demand from large local or national parks
+                 schools: demand from primary/secondary school students
+                 universities: demand from university school students
 
-Data Source:     Enter the data source used to generate the demand data for your 
-                 map. The source name should use common abbreviations like LODES/
-                 INSEE/ONS etc. (optional, defaults to OSM)
+Gallery:         Drag and drop screenshots here, or paste image URLs (one per line). These
+                 will be displayed in the map browser. At least one image of your demand data
+                 is required.
 
-Methodology:     The method used to generate the demand for your map. This 
-                 defaults to raw OSM data, but if you used a different method
-                 (e.g. using census data, manually enhancing OSM data, etc.) you
-                 can specify that here.
+## Source Code Information
 
-Source Quality:  The quality of the data source you used. View Data Quality at
-                 https://subwaybuildermodded.com/wiki/railyard/v0.1/developers/data-quality
-                 for more information on how to categorize your data quality.
-
-Level of Detail: The level of detail present in your map. View Data Quality at
-                 https://subwaybuildermodded.com/wiki/railyard/v0.1/developers/data-quality
-                 for more information on how to categorize your data quality.
+Provide information on where your map is hosted so that Railyard will be able to check your
+repository for updates and allow users to install the map on demand.
 
 Source URL:      URL to your map's source code repository or download page.
 
@@ -130,9 +158,6 @@ Custom URL:      Required ONLY if you selected Custom URL. The full URL to your
                  self-hosted Update JSON file. The file must follow the Railyard 
                  Update JSON schema. Leave blank if using GitHub Releases. The guide 
                  for using an Update JSON can be found at: https://subwaybuildermodded.com/wiki/railyard/v0.1/developers/using-custom-url.
-
-Gallery:         Drag and drop screenshots here, or paste image URLs (one per line). 
-                 These will be displayed in the map browser. At least one image of your demand data is required.
 ```
 
 :::danger[Data Source and Quality]
