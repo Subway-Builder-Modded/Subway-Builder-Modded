@@ -20,6 +20,27 @@ type TabsProps = {
 
 const GROUP_STORAGE_PREFIX = "wiki-tabs:"
 
+function toIdPart(value: string) {
+  const normalized = value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+
+  return normalized || "tab"
+}
+
+function hashString(value: string) {
+  let hash = 2166136261
+
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index)
+    hash = Math.imul(hash, 16777619)
+  }
+
+  return (hash >>> 0).toString(36)
+}
+
 function getStoredGroupValue(groupId: string) {
   if (typeof window === "undefined") return null
   return window.localStorage.getItem(`${GROUP_STORAGE_PREFIX}${groupId}`)
@@ -52,20 +73,37 @@ export function Tabs({
   }))
 
   const initialValue = React.useMemo(() => {
-    if (groupId) {
-      const stored = getStoredGroupValue(groupId)
-      if (stored && values.some((v) => v.value === stored)) return stored
-    }
-
     if (defaultValue !== undefined) return defaultValue ?? undefined
 
     const explicitDefault = values.find((v) => v.default)
     if (explicitDefault) return explicitDefault.value
 
     return values[0]?.value
-  }, [defaultValue, groupId, values])
+  }, [defaultValue, values])
 
   const [activeValue, setActiveValue] = React.useState<string | undefined>(initialValue)
+
+  const tabsInstanceId = React.useMemo(() => {
+    const signature = JSON.stringify({
+      groupId: groupId ?? null,
+      defaultValue: defaultValue ?? null,
+      values: values.map((item) => item.value),
+    })
+
+    return `mdx-tabs-${hashString(signature)}`
+  }, [defaultValue, groupId, values])
+
+  React.useEffect(() => {
+    if (!groupId) return
+
+    const stored = getStoredGroupValue(groupId)
+    if (stored && values.some((v) => v.value === stored)) {
+      setActiveValue(stored)
+      return
+    }
+
+    setActiveValue(initialValue)
+  }, [groupId, initialValue, values])
 
   React.useEffect(() => {
     if (!groupId) return
@@ -104,6 +142,8 @@ export function Tabs({
           <TabsPrimitive.Trigger
             key={item.value}
             value={item.value}
+            id={`${tabsInstanceId}-trigger-${toIdPart(item.value)}`}
+            aria-controls={`${tabsInstanceId}-content-${toIdPart(item.value)}`}
             className={cn(
               "relative -mb-px inline-flex items-center rounded-none border-0 bg-transparent px-0 pb-2.5 pt-0",
               "text-[1.15rem] font-semibold tracking-tight",
@@ -124,6 +164,8 @@ export function Tabs({
         <TabsPrimitive.Content
           key={item.props.value}
           value={item.props.value}
+          id={`${tabsInstanceId}-content-${toIdPart(item.props.value)}`}
+          aria-labelledby={`${tabsInstanceId}-trigger-${toIdPart(item.props.value)}`}
           className="mt-0 border-0 bg-transparent p-0 outline-none"
         >
           <div className="[&>p:first-child]:mt-0">

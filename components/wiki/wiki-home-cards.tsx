@@ -17,6 +17,7 @@ import {
   Atom,
   SearchCode,
   ArrowDownToLine,
+  KeyRound,
   ShieldCheck,
   type LucideIcon,
 } from "lucide-react"
@@ -39,6 +40,7 @@ const ICONS = {
   Atom,
   SearchCode,
   ArrowDownToLine,
+  KeyRound,
   ShieldCheck,
 } satisfies Record<string, LucideIcon>
 
