@@ -15,10 +15,10 @@ githubUrl: "https://github.com/Subway-Builder-Modded/railyard/releases/tag/v0.1.
             Added a new multistep loading screen on startup
         </IconItem>
         <IconItem icon="Plus" color="#48A54B">
-            Better search system. Allows partially unlocalized strings and typos to more reliably give you search results
+            Added support for optional Github token to work around Github API limits
         </IconItem>
         <IconItem icon="Plus" color="#48A54B">
-            Better search system. Allows partially unlocalized strings and typos to more reliably give you search results
+            Installs can now be cancelled during the download phase
         </IconItem>
     </IconList>
 </UpdateSection>
@@ -27,6 +27,15 @@ githubUrl: "https://github.com/Subway-Builder-Modded/railyard/releases/tag/v0.1.
     <IconList>
         <IconItem icon="Sparkles" color="#EEB03D">
             Separated download progress toasts and success toasts and added an indicator for how many downloads are in queue
+        </IconItem>
+        <IconItem icon="Sparkles" color="#EEB03D">
+            Search now only show tags when an asset with that tag exists
+        </IconItem>
+        <IconItem icon="Sparkles" color="#EEB03D">
+            Added sorting by country/downloads/last updated (default is now last updated)
+        </IconItem>
+        <IconItem icon="Sparkles" color="#EEB03D">
+            All assets now show download counts on the `Browse` menu, with maps also showing flag icons corresponding to the country of the map
         </IconItem>
     </IconList>
 </UpdateSection>
@@ -38,6 +47,12 @@ githubUrl: "https://github.com/Subway-Builder-Modded/railyard/releases/tag/v0.1.
         </IconItem>
         <IconItem icon="Bug" color="#EF4444">
             Fixed scrolling left and right/zooming in and out (unintentional)
+        </IconItem>
+        <IconItem icon="Bug" color="#EF4444">
+            Profiles will now automatically purge entries related to uninstallable content
+        </IconItem>
+        <IconItem icon="Bug" color="#EF4444">
+            Resolved issue where multiple Railyard application instances could be started simultaneously
         </IconItem>
     </IconList>
 </UpdateSection>
