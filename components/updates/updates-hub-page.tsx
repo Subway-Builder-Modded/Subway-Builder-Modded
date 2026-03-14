@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import type { CSSProperties } from "react"
 import { Megaphone } from "lucide-react"
@@ -46,6 +47,17 @@ type CardThemeColors = {
   imageBorderDark: string
 }
 
+const UPDATE_CARD_IMAGES: Record<UpdateProject["id"], { light: string; dark: string }> = {
+  railyard: {
+    light: "/images/shared/railyard-light.png",
+    dark: "/images/shared/railyard-dark.png",
+  },
+  "template-mod": {
+    light: "/images/shared/template-mod-light.png",
+    dark: "/images/shared/template-mod-dark.png",
+  },
+}
+
 function getColors(project: UpdateProject): CardThemeColors {
   const cardBgLight = project.primaryHex
   const cardBgDark = project.secondaryHex
@@ -72,26 +84,22 @@ function getColors(project: UpdateProject): CardThemeColors {
   }
 }
 
-function UpdateCardImagePlaceholder({
-  project,
+function UpdateCardImage({
+  projectId,
   borderColor,
-  iconColor,
 }: {
-  project: UpdateProject
+  projectId: UpdateProject["id"]
   borderColor: string
-  iconColor: string
 }) {
-  const Icon = project.icon
+  const image = UPDATE_CARD_IMAGES[projectId]
 
   return (
     <div
-      className="relative flex w-full aspect-video flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border-2 bg-black/5 dark:bg-white/5"
+      className="relative flex w-full aspect-video items-center justify-center overflow-hidden rounded-lg border-2"
       style={{ borderColor }}
     >
-      <Icon className="size-8 opacity-40" style={{ color: iconColor }} />
-      <span className="text-xs font-medium opacity-30" style={{ color: iconColor }}>
-        Preview coming soon
-      </span>
+      <Image src={image.light} alt={`${projectId} preview`} fill className="scale-[1.15] object-cover dark:hidden" />
+      <Image src={image.dark} alt={`${projectId} preview`} fill className="hidden scale-[1.15] object-cover dark:block" />
     </div>
   )
 }
@@ -151,10 +159,9 @@ function UpdateHubCard({
           </div>
 
           <div className="mb-4">
-            <UpdateCardImagePlaceholder
-              project={project}
+            <UpdateCardImage
+              projectId={project.id}
               borderColor="var(--hub-card-image-border)"
-              iconColor="var(--hub-card-title)"
             />
           </div>
 

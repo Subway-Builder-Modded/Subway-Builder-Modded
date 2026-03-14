@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import type { CSSProperties } from "react"
 import { BookText } from "lucide-react"
@@ -83,6 +84,29 @@ type CardThemeColors = {
   imageBorderDark: string
 }
 
+const WIKI_CARD_IMAGES: Record<WikiInstance["id"], { light: string; dark: string }> = {
+  railyard: {
+    light: "/images/shared/railyard-light.png",
+    dark: "/images/shared/railyard-dark.png",
+  },
+  "template-mod": {
+    light: "/images/shared/template-mod-light.png",
+    dark: "/images/shared/template-mod-dark.png",
+  },
+  "creating-custom-maps": {
+    light: "/images/shared/creating-custom-maps-light.png",
+    dark: "/images/shared/creating-custom-maps-dark.png",
+  },
+  contributing: {
+    light: "/images/shared/contributing-light.png",
+    dark: "/images/shared/contributing-dark.png",
+  },
+  legacy: {
+    light: "/images/shared/legacy-light.png",
+    dark: "/images/shared/legacy-dark.png",
+  },
+}
+
 function getColors(instance: WikiInstance): CardThemeColors {
   const theme = INSTANCE_THEME_COLORS[instance.id] ?? {
     accent: instance.primaryHex,
@@ -121,26 +145,22 @@ function chunkRows<T>(arr: T[], size: number): T[][] {
   return out
 }
 
-function WikiCardImagePlaceholder({
-  instance,
+function WikiCardImage({
+  instanceId,
   borderColor,
-  iconColor,
 }: {
-  instance: WikiInstance
+  instanceId: WikiInstance["id"]
   borderColor: string
-  iconColor: string
 }) {
-  const Icon = instance.icon
+  const image = WIKI_CARD_IMAGES[instanceId]
 
   return (
     <div
-      className="relative flex w-full aspect-video flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border-2 bg-black/5 dark:bg-white/5"
+      className="relative flex w-full aspect-video items-center justify-center overflow-hidden rounded-lg border-2"
       style={{ borderColor }}
     >
-      <Icon className="size-8 opacity-40" style={{ color: iconColor }} />
-      <span className="text-xs font-medium opacity-30" style={{ color: iconColor }}>
-        Preview coming soon
-      </span>
+      <Image src={image.light} alt={`${instanceId} preview`} fill className="scale-[1.15] object-cover dark:hidden" />
+      <Image src={image.dark} alt={`${instanceId} preview`} fill className="hidden scale-[1.15] object-cover dark:block" />
     </div>
   )
 }
@@ -206,10 +226,9 @@ function WikiHubCard({ instance }: { instance: WikiInstance }) {
           </div>
 
           <div className="mb-4">
-            <WikiCardImagePlaceholder
-              instance={instance}
+            <WikiCardImage
+              instanceId={instance.id}
               borderColor="var(--hub-card-image-border)"
-              iconColor="var(--hub-card-title)"
             />
           </div>
 
