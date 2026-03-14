@@ -62,17 +62,4 @@ export const CREDIT_SECTIONS: CreditSection[] = [
       },
     ],
   },
-  {
-    id: "translators",
-    title: "Translators",
-    description: "Community members helping make Subway Builder Modded accessible worldwide.",
-    icon: "translators",
-    people: [
-      {
-        name: "ppiittii",
-        role: "Maintainer of the German translation of the Subway Builder Modded Website.",
-        link: "https://github.com/ppiittii",
-      },
-    ],
-  },
 ]
