@@ -76,6 +76,7 @@ export const WIKI_INSTANCES: WikiInstance[] = [
               "install-guide-windows",
               "install-guide-macos",
               "install-guide-linux",
+              "github-token",
             ],
           },
           {
