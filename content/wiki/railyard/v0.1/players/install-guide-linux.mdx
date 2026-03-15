@@ -9,13 +9,15 @@ This guide will walk you through installing and setting up Railyard on Linux.
 
 To install Railyard on Linux, navigate to the [download page](https://subwaybuildermodded.com/railyard). You should see a button with the auto-detected download for your operating system.
 
-:::important
+Install Flatpak if you do not have it already. You can find instructions for doing so [here](https://flatpak.org/setup/).
 
-If you are more than one major version of your distribution behind, you may need to download the "Legacy" version. You can find that by clicking on the dropdown and selecting the "Legacy" option.
+Once you have Flatpak installed, run the following command:
 
-:::
+```bash
+flatpak --user install <Railyard Flatpak Path>
+```
 
-Install the app as you normally would any other app on Linux.
+This will install Railyard on your system.
 
 ## Step 2 - Setting Up Railyard {#setting-up-railyard}
 
@@ -28,6 +30,8 @@ If you did not manually modify this, click "`Auto-Detect`". Otherwise, select th
 After, you will be asked to select your game executable. Once again, click "`Auto-Detect`" if you have not modified this. Otherwise, select the location of your game executable.
 
 <p align="center"><img width="400" alt="image" src="/images/wiki/railyard/railyard-setup-exec.png" /></p>
+
+The next prompt will ask you to input your GitHub token. This is optional, but recommended to avoid hitting GitHub's API rate limits when using Railyard. If you do not have a token or do not wish to use one, simply click "Next" to continue with the setup process. You can always add a token later via the settings menu. To set up a GitHub token, see the [GitHub Token guide](https://subwaybuildermodded.com/wiki/railyard/v0.1/players/github-token).
 
 The final prompt will ask you whether you want to enable automatic updates. This will allow Railyard to prompt you every time a new version is released, allowing you to easily stay up to date with the latest features and bug fixes.
 
