@@ -37,7 +37,7 @@ const DOWNLOAD_TEMPLATE: DownloadEntry[] = [
   { os: "Windows", arch: "arm64",     label: "Windows (ARM64) - Portable (beta)",  type: ".zip",      size: "—", link: "#", assetName: "windows-arm64-portable.zip" },
   { os: "macOS",   arch: "universal", label: "macOS - Universal (beta)",           type: ".dmg",      size: "—", link: "#", assetName: "macos-universal.dmg" },
   { os: "macOS",   arch: "universal", label: "macOS (ZIP) - Universal (beta)",     type: ".zip",      size: "—", link: "#", assetName: "macos-universal.zip" },
-  { os: "Linux",   arch: "x64",       label: "Linux (x64) - (beta)",               type: ".flatpak",  size: "—", link: "#", assetName: "current-linux-amd64.flatpak " },
+  { os: "Linux",   arch: "x64",       label: "Linux (x64) - (beta)",               type: ".flatpak",  size: "—", link: "#", assetName: "current-linux-amd64.flatpak" },
 ]
 
 const RELEASE_API = "https://api.github.com/repos/subway-builder-modded/railyard/releases/latest"
