@@ -34,8 +34,6 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        env:
-          GITHUB_TOKEN: ${{ secrets.RAILYARD_GITHUB_TOKEN }}
         run: pnpm run build
 
       - name: Deploy to GitHub Pages

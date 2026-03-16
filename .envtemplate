@@ -1,3 +1,0 @@
-# Local GitHub token for release-cache generation (do not commit)
-# Create a fine-grained PAT with read-only access to required repos.
-GITHUB_TOKEN=<your_github_token>
