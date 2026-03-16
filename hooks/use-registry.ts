@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { toCumulativeDownloadTotals } from "@/lib/railyard/download-totals"
-import { getGithubReleases } from "@/lib/railyard/github-releases"
+import { getCustomVersions, getGithubReleases } from "@/lib/railyard/github-releases"
 import type {
   AssetDownloadCountsByVersion,
   ModManifest,
@@ -112,21 +112,12 @@ async function fetchGitHubLastUpdatedCandidates(repo: string): Promise<LastUpdat
 }
 
 async function fetchCustomLastUpdatedCandidates(url: string): Promise<LastUpdatedCandidate[]> {
-  const response = await fetch(url)
-  if (!response.ok) throw new Error(`Failed to fetch custom versions from ${url}`)
+  const versions = await getCustomVersions(url)
 
-  const data = await response.json() as unknown
-  const rawVersions = Array.isArray(data)
-    ? data
-    : Array.isArray((data as { versions?: unknown[] })?.versions)
-      ? (data as { versions: unknown[] }).versions
-      : []
-
-  return rawVersions
-    .map((entry) => (entry ?? {}) as Record<string, unknown>)
+  return versions
     .map((entry) => ({
-      version: typeof entry.version === "string" ? entry.version : "",
-      date: typeof entry.date === "string" ? entry.date : "",
+      version: entry.version,
+      date: entry.date,
       prerelease: Boolean(entry.prerelease),
     }))
     .filter((candidate) => isValidSemverVersion(candidate.version))

@@ -80,10 +80,61 @@ async function collectGithubRepos() {
   return [...repos].filter(Boolean)
 }
 
+async function collectCustomUrls() {
+  const [modIds, mapIds] = await Promise.all([fetchIndex("mods"), fetchIndex("maps")])
+
+  const [mods, maps] = await Promise.all([
+    Promise.all(modIds.map((id) => fetchManifest("mods", id))),
+    Promise.all(mapIds.map((id) => fetchManifest("maps", id))),
+  ])
+
+  const urls = new Set()
+  for (const manifest of [...mods, ...maps]) {
+    if (manifest?.update?.type === "custom" && typeof manifest?.update?.url === "string") {
+      const normalized = manifest.update.url.trim()
+      if (normalized) urls.add(normalized)
+    }
+  }
+
+  return [...urls]
+}
+
 async function fetchReleases(repo) {
   const url = `https://api.github.com/repos/${repo}/releases`
   const releases = await fetchJson(url, { headers: headers() })
   return Array.isArray(releases) ? releases.map(sanitizeRelease) : []
+}
+
+function sanitizeCustomVersion(input) {
+  const entry = input ?? {}
+  return {
+    version: typeof entry.version === "string" ? entry.version : "",
+    name:
+      typeof entry.name === "string"
+        ? entry.name
+        : (typeof entry.version === "string" ? entry.version : ""),
+    changelog: typeof entry.changelog === "string" ? entry.changelog : "",
+    date: typeof entry.date === "string" ? entry.date : "",
+    download_url: typeof entry.download_url === "string" ? entry.download_url : "",
+    game_version: typeof entry.game_version === "string" ? entry.game_version : "",
+    sha256: typeof entry.sha256 === "string" ? entry.sha256 : "",
+    downloads:
+      typeof entry.downloads === "number" && Number.isFinite(entry.downloads)
+        ? entry.downloads
+        : 0,
+    manifest: typeof entry.manifest === "string" ? entry.manifest : undefined,
+    prerelease: Boolean(entry.prerelease),
+  }
+}
+
+async function fetchCustomVersions(url) {
+  const payload = await fetchJson(url, { headers: headers() })
+  const rawVersions = Array.isArray(payload)
+    ? payload
+    : Array.isArray(payload?.versions)
+      ? payload.versions
+      : []
+  return rawVersions.map((entry) => sanitizeCustomVersion(entry))
 }
 
 async function buildReleaseMap(repos) {
@@ -109,20 +160,50 @@ async function buildReleaseMap(repos) {
   return result
 }
 
+async function buildCustomMap(urls) {
+  const queue = [...urls]
+  const result = {}
+
+  const workers = Array.from({ length: Math.min(WORKER_LIMIT, Math.max(1, queue.length)) }, async () => {
+    while (queue.length > 0) {
+      const url = queue.pop()
+      if (!url) return
+
+      try {
+        result[url] = await fetchCustomVersions(url)
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error)
+        console.warn(`[github-cache] Failed custom ${url}: ${message}`)
+        result[url] = []
+      }
+    }
+  })
+
+  await Promise.all(workers)
+  return result
+}
+
 async function main() {
-  const repos = await collectGithubRepos()
-  const releaseMap = await buildReleaseMap(repos)
+  const [repos, customUrls] = await Promise.all([
+    collectGithubRepos(),
+    collectCustomUrls(),
+  ])
+  const [releaseMap, customMap] = await Promise.all([
+    buildReleaseMap(repos),
+    buildCustomMap(customUrls),
+  ])
 
   const payload = {
     schema_version: 1,
     generated_at: new Date().toISOString(),
     repos: releaseMap,
+    custom_urls: customMap,
   }
 
   await mkdir(path.dirname(OUTPUT_PATH), { recursive: true })
   await writeFile(OUTPUT_PATH, `${JSON.stringify(payload, null, 2)}\n`, "utf8")
 
-  console.log(`[github-cache] wrote ${Object.keys(releaseMap).length} repos to ${OUTPUT_PATH}`)
+  console.log(`[github-cache] wrote ${Object.keys(releaseMap).length} repos and ${Object.keys(customMap).length} custom sources to ${OUTPUT_PATH}`)
 }
 
 main().catch((error) => {

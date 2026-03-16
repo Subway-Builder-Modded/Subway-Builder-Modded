@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { getGithubReleases } from "@/lib/railyard/github-releases"
+import { getCustomVersions, getGithubReleases } from "@/lib/railyard/github-releases"
 import type { UpdateConfig, VersionInfo } from "@/types/registry"
 
 interface UseVersionsResult {
@@ -66,30 +66,7 @@ export function useVersions(update?: UpdateConfig): UseVersionsResult {
 
           if (!cancelled) setVersions(mapped)
         } else if (currentUpdate.url) {
-          const res = await fetch(currentUpdate.url)
-          if (!res.ok) throw new Error("Failed to fetch version info")
-          const data = await res.json()
-
-          const rawVersions = Array.isArray(data)
-            ? data
-            : Array.isArray((data as { versions?: unknown[] })?.versions)
-              ? (data as { versions: unknown[] }).versions
-              : []
-
-          const parsed: VersionInfo[] = rawVersions
-            .map((entry) => (entry ?? {}) as Record<string, unknown>)
-            .map((entry: Record<string, unknown>) => ({
-                version: (entry.version as string) ?? "",
-                name: (entry.name as string) ?? (entry.version as string) ?? "",
-                changelog: (entry.changelog as string) ?? "",
-                date: (entry.date as string) ?? "",
-                download_url: (entry.download_url as string) ?? "",
-                game_version: (entry.game_version as string) ?? "",
-                sha256: (entry.sha256 as string) ?? "",
-                downloads: (entry.downloads as number) ?? 0,
-                manifest: entry.manifest as string | undefined,
-                prerelease: (entry.prerelease as boolean) ?? false,
-              }))
+          const parsed: VersionInfo[] = await getCustomVersions(currentUpdate.url)
 
           if (!cancelled) setVersions(parsed)
         }

@@ -14,10 +14,24 @@ export interface GithubRelease {
   assets: GithubReleaseAsset[]
 }
 
+export interface CustomVersionEntry {
+  version: string
+  name: string
+  changelog: string
+  date: string
+  download_url: string
+  game_version: string
+  sha256: string
+  downloads: number
+  manifest?: string
+  prerelease: boolean
+}
+
 interface GithubReleaseCacheFile {
   schema_version: number
   generated_at: string
   repos: Record<string, GithubRelease[]>
+  custom_urls?: Record<string, CustomVersionEntry[]>
 }
 
 const CACHE_URL = "/railyard/github-releases-cache.json"
@@ -25,6 +39,10 @@ let cachePromise: Promise<GithubReleaseCacheFile | null> | null = null
 
 function normalizeRepo(repo: string): string {
   return repo.trim().toLowerCase()
+}
+
+function normalizeCustomUrl(url: string): string {
+  return url.trim()
 }
 
 function sanitizeRelease(input: unknown): GithubRelease {
@@ -95,6 +113,54 @@ async function fetchGitHubReleasesDirect(repo: string): Promise<GithubRelease[]>
   return Array.isArray(releases) ? releases.map(sanitizeRelease) : []
 }
 
+function sanitizeCustomVersion(input: unknown): CustomVersionEntry {
+  const entry = (input ?? {}) as Record<string, unknown>
+  return {
+    version: typeof entry.version === "string" ? entry.version : "",
+    name:
+      typeof entry.name === "string"
+        ? entry.name
+        : (typeof entry.version === "string" ? entry.version : ""),
+    changelog: typeof entry.changelog === "string" ? entry.changelog : "",
+    date: typeof entry.date === "string" ? entry.date : "",
+    download_url: typeof entry.download_url === "string" ? entry.download_url : "",
+    game_version: typeof entry.game_version === "string" ? entry.game_version : "",
+    sha256: typeof entry.sha256 === "string" ? entry.sha256 : "",
+    downloads:
+      typeof entry.downloads === "number" && Number.isFinite(entry.downloads)
+        ? entry.downloads
+        : 0,
+    manifest: typeof entry.manifest === "string" ? entry.manifest : undefined,
+    prerelease: Boolean(entry.prerelease),
+  }
+}
+
+function getCachedCustomVersions(
+  cache: GithubReleaseCacheFile | null,
+  url: string
+): CustomVersionEntry[] | null {
+  if (!cache?.custom_urls) return null
+  const versions = cache.custom_urls[normalizeCustomUrl(url)]
+  if (!Array.isArray(versions)) return null
+  return versions
+}
+
+async function fetchCustomVersionsDirect(url: string): Promise<CustomVersionEntry[]> {
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(`Failed to fetch custom versions from ${url}`)
+  }
+
+  const data = await response.json() as unknown
+  const rawVersions = Array.isArray(data)
+    ? data
+    : Array.isArray((data as { versions?: unknown[] })?.versions)
+      ? (data as { versions: unknown[] }).versions
+      : []
+
+  return rawVersions.map((entry) => sanitizeCustomVersion(entry))
+}
+
 export async function getGithubReleases(repo: string): Promise<GithubRelease[]> {
   const normalizedRepo = repo.trim()
   if (!normalizedRepo) return []
@@ -106,4 +172,17 @@ export async function getGithubReleases(repo: string): Promise<GithubRelease[]> 
   }
 
   return fetchGitHubReleasesDirect(normalizedRepo)
+}
+
+export async function getCustomVersions(url: string): Promise<CustomVersionEntry[]> {
+  const normalizedUrl = normalizeCustomUrl(url)
+  if (!normalizedUrl) return []
+
+  const cache = await getReleaseCache()
+  const cached = getCachedCustomVersions(cache, normalizedUrl)
+  if (cached) {
+    return cached.map((version) => sanitizeCustomVersion(version))
+  }
+
+  return fetchCustomVersionsDirect(normalizedUrl)
 }
