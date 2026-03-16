@@ -13,6 +13,7 @@ const BASE_URL = "https://raw.githubusercontent.com/Subway-Builder-Modded/The-Ra
 const LAST_UPDATED_WORKER_LIMIT = 6
 
 type LastUpdatedCandidate = {
+  version: string
   date: string
   prerelease: boolean
 }
@@ -90,6 +91,15 @@ function determineLatestTimestamp(candidates: LastUpdatedCandidate[], updateType
   return 0
 }
 
+function isValidSemverVersion(version: string): boolean {
+  const trimmed = version.trim()
+  if (!trimmed) return false
+  if (trimmed.includes("-") || trimmed.includes("+")) return false
+
+  const normalized = trimmed.startsWith("v") ? trimmed : `v${trimmed}`
+  return /^v\d+\.\d+\.\d+$/.test(normalized)
+}
+
 async function fetchGitHubLastUpdatedCandidates(repo: string): Promise<LastUpdatedCandidate[]> {
   const response = await fetch(`https://api.github.com/repos/${repo}/releases`)
   if (!response.ok) throw new Error(`Failed to fetch GitHub releases for ${repo}`)
@@ -100,9 +110,10 @@ async function fetchGitHubLastUpdatedCandidates(repo: string): Promise<LastUpdat
   }>
 
   return releases.map((release) => ({
+    version: release.tag_name ?? "",
     date: release.published_at ?? "",
     prerelease: Boolean(release.prerelease),
-  }))
+  })).filter((candidate) => isValidSemverVersion(candidate.version))
 }
 
 async function fetchCustomLastUpdatedCandidates(url: string): Promise<LastUpdatedCandidate[]> {
@@ -119,9 +130,11 @@ async function fetchCustomLastUpdatedCandidates(url: string): Promise<LastUpdate
   return rawVersions
     .map((entry) => (entry ?? {}) as Record<string, unknown>)
     .map((entry) => ({
+      version: typeof entry.version === "string" ? entry.version : "",
       date: typeof entry.date === "string" ? entry.date : "",
       prerelease: Boolean(entry.prerelease),
     }))
+    .filter((candidate) => isValidSemverVersion(candidate.version))
 }
 
 async function resolveLastUpdatedForSource(args: LastUpdatedArgs): Promise<number> {
