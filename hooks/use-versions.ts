@@ -40,6 +40,11 @@ export function useVersions(update?: UpdateConfig): UseVersionsResult {
     let cancelled = false
 
     async function load() {
+      if (!currentUpdate) {
+        if (!cancelled) setLoading(false)
+        return
+      }
+
       try {
         setLoading(true)
         setError(null)
