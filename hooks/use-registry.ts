@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { toCumulativeDownloadTotals } from "@/lib/railyard/download-totals"
+import { getGithubReleases } from "@/lib/railyard/github-releases"
 import type {
   AssetDownloadCountsByVersion,
   ModManifest,
@@ -101,14 +102,7 @@ function isValidSemverVersion(version: string): boolean {
 }
 
 async function fetchGitHubLastUpdatedCandidates(repo: string): Promise<LastUpdatedCandidate[]> {
-  const response = await fetch(`https://api.github.com/repos/${repo}/releases`)
-  if (!response.ok) throw new Error(`Failed to fetch GitHub releases for ${repo}`)
-
-  const releases = await response.json() as Array<{
-    tag_name?: string
-    published_at?: string
-    prerelease?: boolean
-  }>
+  const releases = await getGithubReleases(repo)
 
   return releases.map((release) => ({
     version: release.tag_name ?? "",

@@ -1,22 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { getGithubReleases } from "@/lib/railyard/github-releases"
 import type { UpdateConfig, VersionInfo } from "@/types/registry"
-
-interface GithubAsset {
-  name: string
-  browser_download_url: string
-  download_count: number
-}
-
-interface GithubRelease {
-  tag_name: string
-  name: string
-  body: string
-  published_at: string
-  prerelease: boolean
-  assets: GithubAsset[]
-}
 
 interface UseVersionsResult {
   versions: VersionInfo[]
@@ -50,11 +36,7 @@ export function useVersions(update?: UpdateConfig): UseVersionsResult {
         setError(null)
 
         if (currentUpdate.type === "github" && currentUpdate.repo) {
-          const res = await fetch(
-            `https://api.github.com/repos/${currentUpdate.repo}/releases`
-          )
-          if (!res.ok) throw new Error("Failed to fetch GitHub releases")
-          const releases: GithubRelease[] = await res.json()
+          const releases = await getGithubReleases(currentUpdate.repo)
 
           const mapped: VersionInfo[] = releases.map((release) => {
             const manifestAsset = release.assets.find((a) =>
