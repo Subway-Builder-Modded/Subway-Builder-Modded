@@ -25,7 +25,7 @@ import {
   NavbarStart,
   NavbarTrigger,
 } from "@/components/ui/navbar"
-import type { NavbarIcon, NavbarItem } from "@/lib/navbar-config"
+import type { NavbarIcon, NavbarItem as NavbarConfigItem } from "@/lib/navbar-config"
 import { NAVBAR_ITEMS, NAVBAR_SPECIAL_STYLES } from "@/lib/navbar-config"
 import { cn } from "@/lib/utils"
 
@@ -72,7 +72,7 @@ export default function AppNavbar(props: NavbarProps) {
 
   const isExternalHref = (href?: string) => Boolean(href?.startsWith("http://") || href?.startsWith("https://"))
 
-  const renderLeftItem = (item: NavbarItem) => {
+  const renderLeftItem = (item: NavbarConfigItem) => {
     if (item.dropdown?.length) {
       const style = NAVBAR_SPECIAL_STYLES[item.id]
 
@@ -132,7 +132,7 @@ export default function AppNavbar(props: NavbarProps) {
     )
   }
 
-  const renderRightItem = (item: NavbarItem) => {
+  const renderRightItem = (item: NavbarConfigItem) => {
     const handleRightItemOpenChange = (nextOpen: boolean) => {
       if (nextOpen) {
         setActiveDropdownId(item.id)
