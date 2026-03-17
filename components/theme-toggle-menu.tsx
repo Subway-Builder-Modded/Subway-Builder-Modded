@@ -1,9 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Moon, Sun, SunMoon } from "lucide-react"
+import { Moon, Sun, SunMoon, type LucideIcon } from "lucide-react"
 import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
+import type { NavbarDropdownItem } from "@/lib/navbar-config"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,10 +28,12 @@ export function ThemeToggleMenu({
   className,
   open,
   onOpenChange,
+  items,
 }: {
   className: string
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  items?: NavbarDropdownItem[]
 }) {
   const { theme, resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
@@ -70,6 +73,23 @@ export function ThemeToggleMenu({
 
   const currentTheme: ThemeValue =
     mounted && (theme === "light" || theme === "dark" || theme === "system") ? theme : "system"
+
+  const themeOptions = React.useMemo(() => {
+    return themes.map((entry) => {
+      const configured = items?.find((item) => item.id === `theme-${entry.value}`)
+      const configuredIcon = configured?.icon
+      const Icon =
+        configuredIcon && !(typeof configuredIcon === "object" && "type" in configuredIcon)
+          ? (configuredIcon as LucideIcon)
+          : entry.Icon
+
+      return {
+        value: entry.value,
+        label: configured?.title ?? entry.label,
+        Icon,
+      }
+    })
+  }, [items])
 
   const CurrentIcon = currentTheme === "light" ? Sun : currentTheme === "dark" ? Moon : SunMoon
 
@@ -233,7 +253,7 @@ export function ThemeToggleMenu({
         }}
         className="min-w-56 !bg-background ring-1 ring-border rounded-xl shadow-lg duration-200 ease-[cubic-bezier(.22,.9,.35,1)] data-open:duration-220 data-open:ease-[cubic-bezier(.22,.9,.35,1)] data-closed:duration-190 data-closed:ease-[cubic-bezier(.3,.0,.2,1)]"
       >
-        {themes.map(({ value, label, Icon }) => (
+        {themeOptions.map(({ value, label, Icon }) => (
           <DropdownMenuItem
             key={value}
             data-theme-menu

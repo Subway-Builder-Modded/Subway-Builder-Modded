@@ -40,6 +40,7 @@ type NavbarHoverDropdownProps = {
 
 export function NavbarHoverDropdown({ item, className, open, onOpenChange }: NavbarHoverDropdownProps) {
   const { resolvedTheme } = useTheme()
+  const [isTriggerHovered, setIsTriggerHovered] = React.useState(false)
   const [hoveredItemId, setHoveredItemId] = React.useState<string | null>(null)
   const hoverCloseTimeoutRef = React.useRef<number | null>(null)
   const isTriggerHoveredRef = React.useRef(false)
@@ -82,6 +83,7 @@ export function NavbarHoverDropdown({ item, className, open, onOpenChange }: Nav
   }, [])
 
   const dropdownItems = item.dropdown ?? []
+  const triggerHoverColors = item.colors ? (isDark ? item.colors.dark : item.colors.light) : null
 
   return (
     <DropdownMenu
@@ -98,15 +100,27 @@ export function NavbarHoverDropdown({ item, className, open, onOpenChange }: Nav
           aria-label={item.title ?? item.id}
           target="_blank"
           rel="noreferrer"
-          className={cn("outline-none", className)}
+          className={cn("outline-none", className, !item.colors && "hover:bg-secondary/60 hover:text-primary")}
+          style={
+            isTriggerHovered && triggerHoverColors
+              ? {
+                  color: triggerHoverColors.text,
+                  backgroundColor: triggerHoverColors.background,
+                }
+              : undefined
+          }
           onPointerEnter={() => {
             isTriggerHoveredRef.current = true
+            setIsTriggerHovered(true)
             openMenu()
           }}
           onPointerLeave={() => {
             isTriggerHoveredRef.current = false
+            setIsTriggerHovered(false)
             scheduleHoverClose()
           }}
+          onFocus={() => setIsTriggerHovered(true)}
+          onBlur={() => setIsTriggerHovered(false)}
         >
           <NavbarItemIcon icon={item.icon} />
         </Link>
