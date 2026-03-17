@@ -9,7 +9,7 @@ import { TrainTrack, Package, Megaphone, Users, type LucideIcon } from "lucide-r
 import { Card, CardTitle } from "@/components/ui/card"
 import { LineBullet } from "@/components/ui/line-bullet"
 import type { NavbarIcon } from "@/lib/navbar-config"
-import { NON_THEMED_LINE_BULLET } from "@/lib/line-bullet-theme"
+import { getLineBulletTheme, NON_THEMED_LINE_BULLET } from "@/lib/line-bullet-theme"
 import { cn } from "@/lib/utils"
 
 type HomeItemBase = {
@@ -309,8 +309,9 @@ function HomepageCard({
 }) {
   const isRailyard = item.id === "railyard"
   const Icon = item.icon
-  const bulletColor = isRailyard ? "#00A97A" : NON_THEMED_LINE_BULLET.bulletColor
-  const bulletTextColor = isRailyard ? "#FFFFFF" : NON_THEMED_LINE_BULLET.textColor
+  const railyardBulletTheme = getLineBulletTheme("railyard")
+  const bulletColor = isRailyard ? railyardBulletTheme.bulletColor : NON_THEMED_LINE_BULLET.bulletColor
+  const bulletTextColor = isRailyard ? railyardBulletTheme.textColor : NON_THEMED_LINE_BULLET.textColor
 
   return (
     <Link href={item.href} className="block h-full outline-none">

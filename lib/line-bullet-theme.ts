@@ -7,7 +7,7 @@ const DEFAULT_BULLET_THEME = {
 
 const THEMED_BULLET_COLORS: Record<string, { bulletColor: string; textColor: string }> = {
   railyard: {
-    bulletColor: PROJECT_COLOR_SCHEMES.railyard.secondaryHex.light,
+    bulletColor: PROJECT_COLOR_SCHEMES.railyard.primaryHex.light,
     textColor: PROJECT_COLOR_SCHEMES.railyard.textHex.light,
   },
   "template-mod": {

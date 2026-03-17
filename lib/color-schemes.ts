@@ -76,24 +76,6 @@ export const PROJECT_COLOR_SCHEMES: Record<ProjectColorId, ThemedColorSet> = {
         dark: "#F2F2F2",
     },
   },
-  registry: {
-    primaryHex: {
-        light: "#2E6FCC55",
-        dark: "#4E90E055",
-    },
-    secondaryHex: {
-        light: "#172B5455",
-        dark: "#8EC1FF55",
-    },
-    tertiaryHex: {
-        light: "#172B54",
-        dark: "#8EC1FF",
-    },
-    textHex: {
-        light: "#232323",
-        dark: "#F2F2F2",
-    },
-  },
   website: {
     primaryHex: {
         light: "#D8780055",
