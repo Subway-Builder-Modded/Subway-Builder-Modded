@@ -182,6 +182,13 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
         colors: getGithubColors("railyard"),
       },
       {
+        id: "registry",
+        title: "Registry",
+        href: "https://github.com/Subway-Builder-Modded/The-Railyard",
+        icon: FolderGit2,
+        colors: getGithubColors("railyard"),
+      },
+      {
         id: "template-mod",
         title: "Template Mod",
         href: "https://github.com/Subway-Builder-Modded/template-mod",
