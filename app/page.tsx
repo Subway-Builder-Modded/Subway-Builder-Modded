@@ -17,6 +17,10 @@ type HomeItemBase = {
   title: string
   description: string
   href: string
+  lineBulletTextColor: {
+    light: string
+    dark: string
+  }
 }
 
 type HomeItem = HomeItemBase & (
@@ -60,13 +64,21 @@ const HOMEPAGE_ITEMS: HomeItem[] = [
     title: "Railyard",
     description: "All-in-one Map and Mod Manager for Subway Builder.",
     href: "/railyard",
+    lineBulletTextColor: {
+      light: "#FFFFFF",
+      dark: "#FFFFFF",
+    },
   },
   {
     id: "template-mod-docs",
     icon: Package,
     title: "Template Mod Documentation",
     description: "View the docs for the Subway Builder Modded Template Mod.",
-    href: "/wiki/template-mod/latest/home",
+    href: "/docs/template-mod/latest/home",
+    lineBulletTextColor: {
+      light: "#FFFFFF",
+      dark: "#000000",
+    },
   },
   {
     id: "updates",
@@ -74,6 +86,10 @@ const HOMEPAGE_ITEMS: HomeItem[] = [
     title: "Updates & Changelogs",
     description: "Stay up to date with the latest releases from Subway Builder Modded.",
     href: "/updates",
+    lineBulletTextColor: {
+      light: "#FFFFFF",
+      dark: "#000000",
+    },
   },
   {
     id: "credits",
@@ -81,6 +97,10 @@ const HOMEPAGE_ITEMS: HomeItem[] = [
     title: "Credits",
     description: "Subway Builder Modded is a community-driven project made possible by dedicated contributors.",
     href: "/credits",
+    lineBulletTextColor: {
+      light: "#FFFFFF",
+      dark: "#000000",
+    },
   },
   {
     id: "discord",
@@ -91,6 +111,10 @@ const HOMEPAGE_ITEMS: HomeItem[] = [
     title: "Join the Community",
     description: "Join our Discord server to connect with the community and get support.",
     href: "https://discord.gg/syG9YHMyeG",
+    lineBulletTextColor: {
+      light: "#FFFFFF",
+      dark: "#000000",
+    },
   },
 ]
 
@@ -310,8 +334,11 @@ function HomepageCard({
   const isRailyard = item.id === "railyard"
   const Icon = item.icon
   const railyardBulletTheme = getLineBulletTheme("railyard")
+  const defaultBulletTheme = NON_THEMED_LINE_BULLET
+  const activeBulletTheme = isRailyard ? railyardBulletTheme : defaultBulletTheme
   const bulletColor = isRailyard ? railyardBulletTheme.bulletColor : NON_THEMED_LINE_BULLET.bulletColor
-  const bulletTextColor = isRailyard ? railyardBulletTheme.textColor : NON_THEMED_LINE_BULLET.textColor
+  const bulletTextColor = item.lineBulletTextColor.light ?? activeBulletTheme.textColor
+  const bulletDarkTextColor = item.lineBulletTextColor.dark ?? activeBulletTheme.darkTextColor
 
   return (
     <Link href={item.href} className="block h-full outline-none">
@@ -349,6 +376,7 @@ function HomepageCard({
                     }
                     color={bulletColor}
                     textColor={bulletTextColor}
+                    darkTextColor={bulletDarkTextColor}
                     shape="circle"
                     size="sm"
                   />

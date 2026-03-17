@@ -45,11 +45,11 @@ export default function AppFooter() {
 
               <div className="flex flex-col gap-2 text-sm">
                 <Link
-                  href="/wiki"
+                  href="/docs"
                   className="flex items-center gap-2 text-muted-foreground hover:text-primary"
                 >
                   <BookText className="size-4 stroke-[2.25]" />
-                  <span>Wiki</span>
+                  <span>Docs</span>
                 </Link>
 
                 <Link

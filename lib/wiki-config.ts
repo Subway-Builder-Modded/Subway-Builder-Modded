@@ -40,7 +40,7 @@ export const WIKI_INSTANCES: WikiInstance[] = [
   {
     id: "railyard",
     label: "Railyard",
-    basePath: "/wiki/railyard",
+    basePath: "/docs/railyard",
     icon: TrainTrack,
     versioned: true,
     latestVersion: "v0.1",
@@ -83,7 +83,7 @@ export const WIKI_INSTANCES: WikiInstance[] = [
   {
     id: "template-mod",
     label: "Template Mod",
-    basePath: "/wiki/template-mod",
+    basePath: "/docs/template-mod",
     icon: FolderCode,
     versioned: true,
     latestVersion: "v1.0",

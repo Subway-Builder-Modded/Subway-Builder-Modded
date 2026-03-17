@@ -40,16 +40,16 @@ export const PROJECT_COLOR_SCHEMES: Record<ProjectColorId, ThemedColorSet> = {
   },
   "template-mod": {
     primaryHex: {
-        light: "#452A7155",
-        dark: "#9678E655",
+      light: "#1E3A8A55",
+      dark: "#60A5FA55",
     },
     secondaryHex: {
-        light: "#2D125955",
-        dark: "#AE90FE55",
+      light: "#17255455",
+      dark: "#93C5FD55",
     },
     tertiaryHex: {
-        light: "#2D1259",
-        dark: "#AE90FE",
+      light: "#172554",
+      dark: "#93C5FD",
     },
     textHex: { 
         light: "#232323",

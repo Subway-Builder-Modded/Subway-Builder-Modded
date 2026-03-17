@@ -93,8 +93,8 @@ export const NAVBAR_SPECIAL_STYLES: Record<string, NavbarSpecialStyle> = {
 export const NAVBAR_ITEMS: NavbarItem[] = [
   {
     id: "wiki",
-    title: "Wiki",
-    href: "/wiki",
+    title: "Docs",
+    href: "/docs",
     icon: BookText,
     position: "left",
   },

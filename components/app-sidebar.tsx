@@ -827,7 +827,7 @@ export function AppWikiSidebar({ tree, versionDocSlugs }: AppWikiSidebarProps) {
             } as React.CSSProperties
           }
         >
-          <nav aria-label="Wiki navigation">
+          <nav aria-label="Docs navigation">
             <ul className="space-y-0.5">
               {(tree?.entries ?? []).map((entry) => (
                 <SidebarNavEntry

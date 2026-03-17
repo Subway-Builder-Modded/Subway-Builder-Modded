@@ -210,7 +210,7 @@ export function WikiHubPage() {
         <div className="flex justify-center">
           <h1 className="inline-flex items-center gap-4 text-4xl font-black tracking-tight sm:text-5xl">
             <BookText aria-hidden="true" className="size-[1.02em]" />
-            <span>Wiki</span>
+            <span>Docs</span>
           </h1>
         </div>
         <p className="mt-3 text-lg text-muted-foreground">

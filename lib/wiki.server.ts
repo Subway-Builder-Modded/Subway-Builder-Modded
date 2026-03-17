@@ -361,9 +361,9 @@ export async function resolveWikiDocFilePath(slug?: string[]) {
 
 export async function getWikiBreadcrumbs(slug?: string[]): Promise<WikiBreadcrumbItem[]> {
   const resolved = resolveWikiRoute(slug)
-  if (!resolved) return [{ label: "Wiki", href: "/wiki" }]
+  if (!resolved) return [{ label: "Docs", href: "/docs" }]
 
-  const items: WikiBreadcrumbItem[] = [{ label: "Wiki", href: "/wiki" }]
+  const items: WikiBreadcrumbItem[] = [{ label: "Docs", href: "/docs" }]
 
   const isHomePage = resolved.docSlug === "home"
 
