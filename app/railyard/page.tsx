@@ -177,16 +177,9 @@ const INDEX_BASE = "https://raw.githubusercontent.com/Subway-Builder-Modded/The-
 // ─── Page ─────────────────────────────────────────────────────────────────
 
 export default function RailyardPage() {
-  const heroRef = useRef<HTMLElement | null>(null)
   const { scrollY } = useScroll()
   const heroScale = useTransform(scrollY, [0, 900], [1, 1.32])
   const heroY = useTransform(scrollY, [0, 900], [0, -140])
-  const { scrollYProgress: heroExitProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  })
-  const heroContentOpacity = useTransform(heroExitProgress, [0.22, 0.42], [1, 0])
-  const heroContentY = useTransform(heroExitProgress, [0.22, 0.42], [0, 24])
 
   const [menuOpen, setMenuOpen] = useState(false)
   const [downloads, setDownloads] = useState<DownloadEntry[]>(DOWNLOAD_TEMPLATE)
@@ -263,7 +256,7 @@ export default function RailyardPage() {
     <main className="railyard-accent min-h-screen bg-background text-foreground">
 
       {/* ─── Hero ─────────────────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative h-svh">
+      <section className="relative h-svh">
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
             className="absolute inset-0"
@@ -294,10 +287,7 @@ export default function RailyardPage() {
 
         {/* Hero content */}
         <div className="relative z-10 flex h-full items-end px-[clamp(1.5rem,5vw,4rem)] pb-[max(env(safe-area-inset-bottom),clamp(3rem,12svh,8rem))]">
-          <motion.div
-            style={{ opacity: heroContentOpacity, y: heroContentY }}
-            className="w-full max-w-[min(92vw,48rem)]"
-          >
+          <div className="w-full max-w-[min(92vw,48rem)]">
             {/* Title */}
             <h1 className="inline-flex items-center gap-4 -translate-y-1 text-[clamp(2.6rem,min(8vw,9svh),4.8rem)] font-black leading-[1] tracking-[-0.03em]">
               <TrainTrack aria-hidden="true" className="size-[0.72em]" />
@@ -396,7 +386,7 @@ export default function RailyardPage() {
                 </span>
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 

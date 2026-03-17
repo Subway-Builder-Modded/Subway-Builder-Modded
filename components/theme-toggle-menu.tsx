@@ -23,10 +23,18 @@ type DocumentWithViewTransition = Document & {
   startViewTransition?: (callback: () => void) => { finished: Promise<void> }
 }
 
-export function ThemeToggleMenu({ className }: { className: string }) {
+export function ThemeToggleMenu({
+  className,
+  open,
+  onOpenChange,
+}: {
+  className: string
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+}) {
   const { theme, resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
-  const [open, setOpen] = React.useState(false)
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false)
   const transitionTimeoutRef = React.useRef<number | null>(null)
   const hoverCloseTimeoutRef = React.useRef<number | null>(null)
   const closeLockTimeoutRef = React.useRef<number | null>(null)
@@ -34,6 +42,15 @@ export function ThemeToggleMenu({ className }: { className: string }) {
   const isContentHoveredRef = React.useRef(false)
   const isSwitchingThemeRef = React.useRef(false)
   const isClosingMenuRef = React.useRef(false)
+
+  const isControlled = typeof open === "boolean"
+  const menuOpen = isControlled ? open : uncontrolledOpen
+  const setMenuOpen = React.useCallback((nextOpen: boolean) => {
+    if (!isControlled) {
+      setUncontrolledOpen(nextOpen)
+    }
+    onOpenChange?.(nextOpen)
+  }, [isControlled, onOpenChange])
 
   React.useEffect(() => {
     setMounted(true)
@@ -107,23 +124,23 @@ export function ThemeToggleMenu({ className }: { className: string }) {
     hoverCloseTimeoutRef.current = window.setTimeout(() => {
       if (!isTriggerHoveredRef.current && !isContentHoveredRef.current) {
         beginCloseLock()
-        setOpen(false)
+        setMenuOpen(false)
       }
       hoverCloseTimeoutRef.current = null
     }, 120)
-  }, [beginCloseLock, clearHoverClose])
+  }, [beginCloseLock, clearHoverClose, setMenuOpen])
 
   const openMenu = React.useCallback(() => {
     if (isClosingMenuRef.current) return
     clearHoverClose()
     clearCloseLock()
-    setOpen(true)
-  }, [clearCloseLock, clearHoverClose])
+    setMenuOpen(true)
+  }, [clearCloseLock, clearHoverClose, setMenuOpen])
 
   const handleThemeChange = React.useCallback(
     (nextTheme: ThemeValue) => {
       if (nextTheme === currentTheme) {
-        setOpen(true)
+        setMenuOpen(true)
         return
       }
 
@@ -133,7 +150,7 @@ export function ThemeToggleMenu({ className }: { className: string }) {
 
       if (currentVisual === nextVisual) {
         setTheme(nextTheme)
-        setOpen(true)
+        setMenuOpen(true)
         return
       }
 
@@ -151,7 +168,7 @@ export function ThemeToggleMenu({ className }: { className: string }) {
 
       if (typeof doc.startViewTransition === "function") {
         beginCloseLock()
-        setOpen(false)
+        setMenuOpen(false)
         const transition = doc.startViewTransition(applyTheme)
         transition.finished.finally(endSwitch)
         return
@@ -159,11 +176,11 @@ export function ThemeToggleMenu({ className }: { className: string }) {
 
       root.classList.add("theme-transitioning")
       beginCloseLock()
-      setOpen(false)
+      setMenuOpen(false)
       applyTheme()
       transitionTimeoutRef.current = window.setTimeout(endSwitch, 220)
     },
-    [beginCloseLock, currentTheme, endSwitch, lockMenuColors, resolvedTheme, setTheme],
+    [beginCloseLock, currentTheme, endSwitch, lockMenuColors, resolvedTheme, setMenuOpen, setTheme],
   )
 
   const handleOpenChange = React.useCallback((nextOpen: boolean) => {
@@ -171,11 +188,11 @@ export function ThemeToggleMenu({ className }: { className: string }) {
     if (!nextOpen && (isTriggerHoveredRef.current || isContentHoveredRef.current)) return
     if (!nextOpen) beginCloseLock()
     if (nextOpen) clearCloseLock()
-    setOpen(nextOpen)
-  }, [beginCloseLock, clearCloseLock])
+    setMenuOpen(nextOpen)
+  }, [beginCloseLock, clearCloseLock, setMenuOpen])
 
   return (
-    <DropdownMenu open={open} onOpenChange={handleOpenChange} modal={false}>
+    <DropdownMenu open={menuOpen} onOpenChange={handleOpenChange} modal={false}>
       <DropdownMenuTrigger asChild>
         <button
           type="button"

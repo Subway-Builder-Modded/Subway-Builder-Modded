@@ -1,6 +1,7 @@
 "use client"
 import { usePathname } from "next/navigation"
 import { ThemeToggleMenu } from "@/components/theme-toggle-menu"
+import { GitHubDropdownMenu } from "@/components/github-dropdown-menu"
 import { Avatar } from "@/components/ui/avatar"
 import { Link } from "@/components/ui/link"
 import {
@@ -159,21 +160,7 @@ export default function AppNavbar(props: NavbarProps) {
             />
           </Link>
 
-          <Link
-            href="https://github.com/Subway-Builder-Modded"
-            aria-label="GitHub"
-            target="_blank"
-            rel="noreferrer"
-            className={socialLinkClassName}
-          >
-            <span
-              className="block size-5 bg-current"
-              style={{
-                WebkitMask: "url(/assets/github.svg) center / contain no-repeat",
-                mask: "url(/assets/github.svg) center / contain no-repeat",
-              }}
-            />
-          </Link>
+          <GitHubDropdownMenu className={socialLinkClassName} />
 
           <ThemeToggleMenu className={socialLinkClassName} />
         </NavbarSection>
