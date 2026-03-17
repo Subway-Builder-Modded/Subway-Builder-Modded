@@ -2,7 +2,6 @@ export type ProjectColorId =
   | "railyard"
   | "template-mod"
   | "creating-custom-maps"
-  | "registry"
   | "website"
 
 export type ModeHex = {
