@@ -253,37 +253,36 @@ export default function RailyardPage() {
   const modCountLabel = modCount == null ? "—" : modCount.toLocaleString()
 
   return (
-    <main className="railyard-accent min-h-screen bg-background text-foreground">
+    <main className="railyard-accent relative min-h-screen text-foreground">
+
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+        <motion.div
+          className="absolute inset-0"
+          style={{ scale: heroScale, y: heroY }}
+        >
+          <Image
+            src="/images/home/light.png"
+            alt=""
+            fill
+            priority
+            className="object-cover dark:hidden"
+          />
+          <Image
+            src="/images/home/dark.png"
+            alt=""
+            fill
+            priority
+            className="hidden object-cover dark:block"
+          />
+        </motion.div>
+        <div className="absolute inset-0 bg-white/8 dark:bg-black/42" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-background/35 dark:from-black/35 dark:to-background/55" />
+      </div>
 
       {/* ─── Hero ─────────────────────────────────────────────────────── */}
-      <section className="relative h-svh">
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute inset-0"
-            style={{ scale: heroScale, y: heroY }}
-            aria-hidden="true"
-          >
-            <Image
-              src="/images/home/light.png"
-              alt=""
-              fill
-              priority
-              className="object-cover dark:hidden"
-            />
-            <Image
-              src="/images/home/dark.png"
-              alt=""
-              fill
-              priority
-              className="hidden object-cover dark:block"
-            />
-          </motion.div>
-
-          {/* Overlays */}
-          <div className="absolute inset-0 bg-white/8 dark:bg-black/42" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/90" />
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/8 to-transparent pointer-events-none" />
-        </div>
+      <section className="relative z-10 h-svh">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/35" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/8 to-transparent pointer-events-none" />
 
         {/* Hero content */}
         <div className="relative z-10 flex h-full items-end px-[clamp(1.5rem,5vw,4rem)] pb-[max(env(safe-area-inset-bottom),clamp(3rem,12svh,8rem))]">
@@ -385,13 +384,30 @@ export default function RailyardPage() {
                   <span className="ml-1.5 text-sm text-muted-foreground">Mods Available</span>
                 </span>
               </Link>
+              <a
+                href="https://discord.gg/syG9YHMyeG"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Join the Subway Builder Modded Discord"
+                className="flex size-10 items-center justify-center rounded-lg border border-border/70 bg-background/60 backdrop-blur-sm hover:bg-accent/60 transition-colors group"
+              >
+                <Image
+                  src="/assets/discord.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="size-5 dark:invert"
+                  aria-hidden="true"
+                />
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* ─── Features ─────────────────────────────────────────────────── */}
-      <section className="px-[clamp(1.5rem,5vw,4rem)] py-20">
+      <section className="relative z-10 px-[clamp(1.5rem,5vw,4rem)]">
+        <div className="mx-auto max-w-screen-xl rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
         <div className="max-w-screen-lg mx-auto">
           <SectionHeader title="Features" />
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -437,12 +453,14 @@ export default function RailyardPage() {
             })}
           </div>
         </div>
+        </div>
       </section>
 
-      <Separator />
+      <SectionDivider />
 
       {/* ─── Workflow ──────────────────────────────────────────────────── */}
-      <section className="px-[clamp(1.5rem,5vw,4rem)] py-20">
+      <section className="relative z-10 px-[clamp(1.5rem,5vw,4rem)]">
+        <div className="mx-auto max-w-screen-xl rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
         <div className="max-w-screen-lg mx-auto">
           <SectionHeader title="From Download to Play in Three Stops" />
           <div className="mt-10 grid sm:grid-cols-3 gap-4">
@@ -479,12 +497,42 @@ export default function RailyardPage() {
             })}
           </div>
         </div>
+        </div>
       </section>
 
-      <Separator />
+      <SectionDivider />
+
+      {/* ─── Community ─────────────────────────────────────────────────── */}
+      <section className="relative z-10 px-[clamp(1.5rem,5vw,4rem)]">
+        <div className="mx-auto max-w-screen-xl rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
+          <div className="max-w-screen-lg mx-auto">
+            <SectionHeader title="Join the Community" />
+            <div className="mt-8 max-w-2xl">
+              <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                Talk with other players, get support, and stay up to date on new Railyard sneak peeks and updates from the dev team.
+              </p>
+              <a
+                href="https://discord.gg/syG9YHMyeG"
+                target="_blank"
+                rel="noreferrer"
+                className={cn(
+                  "mt-6 inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold shadow-md ring-1 ring-primary/35 transition-colors",
+                  "bg-primary text-primary-foreground hover:bg-primary/90"
+                )}
+              >
+                <Image src="/assets/discord.svg" alt="" width={18} height={18} className="size-[18px] invert dark:invert-0" aria-hidden="true" />
+                <span>Join the Discord</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <SectionDivider />
 
       {/* ─── All Downloads ─────────────────────────────────────────────── */}
-      <section className="px-[clamp(1.5rem,5vw,4rem)] py-20" id="all-downloads">
+      <section className="relative z-10 px-[clamp(1.5rem,5vw,4rem)] pb-24" id="all-downloads">
+        <div className="mx-auto max-w-screen-xl rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
         <div className="max-w-screen-lg mx-auto">
           <SectionHeader title="All Downloads" />
 
@@ -546,6 +594,7 @@ export default function RailyardPage() {
             </div>
           </div>
         </div>
+        </div>
 
       </section>
     </main>
@@ -559,6 +608,16 @@ function SectionHeader({ title }: { title: string }) {
     <div className="flex items-center gap-4">
       <h2 className="text-xl font-bold tracking-tight text-foreground">{title}</h2>
       <div className="flex-1 h-px bg-border" />
+    </div>
+  )
+}
+
+function SectionDivider() {
+  return (
+    <div className="relative z-10 px-[clamp(1.5rem,5vw,4rem)] py-10" aria-hidden="true">
+      <div className="mx-auto max-w-screen-xl">
+        <Separator className="bg-border/90" />
+      </div>
     </div>
   )
 }
