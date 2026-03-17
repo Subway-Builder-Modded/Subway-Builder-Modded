@@ -43,6 +43,7 @@ export function NavbarHoverDropdown({ item, className, open, onOpenChange }: Nav
   const [isTriggerHovered, setIsTriggerHovered] = React.useState(false)
   const [hoveredItemId, setHoveredItemId] = React.useState<string | null>(null)
   const hoverCloseTimeoutRef = React.useRef<number | null>(null)
+  const lastOpenAtRef = React.useRef(0)
   const isTriggerHoveredRef = React.useRef(false)
   const isContentHoveredRef = React.useRef(false)
 
@@ -62,11 +63,12 @@ export function NavbarHoverDropdown({ item, className, open, onOpenChange }: Nav
         onOpenChange(false)
       }
       hoverCloseTimeoutRef.current = null
-    }, 120)
+    }, 180)
   }, [clearHoverClose, onOpenChange])
 
   const openMenu = React.useCallback(() => {
     clearHoverClose()
+    lastOpenAtRef.current = Date.now()
     onOpenChange(true)
   }, [clearHoverClose, onOpenChange])
 
@@ -89,8 +91,9 @@ export function NavbarHoverDropdown({ item, className, open, onOpenChange }: Nav
     <DropdownMenu
       open={open}
       onOpenChange={(nextOpen) => {
-        if (!nextOpen && (isTriggerHoveredRef.current || isContentHoveredRef.current)) return
-        onOpenChange(nextOpen)
+        if (nextOpen) {
+          onOpenChange(true)
+        }
       }}
       modal={false}
     >
@@ -128,7 +131,15 @@ export function NavbarHoverDropdown({ item, className, open, onOpenChange }: Nav
 
       <DropdownMenuContent
         align="end"
-        sideOffset={8}
+        sideOffset={0}
+        onPointerDownOutside={() => {
+          clearHoverClose()
+          onOpenChange(false)
+        }}
+        onEscapeKeyDown={() => {
+          clearHoverClose()
+          onOpenChange(false)
+        }}
         onPointerEnter={() => {
           isContentHoveredRef.current = true
           openMenu()

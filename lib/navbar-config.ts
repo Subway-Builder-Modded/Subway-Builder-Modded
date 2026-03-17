@@ -125,32 +125,21 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
       src: "/assets/discord.svg",
     },
     position: "right",
-    colors: {
-      light: {
-        text: "#4f46e5",
-        background: "rgba(79, 70, 229, 0.15)",
-      },
-      dark: {
-        text: "#818cf8",
-        background: "rgba(129, 140, 248, 0.22)",
-      },
-    },
     dropdown: [
       {
-        id: "discord-join",
-        title: "Join Discord",
+        id: "subway-builder",
+        title: "Subway Builder",
         href: "https://discord.gg/jrNQpbytUQ",
-        icon: MessageCircle,
-        colors: {
-          light: {
-            text: "#4f46e5",
-            background: "rgba(79, 70, 229, 0.15)",
-          },
-          dark: {
-            text: "#818cf8",
-            background: "rgba(129, 140, 248, 0.22)",
-          },
+        icon: {
+            type: "mask",
+            src: "/assets/subway-builder.svg",
         },
+      },
+      {
+        id: "subway-builder-modded",
+        title: "Subway Builder Modded",
+        href: "https://discord.gg/syG9YHMyeG",
+        icon: TrainTrack,
       },
     ],
   },
@@ -162,16 +151,6 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
       src: "/assets/github.svg",
     },
     position: "right",
-    colors: {
-      light: {
-        text: "#15803d",
-        background: "rgba(34, 197, 94, 0.18)",
-      },
-      dark: {
-        text: "#4ade80",
-        background: "rgba(74, 222, 128, 0.20)",
-      },
-    },
     dropdown: [
       {
         id: "railyard",

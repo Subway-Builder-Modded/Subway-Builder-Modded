@@ -40,6 +40,7 @@ export function ThemeToggleMenu({
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false)
   const transitionTimeoutRef = React.useRef<number | null>(null)
   const hoverCloseTimeoutRef = React.useRef<number | null>(null)
+  const lastOpenAtRef = React.useRef(0)
   const closeLockTimeoutRef = React.useRef<number | null>(null)
   const isTriggerHoveredRef = React.useRef(false)
   const isContentHoveredRef = React.useRef(false)
@@ -143,17 +144,17 @@ export function ThemeToggleMenu({
     clearHoverClose()
     hoverCloseTimeoutRef.current = window.setTimeout(() => {
       if (!isTriggerHoveredRef.current && !isContentHoveredRef.current) {
-        beginCloseLock()
         setMenuOpen(false)
       }
       hoverCloseTimeoutRef.current = null
-    }, 120)
-  }, [beginCloseLock, clearHoverClose, setMenuOpen])
+    }, 180)
+  }, [clearHoverClose, setMenuOpen])
 
   const openMenu = React.useCallback(() => {
     if (isClosingMenuRef.current) return
     clearHoverClose()
     clearCloseLock()
+    lastOpenAtRef.current = Date.now()
     setMenuOpen(true)
   }, [clearCloseLock, clearHoverClose, setMenuOpen])
 
@@ -204,12 +205,13 @@ export function ThemeToggleMenu({
   )
 
   const handleOpenChange = React.useCallback((nextOpen: boolean) => {
-    if (nextOpen && isClosingMenuRef.current) return
-    if (!nextOpen && (isTriggerHoveredRef.current || isContentHoveredRef.current)) return
-    if (!nextOpen) beginCloseLock()
-    if (nextOpen) clearCloseLock()
-    setMenuOpen(nextOpen)
-  }, [beginCloseLock, clearCloseLock, setMenuOpen])
+    if (nextOpen) {
+      if (isClosingMenuRef.current) return
+      lastOpenAtRef.current = Date.now()
+      clearCloseLock()
+      setMenuOpen(true)
+    }
+  }, [clearCloseLock, setMenuOpen])
 
   return (
     <DropdownMenu open={menuOpen} onOpenChange={handleOpenChange} modal={false}>
@@ -240,9 +242,17 @@ export function ThemeToggleMenu({
 
       <DropdownMenuContent
         align="end"
-        sideOffset={8}
+        sideOffset={0}
         data-theme-menu
         data-theme-menu-surface
+        onPointerDownOutside={() => {
+          clearHoverClose()
+          setMenuOpen(false)
+        }}
+        onEscapeKeyDown={() => {
+          clearHoverClose()
+          setMenuOpen(false)
+        }}
         onPointerEnter={() => {
           isContentHoveredRef.current = true
           openMenu()

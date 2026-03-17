@@ -30,7 +30,7 @@ import { NAVBAR_ITEMS, NAVBAR_SPECIAL_STYLES } from "@/lib/navbar-config"
 import { cn } from "@/lib/utils"
 
 const socialLinkClassName =
-  "group rounded-lg p-2 text-muted-fg no-underline transition-all duration-200 ease-[cubic-bezier(.22,.9,.35,1)] hover:scale-[1.08] active:scale-[0.94]"
+  "group rounded-lg p-2 text-muted-fg no-underline transform-gpu transition-transform duration-180 ease-out hover:scale-[1.04] active:scale-[0.97]"
 
 function NavbarItemIcon({ icon, className }: { icon?: NavbarIcon; className?: string }) {
   if (!icon) return null
