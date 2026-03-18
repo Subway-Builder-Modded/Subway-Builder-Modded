@@ -9,10 +9,11 @@ export type ModeHex = {
 }
 
 export type ThemedColorSet = {
-    primaryHex: ModeHex
-    secondaryHex: ModeHex
-    tertiaryHex: ModeHex
+  primaryHex: ModeHex
+  secondaryHex: ModeHex
+  tertiaryHex: ModeHex
   textHex: ModeHex
+  textHexInverted: ModeHex
 }
 
 export function getModeHex(value: ModeHex, isDark: boolean) {
@@ -22,57 +23,68 @@ export function getModeHex(value: ModeHex, isDark: boolean) {
 export const PROJECT_COLOR_SCHEMES: Record<ProjectColorId, ThemedColorSet> = {
   railyard: {
     primaryHex: {
-        light: "#16775455",
-        dark: "#42AD7F55",
+      light: "#0B6B52",
+        dark: "#19D89C",
     },
     secondaryHex: {
-        light:"#04292055",
-        dark: "#19D89C55",
+      light: "#0FA67855",
+        dark: "#42AD7F55",
     },
     tertiaryHex: {
-        light: "#042920",
-        dark: "#19D89C",
+      light:"#0B6B5255",
+        dark: "#19D89C55",
     },
     textHex: {
         light: "#232323",
         dark: "#F2F2F2",
     },
+    textHexInverted: {
+        light: "#F2F2F2",
+        dark: "#232323",
+    },
   },
   "template-mod": {
     primaryHex: {
-      light: "#1E3A8A55",
-      dark: "#60A5FA55",
+      light: "#1D4ED8",
+      dark: "#93C5FD",
     },
     secondaryHex: {
-      light: "#17255455",
-      dark: "#93C5FD55",
+      light: "#2563EB55",
+      dark: "#60A5FA55",
     },
     tertiaryHex: {
-      light: "#172554",
-      dark: "#93C5FD",
+      light: "#1D4ED855",
+      dark: "#93C5FD55",
     },
     textHex: { 
         light: "#232323",
         dark: "#F2F2F2",
     },
+    textHexInverted: {
+        light: "#F2F2F2",
+        dark: "#232323",
+    },
   },
   website: {
     primaryHex: {
-        light: "#D8780055",
-        dark: "#F2992E55",
+      light: "#C2410C",
+        dark: "#FFBE73",
     },
     secondaryHex: {
-        light: "#5C260055",
-        dark: "#FFBE7355",
+      light: "#F9731655",
+        dark: "#F2992E55",
     },
-    
     tertiaryHex: {
-        light: "#5C2600",
-        dark: "#FFBE73",
+      light: "#C2410C55",
+        dark: "#FFBE7355",
     },
     textHex: {
         light: "#232323",
         dark: "#F2F2F2",
+    },
+    textHexInverted: {
+        light: "#F2F2F2",
+        dark: "#232323",
     },
   },
 }

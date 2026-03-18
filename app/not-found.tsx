@@ -25,10 +25,12 @@ export default function NotFound() {
           {LINES.map((line, index) => (
             <LineBullet
               key={`${line.id}-${index}`}
-              bullet={line.id}
-              color={line.color}
-              hoverColor={line.color}
-              textColor="#FFFFFF"
+              theme="default"
+              text={line.id}
+              colorRole="primaryHex"
+              textRole="textHexInverted"
+              colorOverride={{ light: line.color, dark: line.color }}
+              hoverColorOverride={{ light: line.color, dark: line.color }}
               invertOnHover
               shape="circle"
               size="sm"

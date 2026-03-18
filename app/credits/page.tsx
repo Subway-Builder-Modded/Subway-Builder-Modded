@@ -7,7 +7,6 @@ import remarkGfm from "remark-gfm"
 import { Card } from "@/components/ui/card"
 import { LineBullet } from "@/components/ui/line-bullet"
 import { CREDIT_SECTIONS, type CreditSection } from "@/lib/credits-config"
-import { NON_THEMED_LINE_BULLET } from "@/lib/line-bullet-theme"
 
 export const metadata: Metadata = {
   title: "Credits | Subway Builder Modded",
@@ -68,9 +67,10 @@ function CreditsSectionHeader({ title }: { title: string }) {
   return (
     <div className="mb-4 flex items-center gap-2.5">
       <LineBullet
-        bullet={title.slice(0, 1).toUpperCase()}
-        color={NON_THEMED_LINE_BULLET.bulletColor}
-        textColor={NON_THEMED_LINE_BULLET.textColor}
+        theme="default"
+        text={title.slice(0, 1).toUpperCase()}
+        colorRole="primaryHex"
+        textRole="textHexInverted"
         shape="circle"
         size="sm"
       />

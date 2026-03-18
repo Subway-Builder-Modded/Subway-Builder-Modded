@@ -9,7 +9,7 @@ import { TrainTrack, Package, Megaphone, Users, type LucideIcon } from "lucide-r
 import { Card, CardTitle } from "@/components/ui/card"
 import { LineBullet } from "@/components/ui/line-bullet"
 import type { NavbarIcon } from "@/lib/navbar-config"
-import { getLineBulletTheme, NON_THEMED_LINE_BULLET } from "@/lib/line-bullet-theme"
+import { getLineBulletTheme } from "@/lib/line-bullet-theme"
 import { cn } from "@/lib/utils"
 
 type HomeItemBase = {
@@ -333,12 +333,14 @@ function HomepageCard({
 }) {
   const isRailyard = item.id === "railyard"
   const Icon = item.icon
-  const railyardBulletTheme = getLineBulletTheme("railyard")
-  const defaultBulletTheme = NON_THEMED_LINE_BULLET
-  const activeBulletTheme = isRailyard ? railyardBulletTheme : defaultBulletTheme
-  const bulletColor = isRailyard ? railyardBulletTheme.bulletColor : NON_THEMED_LINE_BULLET.bulletColor
-  const bulletTextColor = item.lineBulletTextColor.light ?? activeBulletTheme.textColor
-  const bulletDarkTextColor = item.lineBulletTextColor.dark ?? activeBulletTheme.darkTextColor
+  const activeBulletTheme = getLineBulletTheme(isRailyard ? "railyard" : "default")
+  const bulletColor = activeBulletTheme.primaryHex.light
+  const textOverride = isRailyard
+    ? {
+        light: item.lineBulletTextColor.light,
+        dark: item.lineBulletTextColor.dark,
+      }
+    : undefined
 
   return (
     <Link href={item.href} className="block h-full outline-none">
@@ -371,12 +373,12 @@ function HomepageCard({
                   style={titleHeight > 0 ? { height: `${titleHeight}px` } : undefined}
                 >
                   <LineBullet
-                    bullet={
-                      Icon ? renderHomeItemIcon(Icon) : item.letter.slice(0, 2).toUpperCase()
-                    }
-                    color={bulletColor}
-                    textColor={bulletTextColor}
-                    darkTextColor={bulletDarkTextColor}
+                    theme={isRailyard ? "railyard" : "default"}
+                    icon={Icon ? renderHomeItemIcon(Icon) : undefined}
+                    text={Icon ? undefined : item.letter.slice(0, 2).toUpperCase()}
+                    colorRole="primaryHex"
+                    textRole="textHexInverted"
+                    textOverride={textOverride}
                     shape="circle"
                     size="sm"
                   />

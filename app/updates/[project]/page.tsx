@@ -33,11 +33,11 @@ export async function generateMetadata({
 function VersionCard({
   update,
   isLatest,
-  tertiaryHex,
+  primaryHex,
 }: {
   update: UpdateMeta
   isLatest: boolean
-  tertiaryHex: { light: string; dark: string }
+  primaryHex: { light: string; dark: string }
 }) {
   return (
     <Link href={update.href} className="block outline-none">
@@ -45,15 +45,15 @@ function VersionCard({
         className={cn(
           "group flex flex-col gap-3 px-6 py-5",
           "sm:flex-row sm:items-center sm:justify-between sm:gap-6",
-          "border border-border/60 border-l-[3px] border-l-[var(--version-card-border-left-light)] dark:border-l-[var(--version-card-border-left-dark)] bg-card/60",
+          "border border-border/60 border-l-[3px] [--version-card-border-left:var(--version-card-border-left-light)] dark:[--version-card-border-left:var(--version-card-border-left-dark)] !border-l-[var(--version-card-border-left)] bg-card/60",
           "transition-[transform,box-shadow,background-color,border-color] duration-200 ease-out",
-          "hover:-translate-y-0.5 hover:border-border hover:bg-card",
+          "hover:-translate-y-0.5 hover:border-border hover:bg-card hover:!border-l-[var(--version-card-border-left)]",
           "hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_24px_rgba(255,255,255,0.04)]",
           "focus-visible:ring-2 focus-visible:ring-ring/40",
         )}
         style={{
-          ["--version-card-border-left-light" as string]: tertiaryHex.light,
-          ["--version-card-border-left-dark" as string]: tertiaryHex.dark,
+          ["--version-card-border-left-light" as string]: primaryHex.light,
+          ["--version-card-border-left-dark" as string]: primaryHex.dark,
         }}
       >
         <div className="flex min-w-0 flex-col gap-1">
@@ -107,10 +107,10 @@ export default async function ProjectHubPage({
           <div
             className="flex min-h-12 w-full items-center justify-center rounded-2xl px-6 py-3 font-mta text-2xl font-bold bg-[var(--project-secondary-light)] text-[var(--project-text-light)] dark:bg-[var(--project-secondary-dark)] dark:text-[var(--project-text-dark)]"
             style={{
-              ["--project-secondary-light" as string]: project.secondaryHex.light,
-              ["--project-secondary-dark" as string]: project.secondaryHex.dark,
-              ["--project-text-light" as string]: project.textHex.light,
-              ["--project-text-dark" as string]: project.textHex.dark,
+              ["--project-secondary-light" as string]: project.primaryHex.light,
+              ["--project-secondary-dark" as string]: project.primaryHex.dark,
+              ["--project-text-light" as string]: project.textHexInverted.light,
+              ["--project-text-dark" as string]: project.textHexInverted.dark,
             }}
           >
             {project.label}
@@ -128,7 +128,7 @@ export default async function ProjectHubPage({
               key={update.version}
               update={update}
               isLatest={idx === 0}
-              tertiaryHex={project.tertiaryHex}
+              primaryHex={project.primaryHex}
             />
           ))}
         </div>

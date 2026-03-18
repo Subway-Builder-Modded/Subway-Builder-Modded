@@ -64,16 +64,16 @@ const WIKI_CARD_IMAGES: Record<WikiInstance["id"], { light: string; dark: string
 function getColors(instance: WikiInstance): CardThemeColors {
   const theme = PROJECT_COLOR_SCHEMES[instance.id]
 
-  const cardBgLight = theme.primaryHex.light
-  const cardBgDark = theme.primaryHex.dark
-  const titleTextLight = theme.primaryHex.light
-  const titleTextDark = theme.primaryHex.dark
-  const bulletBgLight = theme.secondaryHex.light
-  const bulletBgDark = theme.secondaryHex.dark
-  const imageBorderLight = theme.secondaryHex.light
-  const imageBorderDark = theme.secondaryHex.dark
-  const borderColorLight = hexAlpha(titleTextLight, 0.3)
-  const borderColorDark = hexAlpha(titleTextDark, 0.3)
+  const cardBgLight = theme.secondaryHex.light
+  const cardBgDark = theme.secondaryHex.dark
+  const titleTextLight = theme.textHex.light
+  const titleTextDark = theme.textHex.dark
+  const bulletBgLight = theme.tertiaryHex.light
+  const bulletBgDark = theme.tertiaryHex.dark
+  const imageBorderLight = theme.tertiaryHex.light
+  const imageBorderDark = theme.tertiaryHex.dark
+  const borderColorLight = theme.tertiaryHex.light
+  const borderColorDark = theme.tertiaryHex.dark
 
   return {
     cardBgLight,
@@ -170,9 +170,12 @@ function WikiHubCard({ instance }: { instance: WikiInstance }) {
         <div className="flex h-full flex-col px-6 pb-5 pt-4">
           <div className="mb-4">
             <LineBullet
-              bullet={instance.label}
-              color="var(--hub-card-bullet)"
-              textColor="var(--hub-card-text)"
+              theme={instance.id}
+              text={instance.label}
+              colorRole="tertiaryHex"
+              textRole="textHex"
+              colorOverride={{ light: "var(--hub-card-bullet)", dark: "var(--hub-card-bullet)" }}
+              textOverride={{ light: "var(--hub-card-text)", dark: "var(--hub-card-text)" }}
               shape="circle"
               size="md"
             />

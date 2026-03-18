@@ -1,17 +1,31 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import {
+  getLineBulletPreset,
+  resolveLineBulletHoverModeHex,
+  resolveLineBulletModeHex,
+  resolveLineBulletTextModeHex,
+  type LineBulletColorRole,
+  type LineBulletShape,
+  type LineBulletSize,
+  type LineBulletTextRole,
+  type LineBulletThemeId,
+} from "@/lib/line-bullet-theme"
 
-export type LineBulletShape = "circle" | "diamond" | "triangle"
-export type LineBulletSize = "sm" | "md" | "lg" | "xl"
+export type { LineBulletShape, LineBulletSize }
 
 export interface LineBulletProps extends React.HTMLAttributes<HTMLDivElement> {
-  bullet: React.ReactNode
-  color: string
-  textColor: string
-  darkColor?: string
-  darkTextColor?: string
-  hoverColor?: string
-  darkHoverColor?: string
+  icon?: React.ReactNode
+  text?: React.ReactNode
+  bullet?: React.ReactNode
+  theme?: LineBulletThemeId | string
+  preset?: string
+  colorRole?: LineBulletColorRole
+  textRole?: LineBulletTextRole
+  hoverColorRole?: LineBulletColorRole
+  colorOverride?: { light?: string; dark?: string }
+  textOverride?: { light?: string; dark?: string }
+  hoverColorOverride?: { light?: string; dark?: string }
   invertOnHover?: boolean
   shape?: LineBulletShape
   size?: LineBulletSize
@@ -24,50 +38,64 @@ const sizeMap = {
   xl: { box: "3.5rem", text: "1.75rem" },
 } as const
 
-function isBlackColor(value: string) {
-  const normalized = value.replace(/\s+/g, "").toLowerCase()
-  return normalized === "#000" || normalized === "#000000" || normalized === "black" || normalized === "rgb(0,0,0)"
-}
-
 function isWhiteColor(value: string) {
   const normalized = value.replace(/\s+/g, "").toLowerCase()
   return normalized === "#fff" || normalized === "#ffffff" || normalized === "white" || normalized === "rgb(255,255,255)"
 }
 
 export function LineBullet({
+  icon,
+  text,
   bullet,
-  color,
-  textColor,
-  darkColor,
-  darkTextColor,
-  hoverColor,
-  darkHoverColor,
-  invertOnHover = false,
-  shape = "circle",
-  size = "sm",
+  theme = "default",
+  preset,
+  colorRole,
+  textRole,
+  hoverColorRole,
+  colorOverride,
+  textOverride,
+  hoverColorOverride,
+  invertOnHover,
+  shape,
+  size,
   className,
   style,
   ...props
 }: LineBulletProps) {
-  const s = sizeMap[size]
-  const resolvedHoverColor = hoverColor ?? color
-  const resolvedDarkColor = darkColor ?? (!invertOnHover && isBlackColor(color) ? "#FFFFFF" : color)
-  const resolvedDarkHoverColor = darkHoverColor ?? darkColor ?? (!invertOnHover && isBlackColor(resolvedHoverColor) ? "#FFFFFF" : resolvedHoverColor)
-  const baseBulletBg = invertOnHover ? "#FFFFFF" : color
-  const baseBulletFg = invertOnHover ? "#000000" : textColor
-  const hoverBulletBg = invertOnHover ? resolvedHoverColor : color
-  const hoverBulletFg = invertOnHover ? "#FFFFFF" : textColor
-  const darkBaseBulletBg = invertOnHover ? "#FFFFFF" : resolvedDarkColor
-  const darkBaseBulletFg = invertOnHover
+  const presetConfig = getLineBulletPreset(preset)
+  const resolvedShape = shape ?? presetConfig.shape ?? "circle"
+  const resolvedSize = size ?? presetConfig.size ?? "sm"
+  const resolvedColorRole = colorRole ?? presetConfig.colorRole ?? "primaryHex"
+  const resolvedTextRole = textRole ?? presetConfig.textRole ?? "textHexInverted"
+  const resolvedHoverColorRole = hoverColorRole ?? presetConfig.hoverColorRole
+  const resolvedInvertOnHover = invertOnHover ?? presetConfig.invertOnHover ?? false
+
+  const colorHex = resolveLineBulletModeHex(theme, resolvedColorRole, colorOverride)
+  const textHex = resolveLineBulletTextModeHex(theme, resolvedTextRole, textOverride)
+  const hoverHex = resolveLineBulletHoverModeHex(
+    theme,
+    resolvedColorRole,
+    resolvedHoverColorRole,
+    hoverColorOverride
+  )
+
+  const bulletContent = icon ?? text ?? bullet
+  const s = sizeMap[resolvedSize]
+  const baseBulletBg = resolvedInvertOnHover ? "#FFFFFF" : colorHex.light
+  const baseBulletFg = resolvedInvertOnHover ? "#000000" : textHex.light
+  const hoverBulletBg = resolvedInvertOnHover ? hoverHex.light : hoverHex.light
+  const hoverBulletFg = resolvedInvertOnHover ? "#FFFFFF" : textHex.light
+  const darkBaseBulletBg = resolvedInvertOnHover ? "#FFFFFF" : colorHex.dark
+  const darkBaseBulletFg = resolvedInvertOnHover
     ? "#000000"
-    : darkTextColor ?? (isWhiteColor(darkBaseBulletBg) ? "#000000" : baseBulletFg)
-  const darkHoverBulletBg = invertOnHover ? resolvedDarkHoverColor : resolvedDarkHoverColor
-  const darkHoverBulletFg = invertOnHover
+    : textHex.dark ?? (isWhiteColor(darkBaseBulletBg) ? "#000000" : baseBulletFg)
+  const darkHoverBulletBg = resolvedInvertOnHover ? hoverHex.dark : hoverHex.dark
+  const darkHoverBulletFg = resolvedInvertOnHover
     ? "#FFFFFF"
-    : darkTextColor ?? (isWhiteColor(darkHoverBulletBg) ? "#000000" : hoverBulletFg)
+    : textHex.dark ?? (isWhiteColor(darkHoverBulletBg) ? "#000000" : hoverBulletFg)
   const bulletLabel =
-    typeof bullet === "string" || typeof bullet === "number"
-      ? String(bullet)
+    typeof bulletContent === "string" || typeof bulletContent === "number"
+      ? String(bulletContent)
       : "symbol"
 
   return (
@@ -85,8 +113,8 @@ export function LineBullet({
           "select-none overflow-hidden",
           "font-mta",
           "cursor-pointer transition-colors duration-300 ease-out",
-          shape === "circle" && "rounded-full",
-          shape === "triangle" && "[clip-path:polygon(50%_0%,0%_100%,100%_100%)]",
+          resolvedShape === "circle" && "rounded-full",
+          resolvedShape === "triangle" && "[clip-path:polygon(50%_0%,0%_100%,100%_100%)]",
           "bg-[var(--line-bullet-bg)] text-[var(--line-bullet-fg)]",
           "dark:bg-[var(--line-bullet-bg-dark)] dark:text-[var(--line-bullet-fg-dark)]",
           "hover:bg-[var(--line-bullet-bg-hover)] hover:text-[var(--line-bullet-fg-hover)]",
@@ -104,8 +132,8 @@ export function LineBullet({
           minWidth: s.box,
           height: s.box,
           fontSize: s.text,
-          padding: shape === "triangle" ? "0" : "0 0.25rem",
-          transform: shape === "diamond" ? "rotate(45deg) scale(0.707107)" : undefined,
+          padding: resolvedShape === "triangle" ? "0" : "0 0.25rem",
+          transform: resolvedShape === "diamond" ? "rotate(45deg) scale(0.707107)" : undefined,
         }}
         aria-label={`Route ${bulletLabel}`}
       >
@@ -113,14 +141,14 @@ export function LineBullet({
           style={{
             lineHeight: "0",
             transform:
-              shape === "diamond"
+              resolvedShape === "diamond"
                 ? "rotate(-45deg) translateY(0.02rem)"
-                : shape === "triangle"
+                : resolvedShape === "triangle"
                 ? "translateY(0.1rem)"
                 : undefined,
           }}
         >
-          {bullet}
+          {bulletContent}
         </span>
       </div>
     </div>

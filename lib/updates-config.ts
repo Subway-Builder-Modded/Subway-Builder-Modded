@@ -17,6 +17,7 @@ export type UpdateProject = {
   secondaryHex: ModeHex
   tertiaryHex: ModeHex
   textHex: ModeHex
+  textHexInverted: ModeHex
 }
 
 export const UPDATE_PROJECTS: UpdateProject[] = [
@@ -31,6 +32,7 @@ export const UPDATE_PROJECTS: UpdateProject[] = [
     secondaryHex: PROJECT_COLOR_SCHEMES.railyard.secondaryHex,
     tertiaryHex: PROJECT_COLOR_SCHEMES.railyard.tertiaryHex,
     textHex: PROJECT_COLOR_SCHEMES.railyard.textHex,
+    textHexInverted: PROJECT_COLOR_SCHEMES["template-mod"].textHexInverted,
   },
   {
     id: "template-mod",
@@ -43,6 +45,7 @@ export const UPDATE_PROJECTS: UpdateProject[] = [
     secondaryHex: PROJECT_COLOR_SCHEMES["template-mod"].secondaryHex,
     tertiaryHex: PROJECT_COLOR_SCHEMES["template-mod"].tertiaryHex,
     textHex: PROJECT_COLOR_SCHEMES["template-mod"].textHex,
+    textHexInverted: PROJECT_COLOR_SCHEMES["template-mod"].textHexInverted,
   },
 ]
 

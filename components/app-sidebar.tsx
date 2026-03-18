@@ -77,21 +77,30 @@ function useOnClickOutside(
 function InstanceIcon({
   instance,
   isDark,
+  variant = "trigger",
+  transparentBackground = false,
 }: {
   instance: WikiInstance
   isDark: boolean
+  variant?: "trigger" | "dropdown"
+  transparentBackground?: boolean
 }) {
   const Icon = instance.icon
   const scheme = PROJECT_COLOR_SCHEMES[instance.id]
-  const accent = getModeHex(scheme.primaryHex, isDark)
-  const text = getModeHex(scheme.tertiaryHex, isDark)
+
+  const secondary = getModeHex(scheme.secondaryHex, isDark)
+  const tertiary = getModeHex(scheme.tertiaryHex, isDark)
+  const text = getModeHex(scheme.textHex, isDark)
 
   return (
     <div
       className="flex size-8 shrink-0 items-center justify-center rounded-lg border transition-colors duration-150"
       style={{
-        backgroundColor: accent,
-        borderColor: hexAlpha(text, 0.35),
+        backgroundColor:
+          variant === "dropdown" && !transparentBackground
+            ? secondary
+            : "transparent",
+        borderColor: tertiary,
       }}
     >
       <Icon
@@ -106,22 +115,31 @@ function VersionIcon({
   instance,
   version,
   isDark,
+  variant = "trigger",
+  transparentBackground = false,
 }: {
   instance: WikiInstance
   version: WikiVersion
   isDark: boolean
+  variant?: "trigger" | "dropdown"
+  transparentBackground?: boolean
 }) {
   const Icon = version.icon ?? (isLatestVersion(instance, version.value) ? Tag : Archive)
   const scheme = PROJECT_COLOR_SCHEMES[instance.id]
-  const accent = getModeHex(scheme.primaryHex, isDark)
-  const text = getModeHex(scheme.tertiaryHex, isDark)
+
+  const secondary = getModeHex(scheme.secondaryHex, isDark)
+  const tertiary = getModeHex(scheme.tertiaryHex, isDark)
+  const text = getModeHex(scheme.textHex, isDark)
 
   return (
     <div
       className="flex size-8 shrink-0 items-center justify-center rounded-lg border transition-colors duration-150"
       style={{
-        backgroundColor: accent,
-        borderColor: hexAlpha(text, 0.35),
+        backgroundColor:
+          variant === "dropdown" && !transparentBackground
+            ? secondary
+            : "transparent",
+        borderColor: tertiary,
       }}
     >
       <Icon
@@ -142,16 +160,18 @@ function StatusBadge({
   isDark: boolean
 }) {
   const scheme = PROJECT_COLOR_SCHEMES[instance.id]
-  const text = getModeHex(scheme.tertiaryHex, isDark)
-  const mid = getModeHex(scheme.secondaryHex, isDark)
+
+  const secondary = getModeHex(scheme.secondaryHex, isDark)
+  const tertiary = getModeHex(scheme.tertiaryHex, isDark)
+  const text = getModeHex(scheme.textHex, isDark)
 
   if (kind === "latest") {
     return (
       <span
         className="inline-flex h-5 items-center rounded-full border px-1.5 text-[10px] font-semibold uppercase tracking-[0.08em]"
         style={{
-          backgroundColor: mid,
-          borderColor: hexAlpha(text, 0.35),
+          backgroundColor: secondary,
+          borderColor: tertiary,
           color: text,
         }}
       >
@@ -164,8 +184,8 @@ function StatusBadge({
     <span
       className="inline-flex h-5 items-center rounded-full border px-1.5 text-[10px] font-semibold uppercase tracking-[0.08em]"
       style={{
-        borderColor: hexAlpha(text, 0.25),
-        backgroundColor: "transparent",
+        backgroundColor: secondary,
+        borderColor: tertiary,
         color: text,
       }}
     >
@@ -179,12 +199,14 @@ function DropdownTrigger({
   onToggle,
   className,
   style,
+  chevronColor,
   children,
 }: {
   open: boolean
   onToggle: () => void
   className?: string
   style?: React.CSSProperties
+  chevronColor?: string
   children: React.ReactNode
 }) {
   return (
@@ -211,7 +233,7 @@ function DropdownTrigger({
           "ml-auto size-4 shrink-0 transition-transform duration-200",
           open && "rotate-180"
         )}
-        style={{ color: "currentColor" }}
+        style={{ color: chevronColor ?? "currentColor" }}
       />
     </button>
   )
@@ -253,9 +275,9 @@ function InstanceDropdownRow({
 }) {
   const [hovered, setHovered] = React.useState(false)
   const scheme = PROJECT_COLOR_SCHEMES[instance.id]
-  const accent = getModeHex(scheme.primaryHex, isDark)
-  const text = getModeHex(scheme.tertiaryHex, isDark)
-  const hoverBg = accent
+  
+  const secondary = getModeHex(scheme.secondaryHex, isDark)
+  const text = getModeHex(scheme.textHex, isDark)
 
   return (
     <NextLink
@@ -264,13 +286,18 @@ function InstanceDropdownRow({
       className="group/dropdown-item flex items-center gap-3 px-3 py-2 transition-colors duration-150"
       style={
         hovered
-          ? { backgroundColor: hoverBg, color: text }
+          ? { backgroundColor: secondary, color: text }
           : { backgroundColor: "transparent", color: text }
       }
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <InstanceIcon instance={instance} isDark={isDark} />
+      <InstanceIcon
+        instance={instance}
+        isDark={isDark}
+        variant="dropdown"
+        transparentBackground={hovered}
+      />
       <div className="min-w-0 flex-1 pr-1">
         <div className="text-[15px] font-semibold leading-tight">{instance.label}</div>
       </div>
@@ -293,9 +320,9 @@ function VersionDropdownRow({
 }) {
   const [hovered, setHovered] = React.useState(false)
   const scheme = PROJECT_COLOR_SCHEMES[instance.id]
-  const accent = getModeHex(scheme.primaryHex, isDark)
-  const text = getModeHex(scheme.tertiaryHex, isDark)
-  const hoverBg = accent
+
+  const secondary = getModeHex(scheme.secondaryHex, isDark)
+  const text = getModeHex(scheme.textHex, isDark)
   const latest = isLatestVersion(instance, version.value)
 
   return (
@@ -305,13 +332,19 @@ function VersionDropdownRow({
       className="group/dropdown-item flex items-center gap-3 px-3 py-2 transition-colors duration-150"
       style={
         hovered
-          ? { backgroundColor: hoverBg, color: text }
+          ? { backgroundColor: secondary, color: text }
           : { backgroundColor: "transparent", color: text }
       }
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <VersionIcon instance={instance} version={version} isDark={isDark} />
+      <VersionIcon
+        instance={instance}
+        version={version}
+        isDark={isDark}
+        variant="dropdown"
+        transparentBackground={hovered}
+      />
       <div className="min-w-0 flex-1 pr-1">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-[15px] font-semibold leading-tight">{version.label}</span>
@@ -460,18 +493,19 @@ function InstanceSwitcher({
   isDark: boolean
 }) {
   const scheme = PROJECT_COLOR_SCHEMES[activeInstance.id]
-  const accent = getModeHex(scheme.primaryHex, isDark)
-  const triggerBg = accent
-  const triggerText = getModeHex(scheme.tertiaryHex, isDark)
-  const triggerBorder = hexAlpha(triggerText, 0.25)
+
+  const secondary = getModeHex(scheme.secondaryHex, isDark)
+  const tertiary = getModeHex(scheme.tertiaryHex, isDark)
+  const text = getModeHex(scheme.textHex, isDark)
 
   return (
     <div>
       <DropdownTrigger
         open={open}
         onToggle={() => setOpen(!open)}
+        chevronColor={text}
         className="transition-opacity duration-150 hover:opacity-90"
-        style={{ backgroundColor: triggerBg, color: triggerText, borderColor: triggerBorder }}
+        style={{ backgroundColor: secondary, color: text, borderColor: tertiary }}
       >
         <InstanceIcon instance={activeInstance} isDark={isDark} />
         <div className="pr-1">
@@ -515,20 +549,22 @@ function VersionSwitcher({
   if (!activeInstance.versioned || !activeInstance.versions?.length) return null
 
   const scheme = PROJECT_COLOR_SCHEMES[activeInstance.id]
-  const triggerBg = getModeHex(scheme.primaryHex, isDark)
-  const triggerText = getModeHex(scheme.tertiaryHex, isDark)
-  const triggerBorder = hexAlpha(triggerText, 0.25)
+
+  const secondary = getModeHex(scheme.secondaryHex, isDark)
+  const tertiary = getModeHex(scheme.tertiaryHex, isDark)
+  const text = getModeHex(scheme.textHex, isDark)
 
   return (
     <div>
       <DropdownTrigger
         open={open}
         onToggle={() => setOpen(!open)}
+        chevronColor={text}
         className="transition-opacity duration-150 hover:opacity-90"
         style={{
-          backgroundColor: triggerBg,
-          color: triggerText,
-          borderColor: triggerBorder,
+          backgroundColor: secondary,
+          color: text,
+          borderColor: tertiary,
         }}
       >
         <VersionIcon instance={activeInstance} version={activeVersion} isDark={isDark} />
@@ -682,7 +718,11 @@ function SidebarNavEntry({
           className="mr-1 flex size-7 items-center justify-center"
         >
           <ChevronDown
-            className={cn("size-4 transition-transform duration-200", isOpen && "rotate-180")}
+            className={cn(
+              "size-4 transition-transform duration-200",
+              showIndicator && "text-[var(--wiki-active-color)]",
+              isOpen && "rotate-180"
+            )}
           />
         </button>
       </div>
@@ -770,8 +810,8 @@ export function AppWikiSidebar({ tree, versionDocSlugs }: AppWikiSidebarProps) {
 
   const footerOffset = useFooterOffset()
   const isCollapsed = state === "collapsed"
-  const activeScheme = PROJECT_COLOR_SCHEMES[activeInstance.id]
-  const lightColor = getModeHex(activeScheme.tertiaryHex, isDark)
+  const scheme = PROJECT_COLOR_SCHEMES[activeInstance.id]
+  const color = getModeHex(scheme.primaryHex, isDark)
 
   const [showExpandButton, setShowExpandButton] = React.useState(false)
 
@@ -821,9 +861,9 @@ export function AppWikiSidebar({ tree, versionDocSlugs }: AppWikiSidebarProps) {
           className="min-h-0 pl-4 pr-0 py-4"
           style={
             {
-              ["--wiki-hover-color" as string]: lightColor,
-              ["--wiki-active-color" as string]: lightColor,
-              ["--wiki-indicator-color" as string]: lightColor,
+              ["--wiki-hover-color" as string]: color,
+              ["--wiki-active-color" as string]: color,
+              ["--wiki-indicator-color" as string]: color,
             } as React.CSSProperties
           }
         >

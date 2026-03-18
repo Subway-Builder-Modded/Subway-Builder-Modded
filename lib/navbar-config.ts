@@ -17,16 +17,16 @@ import {
 } from "lucide-react"
 import { PROJECT_COLOR_SCHEMES } from "@/lib/color-schemes"
 
-function getGithubColors(project: keyof typeof PROJECT_COLOR_SCHEMES): NavbarItemColors {
+function getHoverColors(project: keyof typeof PROJECT_COLOR_SCHEMES): NavbarItemColors {
   const scheme = PROJECT_COLOR_SCHEMES[project]
   return {
     light: {
-      text: scheme.tertiaryHex.light,
-      background: scheme.primaryHex.light,
+      text: scheme.primaryHex.light,
+      background: scheme.secondaryHex.light,
     },
     dark: {
-      text: scheme.tertiaryHex.dark,
-      background: scheme.primaryHex.dark,
+      text: scheme.primaryHex.dark,
+      background: scheme.secondaryHex.dark,
     },
   }
 }
@@ -179,28 +179,28 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
         title: "Railyard",
         href: "https://github.com/Subway-Builder-Modded/railyard",
         icon: TrainTrack,
-        colors: getGithubColors("railyard"),
+        colors: getHoverColors("railyard"),
       },
       {
         id: "registry",
         title: "Registry",
         href: "https://github.com/Subway-Builder-Modded/The-Railyard",
         icon: FolderGit2,
-        colors: getGithubColors("railyard"),
+        colors: getHoverColors("railyard"),
       },
       {
         id: "template-mod",
         title: "Template Mod",
         href: "https://github.com/Subway-Builder-Modded/template-mod",
         icon: Package,
-        colors: getGithubColors("template-mod"),
+        colors: getHoverColors("template-mod"),
       },
       {
         id: "website",
         title: "Website",
         href: "https://github.com/Subway-Builder-Modded/website",
         icon: Globe,
-        colors: getGithubColors("website"),
+        colors: getHoverColors("website"),
       },
     ],
   },

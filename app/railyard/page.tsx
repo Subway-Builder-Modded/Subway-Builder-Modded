@@ -11,7 +11,6 @@ import { Card } from "@/components/ui/card"
 import { LineBullet } from "@/components/ui/line-bullet"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { PROJECT_COLOR_SCHEMES } from "@/lib/color-schemes"
 import { getGithubReleases } from "@/lib/railyard/github-releases"
 import { cn } from "@/lib/utils"
 
@@ -187,7 +186,6 @@ const WORKFLOW_STOPS = [
 ]
 
 const INDEX_BASE = "https://raw.githubusercontent.com/Subway-Builder-Modded/The-Railyard/refs/heads/main"
-const RAILYARD_COLORS = PROJECT_COLOR_SCHEMES.railyard
 
 // ─── Page ─────────────────────────────────────────────────────────────────
 
@@ -438,11 +436,11 @@ export default function RailyardPage() {
                 >
                   <div className="flex items-start gap-4">
                     <LineBullet
-                      bullet={feature.icon ? <feature.icon className="size-4" aria-hidden="true" /> : feature.letter}
-                      color={RAILYARD_COLORS.primaryHex.light}
-                      darkColor={RAILYARD_COLORS.primaryHex.dark}
-                      textColor={RAILYARD_COLORS.textHex.light}
-                      darkTextColor={RAILYARD_COLORS.textHex.dark}
+                      theme="railyard"
+                      icon={feature.icon ? <feature.icon className="size-4" aria-hidden="true" /> : undefined}
+                      text={feature.icon ? undefined : feature.letter}
+                      colorRole="primaryHex"
+                      textRole="textHexInverted"
                       shape="circle"
                       size="md"
                       className="shrink-0 mt-0.5"
@@ -494,13 +492,10 @@ export default function RailyardPage() {
                 >
                   <div className="mb-2 flex min-h-7 items-center gap-3">
                     <LineBullet
-                      bullet={<stop.icon className="size-3.5" aria-hidden="true" />}
-                      color={RAILYARD_COLORS.primaryHex.light}
-                      darkColor={RAILYARD_COLORS.primaryHex.dark}
-                      textColor={RAILYARD_COLORS.textHex.light}
-                      darkTextColor={RAILYARD_COLORS.textHex.dark}
-                      hoverColor={RAILYARD_COLORS.primaryHex.light}
-                      darkHoverColor={RAILYARD_COLORS.primaryHex.dark}
+                      theme="railyard"
+                      icon={<stop.icon className="size-3.5" aria-hidden="true" />}
+                      colorRole="primaryHex"
+                      textRole="textHexInverted"
                       shape="circle"
                       size="sm"
                       className={cn("shrink-0", !active && "opacity-85")}

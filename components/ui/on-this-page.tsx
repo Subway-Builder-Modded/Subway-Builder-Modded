@@ -92,14 +92,14 @@ export function WikiOnThisPage({ headings }: { headings: TocHeading[] }) {
   if (!headings.length) return null
 
   const singleHeading = headings.length === 1
-  const activeScheme = PROJECT_COLOR_SCHEMES[activeInstance.id]
-  const lightColor = getModeHex(activeScheme.tertiaryHex, isDark)
+  const scheme = PROJECT_COLOR_SCHEMES[activeInstance.id]
+  const color = getModeHex(scheme.primaryHex, isDark)
 
   return (
     <nav aria-label="On this page" className="xl:w-[19rem] xl:pl-10 2xl:pl-14">
       <div className="relative pl-4 pt-2">
         {!singleHeading ? (
-          <div className="pointer-events-none absolute top-2 bottom-3 left-0 w-px bg-border/70" />
+          <div className="pointer-events-none absolute top-2 bottom-4 left-0 w-[2px] bg-border/70" />
         ) : null}
 
         <ul className="space-y-1 pb-4">
@@ -113,7 +113,7 @@ export function WikiOnThisPage({ headings }: { headings: TocHeading[] }) {
                     "absolute top-1.5 bottom-1.5 w-[2px] rounded-full transition-all duration-150",
                     active ? "opacity-100" : "opacity-0"
                   )}
-                  style={{ left: "-16.5px", backgroundColor: lightColor }}
+                  style={{ left: "-16px", backgroundColor: color }}
                 />
                 <a
                   href={`#${heading.id}`}
@@ -124,7 +124,7 @@ export function WikiOnThisPage({ headings }: { headings: TocHeading[] }) {
                     heading.level >= 4 && "pl-7",
                     active ? "font-medium" : "text-muted-foreground hover:text-foreground"
                   )}
-                  style={active ? { color: lightColor } : undefined}
+                  style={active ? { color: color } : undefined}
                 >
                   {heading.text}
                 </a>

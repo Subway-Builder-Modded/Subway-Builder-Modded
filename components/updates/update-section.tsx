@@ -1,7 +1,6 @@
 import * as React from "react"
 
 import { LineBullet } from "@/components/ui/line-bullet"
-import { getLineBulletTheme } from "@/lib/line-bullet-theme"
 import { UPDATE_SECTION_CONFIG, type UpdateSectionType } from "@/lib/updates-config"
 import { cn } from "@/lib/utils"
 
@@ -16,17 +15,14 @@ export function UpdateSection({ type, children, className, themeId }: UpdateSect
   const config = UPDATE_SECTION_CONFIG[type]
   if (!config) return null
 
-  const bulletTheme = getLineBulletTheme(themeId)
-
   return (
     <div className={cn("mb-8 last:mb-0", className)}>
       <div className="mb-3 flex items-center gap-2.5">
         <LineBullet
-          bullet={config.letter}
-          color={bulletTheme.bulletColor}
-          textColor={bulletTheme.textColor}
-          darkColor={bulletTheme.darkBulletColor}
-          darkTextColor={bulletTheme.darkTextColor}
+          theme={themeId}
+          text={config.letter}
+          colorRole="primaryHex"
+          textRole="textHexInverted"
           shape="circle"
           size="sm"
         />

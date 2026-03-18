@@ -141,10 +141,10 @@ export default async function UpdatePage({
               "transition-transform duration-200 hover:scale-[1.02]",
             )}
             style={{
-              ["--project-secondary-light" as string]: project.secondaryHex.light,
-              ["--project-secondary-dark" as string]: project.secondaryHex.dark,
-              ["--project-text-light" as string]: project.textHex.light,
-              ["--project-text-dark" as string]: project.textHex.dark,
+              ["--project-secondary-light" as string]: project.primaryHex.light,
+              ["--project-secondary-dark" as string]: project.primaryHex.dark,
+              ["--project-text-light" as string]: project.textHexInverted.light,
+              ["--project-text-dark" as string]: project.textHexInverted.dark,
             }}
           >
             <span>{title}</span>

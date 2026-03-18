@@ -60,16 +60,16 @@ const UPDATE_CARD_IMAGES: Record<UpdateProject["id"], { light: string; dark: str
 }
 
 function getColors(project: UpdateProject): CardThemeColors {
-  const cardBgLight = project.primaryHex.light
-  const cardBgDark = project.primaryHex.dark
-  const titleTextLight = project.primaryHex.light
-  const titleTextDark = project.primaryHex.dark
-  const bulletBgLight = project.secondaryHex.light
-  const bulletBgDark = project.secondaryHex.dark
-  const imageBorderLight = project.secondaryHex.light
-  const imageBorderDark = project.secondaryHex.dark
-  const borderColorLight = hexAlpha(titleTextLight, 0.3)
-  const borderColorDark = hexAlpha(titleTextDark, 0.3)
+  const cardBgLight = project.secondaryHex.light
+  const cardBgDark = project.secondaryHex.dark
+  const titleTextLight = project.textHex.light
+  const titleTextDark = project.textHex.dark
+  const bulletBgLight = project.tertiaryHex.light
+  const bulletBgDark = project.tertiaryHex.dark
+  const imageBorderLight = project.tertiaryHex.light
+  const imageBorderDark = project.tertiaryHex.dark
+  const borderColorLight = project.tertiaryHex.light
+  const borderColorDark = project.tertiaryHex.dark
 
   return {
     cardBgLight,
@@ -154,9 +154,12 @@ function UpdateHubCard({
         <div className="flex h-full flex-col px-6 pb-5 pt-4">
           <div className="mb-4">
             <LineBullet
-              bullet={project.label}
-              color="var(--hub-card-bullet)"
-              textColor="var(--hub-card-text)"
+              theme={project.id}
+              text={project.label}
+              colorRole="tertiaryHex"
+              textRole="textHex"
+              colorOverride={{ light: "var(--hub-card-bullet)", dark: "var(--hub-card-bullet)" }}
+              textOverride={{ light: "var(--hub-card-text)", dark: "var(--hub-card-text)" }}
               shape="circle"
               size="md"
             />
