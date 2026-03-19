@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { useRegistry } from "@/hooks/use-registry"
 import { DEFAULT_SORT_STATE } from "@/lib/railyard/constants"
+import type { GithubRelease } from "@/lib/railyard/github-releases"
 import { getGithubReleases } from "@/lib/railyard/github-releases"
 import { buildTaggedItems, compareItems } from "@/lib/railyard/tagged-items"
 import { cn } from "@/lib/utils"
@@ -72,6 +73,10 @@ function buildDownloads(releaseAssets: { name: string; browser_download_url: str
     if (!asset) return entry
     return { ...entry, link: asset.browser_download_url, size: formatBytes(asset.size) }
   })
+}
+
+function pickLatestStableRelease(releases: GithubRelease[]): GithubRelease | null {
+  return releases.find((release) => !release.prerelease) ?? null
 }
 
 function getDownloadCatalog(downloads: DownloadEntry[]) {
@@ -240,9 +245,9 @@ export default function RailyardPage() {
     // Fetch latest release assets from cache-first GitHub source
     getGithubReleases("subway-builder-modded/railyard")
       .then((releases) => {
-        const latest = releases[0]
-        const assets = Array.isArray(latest?.assets) ? latest.assets : []
-        setDownloads(buildDownloads(assets))
+        const latestStableRelease = pickLatestStableRelease(releases)
+        if (!latestStableRelease) return
+        setDownloads(buildDownloads(latestStableRelease.assets))
       })
       .catch(() => { /* keep template with # links */ })
 
