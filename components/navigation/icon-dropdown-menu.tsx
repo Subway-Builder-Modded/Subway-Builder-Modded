@@ -24,6 +24,7 @@ type NavigationDropdownMenuProps = {
 
 export function NavigationDropdownMenu({ item, className, open, onOpenChange }: NavigationDropdownMenuProps) {
   const { resolvedTheme } = useTheme()
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false)
   const [isTriggerHovered, setIsTriggerHovered] = React.useState(false)
   const [hoveredDropdownItemId, setHoveredDropdownItemId] = React.useState<string | null>(null)
   const hoverCloseTimeoutRef = React.useRef<number | null>(null)
@@ -58,10 +59,25 @@ export function NavigationDropdownMenu({ item, className, open, onOpenChange }: 
     }, 210)
   }, [clearCloseLock])
 
+  const isControlled = typeof open === "boolean" && typeof onOpenChange === "function"
+  const menuOpen = isControlled ? open : uncontrolledOpen
+
+  const setMenuOpen = React.useCallback(
+    (nextOpen: boolean) => {
+      if (isControlled) {
+        onOpenChange?.(nextOpen)
+        return
+      }
+
+      setUncontrolledOpen(nextOpen)
+    },
+    [isControlled, onOpenChange],
+  )
+
   const closeMenu = React.useCallback(() => {
     beginCloseLock()
-    onOpenChange(false)
-  }, [beginCloseLock, onOpenChange])
+    setMenuOpen(false)
+  }, [beginCloseLock, setMenuOpen])
 
   const scheduleHoverClose = React.useCallback(() => {
     clearHoverClose()
@@ -76,8 +92,8 @@ export function NavigationDropdownMenu({ item, className, open, onOpenChange }: 
   const openMenu = React.useCallback(() => {
     clearHoverClose()
     clearCloseLock()
-    onOpenChange(true)
-  }, [clearCloseLock, clearHoverClose, onOpenChange])
+    setMenuOpen(true)
+  }, [clearCloseLock, clearHoverClose, setMenuOpen])
 
   React.useEffect(() => {
     return () => {
@@ -92,21 +108,19 @@ export function NavigationDropdownMenu({ item, className, open, onOpenChange }: 
 
   const dropdownItems = item.dropdown ?? []
   const triggerHoverColors = getNavbarThemeColors(item, isDark)
-  const isControlled = typeof open === "boolean" && typeof onOpenChange === "function"
 
   return (
     <DropdownMenu
-      {...(isControlled
-        ? {
-            open,
-            onOpenChange: (nextOpen: boolean) => {
-              if (nextOpen) {
-                clearCloseLock()
-                onOpenChange?.(true)
-              }
-            },
-          }
-        : {})}
+      open={menuOpen}
+      onOpenChange={(nextOpen: boolean) => {
+        if (nextOpen) {
+          clearCloseLock()
+          setMenuOpen(true)
+          return
+        }
+
+        closeMenu()
+      }}
       modal={false}
     >
       <DropdownMenuTrigger asChild>
