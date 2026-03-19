@@ -71,11 +71,12 @@ export const HOME_HERO = {
   },
   primaryActions: [
     {
-      label: "Railyard",
-      href: "/railyard",
+      label: "GitHub",
+      href: "https://github.com/Subway-Builder-Modded",
+      external: true,
       variant: "solid",
-      icon: TrainTrack,
-      scheme: "railyard",
+      icon: Github,
+      scheme: "default",
       size: "xl",
     },
     {
