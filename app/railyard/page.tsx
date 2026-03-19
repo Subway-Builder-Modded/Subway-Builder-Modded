@@ -313,21 +313,17 @@ export default function RailyardPage() {
             alt=""
             fill
             priority
-            className="object-cover brightness-[1.26] saturate-[1.08] contrast-[1.12] blur-[2px] dark:hidden"
+            className="object-cover blur-[6px] dark:hidden"
           />
           <Image
             src="/images/railyard/main-dark.png"
             alt=""
             fill
             priority
-            className="hidden object-cover brightness-[0.52] saturate-[1.02] contrast-[1.18] blur-[2px] dark:block"
+            className="hidden object-cover blur-[6px] dark:block"
           />
         </motion.div>
-        <div className="absolute inset-0 bg-white/30 dark:bg-black/62" />
-        <div className="absolute inset-0 bg-white/6 dark:bg-black/16 backdrop-blur-[1px]" />
-        <div className="absolute inset-0 bg-gradient-to-tr from-white/38 via-white/12 to-transparent dark:from-black/52 dark:via-black/18 dark:to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--ry-secondary)]/62 via-[var(--ry-secondary)]/28 to-[var(--ry-secondary)]/18" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/4 to-white/12 dark:via-black/8 dark:to-black/18" />
+        <div className="absolute inset-0 bg-[#28E6AA]/4 dark:bg-[#19D89C]/4" />
       </div>
 
       {/* ─── Hero + Recently Updated (Initial Viewport) ────────────────── */}
