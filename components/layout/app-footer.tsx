@@ -12,10 +12,10 @@ export default function AppFooter() {
 
   return (
     <footer className="bg-sidebar">
-      <div className="px-4 py-8">
-        <div className="grid gap-10 md:grid-cols-[1fr_max-content] md:gap-x-24 md:items-center">
+      <div className="px-[clamp(1rem,4vw,3.5rem)] py-8">
+        <div className="grid gap-10 md:grid-cols-[1fr_max-content] md:items-center md:gap-x-12">
           <div
-            className="grid grid-cols-1 gap-10 md:justify-self-start md:ml-8 md:gap-x-[clamp(2rem,5vw,8rem)] md:[grid-template-columns:repeat(var(--footer-column-count),minmax(0,max-content))]"
+            className="grid grid-cols-1 gap-8 md:justify-self-start md:gap-x-[clamp(1.25rem,2.8vw,3rem)] md:[grid-template-columns:repeat(var(--footer-column-count),minmax(0,max-content))]"
             style={{ ["--footer-column-count" as string]: String(sectionCount) }}
           >
             {FOOTER_NAV_SECTIONS.map((section) => {
@@ -58,8 +58,8 @@ export default function AppFooter() {
             })}
           </div>
 
-          <div className="flex w-full max-w-xs flex-col items-center gap-3 text-center md:justify-self-end md:mr-8">
-            <div className="flex items-center justify-center gap-2">
+          <div className="flex w-full flex-col items-center gap-3 text-center md:w-auto md:justify-self-end md:items-end md:text-right">
+            <div className="flex items-center justify-center gap-2 md:justify-end">
               <Link href="/" className="flex items-center gap-2 font-bold text-foreground transition-colors hover:text-secondary">
                 <Avatar
                   isSquare
@@ -71,11 +71,11 @@ export default function AppFooter() {
               </Link>
             </div>
 
-            <p className="max-w-xs text-sm text-muted-foreground">{SITE_DESCRIPTION}</p>
+            <p className="max-w-xs text-sm text-muted-foreground md:max-w-sm">{SITE_DESCRIPTION}</p>
           </div>
         </div>
 
-        <div className="mb-6 flex items-center justify-end md:mr-14">
+        <div className="mb-6 flex items-center justify-end">
           <div className="flex items-center gap-4">
             {FOOTER_SOCIAL_LINKS.map((social) => (
               <Link

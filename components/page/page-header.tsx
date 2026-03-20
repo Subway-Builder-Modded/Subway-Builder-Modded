@@ -102,7 +102,7 @@ export function PageHeader({
             ? "-top-7 h-24 max-w-sm"
             : isCompact
               ? "-top-7 h-24 max-w-sm"
-              : "-top-10 h-36 max-w-2xl",
+              : "-top-10 h-36 w-full",
           hasCustomScheme
             ? "bg-gradient-to-r from-transparent via-[var(--page-header-spotlight-light)] to-transparent dark:via-[var(--page-header-spotlight-dark)]"
             : "bg-gradient-to-r from-transparent via-primary/20 to-transparent"
@@ -177,7 +177,7 @@ export function PageHeader({
       </h1>
 
       {description ? (
-        <p className={cn("mx-auto text-muted-foreground", isCompact ? "mt-2 max-w-xs text-xs leading-4" : "mt-3 max-w-2xl text-base sm:text-lg")}>
+        <p className={cn("text-muted-foreground", isCompact ? "mt-2 max-w-xs text-xs leading-4" : "mt-3 w-full text-base sm:text-lg")}>
           <InlineMarkdown content={description} />
         </p>
       ) : null}

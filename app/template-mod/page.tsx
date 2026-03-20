@@ -123,13 +123,13 @@ function SectionShell({
 }) {
   return (
     <section className="relative z-10 px-[clamp(1.5rem,5vw,4rem)]">
-      <div className="mx-auto max-w-screen-xl rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
-        <div className="mx-auto max-w-screen-lg">
+      <div className="w-full rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
+        <div className="w-full">
           <div className="flex items-center gap-4">
             <h2 className="text-xl font-bold tracking-tight text-foreground">{title}</h2>
             <div className="h-px flex-1 bg-border" />
           </div>
-          {description ? <p className="mt-4 max-w-3xl text-sm text-muted-foreground sm:text-base">{description}</p> : null}
+          {description ? <p className="mt-4 w-full text-sm text-muted-foreground sm:text-base">{description}</p> : null}
           <div className="mt-8">{children}</div>
         </div>
       </div>
@@ -140,7 +140,7 @@ function SectionShell({
 function SectionDivider() {
   return (
     <div className="relative z-10 px-[clamp(1.5rem,5vw,4rem)] py-10" aria-hidden="true">
-      <div className="mx-auto max-w-screen-xl">
+      <div className="w-full">
         <div className="h-px bg-border/80" />
       </div>
     </div>
@@ -235,7 +235,7 @@ export default function TemplateModPage() {
       </div>
 
       <section className="relative z-20 h-[calc(100svh-clamp(3.75rem,6vh,4.75rem))] overflow-hidden px-[clamp(0.85rem,3.5vw,2.4rem)] pt-[clamp(2.25rem,4.3vh,3.8rem)] pb-[clamp(0.45rem,1vh,0.85rem)] mb-[clamp(4rem,9vh,8.5rem)]">
-        <div className="mx-auto grid h-full w-full max-w-screen-xl grid-rows-[minmax(0,1fr)_auto] gap-[clamp(0.4rem,1vh,0.75rem)] overflow-visible -translate-y-[clamp(0.6rem,1.8vh,1.5rem)]">
+        <div className="grid h-full w-full grid-rows-[minmax(0,1fr)_auto] gap-[clamp(0.4rem,1vh,0.75rem)] overflow-visible -translate-y-[clamp(0.6rem,1.8vh,1.5rem)]">
           <div className="relative z-30 flex min-h-0 items-center justify-center overflow-visible">
             <div className="relative z-30 flex w-full max-w-[min(92vw,50rem)] scale-[1.18] origin-center flex-col items-center text-center">
               <span

@@ -337,7 +337,7 @@ export default function RailyardPage() {
 
       {/* ─── Hero + Recently Updated (Initial Viewport) ────────────────── */}
       <section className="relative z-20 h-[calc(100svh-clamp(3.75rem,6vh,4.75rem))] overflow-hidden px-[clamp(0.85rem,3.5vw,2.4rem)] pt-[clamp(2.25rem,4.3vh,3.8rem)] pb-[clamp(0.45rem,1vh,0.85rem)] mb-[clamp(4rem,9vh,8.5rem)]">
-        <div className="mx-auto grid h-full w-full max-w-screen-xl grid-rows-[minmax(0,1fr)_auto] gap-[clamp(0.4rem,1vh,0.75rem)] overflow-visible -translate-y-[clamp(0.6rem,1.8vh,1.5rem)]">
+        <div className="grid h-full w-full grid-rows-[minmax(0,1fr)_auto] gap-[clamp(0.4rem,1vh,0.75rem)] overflow-visible -translate-y-[clamp(0.6rem,1.8vh,1.5rem)]">
           <div className="relative z-30 flex min-h-0 items-center justify-center overflow-visible">
             <div className="relative z-30 flex w-full max-w-[min(92vw,43rem)] scale-[1.25] flex-col items-center text-center origin-center">
               <span
@@ -557,8 +557,8 @@ export default function RailyardPage() {
 
       {/* ─── Features ─────────────────────────────────────────────────── */}
       <section className="relative z-10 px-[clamp(1.5rem,5vw,4rem)]">
-        <div className="mx-auto max-w-screen-xl rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
-        <div className="max-w-screen-lg mx-auto">
+        <div className="w-full rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
+        <div className="w-full">
           <SectionHeader title="Features" />
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
             {FEATURES.map((feature) => {
@@ -606,8 +606,8 @@ export default function RailyardPage() {
 
       {/* ─── Workflow ──────────────────────────────────────────────────── */}
       <section className="relative z-10 px-[clamp(1.5rem,5vw,4rem)]">
-        <div className="mx-auto max-w-screen-xl rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
-        <div className="max-w-screen-lg mx-auto">
+        <div className="w-full rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
+        <div className="w-full">
           <SectionHeader title="From Download to Play in Three Stops" />
           <div className="mt-10 grid sm:grid-cols-3 gap-4">
             {WORKFLOW_STOPS.map((stop) => {
@@ -650,8 +650,8 @@ export default function RailyardPage() {
 
       {/* ─── Documentation ───────────────────────────────────────────── */ }
       <section className="relative z-10 px-[clamp(1.5rem,5vw,4rem)]">
-        <div className="mx-auto max-w-screen-xl rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
-          <div className="max-w-screen-lg mx-auto">
+        <div className="w-full rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
+          <div className="w-full">
             <SectionHeader title="Documentation" />
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               <Link
@@ -708,8 +708,8 @@ export default function RailyardPage() {
 
       {/* ─── Community ─────────────────────────────────────────────────── */}
       <section className="relative z-10 px-[clamp(1.5rem,5vw,4rem)]">
-        <div className="mx-auto max-w-screen-xl rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
-          <div className="max-w-screen-lg mx-auto">
+        <div className="w-full rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
+          <div className="w-full">
             <SectionHeader title="Join the Community" />
             <div className="mt-8">
               <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
@@ -736,8 +736,8 @@ export default function RailyardPage() {
 
       {/* ─── All Downloads ─────────────────────────────────────────────── */}
       <section className="relative z-10 px-[clamp(1.5rem,5vw,4rem)] pb-24" id="all-downloads">
-        <div className="mx-auto max-w-screen-xl rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
-        <div className="max-w-screen-lg mx-auto">
+        <div className="w-full rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
+        <div className="w-full">
           <SectionHeader title="All Downloads" />
 
           <div className="mt-10 rounded-xl border border-border overflow-hidden">
@@ -842,7 +842,7 @@ function SectionHeader({ title, accent = false }: { title: string; accent?: bool
 function SectionDivider() {
   return (
     <div className="relative z-10 px-[clamp(1.5rem,5vw,4rem)] py-10" aria-hidden="true">
-      <div className="mx-auto max-w-screen-xl">
+      <div className="w-full">
         <Separator className="bg-border/90" />
       </div>
     </div>

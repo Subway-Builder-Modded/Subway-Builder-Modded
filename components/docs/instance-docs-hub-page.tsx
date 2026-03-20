@@ -62,7 +62,7 @@ export function InstanceDocsHubPage({ instance }: { instance: DocsInstance }) {
 
   return (
     <section className="relative px-5 pb-12 pt-8 sm:px-8 sm:pt-10">
-      <div className="mx-auto w-full max-w-screen-xl">
+      <div className="w-full">
         <PageHeader
           icon={BookText}
           title="Docs"
@@ -97,10 +97,8 @@ export function InstanceDocsHubPage({ instance }: { instance: DocsInstance }) {
           ]}
         />
 
-        <div
-          className="relative mx-auto mb-8 max-w-4xl overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm sm:p-6"
-        >
-          <div className="flex flex-wrap justify-center gap-5 md:gap-6">
+        <div className="relative mb-8 w-full overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm sm:p-6">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-3">
             {instance.hub.cards.map((card) => {
               const CardIcon = card.icon
               const href = buildDocHref(instance, docsVersion, card.docPath)
@@ -109,7 +107,7 @@ export function InstanceDocsHubPage({ instance }: { instance: DocsInstance }) {
                 <Link
                   key={card.docPath}
                   href={href}
-                  className="group block h-full w-full rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring/50 md:w-[calc(50%-0.75rem)]"
+                  className="group block h-full w-full rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                 >
                   <ThemedShowcaseCard
                     variant="docs"

@@ -43,7 +43,7 @@ export default async function LicensePage() {
 
   return (
     <section className="relative px-5 pb-12 pt-8 sm:px-8 sm:pt-10">
-      <div className="mx-auto w-full max-w-screen-xl">
+      <div className="w-full">
         <PageHeader
           icon={Scale}
           title="License"
@@ -59,7 +59,7 @@ export default async function LicensePage() {
               dark: hexAlpha(NEUTRAL_ACCENT.dark, 0.18),
             },
           }}
-          className="relative mx-auto mb-8 max-w-4xl"
+          className="relative mb-8 w-full"
         >
           <div className="relative">
             <h1 className="text-3xl font-black tracking-tight text-foreground sm:text-4xl">{title}</h1>
@@ -67,7 +67,7 @@ export default async function LicensePage() {
           </div>
         </ThemedShowcaseCard>
 
-        <article className="prose prose-zinc prose-code:before:content-none prose-code:after:content-none mx-auto max-w-4xl rounded-2xl border border-border/60 bg-card/55 p-5 shadow-sm dark:prose-invert sm:p-7">
+        <article className="prose prose-zinc prose-code:before:content-none prose-code:after:content-none max-w-none rounded-2xl border border-border/60 bg-card/55 p-5 shadow-sm dark:prose-invert sm:p-7">
           {content}
         </article>
       </div>

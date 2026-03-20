@@ -107,7 +107,7 @@ export default async function UpdatePage({
 
   return (
     <section className="relative px-5 pb-12 pt-8 sm:px-8 sm:pt-10">
-      <div className="mx-auto w-full max-w-screen-xl">
+      <div className="w-full">
         <ThemedShowcaseCard
           variant="header"
           palette={{ accent: project.accentColor }}

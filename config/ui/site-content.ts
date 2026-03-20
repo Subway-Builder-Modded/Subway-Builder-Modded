@@ -4,7 +4,6 @@ import {
   Heart,
   Info,
   Plus,
-  Sparkles,
   Users,
   Wrench,
   type LucideIcon,
@@ -16,7 +15,7 @@ import { PROJECT_COLOR_SCHEMES } from "@/config/theme/colors"
 export const CREDITS_PAGE_CONTENT = {
   title: "Credits",
   description: "The people and contributors helping Subway Builder Modded move forward.",
-  icon: Sparkles,
+  icon: Users,
   accentHex: "#FFFFFF",
   sectionIcons: {
     maintainers: Users,

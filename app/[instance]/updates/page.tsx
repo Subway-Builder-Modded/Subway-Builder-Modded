@@ -89,7 +89,7 @@ export default async function ProjectHubPage({
 
   return (
     <section className="relative px-5 pb-12 pt-8 sm:px-8 sm:pt-10">
-      <div className="mx-auto w-full max-w-screen-xl">
+      <div className="w-full">
         <PageHeader
           icon={Megaphone}
           title="Updates"
@@ -129,7 +129,7 @@ export default async function ProjectHubPage({
             {UPDATES_PAGE_COPY.emptyProjectText}
           </div>
         ) : (
-          <div className="mx-auto flex max-w-4xl flex-col gap-3">
+          <div className="mx-auto flex w-full max-w-4xl flex-col gap-3">
             {updates.map((update, idx) => (
               <VersionCard
                 key={update.version}
