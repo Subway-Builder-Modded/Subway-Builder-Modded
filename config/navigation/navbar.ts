@@ -11,7 +11,9 @@ import {
   SunMoon,
   TrainTrack,
   Unplug,
+  HeartHandshake,
   Users,
+  Scale,
   type LucideIcon,
 } from "lucide-react"
 import { PROJECT_COLOR_SCHEMES } from "@/config/theme/colors"
@@ -107,13 +109,6 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
     position: "left",
   },
   {
-    id: "credits",
-    title: "Credits",
-    href: "/credits",
-    icon: Users,
-    position: "left",
-  },
-  {
     id: "railyard",
     title: "Railyard",
     href: "/railyard",
@@ -137,6 +132,26 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
         title: "Browse Mods",
         href: "/railyard/browse?type=mods",
         icon: Unplug,
+      },
+    ],
+  },
+  {
+    id: "community",
+    href: "https://discord.gg/syG9YHMyeG",
+    icon: HeartHandshake,
+    position: "right",
+    dropdown: [
+      {
+        id: "credits",
+        title: "Credits",
+        href: "/credits",
+        icon: Users,
+      },
+      {
+        id: "license",
+        title: "License",
+        href: "/license",
+        icon: Scale,
       },
     ],
   },
