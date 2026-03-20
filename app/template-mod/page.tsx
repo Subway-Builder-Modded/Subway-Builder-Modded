@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useEffect, useMemo, useState, type ReactNode } from "react"
 import { AnimatePresence, motion, useScroll, useTransform } from "motion/react"
 import type { LucideIcon } from "lucide-react"
-import { ArrowRight, BookText, Bug, FileCode2, Github, Package, Rocket, Sparkles, TerminalSquare, Wrench, Tag } from "lucide-react"
+import { ArrowRight, BookText, Bug, FileCode2, GitPullRequestArrow, Package, Rocket, Sparkles, TerminalSquare, Wrench, Tag } from "lucide-react"
 import { useTheme } from "next-themes"
 import { createHighlighter } from "shiki"
 
@@ -48,7 +48,7 @@ type Capability = {
 }
 
 const HERO_ACTION_ICONS: Record<HeroActionId, LucideIcon> = {
-  "template-mod-get-started": Github,
+  "template-mod-get-started": GitPullRequestArrow,
   "template-mod-docs": BookText,
 }
 
@@ -407,7 +407,7 @@ export default function TemplateModPage() {
             external
             title="Clone Repository"
             description="Start from the official template and build your own mod."
-            icon={Github}
+            icon={GitPullRequestArrow}
             label="GitHub"
           />
         </div>

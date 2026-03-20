@@ -10,7 +10,6 @@ import {
   Sun,
   SunMoon,
   TrainTrack,
-  Unplug,
   HeartHandshake,
   Users,
   Scale,
@@ -217,7 +216,7 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
         },
       },
       {
-        id: "subway-builder-modded",
+        id: "Subway-Builder-Modded",
         title: "Subway Builder Modded",
         href: "https://discord.gg/syG9YHMyeG",
         icon: TrainTrack,

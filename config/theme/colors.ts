@@ -7,6 +7,7 @@ export type ModeHex = {
 
 export type ThemedColorSetBase = {
   accentColor: ModeHex
+  mutedColor: ModeHex
   primaryColor: ModeHex
   secondaryColor: ModeHex
 }
@@ -28,6 +29,11 @@ export const SHARED_TEXT_COLOR: ModeHex = {
 export const SHARED_TEXT_COLOR_INVERTED: ModeHex = {
   light: "#F2F2F2",
   dark: "#232323",
+}
+
+export const SHARED_MUTED_TEXT_COLOR: ModeHex = {
+  light: "#737373",
+  dark: "#9E9E9E",
 }
 
 const LIGHT_MODE_BACKGROUND_HEX = "#FAFAFA"
@@ -245,21 +251,25 @@ function withSharedTextColors(colors: ThemedColorSetBase): ThemedColorSet {
 export const PROJECT_COLOR_SCHEMES: Record<ProjectColorId, ThemedColorSet> = {
   railyard: withSharedTextColors({
     accentColor: createModeColorFromDarkAccent("#19D89C"),
+    mutedColor: createModeColorFromDarkVibrant("#2C6E58"),
     primaryColor: createModeColorFromDarkVibrant("#42AD7F55"),
     secondaryColor: createModeColorFromDarkVibrant("#19D89C55"),
   }),
   registry: withSharedTextColors({
     accentColor: createModeColorFromDarkAccent("#C77DFF"),
+    mutedColor: createModeColorFromDarkVibrant("#9D4EDD"),
     primaryColor: createModeColorFromDarkVibrant("#9D4EDD55"),
     secondaryColor: createModeColorFromDarkVibrant("#C77DFF55"),
   }),
   "template-mod": withSharedTextColors({
     accentColor: createModeColorFromDarkAccent("#93C5FD"),
+    mutedColor: createModeColorFromDarkVibrant("#3E6FA8"),
     primaryColor: createModeColorFromDarkVibrant("#60A5FA55"),
     secondaryColor: createModeColorFromDarkVibrant("#93C5FD55"),
   }),
   website: withSharedTextColors({
     accentColor: createModeColorFromDarkAccent("#FFBE73"),
+    mutedColor: createModeColorFromDarkVibrant("#F2992E"),
     primaryColor: createModeColorFromDarkVibrant("#F2992E55"),
     secondaryColor: createModeColorFromDarkVibrant("#FFBE7355"),
   }),

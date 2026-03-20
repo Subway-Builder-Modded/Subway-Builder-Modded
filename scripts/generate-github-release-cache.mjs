@@ -70,7 +70,7 @@ async function collectGithubRepos() {
     Promise.all(mapIds.map((id) => fetchManifest("maps", id))),
   ])
 
-  const repos = new Set(["subway-builder-modded/railyard"])
+  const repos = new Set(["Subway-Builder-Modded/railyard"])
   for (const manifest of [...mods, ...maps]) {
     if (manifest?.update?.type === "github" && typeof manifest?.update?.repo === "string") {
       repos.add(manifest.update.repo.trim().toLowerCase())
