@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import "./global.css"
 import { ThemeProvider } from "@/components/theme/theme-provider"
+import { PageColorSchemeProvider } from "@/components/theme/page-color-scheme-provider"
 import AppNavbar from "@/components/navigation/app-navbar"
 import { ScrollRestoration } from "@/components/navigation/scroll-restoration"
 import { FooterBars } from "@/components/ui/footer-bars"
@@ -37,17 +38,19 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <ScrollRestoration />
-          <div className="flex min-h-screen flex-col pt-14">
-            <AppNavbar />
-            <main className="flex-1">{children}</main>
-            <footer id="site-footer" className="border-t border-border/50 bg-background backdrop-blur-sm">
-              <div className="mx-auto flex items-center justify-center">
-                <FooterBars />
-              </div>
-              <AppFooter />
-            </footer>
-          </div>
+          <PageColorSchemeProvider>
+            <ScrollRestoration />
+            <div className="flex min-h-screen flex-col pt-14">
+              <AppNavbar />
+              <main className="flex-1">{children}</main>
+              <footer id="site-footer" className="border-t border-border/50 bg-background backdrop-blur-sm">
+                <div className="mx-auto flex items-center justify-center">
+                  <FooterBars />
+                </div>
+                <AppFooter />
+              </footer>
+            </div>
+          </PageColorSchemeProvider>
         </ThemeProvider>
       </body>
     </html>

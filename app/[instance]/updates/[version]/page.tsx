@@ -10,13 +10,12 @@ import remarkDirective from "remark-directive"
 import remarkFlexibleCodeTitles from "remark-flexible-code-titles"
 import remarkGfm from "remark-gfm"
 import { remarkHeadingId } from "remark-custom-heading-id"
-import type { CSSProperties } from "react"
 
 import { HomeLinkButton } from "@/components/home/home-link-button"
 import { ReleaseTagBadge } from "@/components/updates/release-tag-badge"
 import { UpdateSection } from "@/components/updates/update-section"
+import { ThemedShowcaseCard } from "@/components/ui/themed-showcase-card"
 import { getUpdateProjectById } from "@/config/content/updates"
-import { hexAlpha } from "@/lib/color"
 import { useMDXComponents as getMDXComponents } from "@/mdx-components"
 import remarkAdmonitionDirectives from "@/lib/remark-admonition-directives"
 import {
@@ -109,20 +108,11 @@ export default async function UpdatePage({
   return (
     <section className="relative px-5 pb-12 pt-8 sm:px-8 sm:pt-10">
       <div className="mx-auto w-full max-w-screen-xl">
-        <header
-          className="relative mx-auto mb-8 max-w-4xl overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm sm:p-6"
-          style={
-            {
-              ["--update-accent-light" as string]: project.accentColor.light,
-              ["--update-accent-dark" as string]: project.accentColor.dark,
-              ["--update-soft-light" as string]: hexAlpha(project.accentColor.light, 0.22),
-              ["--update-soft-dark" as string]: hexAlpha(project.accentColor.dark, 0.26),
-            } as CSSProperties
-          }
+        <ThemedShowcaseCard
+          variant="header"
+          palette={{ accent: project.accentColor }}
+          className="mx-auto mb-8 max-w-4xl"
         >
-          <span className="absolute inset-x-0 top-0 h-0.5 bg-[var(--update-accent-light)] dark:bg-[var(--update-accent-dark)]" />
-          <span className="pointer-events-none absolute -right-16 -top-20 size-40 rounded-full bg-[var(--update-soft-light)] blur-3xl dark:bg-[var(--update-soft-dark)]" />
-
           <div className="relative">
             <div className="mb-4">
               <HomeLinkButton
@@ -131,7 +121,6 @@ export default async function UpdatePage({
                   href: `/${project.id}/updates`,
                   icon: ArrowLeft,
                   variant: "outline",
-                  scheme: project.id,
                   size: "sm",
                 }}
               />
@@ -160,7 +149,7 @@ export default async function UpdatePage({
               }[tag]}
             </div>
           </div>
-        </header>
+        </ThemedShowcaseCard>
 
         <article className="prose prose-zinc prose-code:before:content-none prose-code:after:content-none mx-auto max-w-4xl rounded-2xl border border-border/60 bg-card/55 p-5 shadow-sm dark:prose-invert sm:p-7">
           {content}

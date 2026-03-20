@@ -307,8 +307,8 @@ export default function RailyardPage() {
     <main
       className={cn(
         "railyard-accent relative min-h-screen text-foreground",
-        "[--ry-accent:#28E6AA] [--ry-primary:#51BD8E55] [--ry-secondary:#28E6AA55] [--ry-text:#232323] [--ry-text-inverted:#F2F2F2]",
-        "dark:[--ry-accent:#19D89C] dark:[--ry-primary:#42AD7F55] dark:[--ry-secondary:#19D89C55] dark:[--ry-text:#F2F2F2] dark:[--ry-text-inverted:#232323]",
+        "[--ry-accent:var(--suite-accent-light)] [--ry-primary:var(--suite-primary-light)] [--ry-secondary:var(--suite-secondary-light)] [--ry-text:var(--suite-text-light)] [--ry-text-inverted:var(--suite-text-inverted-light)]",
+        "dark:[--ry-accent:var(--suite-accent-dark)] dark:[--ry-primary:var(--suite-primary-dark)] dark:[--ry-secondary:var(--suite-secondary-dark)] dark:[--ry-text:var(--suite-text-dark)] dark:[--ry-text-inverted:var(--suite-text-inverted-dark)]",
       )}
     >
 
@@ -425,31 +425,31 @@ export default function RailyardPage() {
                 )}
               </div>
 
-              <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 max-[560px]:mt-2.5 max-[560px]:gap-1.5">
-                <Link
-                  href="/railyard/browse?type=maps"
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border/70 bg-background/60 backdrop-blur-sm hover:bg-accent/60 transition-colors group sm:px-3 sm:py-1.5"
-                >
-                  <MapIcon className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground transition-colors" aria-hidden="true" />
-                  <span>
-                    <span className="text-xs font-bold tabular-nums sm:text-sm">{mapCountLabel}</span>
-                    <span className="ml-1 text-[11px] text-muted-foreground sm:text-xs">
-                      <MarkdownText content={heroCopy.mapCountLabelMd} />
+                <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 max-[560px]:mt-2.5 max-[560px]:gap-1.5">
+                  <Link
+                    href="/railyard/browse?type=maps"
+                    className="flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-foreground backdrop-blur-sm transition-colors hover:bg-accent/60 sm:px-3 sm:py-1.5"
+                  >
+                    <MapIcon className="h-3.5 w-3.5 shrink-0 self-center text-foreground/80 transition-colors group-hover:text-foreground" aria-hidden="true" />
+                    <span className="inline-flex items-center leading-none">
+                      <span className="text-xs font-bold tabular-nums sm:text-sm">{mapCountLabel}</span>
+                      <span className="ml-1 text-[11px] sm:text-xs">
+                        <MarkdownText content={heroCopy.mapCountLabelMd} />
+                      </span>
                     </span>
-                  </span>
-                </Link>
-                <Link
-                  href="/railyard/browse?type=mods"
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border/70 bg-background/60 backdrop-blur-sm hover:bg-accent/60 transition-colors group sm:px-3 sm:py-1.5"
-                >
-                  <Package className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground transition-colors" aria-hidden="true" />
-                  <span>
-                    <span className="text-xs font-bold tabular-nums sm:text-sm">{modCountLabel}</span>
-                    <span className="ml-1 text-[11px] text-muted-foreground sm:text-xs">
-                      <MarkdownText content={heroCopy.modCountLabelMd} />
+                  </Link>
+                  <Link
+                    href="/railyard/browse?type=mods"
+                    className="flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-foreground backdrop-blur-sm transition-colors hover:bg-accent/60 sm:px-3 sm:py-1.5"
+                  >
+                    <Package className="h-3.5 w-3.5 shrink-0 self-center text-foreground/80 transition-colors group-hover:text-foreground" aria-hidden="true" />
+                    <span className="inline-flex items-center leading-none">
+                      <span className="text-xs font-bold tabular-nums sm:text-sm">{modCountLabel}</span>
+                      <span className="ml-1 text-[11px] sm:text-xs">
+                        <MarkdownText content={heroCopy.modCountLabelMd} />
+                      </span>
                     </span>
-                  </span>
-                </Link>
+                  </Link>
                 <a
                   href="https://discord.gg/syG9YHMyeG"
                   target="_blank"
@@ -573,7 +573,6 @@ export default function RailyardPage() {
                 >
                   <div className="flex items-start gap-4">
                     <LineBullet
-                      theme="railyard"
                       icon={feature.icon ? <feature.icon className="size-4" aria-hidden="true" /> : undefined}
                       text={feature.icon ? undefined : feature.letter}
                       colorRole="accentColor"
@@ -629,7 +628,6 @@ export default function RailyardPage() {
                 >
                   <div className="mb-2 flex min-h-7 items-center gap-3">
                     <LineBullet
-                      theme="railyard"
                       icon={<stop.icon className="size-3.5" aria-hidden="true" />}
                       colorRole="accentColor"
                       textRole="textColorInverted"
@@ -662,7 +660,6 @@ export default function RailyardPage() {
               >
                 <div className="flex items-center gap-3">
                   <LineBullet
-                    theme="railyard"
                     icon={<Users className="size-3.5" aria-hidden="true" />}
                     colorRole="accentColor"
                     textRole="textColorInverted"
@@ -686,7 +683,6 @@ export default function RailyardPage() {
               >
                 <div className="flex items-center gap-3">
                   <LineBullet
-                    theme="railyard"
                     icon={<CodeXml className="size-3.5" aria-hidden="true" />}
                     colorRole="accentColor"
                     textRole="textColorInverted"

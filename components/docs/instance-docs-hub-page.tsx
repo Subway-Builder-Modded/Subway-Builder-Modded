@@ -1,12 +1,12 @@
 import Link from "next/link"
 import { ArrowRight, BookText, Tag } from "lucide-react"
-import type { CSSProperties } from "react"
 
 import { PageHeader } from "@/components/page/page-header"
 import { getUpdateProjectById } from "@/config/content/updates"
 import { PROJECT_COLOR_SCHEMES } from "@/config/theme/colors"
 import type { DocsInstance } from "@/config/content/docs"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { ThemedShowcaseCard } from "@/components/ui/themed-showcase-card"
 import { hexAlpha } from "@/lib/color"
 import { buildDocHref } from "@/lib/docs/shared"
 import { cn } from "@/lib/utils"
@@ -27,16 +27,12 @@ function getHubTheme(instance: DocsInstance) {
       light: hexAlpha(accent.light, 0.17),
       dark: hexAlpha(accent.dark, 0.24),
     },
-    cardVars: {
-      ["--docs-hub-accent-light" as string]: accent.light,
-      ["--docs-hub-accent-dark" as string]: accent.dark,
-      ["--docs-hub-primary-light" as string]: primary.light,
-      ["--docs-hub-primary-dark" as string]: primary.dark,
-      ["--docs-hub-ring-light" as string]: hexAlpha(accent.light, 0.38),
-      ["--docs-hub-ring-dark" as string]: hexAlpha(accent.dark, 0.46),
-      ["--docs-hub-soft-light" as string]: hexAlpha(accent.light, 0.17),
-      ["--docs-hub-soft-dark" as string]: hexAlpha(accent.dark, 0.24),
-    } as CSSProperties,
+    palette: {
+      accent,
+      primary,
+      text: colors.textColor,
+      textInverted: colors.textColorInverted,
+    },
   }
 }
 
@@ -115,21 +111,17 @@ export function InstanceDocsHubPage({ instance }: { instance: DocsInstance }) {
                   href={href}
                   className="group block h-full w-full rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring/50 md:w-[calc(50%-0.75rem)]"
                 >
-                  <Card
-                    style={hubTheme.cardVars}
+                  <ThemedShowcaseCard
+                    variant="docs"
+                    palette={hubTheme.palette}
                     className={cn(
-                      "relative h-full overflow-hidden rounded-xl border border-border/70 bg-card/80 shadow-sm transition-all duration-300",
-                      "hover:-translate-y-0.5 hover:border-transparent hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-black/30"
+                      "h-full"
                     )}
                   >
-                    <span className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-[var(--docs-hub-ring-light)] opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:ring-[var(--docs-hub-ring-dark)]" />
-                    <span className="absolute inset-x-0 top-0 h-0.5 bg-[var(--docs-hub-accent-light)] dark:bg-[var(--docs-hub-accent-dark)]" />
-                    <span className="pointer-events-none absolute -right-10 -top-10 size-24 rounded-full bg-[var(--docs-hub-soft-light)] blur-2xl dark:bg-[var(--docs-hub-soft-dark)]" />
-
                     <CardHeader className="gap-3 p-5">
                       <CardTitle className="text-base font-semibold leading-tight text-foreground">
                         <span className="flex items-center gap-2">
-                          <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-md border border-[var(--docs-hub-primary-light)] bg-[var(--docs-hub-primary-light)]/55 text-[var(--docs-hub-accent-light)] dark:border-[var(--docs-hub-primary-dark)] dark:bg-[var(--docs-hub-primary-dark)]/55 dark:text-[var(--docs-hub-accent-dark)]">
+                          <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-md border border-[var(--ts-card-primary-light)] bg-[var(--ts-card-primary-light)]/55 text-[var(--ts-card-accent-light)] dark:border-[var(--ts-card-primary-dark)] dark:bg-[var(--ts-card-primary-dark)]/55 dark:text-[var(--ts-card-accent-dark)]">
                             <CardIcon className="size-4" aria-hidden="true" />
                           </span>
                           <span>{card.title}</span>
@@ -138,12 +130,12 @@ export function InstanceDocsHubPage({ instance }: { instance: DocsInstance }) {
                       <CardDescription className="line-clamp-2 min-h-10 text-sm leading-5 text-muted-foreground">
                         {card.description}
                       </CardDescription>
-                      <span className="inline-flex items-center gap-1 text-sm font-medium text-[var(--docs-hub-accent-light)] transition-transform duration-300 group-hover:translate-x-0.5 dark:text-[var(--docs-hub-accent-dark)]">
+                      <span className="inline-flex items-center gap-1 text-sm font-medium text-[var(--ts-card-accent-light)] transition-transform duration-300 group-hover:translate-x-0.5 dark:text-[var(--ts-card-accent-dark)]">
                         View
                         <ArrowRight className="size-3.5" aria-hidden="true" />
                       </span>
                     </CardHeader>
-                  </Card>
+                  </ThemedShowcaseCard>
                 </Link>
               )
             })}

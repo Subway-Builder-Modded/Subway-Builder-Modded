@@ -6,6 +6,7 @@ import type { CSSProperties } from "react"
 
 import { PageHeader } from "@/components/page/page-header"
 import { ReleaseTagBadge } from "@/components/updates/release-tag-badge"
+import { ThemedShowcaseCard } from "@/components/ui/themed-showcase-card"
 import { getUpdateProjectById, UPDATE_PROJECTS } from "@/config/content/updates"
 import { UPDATES_PAGE_COPY } from "@/config/ui/site-content"
 import { hexAlpha } from "@/lib/color"
@@ -44,23 +45,11 @@ function VersionCard({
 }) {
   return (
     <Link href={update.href} className="group block outline-none">
-      <article
-        className="relative overflow-hidden rounded-xl border border-border/70 bg-card p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:shadow-xl hover:shadow-black/10 dark:hover:shadow-black/30 sm:px-5 sm:py-4"
-        style={
-          {
-            ["--update-accent-light" as string]: accent.light,
-            ["--update-accent-dark" as string]: accent.dark,
-            ["--update-ring-light" as string]: hexAlpha(accent.light, 0.38),
-            ["--update-ring-dark" as string]: hexAlpha(accent.dark, 0.44),
-            ["--update-soft-light" as string]: hexAlpha(accent.light, 0.2),
-            ["--update-soft-dark" as string]: hexAlpha(accent.dark, 0.24),
-          } as CSSProperties
-        }
+      <ThemedShowcaseCard
+        variant="version"
+        palette={{ accent }}
+        className="p-4 sm:px-5 sm:py-4"
       >
-        <span className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-[var(--update-ring-light)] opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:ring-[var(--update-ring-dark)]" />
-        <span className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl bg-[var(--update-accent-light)] dark:bg-[var(--update-accent-dark)]" />
-        <span className="pointer-events-none absolute -right-16 -top-20 size-40 rounded-full bg-[var(--update-soft-light)] opacity-0 blur-3xl transition-opacity duration-300 group-hover:opacity-100 dark:bg-[var(--update-soft-dark)]" />
-
         <div className="relative flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
           <div className="min-w-0">
             <h2 className="truncate text-xl font-bold leading-tight text-foreground">{update.title}</h2>
@@ -73,7 +62,7 @@ function VersionCard({
             <ChevronRight className="size-4 text-muted-foreground/60 transition-transform duration-300 group-hover:translate-x-1" />
           </div>
         </div>
-      </article>
+      </ThemedShowcaseCard>
     </Link>
   )
 }

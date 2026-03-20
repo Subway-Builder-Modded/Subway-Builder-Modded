@@ -25,7 +25,7 @@ export type HomeLink = {
   external?: boolean
   icon?: NavbarIcon
   variant: "solid" | "outline"
-  scheme: HomeButtonScheme
+  scheme?: HomeButtonScheme
   size: HomeButtonSize
 }
 

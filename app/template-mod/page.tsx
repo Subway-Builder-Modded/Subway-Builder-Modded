@@ -210,8 +210,8 @@ export default function TemplateModPage() {
     <main
       className={cn(
         "relative min-h-screen text-foreground",
-        "[--tm-accent:#60A5FA] [--tm-primary:#60A5FA55] [--tm-secondary:#93C5FD55] [--tm-text:#232323] [--tm-text-inverted:#F2F2F2]",
-        "dark:[--tm-accent:#93C5FD] dark:[--tm-primary:#60A5FA55] dark:[--tm-secondary:#93C5FD55] dark:[--tm-text:#F2F2F2] dark:[--tm-text-inverted:#232323]"
+        "[--tm-accent:var(--suite-accent-light)] [--tm-primary:var(--suite-primary-light)] [--tm-secondary:var(--suite-secondary-light)] [--tm-text:var(--suite-text-light)] [--tm-text-inverted:var(--suite-text-inverted-light)]",
+        "dark:[--tm-accent:var(--suite-accent-dark)] dark:[--tm-primary:var(--suite-primary-dark)] dark:[--tm-secondary:var(--suite-secondary-dark)] dark:[--tm-text:var(--suite-text-dark)] dark:[--tm-text-inverted:var(--suite-text-inverted-dark)]"
       )}
     >
       <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
@@ -302,7 +302,6 @@ export default function TemplateModPage() {
                 >
                   <div className="flex items-center gap-3">
                     <LineBullet
-                      theme="template-mod"
                       icon={<track.icon className="size-3.5" aria-hidden="true" />}
                       colorRole="accentColor"
                       textRole="textColorInverted"
@@ -371,7 +370,6 @@ export default function TemplateModPage() {
               >
                 <div className="mb-2 flex min-h-7 items-center gap-3">
                   <LineBullet
-                    theme="template-mod"
                     icon={<capability.icon className="size-3.5" aria-hidden="true" />}
                     colorRole="accentColor"
                     textRole="textColorInverted"
@@ -469,7 +467,6 @@ function ActionCard({
     <>
       <div className="flex items-center gap-3">
         <LineBullet
-          theme="template-mod"
           icon={<Icon className="size-3.5" aria-hidden="true" />}
           colorRole="accentColor"
           textRole="textColorInverted"
