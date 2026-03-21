@@ -14,6 +14,12 @@ type MapInstance = {
   getZoom?: () => number
   zoomIn?: (options?: { duration?: number }) => void
   zoomOut?: (options?: { duration?: number }) => void
+  dragPan?: { enable?: () => void; disable?: () => void }
+  touchZoomRotate?: { enable?: () => void; disable?: () => void; disableRotation?: () => void }
+  scrollZoom?: { enable?: () => void; disable?: () => void }
+  doubleClickZoom?: { enable?: () => void; disable?: () => void }
+  boxZoom?: { enable?: () => void; disable?: () => void }
+  keyboard?: { enable?: () => void; disable?: () => void }
   project: (lngLat: [number, number]) => { x: number; y: number }
   isStyleLoaded?: () => boolean
   remove: () => void
@@ -408,11 +414,11 @@ function MarkerBox({ clusterSize, animate }: { clusterSize: number; animate: boo
 
   return (
     <span
-      className="inline-flex items-center justify-center rounded-md border border-[var(--suite-secondary-light)] bg-[var(--suite-secondary-light)] text-[var(--suite-text-light)] shadow-sm dark:border-[var(--suite-secondary-dark)] dark:bg-[var(--suite-secondary-dark)] dark:text-[var(--suite-text-dark)]"
-      style={{ width: markerSize, height: markerSize, ...markerAnimationStyle }}
+      className="inline-flex items-center justify-center text-[var(--suite-accent-light)] drop-shadow-[0_1px_1px_rgba(0,0,0,0.45)] dark:text-[var(--suite-accent-dark)]"
+      style={{ width: markerSize, height: markerSize, ...markerAnimationStyle, lineHeight: 1 }}
       aria-hidden="true"
     >
-      <MapPin className="size-3.5" strokeWidth={2.2} />
+      <MapPin className="size-5" strokeWidth={2.25} />
     </span>
   )
 }
@@ -609,6 +615,15 @@ export function WorldMap() {
           renderWorldCopies: false,
         })
 
+        // Keep pan/drag gestures available across pointer, touch, and keyboard environments.
+        map.dragPan?.enable?.()
+        map.touchZoomRotate?.enable?.()
+        map.touchZoomRotate?.disableRotation?.()
+        map.scrollZoom?.enable?.()
+        map.doubleClickZoom?.enable?.()
+        map.boxZoom?.enable?.()
+        map.keyboard?.enable?.()
+
         mapRef.current = map
 
         handleLoad = () => {
@@ -764,30 +779,60 @@ export function WorldMap() {
     hoveredMaps.length > 0 ? hoveredMaps[((hoverIndex % hoveredMaps.length) + hoveredMaps.length) % hoveredMaps.length] : null
   const dynamicHoverCardHeight = clampNumber(Math.round(mapViewport.height * 0.42), 184, 300)
   const hoverCardWidth = clampNumber(mapViewport.width - HOVER_CARD_MARGIN_PX * 2, 200, 352)
-  const hoverCardHalfWidth = hoverCardWidth / 2
-  const hoverCardCenterX = hoveredMarker
-    ? clampNumber(
-        hoveredMarker.x,
-        HOVER_CARD_MARGIN_PX + hoverCardHalfWidth,
-        Math.max(HOVER_CARD_MARGIN_PX + hoverCardHalfWidth, mapViewport.width - HOVER_CARD_MARGIN_PX - hoverCardHalfWidth)
+  const hoverCardPosition = useMemo(() => {
+    if (!hoveredMarker) {
+      return { left: HOVER_CARD_MARGIN_PX, top: HOVER_CARD_MARGIN_PX }
+    }
+
+    const markerSize = getMarkerSizePx()
+    const markerLeft = hoveredMarker.x - markerSize / 2
+    const markerRight = hoveredMarker.x + markerSize / 2
+    const markerTop = hoveredMarker.y - markerSize
+    const markerBottom = hoveredMarker.y
+
+    const minLeft = HOVER_CARD_MARGIN_PX
+    const minTop = HOVER_CARD_MARGIN_PX
+    const maxLeft = Math.max(HOVER_CARD_MARGIN_PX, mapViewport.width - HOVER_CARD_MARGIN_PX - hoverCardWidth)
+    const maxTop = Math.max(HOVER_CARD_MARGIN_PX, mapViewport.height - HOVER_CARD_MARGIN_PX - dynamicHoverCardHeight)
+
+    const candidates = [
+      {
+        left: markerRight + HOVER_CARD_GAP_PX,
+        top: markerTop - dynamicHoverCardHeight - HOVER_CARD_GAP_PX,
+      },
+      {
+        left: markerRight + HOVER_CARD_GAP_PX,
+        top: markerBottom + HOVER_CARD_GAP_PX,
+      },
+      {
+        left: markerLeft - hoverCardWidth - HOVER_CARD_GAP_PX,
+        top: markerTop - dynamicHoverCardHeight - HOVER_CARD_GAP_PX,
+      },
+      {
+        left: markerLeft - hoverCardWidth - HOVER_CARD_GAP_PX,
+        top: markerBottom + HOVER_CARD_GAP_PX,
+      },
+    ]
+
+    const fullyVisibleCandidate = candidates.find((candidate) => {
+      const right = candidate.left + hoverCardWidth
+      const bottom = candidate.top + dynamicHoverCardHeight
+      return (
+        candidate.left >= minLeft &&
+        candidate.top >= minTop &&
+        right <= mapViewport.width - HOVER_CARD_MARGIN_PX &&
+        bottom <= mapViewport.height - HOVER_CARD_MARGIN_PX
       )
-    : 0
-  const canOpenAbove =
-    hoveredMarker !== null &&
-    hoveredMarker.y - HOVER_CARD_GAP_PX - dynamicHoverCardHeight >= HOVER_CARD_MARGIN_PX
-  const preferredHoverCardTop = hoveredMarker
-    ? canOpenAbove
-      ? hoveredMarker.y - HOVER_CARD_GAP_PX - dynamicHoverCardHeight
-      : hoveredMarker.y + HOVER_CARD_GAP_PX
-    : 0
-  const hoverCardTop = clampNumber(
-    preferredHoverCardTop,
-    HOVER_CARD_MARGIN_PX,
-    Math.max(
-      HOVER_CARD_MARGIN_PX,
-      mapViewport.height - HOVER_CARD_MARGIN_PX - dynamicHoverCardHeight
-    )
-  )
+    })
+
+    if (fullyVisibleCandidate) return fullyVisibleCandidate
+
+    const fallback = candidates[0]
+    return {
+      left: clampNumber(fallback.left, minLeft, maxLeft),
+      top: clampNumber(fallback.top, minTop, maxTop),
+    }
+  }, [dynamicHoverCardHeight, hoverCardWidth, hoveredMarker, mapViewport.height, mapViewport.width])
 
   const clearHoverSoon = () => {
     if (hoverHideTimerRef.current !== null) {
@@ -902,6 +947,30 @@ export function WorldMap() {
           filter: none;
           opacity: 1;
         }
+
+        .railyard-world-map .maplibregl-canvas-container,
+        .railyard-world-map .maplibregl-canvas {
+          touch-action: none;
+        }
+
+        .railyard-world-map .maplibregl-canvas-container.maplibregl-interactive {
+          cursor: grab;
+        }
+
+        .railyard-world-map .maplibregl-canvas-container.maplibregl-interactive:active {
+          cursor: grabbing;
+        }
+
+        .railyard-world-map .maplibregl-control-container {
+          z-index: 40;
+        }
+
+        .railyard-world-map .maplibregl-ctrl-bottom-left,
+        .railyard-world-map .maplibregl-ctrl-bottom-right,
+        .railyard-world-map .maplibregl-ctrl-top-left,
+        .railyard-world-map .maplibregl-ctrl-top-right {
+          z-index: 40;
+        }
       `}</style>
       <div ref={containerRef} className="h-full w-full rounded-none" aria-label="World map" />
 
@@ -984,11 +1053,10 @@ export function WorldMap() {
         <div
           className="pointer-events-none absolute z-20"
           style={{
-            left: `${hoverCardCenterX}px`,
-            top: `${hoverCardTop}px`,
+            left: `${hoverCardPosition.left}px`,
+            top: `${hoverCardPosition.top}px`,
             width: `${hoverCardWidth}px`,
             maxHeight: `calc(100% - ${HOVER_CARD_MARGIN_PX * 2}px)`,
-            transform: "translateX(-50%)",
           }}
         >
           <div
