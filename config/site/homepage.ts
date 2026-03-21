@@ -10,6 +10,7 @@ import {
   FolderGit2,
   Send,
   ExternalLink,
+  Home,
   type LucideIcon,
 } from "lucide-react"
 
@@ -60,6 +61,11 @@ export const HOME_THEME = {
 
 export const HOME_SUBWAY_BARS = ["#0039A6", "#FF6319", "#00933C", "#FCCC0A", "#752F82"] as const
 
+const GITHUB_MASK_ICON: NavbarIcon = {
+  type: "mask",
+  src: "/assets/github.svg",
+}
+
 export const HOME_HERO = {
   title: "Subway Builder Modded",
   description:
@@ -75,7 +81,7 @@ export const HOME_HERO = {
       href: "https://github.com/Subway-Builder-Modded",
       external: true,
       variant: "solid",
-      icon: GitPullRequestArrow,
+      icon: GITHUB_MASK_ICON,
       scheme: "default",
       size: "xl",
     },
@@ -174,11 +180,11 @@ export const HOME_PROJECT_SECTION = {
       },
       buttons: [
         {
-          label: "Download",
-          href: "https://github.com/Subway-Builder-Modded/template-mod",
-          external: true,
+          label: "Home",
+          href: "/template-mod",
+          external: false,
           variant: "solid",
-          icon: Download,
+          icon: Home,
           scheme: "template-mod",
           size: "md",
         },
@@ -241,7 +247,7 @@ export const HOME_OPEN_SOURCE_SECTION = {
       href: "https://github.com/Subway-Builder-Modded",
       external: true,
       variant: "solid",
-      icon: GitPullRequestArrow,
+      icon: GITHUB_MASK_ICON,
       scheme: "default",
       size: "md",
     },
