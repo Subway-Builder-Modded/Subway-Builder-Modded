@@ -19,6 +19,20 @@ export interface ModManifest {
 }
 
 export interface MapManifest extends ModManifest {
+  initial_view_state?: {
+    latitude: number
+    longitude: number
+    zoom: number
+    bearing: number
+    pitch?: number | null
+  }
+  initialViewState?: {
+    latitude: number
+    longitude: number
+    zoom: number
+    bearing: number
+    pitch?: number | null
+  }
   city_code?: string
   country?: string
   location?: string
