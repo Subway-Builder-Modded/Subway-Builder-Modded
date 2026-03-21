@@ -26,13 +26,13 @@ function SectionShell({
 }) {
   return (
     <section className="relative z-10 px-[clamp(1.25rem,4.5vw,3.5rem)]">
-      <div className="mx-auto max-w-screen-xl overflow-hidden rounded-[2rem] border border-border/70 bg-gradient-to-br from-background/96 via-background/90 to-background/84 px-[clamp(1.1rem,3.6vw,2.4rem)] py-14 shadow-md backdrop-blur-md sm:py-16">
-        <div className="mx-auto max-w-screen-lg">
+      <div className="w-full overflow-hidden rounded-[2rem] border border-border/70 bg-gradient-to-br from-background/96 via-background/90 to-background/84 px-[clamp(1.1rem,3.6vw,2.4rem)] py-14 shadow-md backdrop-blur-md sm:py-16">
+        <div className="w-full">
           <div className="flex items-center gap-4">
             <h2 className="text-xl font-bold tracking-tight text-foreground">{title}</h2>
             <div className="h-px flex-1 bg-border" />
           </div>
-          {description ? <p className="mt-3 max-w-3xl text-sm text-muted-foreground sm:text-base">{description}</p> : null}
+          {description ? <p className="mt-3 w-full text-sm text-muted-foreground sm:text-base">{description}</p> : null}
           <div className="mt-8">{children}</div>
         </div>
       </div>
@@ -43,7 +43,7 @@ function SectionShell({
 function SectionDivider() {
   return (
     <div className="relative z-10 px-[clamp(1.25rem,4.5vw,3.5rem)] py-7 sm:py-8" aria-hidden="true">
-      <div className="mx-auto max-w-screen-xl">
+      <div className="w-full">
         <div className="h-px bg-border/70" />
       </div>
     </div>
@@ -84,7 +84,7 @@ export default function Page() {
       </div>
 
       <section className="relative z-20 h-[calc(100svh-clamp(3.75rem,6vh,4.75rem))] overflow-hidden px-[clamp(0.85rem,3.5vw,2.4rem)] pt-[clamp(2.25rem,4.3vh,3.8rem)] pb-[clamp(0.45rem,1vh,0.85rem)] mb-[clamp(4rem,9vh,8.5rem)]">
-        <div className="mx-auto grid h-full w-full max-w-screen-xl grid-rows-[minmax(0,1fr)_auto] gap-[clamp(0.4rem,1vh,0.75rem)] overflow-visible -translate-y-[clamp(0.6rem,1.8vh,1.5rem)]">
+        <div className="grid h-full w-full grid-rows-[minmax(0,1fr)_auto] gap-[clamp(0.4rem,1vh,0.75rem)] overflow-visible -translate-y-[clamp(0.6rem,1.8vh,1.5rem)]">
           <div className="relative z-30 flex min-h-0 items-center justify-center overflow-visible">
             <div className="relative z-30 flex w-full max-w-[min(92vw,45rem)] flex-col items-center text-center">
               <h1 className="text-balance text-[clamp(2rem,min(7.4vw,8.5svh),5.2rem)] font-black leading-[0.92] tracking-[-0.03em]">

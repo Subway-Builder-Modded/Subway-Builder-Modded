@@ -37,18 +37,23 @@ export function isLatestVersion(instance: DocsInstance, versionValue: string) {
   return !!instance.latestVersion && instance.latestVersion === versionValue
 }
 
-export function buildBaseHomeHref(instance: DocsInstance, version?: string | null) {
-  if (instance.versioned) {
-    const resolvedVersion = version ?? instance.latestVersion
-    return `${instance.basePath}/${resolvedVersion}/home`
-  }
-
-  return `${instance.basePath}/home`
+export function buildDocsHubHref(instance: DocsInstance) {
+  return instance.basePath
 }
 
 export function resolveDocsRoute(slug?: string[]): ResolvedDocsRoute | null {
   const parts = slug ?? []
   const [instanceId, maybeVersion, ...rest] = parts
+
+  return resolveDocsRouteForInstance(instanceId, [maybeVersion, ...rest].filter(Boolean))
+}
+
+export function resolveDocsRouteForInstance(
+  instanceId: string | undefined,
+  slug?: string[]
+): ResolvedDocsRoute | null {
+  const parts = slug ?? []
+  const [maybeVersion, ...rest] = parts
 
   if (!instanceId) return null
 
@@ -108,7 +113,8 @@ export function getActiveVersionFromPathname(
 }
 
 export function buildVersionHref(instance: DocsInstance, versionValue: string) {
-  return `${instance.basePath}/${versionValue}/home`
+  void versionValue
+  return buildDocsHubHref(instance)
 }
 
 export function buildDocHref(
@@ -152,10 +158,10 @@ export function buildVersionedDocHref(
   const docSlug = getDocSlugFromPathname(instance, pathname)
 
   if (!instance.versioned) {
-    return docSlug ? buildDocHref(instance, null, docSlug) : buildBaseHomeHref(instance)
+    return docSlug ? buildDocHref(instance, null, docSlug) : buildDocsHubHref(instance)
   }
 
   return docSlug
     ? buildDocHref(instance, versionValue, docSlug)
-    : buildBaseHomeHref(instance, versionValue)
+    : buildDocsHubHref(instance)
 }

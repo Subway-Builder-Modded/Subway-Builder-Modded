@@ -2,8 +2,9 @@ import type { CSSProperties } from "react"
 import Link from "next/link"
 
 import { AppIcon } from "@/components/common/app-icon"
+import { MarkdownText } from "@/components/ui/markdown-text"
 import { cn } from "@/lib/utils"
-import { HOME_THEME, type HomeLink } from "@/config/site/homepage"
+import type { HomeLink } from "@/config/site/homepage"
 import type { NavbarIcon } from "@/config/navigation/navbar"
 import { PROJECT_COLOR_SCHEMES } from "@/config/theme/colors"
 import { hexAlpha } from "@/lib/color"
@@ -48,7 +49,7 @@ function ButtonContent({
   return (
     <>
       {icon ? <AppIcon icon={icon} className={cn(iconClassName, "text-current")} /> : null}
-      <span>{label}</span>
+      <MarkdownText content={label} />
     </>
   )
 }
@@ -58,23 +59,18 @@ export function HomeLinkButton({
   className,
 }: HomeLinkButtonProps) {
   const sizeStyle = HOME_BUTTON_SIZE_STYLES[link.size]
-  const scheme =
-    link.scheme === "default"
-      ? {
-          accentColor: HOME_THEME.accent,
-          textColorInverted: HOME_THEME.textOnAccent,
-        }
-      : PROJECT_COLOR_SCHEMES[link.scheme]
+  const hasExplicitScheme = !!link.scheme && link.scheme !== "default"
+  const scheme = hasExplicitScheme ? PROJECT_COLOR_SCHEMES[link.scheme as keyof typeof PROJECT_COLOR_SCHEMES] : undefined
 
   const style: CSSProperties = {
-    ["--button-accent-light" as string]: scheme.accentColor.light,
-    ["--button-accent-dark" as string]: scheme.accentColor.dark,
+    ["--button-accent-light" as string]: scheme?.accentColor.light ?? "var(--suite-accent-light)",
+    ["--button-accent-dark" as string]: scheme?.accentColor.dark ?? "var(--suite-accent-dark)",
     ["--button-soft-light" as string]:
-      link.scheme === "default" ? HOME_THEME.accentSoft.light : hexAlpha(scheme.accentColor.light, 0.14),
+      scheme?.accentColor.light ? hexAlpha(scheme.accentColor.light, 0.14) : "var(--suite-primary-light)",
     ["--button-soft-dark" as string]:
-      link.scheme === "default" ? HOME_THEME.accentSoft.dark : hexAlpha(scheme.accentColor.dark, 0.2),
-    ["--button-text-light" as string]: scheme.textColorInverted.light,
-    ["--button-text-dark" as string]: scheme.textColorInverted.dark,
+      scheme?.accentColor.dark ? hexAlpha(scheme.accentColor.dark, 0.2) : "var(--suite-primary-dark)",
+    ["--button-text-light" as string]: scheme?.textColorInverted.light ?? "var(--suite-text-inverted-light)",
+    ["--button-text-dark" as string]: scheme?.textColorInverted.dark ?? "var(--suite-text-inverted-dark)",
   }
 
   const baseClassName = cn(

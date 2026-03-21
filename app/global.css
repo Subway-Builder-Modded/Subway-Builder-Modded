@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "./schemes/default.css";
+@import "./schemes/railyard.css";
+@import "./schemes/template-mod.css";
+@import "./schemes/registry.css";
+@import "./schemes/website.css";
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
@@ -158,6 +163,11 @@
   --navbar: 0 0% 100%;
 }
 
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
 .dark {
   --background: oklch(0.11 0 0);
   --foreground: oklch(0.95 0 0);
@@ -212,11 +222,11 @@
 }
 
 .railyard-accent {
-  --primary: oklch(0.46 0.11 162);
-  --primary-foreground: oklch(0.98 0.01 162);
-  --accent: oklch(0.95 0.025 162);
-  --accent-foreground: oklch(0.28 0.06 162);
-  --ring: oklch(0.58 0.1 162);
+  --primary: var(--suite-accent-light);
+  --primary-foreground: var(--suite-text-inverted-light);
+  --accent: color-mix(in srgb, var(--suite-accent-light) 15%, white);
+  --accent-foreground: color-mix(in srgb, var(--suite-accent-light) 70%, black);
+  --ring: color-mix(in srgb, var(--suite-accent-light) 45%, transparent);
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-accent: var(--accent);
@@ -225,11 +235,11 @@
 }
 
 .dark .railyard-accent {
-  --primary: oklch(0.72 0.13 162);
-  --primary-foreground: oklch(0.18 0.03 162);
-  --accent: oklch(0.25 0.03 162);
-  --accent-foreground: oklch(0.94 0.02 162);
-  --ring: oklch(0.68 0.12 162);
+  --primary: var(--suite-accent-dark);
+  --primary-foreground: var(--suite-text-inverted-dark);
+  --accent: color-mix(in srgb, var(--suite-accent-dark) 22%, black);
+  --accent-foreground: color-mix(in srgb, var(--suite-accent-dark) 72%, white);
+  --ring: color-mix(in srgb, var(--suite-accent-dark) 48%, transparent);
 }
 
 .heading-anchor {
@@ -272,6 +282,24 @@ h6:hover .heading-anchor,
   body {
     @apply bg-background text-foreground;
   }
+}
+
+[data-color-scheme] main a:not([class*="text-"]):not(.text-current) {
+  color: var(--suite-link-light, var(--suite-accent-light));
+  text-decoration-color: color-mix(in srgb, var(--suite-link-light, var(--suite-accent-light)) 50%, transparent);
+}
+
+[data-color-scheme] main a:not([class*="text-"]):not(.text-current):hover {
+  color: color-mix(in srgb, var(--suite-link-light, var(--suite-accent-light)) 85%, black);
+}
+
+.dark [data-color-scheme] main a:not([class*="text-"]):not(.text-current) {
+  color: var(--suite-link-dark, var(--suite-accent-dark));
+  text-decoration-color: color-mix(in srgb, var(--suite-link-dark, var(--suite-accent-dark)) 55%, transparent);
+}
+
+.dark [data-color-scheme] main a:not([class*="text-"]):not(.text-current):hover {
+  color: color-mix(in srgb, var(--suite-link-dark, var(--suite-accent-dark)) 88%, white);
 }
 
 

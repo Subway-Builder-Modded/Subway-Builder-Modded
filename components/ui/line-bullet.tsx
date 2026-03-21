@@ -43,11 +43,28 @@ function isWhiteColor(value: string) {
   return normalized === "#fff" || normalized === "#ffffff" || normalized === "white" || normalized === "rgb(255,255,255)"
 }
 
+function resolveCurrentSuiteModeHex(role: LineBulletColorRole | LineBulletTextRole) {
+  switch (role) {
+    case "accentColor":
+      return { light: "var(--suite-accent-light)", dark: "var(--suite-accent-dark)" }
+    case "primaryColor":
+      return { light: "var(--suite-primary-light)", dark: "var(--suite-primary-dark)" }
+    case "secondaryColor":
+      return { light: "var(--suite-secondary-light)", dark: "var(--suite-secondary-dark)" }
+    case "textColor":
+      return { light: "var(--suite-text-light)", dark: "var(--suite-text-dark)" }
+    case "textColorInverted":
+      return { light: "var(--suite-text-inverted-light)", dark: "var(--suite-text-inverted-dark)" }
+    default:
+      return { light: "var(--suite-accent-light)", dark: "var(--suite-accent-dark)" }
+  }
+}
+
 export function LineBullet({
   icon,
   text,
   bullet,
-  theme = "default",
+  theme,
   preset,
   colorRole,
   textRole,
@@ -70,14 +87,29 @@ export function LineBullet({
   const resolvedHoverColorRole = hoverColorRole ?? presetConfig.hoverColorRole
   const resolvedInvertOnHover = invertOnHover ?? presetConfig.invertOnHover ?? false
 
-  const colorHex = resolveLineBulletModeHex(theme, resolvedColorRole, colorOverride)
-  const textHex = resolveLineBulletTextModeHex(theme, resolvedTextRole, textOverride)
-  const hoverHex = resolveLineBulletHoverModeHex(
-    theme,
-    resolvedColorRole,
-    resolvedHoverColorRole,
-    hoverColorOverride
-  )
+  const colorHex = theme
+    ? resolveLineBulletModeHex(theme, resolvedColorRole, colorOverride)
+    : {
+        ...resolveCurrentSuiteModeHex(resolvedColorRole),
+        ...colorOverride,
+      }
+  const textHex = theme
+    ? resolveLineBulletTextModeHex(theme, resolvedTextRole, textOverride)
+    : {
+        ...resolveCurrentSuiteModeHex(resolvedTextRole),
+        ...textOverride,
+      }
+  const hoverHex = theme
+    ? resolveLineBulletHoverModeHex(
+        theme,
+        resolvedColorRole,
+        resolvedHoverColorRole,
+        hoverColorOverride
+      )
+    : {
+        ...resolveCurrentSuiteModeHex(resolvedHoverColorRole ?? resolvedColorRole),
+        ...hoverColorOverride,
+      }
 
   const bulletContent = icon ?? text ?? bullet
   const s = sizeMap[resolvedSize]

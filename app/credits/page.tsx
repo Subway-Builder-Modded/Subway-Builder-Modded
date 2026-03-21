@@ -4,7 +4,8 @@ import { ExternalLink, type LucideIcon } from "lucide-react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
-import { HubPageHeader } from "@/components/hub/hub-page-header"
+import { PageHeader } from "@/components/page/page-header"
+import { ThemedShowcaseCard } from "@/components/ui/themed-showcase-card"
 import { CREDIT_SECTIONS, type CreditSection } from "@/config/content/credits"
 import { CREDITS_PAGE_CONTENT } from "@/config/ui/site-content"
 import { hexAlpha } from "@/lib/color"
@@ -73,20 +74,18 @@ function CreditsSectionHeader({ title, icon: Icon }: { title: string; icon: Luci
 
 function CreditPersonCard({ section, person }: { section: CreditSection; person: CreditSection["people"][number] }) {
   const Icon = SECTION_ICON_MAP[section.icon]
+  const creditsPalette = {
+    accent: { light: CREDITS_ACCENT, dark: CREDITS_ACCENT },
+    primary: { light: hexAlpha(CREDITS_ACCENT, 0.14), dark: hexAlpha(CREDITS_ACCENT, 0.14) },
+    secondary: { light: hexAlpha(CREDITS_ACCENT, 0.5), dark: hexAlpha(CREDITS_ACCENT, 0.5) },
+  }
 
   return (
-    <article
-      className="group relative flex h-full items-start gap-3 overflow-hidden rounded-xl border border-border/70 bg-card p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:shadow-xl hover:shadow-black/10 dark:hover:shadow-black/30"
+    <ThemedShowcaseCard
+      variant="credits"
+      palette={creditsPalette}
+      className="flex h-full items-start gap-3 p-4"
     >
-      <span
-        className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-[color:var(--credits-ring)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ ["--credits-ring" as string]: hexAlpha(CREDITS_ACCENT, 0.45) }}
-      />
-      <span
-        className="pointer-events-none absolute -right-14 -top-14 size-28 rounded-full blur-2xl"
-        style={{ backgroundColor: hexAlpha(CREDITS_ACCENT, 0.2) }}
-      />
-
       <div
         className="mt-0.5 rounded-md border p-2"
         style={{
@@ -113,13 +112,13 @@ function CreditPersonCard({ section, person }: { section: CreditSection; person:
           <p className="text-base font-semibold text-foreground">{person.name}</p>
         )}
 
-        {person.role ? (
+          {person.role ? (
           <div className="mt-1 text-sm leading-relaxed text-muted-foreground">
             <CreditRoleMarkdown content={person.role} />
           </div>
         ) : null}
       </div>
-    </article>
+    </ThemedShowcaseCard>
   )
 }
 
@@ -131,9 +130,9 @@ function CreditsSection({ section }: { section: CreditSection }) {
       <CreditsSectionHeader title={section.title} icon={Icon} />
       <p className="mb-5 text-sm leading-relaxed text-muted-foreground">{section.description}</p>
 
-      <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-6">
         {section.people.map((person) => (
-          <li key={`${section.id}-${person.name}`}>
+          <li key={`${section.id}-${person.name}`} className="h-full">
             <CreditPersonCard section={section} person={person} />
           </li>
         ))}
@@ -145,14 +144,14 @@ function CreditsSection({ section }: { section: CreditSection }) {
 export default function CreditsPage() {
   return (
     <section className="relative px-5 pb-14 pt-8 sm:px-8 sm:pt-10">
-      <div className="mx-auto w-full max-w-screen-xl">
-        <HubPageHeader
+      <div className="w-full">
+        <PageHeader
           icon={CREDITS_PAGE_CONTENT.icon}
           title={CREDITS_PAGE_CONTENT.title}
           description={CREDITS_PAGE_CONTENT.description}
         />
 
-        <div className="mx-auto flex max-w-6xl flex-col gap-10">
+        <div className="flex w-full flex-col gap-10">
           {CREDIT_SECTIONS.map((section) => (
             <CreditsSection key={section.id} section={section} />
           ))}

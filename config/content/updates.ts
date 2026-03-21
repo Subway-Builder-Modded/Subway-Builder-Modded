@@ -1,4 +1,4 @@
-import { FolderCode, TrainTrack, type LucideIcon } from "lucide-react"
+import { Package, TrainTrack, type LucideIcon } from "lucide-react"
 import { PROJECT_COLOR_SCHEMES, type ModeHex } from "@/config/theme/colors"
 
 export type UpdateProjectId = "railyard" | "template-mod"
@@ -7,6 +7,7 @@ export type UpdateProject = {
   id: UpdateProjectId
   label: string
   description: string
+  currentVersion: string
   basePath: string
   icon: LucideIcon
   accentColor: ModeHex
@@ -21,7 +22,8 @@ export const UPDATE_PROJECTS: UpdateProject[] = [
     id: "railyard",
     label: "Railyard",
     description: "All-in-one Map and Mod Manager for Subway Builder.",
-    basePath: "/updates/railyard",
+    currentVersion: "v0.1.6",
+    basePath: "/railyard/updates",
     icon: TrainTrack,
     accentColor: PROJECT_COLOR_SCHEMES.railyard.accentColor,
     primaryColor: PROJECT_COLOR_SCHEMES.railyard.primaryColor,
@@ -32,9 +34,10 @@ export const UPDATE_PROJECTS: UpdateProject[] = [
   {
     id: "template-mod",
     label: "Template Mod",
-    description: "Documented TypeScript template to create your own mods for Subway Builder.",
-    basePath: "/updates/template-mod",
-    icon: FolderCode,
+    description: "The all-inclusive TypeScript template to create your own mods for Subway Builder.",
+    currentVersion: "v1.0.1",
+    basePath: "/template-mod/updates",
+    icon: Package,
     accentColor: PROJECT_COLOR_SCHEMES["template-mod"].accentColor,
     primaryColor: PROJECT_COLOR_SCHEMES["template-mod"].primaryColor,
     secondaryColor: PROJECT_COLOR_SCHEMES["template-mod"].secondaryColor,

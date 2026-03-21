@@ -16,7 +16,7 @@ import {
 import { cn } from "@/lib/utils"
 import { useFooterOffset } from "@/hooks/use-footer-offset"
 import {
-  buildBaseHomeHref,
+  buildDocsHubHref,
   buildVersionedDocHref,
   getActiveInstanceFromPathname,
   getActiveVersionFromPathname,
@@ -25,16 +25,21 @@ import {
   type DocsSidebarEntry,
   type DocsSidebarTree,
 } from "@/lib/docs/shared"
-import { DOCS_INSTANCES, type DocsInstance, type DocsVersion } from "@/config/content/docs"
+import {
+  type DocsInstance,
+  type DocsVersion,
+} from "@/config/content/docs"
 import { normalizePath } from "@/lib/url"
 import { PROJECT_COLOR_SCHEMES, getModeHex } from "@/config/theme/colors"
+import { PageHeader } from "@/components/page/page-header"
 
 type AppDocsSidebarProps = {
   tree?: DocsSidebarTree
   versionDocSlugs?: Record<string, string[]>
 }
 
-type OpenDropdown = "instance" | "version" | null
+const SWITCHER_ROW_HIGHLIGHT_ALPHA = 0.12
+const SWITCHER_ICON_CONTRAST_ALPHA = 0.08
 
 function withAlpha(color: string, alpha: number) {
   const normalized = color.trim()
@@ -65,6 +70,40 @@ function getInstanceAccent(instance: DocsInstance, isDark: boolean) {
   return getModeHex(PROJECT_COLOR_SCHEMES[instance.id].accentColor, isDark)
 }
 
+function getInstanceBadgeScheme(instance: DocsInstance) {
+  const accent = PROJECT_COLOR_SCHEMES[instance.id].accentColor
+
+  return {
+    border: {
+      light: withAlpha(accent.light, 0.45),
+      dark: withAlpha(accent.dark, 0.5),
+    },
+    background: {
+      light: withAlpha(accent.light, 0.12),
+      dark: withAlpha(accent.dark, 0.2),
+    },
+    text: accent,
+  }
+}
+
+function getSwitcherRowBackground(accent: string, highlighted: boolean) {
+  return highlighted ? withAlpha(accent, SWITCHER_ROW_HIGHLIGHT_ALPHA) : undefined
+}
+
+function getSwitcherIconBackground(
+  accent: string,
+  isDark: boolean,
+  highlighted: boolean
+) {
+  if (highlighted) {
+    return withAlpha(accent, SWITCHER_ROW_HIGHLIGHT_ALPHA + SWITCHER_ICON_CONTRAST_ALPHA)
+  }
+
+  return isDark
+    ? `rgba(255, 255, 255, ${SWITCHER_ICON_CONTRAST_ALPHA})`
+    : `rgba(0, 0, 0, ${SWITCHER_ICON_CONTRAST_ALPHA})`
+}
+
 function useOnClickOutside(
   ref: React.RefObject<HTMLElement | null>,
   handler: () => void
@@ -81,47 +120,17 @@ function useOnClickOutside(
   }, [ref, handler])
 }
 
-function InstanceIcon({
-  instance,
-  accent,
-  active,
-}: {
-  instance: DocsInstance
-  accent: string
-  active?: boolean
-}) {
-  const Icon = instance.icon
-
-  return (
-    <span
-      className={cn(
-        "flex size-7 shrink-0 items-center justify-center rounded-md border bg-background text-muted-foreground",
-        active && "text-foreground"
-      )}
-      style={
-        active
-          ? {
-              borderColor: withAlpha(accent, 0.5),
-              backgroundColor: withAlpha(accent, 0.12),
-              color: accent,
-            }
-          : undefined
-      }
-    >
-      <Icon className="size-3.5" />
-    </span>
-  )
-}
-
 function VersionIcon({
   instance,
   version,
   accent,
+  isDark,
   active,
 }: {
   instance: DocsInstance
   version: DocsVersion
   accent: string
+  isDark: boolean
   active?: boolean
 }) {
   const Icon = version.icon ?? (isLatestVersion(instance, version.value) ? Tag : Archive)
@@ -133,13 +142,11 @@ function VersionIcon({
         active && "text-foreground"
       )}
       style={
-        active
-          ? {
-              borderColor: withAlpha(accent, 0.5),
-              backgroundColor: withAlpha(accent, 0.12),
-              color: accent,
-            }
-          : undefined
+        {
+          backgroundColor: getSwitcherIconBackground(accent, isDark, !!active),
+          borderColor: active ? withAlpha(accent, 0.5) : undefined,
+          color: active ? accent : undefined,
+        }
       }
     >
       <Icon className="size-3.5" />
@@ -157,7 +164,7 @@ function StatusBadge({
   if (kind === "latest") {
     return (
       <span
-        className="inline-flex h-4.5 items-center rounded-full border px-1.5 text-[9px] font-semibold uppercase tracking-[0.08em]"
+        className="inline-flex h-4.5 items-center rounded-full border px-1.5 text-[9px] font-semibold normal-case tracking-[0.08em]"
         style={{
           borderColor: withAlpha(accent, 0.45),
           backgroundColor: withAlpha(accent, 0.1),
@@ -170,7 +177,7 @@ function StatusBadge({
   }
 
   return (
-    <span className="inline-flex h-4.5 items-center rounded-full border border-amber-500/40 bg-amber-500/10 px-1.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-amber-500">
+    <span className="inline-flex h-4.5 items-center rounded-full border border-amber-500/40 bg-amber-500/10 px-1.5 text-[9px] font-semibold normal-case tracking-[0.08em] text-amber-500">
       Deprecated
     </span>
   )
@@ -239,45 +246,6 @@ function DropdownPanel({
   )
 }
 
-function InstanceDropdownRow({
-  instance,
-  isActive,
-  href,
-  isDark,
-}: {
-  instance: DocsInstance
-  isActive: boolean
-  href: string
-  isDark: boolean
-}) {
-  const accent = getInstanceAccent(instance, isDark)
-  const [hovered, setHovered] = React.useState(false)
-  const highlighted = isActive || hovered
-
-  return (
-    <NextLink
-      href={href}
-      aria-current={isActive ? "page" : undefined}
-      className="flex h-9 items-center gap-2 rounded-md px-2 text-sm transition-colors"
-      style={
-        highlighted
-          ? {
-              backgroundColor: withAlpha(accent, 0.12),
-              color: accent,
-            }
-          : undefined
-      }
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocus={() => setHovered(true)}
-      onBlur={() => setHovered(false)}
-    >
-      <InstanceIcon instance={instance} accent={accent} active={highlighted} />
-      <span className="truncate font-medium">{instance.label}</span>
-    </NextLink>
-  )
-}
-
 function VersionDropdownRow({
   instance,
   version,
@@ -304,7 +272,7 @@ function VersionDropdownRow({
       style={
         highlighted
           ? {
-              backgroundColor: withAlpha(accent, 0.12),
+              backgroundColor: getSwitcherRowBackground(accent, highlighted),
               color: accent,
             }
           : undefined
@@ -314,7 +282,13 @@ function VersionDropdownRow({
       onFocus={() => setHovered(true)}
       onBlur={() => setHovered(false)}
     >
-      <VersionIcon instance={instance} version={version} accent={accent} active={highlighted} />
+      <VersionIcon
+        instance={instance}
+        version={version}
+        accent={accent}
+        isDark={isDark}
+        active={highlighted}
+      />
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="truncate font-medium">{version.label}</span>
@@ -451,40 +425,39 @@ function getSidebarDepthClassName(depth: number) {
   return "pl-13"
 }
 
-function InstanceSwitcher({
+function SidebarDocsHeader({
   activeInstance,
-  open,
-  setOpen,
-  isDark,
+  activeVersion,
 }: {
   activeInstance: DocsInstance
-  open: boolean
-  setOpen: (value: boolean) => void
-  isDark: boolean
+  activeVersion: ReturnType<typeof getActiveVersionFromPathname>
 }) {
-  const accent = getInstanceAccent(activeInstance, isDark)
+  const headerTitle = "Docs"
+  const HeaderIcon = activeInstance.sidebarHeader?.icon ?? activeInstance.icon
+  const instanceBadgeScheme = getInstanceBadgeScheme(activeInstance)
+  const VersionIconGlyph = activeVersion?.icon ?? Tag
 
   return (
-    <div>
-      <DropdownTrigger open={open} accent={accent} onToggle={() => setOpen(!open)}>
-        <InstanceIcon instance={activeInstance} accent={accent} active />
-        <span className="truncate text-sm font-medium">{activeInstance.label}</span>
-      </DropdownTrigger>
-
-      <DropdownPanel open={open}>
-        <div className="space-y-0.5">
-          {DOCS_INSTANCES.map((instance) => (
-            <InstanceDropdownRow
-              key={instance.id}
-              instance={instance}
-              isActive={instance.id === activeInstance.id}
-              href={buildBaseHomeHref(instance)}
-              isDark={isDark}
-            />
-          ))}
-        </div>
-      </DropdownPanel>
-    </div>
+    <PageHeader
+      icon={HeaderIcon}
+      title={headerTitle}
+      colorScheme={{
+        accent: PROJECT_COLOR_SCHEMES[activeInstance.id].accentColor,
+        spotlight: {
+          light: withAlpha(PROJECT_COLOR_SCHEMES[activeInstance.id].accentColor.light, 0.18),
+          dark: withAlpha(PROJECT_COLOR_SCHEMES[activeInstance.id].accentColor.dark, 0.23),
+        },
+      }}
+      badges={[
+        {
+          text: activeInstance.label,
+          icon: activeInstance.icon,
+          colorScheme: instanceBadgeScheme,
+        },
+      ]}
+      size="sidebar"
+      className="mb-4"
+    />
   )
 }
 
@@ -505,7 +478,7 @@ function VersionSwitcher({
   versionDocSlugs?: Record<string, string[]>
   isDark: boolean
 }) {
-  const currentDocSlug = getDocSlugFromPathname(activeInstance, pathname) ?? "home"
+  const currentDocSlug = getDocSlugFromPathname(activeInstance, pathname)
   if (!activeInstance.versioned || !activeInstance.versions?.length) return null
 
   const accent = getInstanceAccent(activeInstance, isDark)
@@ -513,7 +486,13 @@ function VersionSwitcher({
   return (
     <div>
       <DropdownTrigger open={open} accent={accent} onToggle={() => setOpen(!open)}>
-        <VersionIcon instance={activeInstance} version={activeVersion} accent={accent} active />
+        <VersionIcon
+          instance={activeInstance}
+          version={activeVersion}
+          accent={accent}
+          isDark={isDark}
+          active
+        />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="truncate text-sm font-medium">{activeVersion.label}</span>
@@ -531,9 +510,9 @@ function VersionSwitcher({
         <div className="space-y-0.5">
           {activeInstance.versions.map((version) => {
             const targetDocSlugs = versionDocSlugs?.[version.value] ?? []
-            const targetHref = targetDocSlugs.includes(currentDocSlug)
+            const targetHref = currentDocSlug && targetDocSlugs.includes(currentDocSlug)
               ? buildVersionedDocHref(activeInstance, version.value, pathname)
-              : buildBaseHomeHref(activeInstance, version.value)
+              : buildDocsHubHref(activeInstance)
 
             return (
               <VersionDropdownRow
@@ -744,17 +723,17 @@ export function AppDocsSidebar({ tree, versionDocSlugs }: AppDocsSidebarProps) {
     [activeInstance, pathname]
   )
 
-  const [openDropdown, setOpenDropdown] = React.useState<OpenDropdown>(null)
+  const [isVersionDropdownOpen, setIsVersionDropdownOpen] = React.useState(false)
   const [openKeys, setOpenKeys] = React.useState<Set<string>>(() =>
     collectActiveCategoryKeys(tree?.entries ?? [], pathname)
   )
 
-  const switcherAreaRef = React.useRef<HTMLDivElement | null>(null)
-  useOnClickOutside(switcherAreaRef, () => setOpenDropdown(null))
+  const versionSwitcherRef = React.useRef<HTMLDivElement | null>(null)
+  useOnClickOutside(versionSwitcherRef, () => setIsVersionDropdownOpen(false))
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setOpenDropdown(null)
+      if (event.key === "Escape") setIsVersionDropdownOpen(false)
     }
 
     window.addEventListener("keydown", onKeyDown)
@@ -762,7 +741,7 @@ export function AppDocsSidebar({ tree, versionDocSlugs }: AppDocsSidebarProps) {
   }, [])
 
   React.useEffect(() => {
-    setOpenDropdown(null)
+    setIsVersionDropdownOpen(false)
   }, [pathname])
 
   React.useLayoutEffect(() => {
@@ -799,25 +778,25 @@ export function AppDocsSidebar({ tree, versionDocSlugs }: AppDocsSidebarProps) {
         variant="sidebar"
         className="overflow-visible border-r border-sidebar-border bg-sidebar"
       >
-        <SidebarHeader className="gap-2 border-b border-sidebar-border bg-sidebar px-3 pt-2.5 pb-2.5">
-          <div ref={switcherAreaRef} className={cn("space-y-2", !mounted && "invisible")}>
-            <InstanceSwitcher
+        <SidebarHeader className="gap-4 border-b border-sidebar-border bg-sidebar px-3.5 pt-4 pb-4">
+          <div className={cn("space-y-4", !mounted && "invisible")}>
+            <SidebarDocsHeader
               activeInstance={activeInstance}
-              open={openDropdown === "instance"}
-              setOpen={(value) => setOpenDropdown(value ? "instance" : null)}
-              isDark={isDark}
+              activeVersion={activeVersion}
             />
 
             {activeInstance.versioned && activeVersion ? (
-              <VersionSwitcher
-                activeInstance={activeInstance}
-                activeVersion={activeVersion}
-                pathname={pathname}
-                open={openDropdown === "version"}
-                setOpen={(value) => setOpenDropdown(value ? "version" : null)}
-                versionDocSlugs={versionDocSlugs}
-                isDark={isDark}
-              />
+              <div ref={versionSwitcherRef}>
+                <VersionSwitcher
+                  activeInstance={activeInstance}
+                  activeVersion={activeVersion}
+                  pathname={pathname}
+                  open={isVersionDropdownOpen}
+                  setOpen={setIsVersionDropdownOpen}
+                  versionDocSlugs={versionDocSlugs}
+                  isDark={isDark}
+                />
+              </div>
             ) : null}
           </div>
         </SidebarHeader>

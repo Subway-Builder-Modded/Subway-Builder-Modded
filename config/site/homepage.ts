@@ -2,7 +2,7 @@ import {
   BookText,
   Package,
   Download,
-  Github,
+  GitPullRequestArrow,
   Rocket,
   TrainTrack,
   Users,
@@ -10,6 +10,7 @@ import {
   FolderGit2,
   Send,
   ExternalLink,
+  Home,
   type LucideIcon,
 } from "lucide-react"
 
@@ -25,7 +26,7 @@ export type HomeLink = {
   external?: boolean
   icon?: NavbarIcon
   variant: "solid" | "outline"
-  scheme: HomeButtonScheme
+  scheme?: HomeButtonScheme
   size: HomeButtonSize
 }
 
@@ -60,6 +61,11 @@ export const HOME_THEME = {
 
 export const HOME_SUBWAY_BARS = ["#0039A6", "#FF6319", "#00933C", "#FCCC0A", "#752F82"] as const
 
+const GITHUB_MASK_ICON: NavbarIcon = {
+  type: "mask",
+  src: "/assets/github.svg",
+}
+
 export const HOME_HERO = {
   title: "Subway Builder Modded",
   description:
@@ -75,7 +81,7 @@ export const HOME_HERO = {
       href: "https://github.com/Subway-Builder-Modded",
       external: true,
       variant: "solid",
-      icon: Github,
+      icon: GITHUB_MASK_ICON,
       scheme: "default",
       size: "xl",
     },
@@ -130,39 +136,9 @@ export const HOME_PROJECT_SECTION = {
       ],
     },
     {
-      id: "registry",
-      title: "Registry",
-      description: "The registry that powers Railyard. It serves as Railyard's database for user-submitted content.",
-      scheme: "registry",
-      icon: FolderGit2,
-      image: {
-        light: "/images/shared/registry-light.png",
-        dark: "/images/shared/registry-dark.png",
-        alt: "Registry preview",
-      },
-      buttons: [
-        {
-          label: "Visit",
-          href: "https://github.com/Subway-Builder-Modded/The-Railyard",
-          variant: "solid",
-          icon: ExternalLink,
-          scheme: "registry",
-          size: "md",
-        },
-        {
-          label: "Submit Content",
-          href: "https://github.com/Subway-Builder-Modded/The-Railyard/issues",
-          variant: "outline",
-          icon: Send,
-          scheme: "registry",
-          size: "md",
-        },
-      ],
-    },
-    {
       id: "template-mod",
       title: "Template Mod",
-      description: "Documented TypeScript template to create your own mods for Subway Builder.",
+      description: "The all-inclusive TypeScript template to create your own mods for Subway Builder.",
       scheme: "template-mod",
       icon: Package,
       image: {
@@ -172,16 +148,17 @@ export const HOME_PROJECT_SECTION = {
       },
       buttons: [
         {
-          label: "Download",
-          href: "https://github.com/Subway-Builder-Modded/template-mod",
+          label: "Home",
+          href: "/template-mod",
+          external: false,
           variant: "solid",
-          icon: Download,
+          icon: Home,
           scheme: "template-mod",
           size: "md",
         },
         {
           label: "Documentation",
-          href: "/docs/template-mod/latest/home",
+          href: "/template-mod/docs",
           variant: "outline",
           icon: BookText,
           scheme: "template-mod",
@@ -204,8 +181,9 @@ export const HOME_PROJECT_SECTION = {
         {
           label: "Contribute",
           href: "https://github.com/Subway-Builder-Modded/website",
+          external: true,
           variant: "solid",
-          icon: Github,
+          icon: GitPullRequestArrow,
           scheme: "website",
           size: "md",
         },
@@ -237,7 +215,7 @@ export const HOME_OPEN_SOURCE_SECTION = {
       href: "https://github.com/Subway-Builder-Modded",
       external: true,
       variant: "solid",
-      icon: Github,
+      icon: GITHUB_MASK_ICON,
       scheme: "default",
       size: "md",
     },
