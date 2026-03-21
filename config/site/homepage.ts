@@ -136,38 +136,6 @@ export const HOME_PROJECT_SECTION = {
       ],
     },
     {
-      id: "registry",
-      title: "Registry",
-      description: "The registry that powers Railyard. It serves as Railyard's database for user-submitted content.",
-      scheme: "registry",
-      icon: FolderGit2,
-      image: {
-        light: "/images/shared/registry-light.png",
-        dark: "/images/shared/registry-dark.png",
-        alt: "Registry preview",
-      },
-      buttons: [
-        {
-          label: "Visit",
-          href: "https://github.com/Subway-Builder-Modded/The-Railyard",
-          external: true,
-          variant: "solid",
-          icon: ExternalLink,
-          scheme: "registry",
-          size: "md",
-        },
-        {
-          label: "Submit Content",
-          href: "https://github.com/Subway-Builder-Modded/The-Railyard/issues",
-          external: true,
-          variant: "outline",
-          icon: Send,
-          scheme: "registry",
-          size: "md",
-        },
-      ],
-    },
-    {
       id: "template-mod",
       title: "Template Mod",
       description: "The all-inclusive TypeScript template to create your own mods for Subway Builder.",
