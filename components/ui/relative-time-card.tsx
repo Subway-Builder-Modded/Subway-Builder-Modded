@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva, type VariantProps } from 'class-variance-authority';
 import {
   type HoverCard as HoverCardPrimitive,
   Slot as SlotPrimitive,
-} from "radix-ui";
-import * as React from "react";
+} from 'radix-ui';
+import * as React from 'react';
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card";
+} from '@/components/ui/hover-card';
 
 type HoverCardProps = React.ComponentProps<typeof HoverCardPrimitive.Root>;
 type HoverCardContentProps = React.ComponentProps<
   typeof HoverCardPrimitive.Content
 >;
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 function pluralize(n: number, word: string) {
-  return `${n} ${word}${n === 1 ? "" : "s"}`;
+  return `${n} ${word}${n === 1 ? '' : 's'}`;
 }
 
 function formatRelativeTime(date: Date): string {
@@ -34,25 +34,25 @@ function formatRelativeTime(date: Date): string {
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
 
-  if (seconds < 5) return "just now";
+  if (seconds < 5) return 'just now';
 
   if (isInFuture) {
-    if (seconds < 60) return `in ${pluralize(seconds, "second")}`;
-    if (minutes < 60) return `in ${pluralize(minutes, "minute")}`;
-    if (hours < 24) return `in ${pluralize(hours, "hour")}`;
-    if (days < 7) return `in ${pluralize(days, "day")}`;
+    if (seconds < 60) return `in ${pluralize(seconds, 'second')}`;
+    if (minutes < 60) return `in ${pluralize(minutes, 'minute')}`;
+    if (hours < 24) return `in ${pluralize(hours, 'hour')}`;
+    if (days < 7) return `in ${pluralize(days, 'day')}`;
     return date.toLocaleDateString();
   }
 
-  if (seconds < 60) return `${pluralize(seconds, "second")} ago`;
+  if (seconds < 60) return `${pluralize(seconds, 'second')} ago`;
   if (minutes < 60)
-    return `${pluralize(minutes, "minute")} ${pluralize(seconds % 60, "second")} ago`;
-  if (hours < 24) return `${pluralize(hours, "hour")} ago`;
-  if (days < 7) return `${pluralize(days, "day")} ago`;
+    return `${pluralize(minutes, 'minute')} ${pluralize(seconds % 60, 'second')} ago`;
+  if (hours < 24) return `${pluralize(hours, 'hour')} ago`;
+  if (days < 7) return `${pluralize(days, 'day')} ago`;
   return date.toLocaleDateString();
 }
 
-interface TimezoneCardProps extends React.ComponentProps<"div"> {
+interface TimezoneCardProps extends React.ComponentProps<'div'> {
   date: Date;
   timezone?: string;
 }
@@ -68,24 +68,24 @@ function TimezoneCard(props: TimezoneCardProps) {
   const timezoneName = React.useMemo(
     () =>
       timezone ??
-      new Intl.DateTimeFormat(locale, { timeZoneName: "shortOffset" })
+      new Intl.DateTimeFormat(locale, { timeZoneName: 'shortOffset' })
         .formatToParts(date)
-        .find((part) => part.type === "timeZoneName")?.value,
+        .find((part) => part.type === 'timeZoneName')?.value,
     [date, timezone, locale],
   );
 
   const { formattedDate, formattedTime } = React.useMemo(
     () => ({
       formattedDate: new Intl.DateTimeFormat(locale, {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
         timeZone: timezone,
       }).format(date),
       formattedTime: new Intl.DateTimeFormat(locale, {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
         hour12: true,
         timeZone: timezone,
       }).format(date),
@@ -114,34 +114,35 @@ function TimezoneCard(props: TimezoneCardProps) {
 }
 
 const triggerVariants = cva(
-  "inline-flex w-fit items-center justify-center text-foreground/70 text-sm transition-colors hover:text-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  'inline-flex w-fit items-center justify-center text-foreground/70 text-sm transition-colors hover:text-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
   {
     variants: {
       variant: {
-        default: "",
-        muted: "text-foreground/50 hover:text-foreground/70",
-        ghost: "hover:underline",
+        default: '',
+        muted: 'text-foreground/50 hover:text-foreground/70',
+        ghost: 'hover:underline',
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: 'default',
     },
   },
 );
 
 interface RelativeTimeCardProps
-  extends React.ComponentProps<"button">,
+  extends
+    React.ComponentProps<'button'>,
     HoverCardProps,
     Pick<
       HoverCardContentProps,
-      | "align"
-      | "side"
-      | "alignOffset"
-      | "sideOffset"
-      | "avoidCollisions"
-      | "collisionBoundary"
-      | "collisionPadding"
-      | "asChild"
+      | 'align'
+      | 'side'
+      | 'alignOffset'
+      | 'sideOffset'
+      | 'avoidCollisions'
+      | 'collisionBoundary'
+      | 'collisionPadding'
+      | 'asChild'
     >,
     VariantProps<typeof triggerVariants> {
   date: Date | string | number;
@@ -153,7 +154,7 @@ function RelativeTimeCard(props: RelativeTimeCardProps) {
   const {
     date: dateProp,
     variant,
-    timezones = ["UTC"],
+    timezones = ['UTC'],
     open,
     defaultOpen,
     onOpenChange,
@@ -196,7 +197,7 @@ function RelativeTimeCard(props: RelativeTimeCardProps) {
     return () => clearInterval(timer);
   }, [date, updateInterval]);
 
-  const TriggerPrimitive = asChild ? SlotPrimitive.Slot : "button";
+  const TriggerPrimitive = asChild ? SlotPrimitive.Slot : 'button';
 
   return (
     <HoverCard
@@ -214,11 +215,11 @@ function RelativeTimeCard(props: RelativeTimeCardProps) {
           {children ?? (
             <time dateTime={date.toISOString()} suppressHydrationWarning>
               {new Intl.DateTimeFormat(locale, {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
               }).format(date)}
             </time>
           )}

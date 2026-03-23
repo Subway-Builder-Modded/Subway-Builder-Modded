@@ -6,6 +6,7 @@ title: Publishing Projects
 Railyard does not host mods or maps within the service. Instead, Railyard pulls directly from its [registry](https://github.com/Subway-Builder-Modded/The-Railyard), which contains the data pointing to all the user-created projects. To add a project to Railyard for people to download and play with, you must first add it to the registry.
 
 ## Step 1 - Hosting the File {#hosting-the-file}
+
 In order to make a submission to the Railyard registry, you need to first upload the source code and release to GitHub and link it to Railyard. To do this, create a new GitHub repository. The actual contents can contain the source code for your map/mod.
 
 ::::note[Mod Dependencies]
@@ -43,6 +44,7 @@ This requirement applies to **mods only** — maps are exempt.
 :::
 
 ## Step 2 - Submitting to the Registry {#submitting-to-the-registry}
+
 Now that your files are hosted on GitHub, you are ready to make a submission to the registry. Go to the [registry's issues page](https://github.com/Subway-Builder-Modded/The-Railyard/issues) and click on "`New Issue`". Here, you can create your submission, which will then be reviewed by a Railyard maintainer. Once you have the issue selection screen open, select "`Publish New Map`" or "`Publish New Mod`", depending on the type of the project you are trying to submit. The next process will differ a little depending on if you are submitting a map or a mod.
 
 ::::note
@@ -51,13 +53,14 @@ If you want to host multiple projects within a single repository, follow the [us
 
 :::info
 
-You should *likely* only need to do this if you are the creator of a large amount of maps. For single maps, GitHub Releases is usually the simpler option. For mods, you likely want to keep each project separate anyways for source code management reasons, so GitHub Releases is also recommended.
+You should _likely_ only need to do this if you are the creator of a large amount of maps. For single maps, GitHub Releases is usually the simpler option. For mods, you likely want to keep each project separate anyways for source code management reasons, so GitHub Releases is also recommended.
 
 :::
 
 ::::
 
 ## Step 3 - Using the Issue Template {#using-the-issue-template}
+
 <Tabs>
 
 <TabItem value="submitting-maps" label="Submitting Maps" default>
@@ -65,30 +68,30 @@ You should *likely* only need to do this if you are the creator of a large amoun
 Once you select "`Publish New Map`", a popup window will appear to input some information about the map. The information should be inputted as follows:
 
 ```
-Map ID:         A unique identifier for your map in kebab-case. This is the 
-                 permanent directory name in the registry and cannot be changed 
+Map ID:         A unique identifier for your map in kebab-case. This is the
+                 permanent directory name in the registry and cannot be changed
                  later. Must be unique across all maps, so if another map of the
-                 same city already exists, use a distinct ID (e.g. london-detailed, 
+                 same city already exists, use a distinct ID (e.g. london-detailed,
                  london-mini). Only lowercase letters, numbers, and hyphens allowed.
 
-City Name:       The human-readable city name shown in Railyard. This is the title 
+City Name:       The human-readable city name shown in Railyard. This is the title
                  of the map that people will see when downloading it.
 
 City Code:       2-4 letter IATA/ICAO-style city code used by the game internally.
-                 Must be uppercase letters/numbers. Must not clash with vanilla city 
+                 Must be uppercase letters/numbers. Must not clash with vanilla city
                  codes or other registered maps. Check existing maps before choosing
                  a code.
 
-Country Code:    ISO 3166-1 alpha-2 country code — two uppercase letters (e.g. US, 
-                 GB, CA, DE, JP). Used to group maps by country in Railyard. It is 
+Country Code:    ISO 3166-1 alpha-2 country code — two uppercase letters (e.g. US,
+                 GB, CA, DE, JP). Used to group maps by country in Railyard. It is
                  REQUIRED that you use ISO codes according to this list:
                  https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes.
 
-Population:      Approximate metropolitan area population. Number only, no commas or 
-                 separators. Used for display and sorting in Railyard and it doesn't 
+Population:      Approximate metropolitan area population. Number only, no commas or
+                 separators. Used for display and sorting in Railyard and it doesn't
                  need to be exact.
 
-Description:     A short description of what your map does. This is shown in the map 
+Description:     A short description of what your map does. This is shown in the map
                  browser. Mention notable features, coverage area, etc.
 
 ## Data Attestation
@@ -101,7 +104,7 @@ used to generate the map's data. See the Data Quality guide for more information
 Data Source:     Enter the data source used to generate the demand data for your map.
                  The source name should use common abbreviations like LODES, INSEE,
                  ONS, etc.
-              
+
 Source Quality:  Approximate quality of the data source used for your map. Official
                  government sources are considered high-quality while raw open-source
                  data is considered low-quality. If your data source includes OSM, we
@@ -110,14 +113,14 @@ Source Quality:  Approximate quality of the data source used for your map. Offic
 Level of Detail: Approximate level of detail of your map. Demand resolution at the
                  level of census blocks is considered high-detail, while neighborhood/
                  city resolutions are considered low-detail.
-                 
+
 Methodology:     Description of how demand data was generated for your map. Please include
                  any details about overcoming data source limitations or any augmentations
                  done with real-world data.
 
 ## Tagging & Image Preview
 
-Railyard allows users to search for maps based on tags and presents a preview image for 
+Railyard allows users to search for maps based on tags and presents a preview image for
 discovery. Please check whichever tags best represent your map. Note that "Location" is
 required.
 
@@ -144,17 +147,17 @@ repository for updates and allow users to install the map on demand.
 
 Source URL:      URL to your map's source code repository or download page.
 
-Update Type:     The method used by Railyard to fetch updates for your map. Most 
+Update Type:     The method used by Railyard to fetch updates for your map. Most
                  maps should use GitHub Releases. Use
                  Custom URL only if you host your own Update JSON file.
 
-GitHub Repo:     Required ONLY if using GitHub Releases. The owner/repo path (e.g. 
+GitHub Repo:     Required ONLY if using GitHub Releases. The owner/repo path (e.g.
                  username/sb-raleigh) in plaintext, NOT a URL. The repo must exist,
                  have at least one release, and the latest release must contain a
                  .zip asset. Leave blank if you are using Custom URL.
 
-Custom URL:      Required ONLY if you selected Custom URL. The full URL to your 
-                 self-hosted Update JSON file. The file must follow the Railyard 
+Custom URL:      Required ONLY if you selected Custom URL. The full URL to your
+                 self-hosted Update JSON file. The file must follow the Railyard
                  Update JSON schema. Leave blank if using GitHub Releases. The
                  guide for using an Update JSON can be found at:
                  https://subwaybuildermodded.com/railyard/docs/v0.1/developers/using-custom-url.
@@ -173,45 +176,45 @@ Railyard requires all map makers to submit the source and quality of their data.
 Once you select "`Publish New Mod`", a popup window will appear to input some information about the mod. The information should be inputted as follows:
 
 ```
-Mod ID:      A unique identifier for your mod in kebab-case. This is the permanent 
-              directory name in the registry and cannot be changed later. Must be 
-              unique across all mods, so check existing listings before submitting. 
+Mod ID:      A unique identifier for your mod in kebab-case. This is the permanent
+              directory name in the registry and cannot be changed later. Must be
+              unique across all mods, so check existing listings before submitting.
               Only lowercase letters, numbers, and hyphens allowed.
 
-Display Name: The human-readable mod name shown in Railyard. This is the title of 
+Display Name: The human-readable mod name shown in Railyard. This is the title of
               the mod that people will see when downloading it.
 
-Description:  A short description of what your mod does. This is shown in the mod 
+Description:  A short description of what your mod does. This is shown in the mod
               browser.
 
-Tags:         Select all tags that apply to your mod. These help users find your mod 
+Tags:         Select all tags that apply to your mod. These help users find your mod
               in the browser.
 
 Source URL:   URL to your mod's source code repository or download page.
 
-Update Type:  The method used by Railyard to fetch updates for your mod. Most mods 
-              should use GitHub Releases. Use Custom URL only if you host your own 
+Update Type:  The method used by Railyard to fetch updates for your mod. Most mods
+              should use GitHub Releases. Use Custom URL only if you host your own
               Update JSON file.
 
 GitHub Repo:  Required ONLY if using GitHub Releases. The owner/repo path (e.g.
-              username/better-trains). The repo must exist, have at least one 
+              username/better-trains). The repo must exist, have at least one
               release, and the latest release must contain both a .zip asset AND a
               manifest.json asset. Leave blank if you are using Custom URL.
 
-Custom URL:   Required if using Custom URL. The full URL to your self-hosted Update 
-              JSON file. The file must follow the Railyard Update JSON schema. Leave 
-              blank if using GitHub Releases. The guide for using an Update JSON can 
+Custom URL:   Required if using Custom URL. The full URL to your self-hosted Update
+              JSON file. The file must follow the Railyard Update JSON schema. Leave
+              blank if using GitHub Releases. The guide for using an Update JSON can
               be found at:
               https://subwaybuildermodded.com/railyard/docs/v0.1/developers/using-custom-url.
 
 Manifest URL: Required ONLY if using Custom URL. The full URL to your mod's manifest.
-              json for the current release. Railyard fetches this to validate that 
-              your mod declares its dependencies correctly. Leave blank if using 
-              GitHub Releases (manifest.json should be uploaded as a release asset 
+              json for the current release. Railyard fetches this to validate that
+              your mod declares its dependencies correctly. Leave blank if using
+              GitHub Releases (manifest.json should be uploaded as a release asset
               instead).
 
-Gallery:      Drag and drop screenshots here, or paste image URLs (one per line). 
-              These will be displayed in the mod browser. At least one image is 
+Gallery:      Drag and drop screenshots here, or paste image URLs (one per line).
+              These will be displayed in the mod browser. At least one image is
               required.
 ```
 
@@ -224,41 +227,42 @@ Gallery:      Drag and drop screenshots here, or paste image URLs (one per line)
   
   For `Custom URL`, place a link to your raw Update JSON file. You can paste the raw link directly copied from your repository, however, it is instead recommended to deploy it to GitHub pages and paste that link there. This can help some users who may be rate limited. To deploy to GitHub pages, create a new file located at `.github/workflows/deploy-releases.yml`. Paste the following into the file:
 
-  ```yml
-  name: Deploy Update JSON to GitHub Pages
+```yml
+name: Deploy Update JSON to GitHub Pages
 
-  on:
-    push:
-      branches: [main]
-      paths: [releases/**]
-    workflow_dispatch:
+on:
+  push:
+    branches: [main]
+    paths: [releases/**]
+  workflow_dispatch:
 
-  permissions:
-    pages: write
-    id-token: write
+permissions:
+  pages: write
+  id-token: write
 
-  concurrency:
-    group: pages
-    cancel-in-progress: true
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
-  jobs:
-    deploy:
-      runs-on: ubuntu-latest
-      environment:
-        name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
-      steps:
-        - uses: actions/checkout@v4
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
 
-        - uses: actions/upload-pages-artifact@v3
-          with:
-            path: releases
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: releases
 
-        - id: deployment
-          uses: actions/deploy-pages@v4
-  ```
+      - id: deployment
+        uses: actions/deploy-pages@v4
+```
 
-  This will automatically deploy your Update JSON files to GitHub Pages. Once you do this, put the direct link to your Update JSON file for the corresponding map in the `Custom URL` field. Now every time you update your map (and your Update JSON file), it will automatically deploy the latest Update JSON file for Railyard to use.
+This will automatically deploy your Update JSON files to GitHub Pages. Once you do this, put the direct link to your Update JSON file for the corresponding map in the `Custom URL` field. Now every time you update your map (and your Update JSON file), it will automatically deploy the latest Update JSON file for Railyard to use.
+
 </details>
 
 Once you fill out the submission ticket, a Pull Request should automatically be created. A Railyard maintainer will review it and it will be automatically submitted once they do. After that, it will be available on Railyard for everyone to download.

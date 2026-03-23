@@ -1,1 +1,1 @@
-export * from "@/config/theme/colors"
+export * from '@/config/theme/colors';

@@ -1,178 +1,220 @@
-"use client"
+'use client';
 
-import Image from "next/image"
-import Link from "next/link"
-import { useEffect, useMemo, useState, type ReactNode } from "react"
-import { AnimatePresence, motion, useScroll, useTransform } from "motion/react"
-import type { LucideIcon } from "lucide-react"
-import { ArrowRight, BookText, Bug, FileCode2, GitPullRequestArrow, Package, Rocket, Sparkles, TerminalSquare, Wrench, Tag } from "lucide-react"
-import { useTheme } from "next-themes"
-import { createHighlighter } from "shiki"
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react';
+import type { LucideIcon } from 'lucide-react';
+import {
+  ArrowRight,
+  BookText,
+  Bug,
+  FileCode2,
+  GitPullRequestArrow,
+  Package,
+  Rocket,
+  Sparkles,
+  TerminalSquare,
+  Wrench,
+  Tag,
+} from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { createHighlighter } from 'shiki';
 
-import { HomeLinkButton } from "@/components/home/home-link-button"
-import { MarkdownText } from "@/components/ui/markdown-text"
-import type { HomeButtonSize } from "@/config/site/homepage"
-import { LANDING_HERO_COPY, interpolateHeroText, type HeroActionId } from "@/config/content/landing-hero"
-import { getUpdateProjectById } from "@/config/content/updates"
-import { LineBullet } from "@/components/ui/line-bullet"
-import { cn } from "@/lib/utils"
+import { HomeLinkButton } from '@/components/home/home-link-button';
+import { MarkdownText } from '@/components/ui/markdown-text';
+import type { HomeButtonSize } from '@/config/site/homepage';
+import {
+  LANDING_HERO_COPY,
+  interpolateHeroText,
+  type HeroActionId,
+} from '@/config/content/landing-hero';
+import { getUpdateProjectById } from '@/config/content/updates';
+import { LineBullet } from '@/components/ui/line-bullet';
+import { cn } from '@/lib/utils';
 
 type HeroAction = {
-  id: HeroActionId
-  labelMd: string
-  href: string
-  icon: LucideIcon
-  variant: "solid" | "outline"
-  size: HomeButtonSize
-  external?: boolean
-}
+  id: HeroActionId;
+  labelMd: string;
+  href: string;
+  icon: LucideIcon;
+  variant: 'solid' | 'outline';
+  size: HomeButtonSize;
+  external?: boolean;
+};
 
 type Track = {
-  id: string
-  title: string
-  description: string
-  icon: LucideIcon
-  command: string
-  commandLanguage: "bash" | "sh"
-  file: string
-  snippet: string
-  snippetLanguage: "ts" | "tsx" | "json" | "sh"
-  tags: string[]
-}
+  id: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  command: string;
+  commandLanguage: 'bash' | 'sh';
+  file: string;
+  snippet: string;
+  snippetLanguage: 'ts' | 'tsx' | 'json' | 'sh';
+  tags: string[];
+};
 
 type Capability = {
-  id: string
-  title: string
-  description: string
-  icon: LucideIcon
-}
+  id: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+};
 
 const HERO_ACTION_ICONS: Record<HeroActionId, LucideIcon> = {
-  "template-mod-get-started": GitPullRequestArrow,
-  "template-mod-docs": BookText,
-}
+  'template-mod-get-started': GitPullRequestArrow,
+  'template-mod-docs': BookText,
+};
 
 const TRACKS: Track[] = [
   {
-    id: "bootstrap",
-    title: "Install and Configure",
-    description: "Install with pnpm, then set your mod metadata before first run.",
+    id: 'bootstrap',
+    title: 'Install and Configure',
+    description:
+      'Install with pnpm, then set your mod metadata before first run.',
     icon: Rocket,
-    command: "pnpm install\npnpm typecheck",
-    commandLanguage: "bash",
-    file: "manifest.json",
-    snippet: "{\n  \"id\": \"com.yourname.yourmod\",\n  \"name\": \"Your Mod Name\",\n  \"description\": \"What it does\",\n  \"version\": \"1.0.0\",\n  \"author\": { \"name\": \"Your Name\" },\n  \"main\": \"index.js\"\n}",
-    snippetLanguage: "json",
-    tags: ["API v1.0.0 target", "pnpm workflow", "Manifest-first setup"],
+    command: 'pnpm install\npnpm typecheck',
+    commandLanguage: 'bash',
+    file: 'manifest.json',
+    snippet:
+      '{\n  "id": "com.yourname.yourmod",\n  "name": "Your Mod Name",\n  "description": "What it does",\n  "version": "1.0.0",\n  "author": { "name": "Your Name" },\n  "main": "index.js"\n}',
+    snippetLanguage: 'json',
+    tags: ['API v1.0.0 target', 'pnpm workflow', 'Manifest-first setup'],
   },
   {
-    id: "iterate",
-    title: "Build, Link, and Develop",
-    description: "Build once, symlink to the game mods folder, then iterate with watch mode + game logging.",
+    id: 'iterate',
+    title: 'Build, Link, and Develop',
+    description:
+      'Build once, symlink to the game mods folder, then iterate with watch mode + game logging.',
     icon: Wrench,
-    command: "pnpm build\npnpm dev:link\npnpm dev",
-    commandLanguage: "bash",
-    file: "debug/latest.log",
-    snippet: "# dev starts watcher + game in parallel.\n# Logs are written here:\ndebug/latest.log\n\n# In-game hot reload:\n# Windows/Linux: CTRL + SHIFT + R\n# macOS: CMD + SHIFT + R",
-    snippetLanguage: "sh",
-    tags: ["Hot reload loop", "Symlink helper", "Live game logs"],
+    command: 'pnpm build\npnpm dev:link\npnpm dev',
+    commandLanguage: 'bash',
+    file: 'debug/latest.log',
+    snippet:
+      '# dev starts watcher + game in parallel.\n# Logs are written here:\ndebug/latest.log\n\n# In-game hot reload:\n# Windows/Linux: CTRL + SHIFT + R\n# macOS: CMD + SHIFT + R',
+    snippetLanguage: 'sh',
+    tags: ['Hot reload loop', 'Symlink helper', 'Live game logs'],
   },
   {
-    id: "stabilize",
-    title: "Game API",
-    description: "Wire hooks, game actions, and runtime React/UI components through `window.SubwayBuilderAPI`.",
+    id: 'stabilize',
+    title: 'Game API',
+    description:
+      'Wire hooks, game actions, and runtime React/UI components through `window.SubwayBuilderAPI`.',
     icon: Bug,
-    command: "pnpm build\npnpm dev:unlink",
-    commandLanguage: "bash",
-    file: "src/main.ts",
-    snippet: "const api = window.SubwayBuilderAPI\n\napi.hooks.onMapReady((map) => {\n  api.ui.showNotification(\"Map loaded\", \"info\")\n})\n\napi.ui.addFloatingPanel({\n  id: \"my-panel\",\n  title: \"My Panel\",\n  icon: \"Settings\",\n  render: MyComponent,\n})",
-    snippetLanguage: "ts",
-    tags: ["Hooks + actions", "Runtime UI components", "Typed API surface"],
+    command: 'pnpm build\npnpm dev:unlink',
+    commandLanguage: 'bash',
+    file: 'src/main.ts',
+    snippet:
+      'const api = window.SubwayBuilderAPI\n\napi.hooks.onMapReady((map) => {\n  api.ui.showNotification("Map loaded", "info")\n})\n\napi.ui.addFloatingPanel({\n  id: "my-panel",\n  title: "My Panel",\n  icon: "Settings",\n  render: MyComponent,\n})',
+    snippetLanguage: 'ts',
+    tags: ['Hooks + actions', 'Runtime UI components', 'Typed API surface'],
   },
-]
+];
 
 const CAPABILITIES: Capability[] = [
   {
-    id: "types",
-    title: "Modding API-Aligned Types",
-    description: "Template typings are aligned to Modding API v1.0.0, including core, game-state, build, and UI modules.",
+    id: 'types',
+    title: 'Modding API-Aligned Types',
+    description:
+      'Template typings are aligned to Modding API v1.0.0, including core, game-state, build, and UI modules.',
     icon: FileCode2,
   },
   {
-    id: "component",
-    title: "React at Runtime",
-    description: "React is provided by the game. Use regular hooks and bind game UI components from SubwayBuilderAPI.",
+    id: 'component',
+    title: 'React at Runtime',
+    description:
+      'React is provided by the game. Use regular hooks and bind game UI components from SubwayBuilderAPI.',
     icon: Sparkles,
   },
   {
-    id: "runtime",
-    title: "Dev Scripts",
-    description: "Use `build`/`dev`/`dev:link`/`dev:unlink`/`typecheck` scripts for a stable modding workflow across platforms.",
+    id: 'runtime',
+    title: 'Dev Scripts',
+    description:
+      'Use `build`/`dev`/`dev:link`/`dev:unlink`/`typecheck` scripts for a stable modding workflow across platforms.',
     icon: TerminalSquare,
   },
-]
+];
 
 function SectionShell({
   title,
   description,
   children,
 }: {
-  title: string
-  description?: string
-  children: ReactNode
+  title: string;
+  description?: string;
+  children: ReactNode;
 }) {
   return (
     <section className="relative z-10 px-[clamp(1.5rem,5vw,4rem)]">
       <div className="w-full rounded-2xl border border-border/80 bg-background/88 px-[clamp(1.25rem,4vw,2.5rem)] py-20 shadow-sm backdrop-blur-md">
         <div className="w-full">
           <div className="flex items-center gap-4">
-            <h2 className="text-xl font-bold tracking-tight text-foreground">{title}</h2>
+            <h2 className="text-xl font-bold tracking-tight text-foreground">
+              {title}
+            </h2>
             <div className="h-px flex-1 bg-border" />
           </div>
-          {description ? <p className="mt-4 w-full text-sm text-muted-foreground sm:text-base">{description}</p> : null}
+          {description ? (
+            <p className="mt-4 w-full text-sm text-muted-foreground sm:text-base">
+              {description}
+            </p>
+          ) : null}
           <div className="mt-8">{children}</div>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function SectionDivider() {
   return (
-    <div className="relative z-10 px-[clamp(1.5rem,5vw,4rem)] py-10" aria-hidden="true">
+    <div
+      className="relative z-10 px-[clamp(1.5rem,5vw,4rem)] py-10"
+      aria-hidden="true"
+    >
       <div className="w-full">
         <div className="h-px bg-border/80" />
       </div>
     </div>
-  )
+  );
 }
 
 export default function TemplateModPage() {
-  const { scrollY } = useScroll()
-  const heroScale = useTransform(scrollY, [-240, 0, 900], [1, 1, 1.3])
-  const heroY = useTransform(scrollY, [-240, 0, 900], [0, 0, -130])
-  const { resolvedTheme } = useTheme()
-  const [activeTrackId, setActiveTrackId] = useState(TRACKS[0].id)
-  const [activeCapabilityId, setActiveCapabilityId] = useState(CAPABILITIES[0].id)
-  const [highlightedBlocks, setHighlightedBlocks] = useState<Record<string, { commandHtml: string; snippetHtml: string }>>({})
+  const { scrollY } = useScroll();
+  const heroScale = useTransform(scrollY, [-240, 0, 900], [1, 1, 1.3]);
+  const heroY = useTransform(scrollY, [-240, 0, 900], [0, 0, -130]);
+  const { resolvedTheme } = useTheme();
+  const [activeTrackId, setActiveTrackId] = useState(TRACKS[0].id);
+  const [activeCapabilityId, setActiveCapabilityId] = useState(
+    CAPABILITIES[0].id,
+  );
+  const [highlightedBlocks, setHighlightedBlocks] = useState<
+    Record<string, { commandHtml: string; snippetHtml: string }>
+  >({});
 
   const activeTrack = useMemo(
     () => TRACKS.find((track) => track.id === activeTrackId) ?? TRACKS[0],
-    [activeTrackId]
-  )
-  const activeTrackHtml = highlightedBlocks[activeTrack.id]
+    [activeTrackId],
+  );
+  const activeTrackHtml = highlightedBlocks[activeTrack.id];
 
   useEffect(() => {
-    let mounted = true
+    let mounted = true;
 
     async function buildHighlightedBlocks() {
       const highlighter = await createHighlighter({
-        themes: ["github-light-high-contrast", "github-dark"],
-        langs: ["bash", "sh", "ts", "tsx", "json"],
-      })
-      const theme = resolvedTheme === "dark" ? "github-dark" : "github-light-high-contrast"
+        themes: ['github-light-high-contrast', 'github-dark'],
+        langs: ['bash', 'sh', 'ts', 'tsx', 'json'],
+      });
+      const theme =
+        resolvedTheme === 'dark' ? 'github-dark' : 'github-light-high-contrast';
 
-      const output: Record<string, { commandHtml: string; snippetHtml: string }> = {}
+      const output: Record<
+        string,
+        { commandHtml: string; snippetHtml: string }
+      > = {};
 
       for (const track of TRACKS) {
         output[track.id] = {
@@ -184,38 +226,44 @@ export default function TemplateModPage() {
             lang: track.snippetLanguage,
             theme,
           }),
-        }
+        };
       }
 
-      if (mounted) setHighlightedBlocks(output)
-      highlighter.dispose()
+      if (mounted) setHighlightedBlocks(output);
+      highlighter.dispose();
     }
 
-    void buildHighlightedBlocks()
+    void buildHighlightedBlocks();
 
     return () => {
-      mounted = false
-    }
-  }, [resolvedTheme])
+      mounted = false;
+    };
+  }, [resolvedTheme]);
 
-  const currentVersion = getUpdateProjectById("template-mod")?.currentVersion ?? "—"
-  const templateHero = LANDING_HERO_COPY.templateMod
-  const versionLabelMd = interpolateHeroText(templateHero.versionLabelMd, { currentVersion })
+  const currentVersion =
+    getUpdateProjectById('template-mod')?.currentVersion ?? '—';
+  const templateHero = LANDING_HERO_COPY.templateMod;
+  const versionLabelMd = interpolateHeroText(templateHero.versionLabelMd, {
+    currentVersion,
+  });
   const heroActions: HeroAction[] = templateHero.actions.map((action) => ({
     ...action,
     icon: HERO_ACTION_ICONS[action.id],
-  }))
+  }));
 
   return (
     <main
       className={cn(
-        "relative min-h-screen text-foreground",
-        "[--tm-accent:var(--suite-accent-light)] [--tm-primary:var(--suite-primary-light)] [--tm-secondary:var(--suite-secondary-light)] [--tm-text:var(--suite-text-light)] [--tm-text-inverted:var(--suite-text-inverted-light)]",
-        "dark:[--tm-accent:var(--suite-accent-dark)] dark:[--tm-primary:var(--suite-primary-dark)] dark:[--tm-secondary:var(--suite-secondary-dark)] dark:[--tm-text:var(--suite-text-dark)] dark:[--tm-text-inverted:var(--suite-text-inverted-dark)]"
+        'relative min-h-screen text-foreground',
+        '[--tm-accent:var(--suite-accent-light)] [--tm-primary:var(--suite-primary-light)] [--tm-secondary:var(--suite-secondary-light)] [--tm-text:var(--suite-text-light)] [--tm-text-inverted:var(--suite-text-inverted-light)]',
+        'dark:[--tm-accent:var(--suite-accent-dark)] dark:[--tm-primary:var(--suite-primary-dark)] dark:[--tm-secondary:var(--suite-secondary-dark)] dark:[--tm-text:var(--suite-text-dark)] dark:[--tm-text-inverted:var(--suite-text-inverted-dark)]',
       )}
     >
       <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
-        <motion.div className="absolute inset-0" style={{ scale: heroScale, y: heroY }}>
+        <motion.div
+          className="absolute inset-0"
+          style={{ scale: heroScale, y: heroY }}
+        >
           <Image
             src="/images/shared/template-mod-light.png"
             alt=""
@@ -241,9 +289,9 @@ export default function TemplateModPage() {
               <span
                 className="mb-3 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold tracking-wide"
                 style={{
-                  borderColor: "var(--tm-secondary)",
-                  backgroundColor: "var(--tm-primary)",
-                  color: "var(--tm-accent)",
+                  borderColor: 'var(--tm-secondary)',
+                  backgroundColor: 'var(--tm-primary)',
+                  color: 'var(--tm-accent)',
                 }}
               >
                 <Tag className="size-3.5" aria-hidden="true" />
@@ -270,7 +318,7 @@ export default function TemplateModPage() {
                       icon: action.icon,
                       external: action.external,
                       variant: action.variant,
-                      scheme: "template-mod",
+                      scheme: 'template-mod',
                       size: action.size,
                     }}
                   />
@@ -285,7 +333,7 @@ export default function TemplateModPage() {
         <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="grid gap-3">
             {TRACKS.map((track) => {
-              const active = track.id === activeTrack.id
+              const active = track.id === activeTrack.id;
               return (
                 <button
                   key={track.id}
@@ -294,40 +342,43 @@ export default function TemplateModPage() {
                   onMouseEnter={() => setActiveTrackId(track.id)}
                   onFocus={() => setActiveTrackId(track.id)}
                   className={cn(
-                    "rounded-xl border p-4 text-left transition-all duration-200",
+                    'rounded-xl border p-4 text-left transition-all duration-200',
                     active
-                      ? "border-[var(--tm-accent)] bg-[var(--tm-secondary)] shadow-md ring-1 ring-[var(--tm-primary)]"
-                      : "border-border bg-card/60 hover:border-border/80 hover:bg-card/80"
+                      ? 'border-[var(--tm-accent)] bg-[var(--tm-secondary)] shadow-md ring-1 ring-[var(--tm-primary)]'
+                      : 'border-border bg-card/60 hover:border-border/80 hover:bg-card/80',
                   )}
                 >
                   <div className="flex items-center gap-3">
                     <LineBullet
-                      icon={<track.icon className="size-3.5" aria-hidden="true" />}
+                      icon={
+                        <track.icon className="size-3.5" aria-hidden="true" />
+                      }
                       colorRole="accentColor"
                       textRole="textColorInverted"
                       shape="circle"
                       size="sm"
                     />
-                    <h3 className="text-base font-semibold text-foreground">{track.title}</h3>
+                    <h3 className="text-base font-semibold text-foreground">
+                      {track.title}
+                    </h3>
                   </div>
-                <InlineMarkdown
-                  content={track.description}
-                  className="mt-2 text-sm leading-relaxed text-muted-foreground"
+                  <InlineMarkdown
+                    content={track.description}
+                    className="mt-2 text-sm leading-relaxed text-muted-foreground"
                   />
                 </button>
-              )
+              );
             })}
           </div>
 
           <div className="overflow-hidden rounded-xl border border-border bg-card/80 p-4 sm:p-5 h-[34rem]">
-
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTrack.id}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.16, ease: "easeOut" }}
+                transition={{ duration: 0.16, ease: 'easeOut' }}
                 className="flex h-full flex-col justify-center gap-4"
               >
                 <MdxStyleCodeBlock
@@ -353,7 +404,7 @@ export default function TemplateModPage() {
       <SectionShell title="Built For Production Mods">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {CAPABILITIES.map((capability) => {
-            const active = activeCapabilityId === capability.id
+            const active = activeCapabilityId === capability.id;
             return (
               <button
                 key={capability.id}
@@ -362,29 +413,36 @@ export default function TemplateModPage() {
                 onMouseEnter={() => setActiveCapabilityId(capability.id)}
                 onFocus={() => setActiveCapabilityId(capability.id)}
                 className={cn(
-                  "flex h-full flex-col text-left p-5 rounded-xl border transition-all duration-200 outline-none",
+                  'flex h-full flex-col text-left p-5 rounded-xl border transition-all duration-200 outline-none',
                   active
-                    ? "border-[var(--tm-accent)] bg-[var(--tm-secondary)] shadow-md ring-1 ring-[var(--tm-primary)]"
-                    : "border-border bg-card/65 hover:border-border/80 hover:bg-accent/40"
+                    ? 'border-[var(--tm-accent)] bg-[var(--tm-secondary)] shadow-md ring-1 ring-[var(--tm-primary)]'
+                    : 'border-border bg-card/65 hover:border-border/80 hover:bg-accent/40',
                 )}
               >
                 <div className="mb-2 flex min-h-7 items-center gap-3">
                   <LineBullet
-                    icon={<capability.icon className="size-3.5" aria-hidden="true" />}
+                    icon={
+                      <capability.icon
+                        className="size-3.5"
+                        aria-hidden="true"
+                      />
+                    }
                     colorRole="accentColor"
                     textRole="textColorInverted"
                     shape="circle"
                     size="sm"
-                    className={cn("shrink-0", !active && "opacity-85")}
+                    className={cn('shrink-0', !active && 'opacity-85')}
                   />
-                  <h3 className="text-base font-semibold text-foreground">{capability.title}</h3>
+                  <h3 className="text-base font-semibold text-foreground">
+                    {capability.title}
+                  </h3>
                 </div>
                 <InlineMarkdown
                   content={capability.description}
                   className="pt-0.5 text-sm leading-relaxed text-muted-foreground"
                 />
               </button>
-            )
+            );
           })}
         </div>
       </SectionShell>
@@ -413,7 +471,7 @@ export default function TemplateModPage() {
 
       <div className="h-16" />
     </main>
-  )
+  );
 }
 
 function MdxStyleCodeBlock({
@@ -422,13 +480,16 @@ function MdxStyleCodeBlock({
   code,
   html,
 }: {
-  title: string
-  language: string
-  code: string
-  html?: string
+  title: string;
+  language: string;
+  code: string;
+  html?: string;
 }) {
   return (
-    <figure data-rehype-pretty-code-figure className="overflow-hidden rounded-lg border border-border/80 bg-background/90">
+    <figure
+      data-rehype-pretty-code-figure
+      className="overflow-hidden rounded-lg border border-border/80 bg-background/90"
+    >
       <figcaption className="border-b border-border/80 bg-muted/35 px-3 py-2 font-mono text-xs font-semibold text-muted-foreground">
         {title}
       </figcaption>
@@ -438,12 +499,15 @@ function MdxStyleCodeBlock({
           dangerouslySetInnerHTML={{ __html: html }}
         />
       ) : (
-        <pre data-language={language} className="overflow-x-auto p-4 text-[13px] leading-relaxed">
+        <pre
+          data-language={language}
+          className="overflow-x-auto p-4 text-[13px] leading-relaxed"
+        >
           <code className={`language-${language}`}>{code}</code>
         </pre>
       )}
     </figure>
-  )
+  );
 }
 
 function ActionCard({
@@ -454,14 +518,15 @@ function ActionCard({
   label,
   external,
 }: {
-  href: string
-  title: string
-  description: string
-  icon: LucideIcon
-  label: string
-  external?: boolean
+  href: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  label: string;
+  external?: boolean;
 }) {
-  const className = "group rounded-xl border border-border bg-card/70 p-5 transition-all duration-200 hover:border-[var(--tm-accent)] hover:shadow-md hover:ring-1 hover:ring-[var(--tm-primary)]"
+  const className =
+    'group rounded-xl border border-border bg-card/70 p-5 transition-all duration-200 hover:border-[var(--tm-accent)] hover:shadow-md hover:ring-1 hover:ring-[var(--tm-primary)]';
 
   const content = (
     <>
@@ -481,42 +546,47 @@ function ActionCard({
       />
       <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--tm-accent)]">
         {label}
-        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+        <ArrowRight
+          className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+          aria-hidden="true"
+        />
       </span>
     </>
-  )
+  );
 
   if (external) {
     return (
       <a href={href} target="_blank" rel="noreferrer" className={className}>
         {content}
       </a>
-    )
+    );
   }
 
   return (
     <Link href={href} className={className}>
       {content}
     </Link>
-  )
+  );
 }
 
 function InlineMarkdown({
   content,
   className,
 }: {
-  content: string
-  className?: string
+  content: string;
+  className?: string;
 }) {
-  return <MarkdownText content={content} className={className} />
+  return <MarkdownText content={content} className={className} />;
 }
 
 function BlockMarkdown({
   content,
   className,
 }: {
-  content: string
-  className?: string
+  content: string;
+  className?: string;
 }) {
-  return <MarkdownText content={content} className={className} inline={false} />
+  return (
+    <MarkdownText content={content} className={className} inline={false} />
+  );
 }

@@ -1,12 +1,12 @@
-import * as React from "react"
-import type { MDXComponents } from "mdx/types"
-import Link from "next/link"
-import * as LucideIcons from "lucide-react"
-import type { LucideIcon, LucideProps } from "lucide-react"
-import { Tabs, TabItem } from "@/components/mdx/mdx-tabs"
-import { IconList, IconItem } from "@/components/mdx/icon-list"
-import { DocsCardGrid, DocsCard } from "@/components/docs/docs-home-cards"
-import { UpdateSection } from "@/components/updates/update-section"
+import * as React from 'react';
+import type { MDXComponents } from 'mdx/types';
+import Link from 'next/link';
+import * as LucideIcons from 'lucide-react';
+import type { LucideIcon, LucideProps } from 'lucide-react';
+import { Tabs, TabItem } from '@/components/mdx/mdx-tabs';
+import { IconList, IconItem } from '@/components/mdx/icon-list';
+import { DocsCardGrid, DocsCard } from '@/components/docs/docs-home-cards';
+import { UpdateSection } from '@/components/updates/update-section';
 
 import {
   Admonition,
@@ -22,41 +22,41 @@ import {
   Bug as BugAdmonition,
   Example,
   Announcement,
-} from "@/components/ui/admonition"
+} from '@/components/ui/admonition';
 
 function slugify(text: string) {
   return text
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
 }
 
 function textFromChildren(children: React.ReactNode): string {
-  if (typeof children === "string") return children
-  if (typeof children === "number") return String(children)
-  if (Array.isArray(children)) return children.map(textFromChildren).join("")
+  if (typeof children === 'string') return children;
+  if (typeof children === 'number') return String(children);
+  if (Array.isArray(children)) return children.map(textFromChildren).join('');
 
   if (React.isValidElement<{ children?: React.ReactNode }>(children)) {
-    return textFromChildren(children.props.children)
+    return textFromChildren(children.props.children);
   }
 
-  return ""
+  return '';
 }
 
 function MdxLink({
-  href = "",
+  href = '',
   children,
   ...props
 }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
-  const isHash = href.startsWith("#")
-  const isInternal = href.startsWith("/")
+  const isHash = href.startsWith('#');
+  const isInternal = href.startsWith('/');
   const isExternal =
-    href.startsWith("http://") ||
-    href.startsWith("https://") ||
-    href.startsWith("mailto:") ||
-    href.startsWith("tel:")
+    href.startsWith('http://') ||
+    href.startsWith('https://') ||
+    href.startsWith('mailto:') ||
+    href.startsWith('tel:');
 
   if (isHash) {
     return (
@@ -67,7 +67,7 @@ function MdxLink({
       >
         {children}
       </a>
-    )
+    );
   }
 
   if (isInternal) {
@@ -79,7 +79,7 @@ function MdxLink({
       >
         {children}
       </Link>
-    )
+    );
   }
 
   if (isExternal) {
@@ -93,7 +93,7 @@ function MdxLink({
       >
         {children}
       </a>
-    )
+    );
   }
 
   return (
@@ -104,33 +104,33 @@ function MdxLink({
     >
       {children}
     </a>
-  )
+  );
 }
 
 const lucideComponents: MDXComponents = Object.fromEntries(
   Object.entries(LucideIcons)
     .filter(([name, component]) => /^[A-Z]/.test(name) && component)
     .map(([name, icon]) => {
-      const Icon = icon as LucideIcon
+      const Icon = icon as LucideIcon;
 
       const InlineLucideIcon = ({
         className,
-        size = "1em",
+        size = '1em',
         ...props
       }: LucideProps) => (
         <Icon
           aria-hidden="true"
-          className={`inline-block align-[-0.125em] ${className ?? ""}`.trim()}
+          className={`inline-block align-[-0.125em] ${className ?? ''}`.trim()}
           size={size}
           {...props}
         />
-      )
+      );
 
-      InlineLucideIcon.displayName = `${name}Inline`
+      InlineLucideIcon.displayName = `${name}Inline`;
 
-      return [name, InlineLucideIcon]
-    })
-)
+      return [name, InlineLucideIcon];
+    }),
+);
 
 const baseComponents: MDXComponents = {
   ...lucideComponents,
@@ -158,7 +158,7 @@ const baseComponents: MDXComponents = {
   a: MdxLink,
 
   h1: ({ children, id, ...props }) => {
-    const headingId = id ?? slugify(textFromChildren(children))
+    const headingId = id ?? slugify(textFromChildren(children));
     return (
       <h1
         id={headingId}
@@ -167,11 +167,11 @@ const baseComponents: MDXComponents = {
       >
         {children}
       </h1>
-    )
+    );
   },
 
   h2: ({ children, id, ...props }) => {
-    const headingId = id ?? slugify(textFromChildren(children))
+    const headingId = id ?? slugify(textFromChildren(children));
     return (
       <h2
         id={headingId}
@@ -180,11 +180,11 @@ const baseComponents: MDXComponents = {
       >
         {children}
       </h2>
-    )
+    );
   },
 
   h3: ({ children, id, ...props }) => {
-    const headingId = id ?? slugify(textFromChildren(children))
+    const headingId = id ?? slugify(textFromChildren(children));
     return (
       <h3
         id={headingId}
@@ -193,11 +193,11 @@ const baseComponents: MDXComponents = {
       >
         {children}
       </h3>
-    )
+    );
   },
 
   h4: ({ children, id, ...props }) => {
-    const headingId = id ?? slugify(textFromChildren(children))
+    const headingId = id ?? slugify(textFromChildren(children));
     return (
       <h4
         id={headingId}
@@ -206,16 +206,14 @@ const baseComponents: MDXComponents = {
       >
         {children}
       </h4>
-    )
+    );
   },
 
   p: (props) => (
     <p className="leading-7 [&:not(:first-child)]:mt-6" {...props} />
   ),
 
-  ul: (props) => (
-    <ul className="my-6 ml-6 list-disc [&>li]:mt-2" {...props} />
-  ),
+  ul: (props) => <ul className="my-6 ml-6 list-disc [&>li]:mt-2" {...props} />,
 
   ol: (props) => (
     <ol className="my-6 ml-6 list-decimal [&>li]:mt-2" {...props} />
@@ -250,7 +248,7 @@ const baseComponents: MDXComponents = {
 
   code: ({ className, ...props }) => {
     if (className) {
-      return <code className={className} {...props} />
+      return <code className={className} {...props} />;
     }
 
     return (
@@ -258,7 +256,7 @@ const baseComponents: MDXComponents = {
         className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm"
         {...props}
       />
-    )
+    );
   },
 
   pre: (props) => (
@@ -274,14 +272,13 @@ const baseComponents: MDXComponents = {
       {...props}
     />
   ),
-}
+};
 
 export function useMDXComponents(
-  components: MDXComponents = {}
+  components: MDXComponents = {},
 ): MDXComponents {
   return {
     ...baseComponents,
     ...components,
-  }
+  };
 }
-

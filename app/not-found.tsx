@@ -1,13 +1,13 @@
-import Link from "next/link"
-import { TrainFront } from "lucide-react"
+import Link from 'next/link';
+import { TrainFront } from 'lucide-react';
 
-import { LineBullet } from "@/components/ui/line-bullet"
+import { LineBullet } from '@/components/ui/line-bullet';
 
 const LINES = [
-  { id: "4", color: "#419245" },
-  { id: "0", color: "#818284" },
-  { id: "4", color: "#B3488F" },
-] as const
+  { id: '4', color: '#419245' },
+  { id: '0', color: '#818284' },
+  { id: '4', color: '#B3488F' },
+] as const;
 
 export default function NotFound() {
   return (
@@ -39,10 +39,14 @@ export default function NotFound() {
           ))}
         </div>
 
-        <h1 className="mt-5 text-[clamp(1.85rem,5.1vw,3rem)] font-black tracking-tight">We can&apos;t find this station.</h1>
+        <h1 className="mt-5 text-[clamp(1.85rem,5.1vw,3rem)] font-black tracking-tight">
+          We can&apos;t find this station.
+        </h1>
 
         <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-          The page you requested was moved, is currently out of service, or never arrived at this railyard. Head back home and we&apos;ll get you back on track.
+          The page you requested was moved, is currently out of service, or
+          never arrived at this railyard. Head back home and we&apos;ll get you
+          back on track.
         </p>
 
         <div className="mt-7">
@@ -55,6 +59,5 @@ export default function NotFound() {
         </div>
       </section>
     </main>
-  )
+  );
 }
-

@@ -1,7 +1,7 @@
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface CardSkeletonGridProps {
-  count?: number
+  count?: number;
 }
 
 export function CardSkeletonGrid({ count = 6 }: CardSkeletonGridProps) {
@@ -33,5 +33,5 @@ export function CardSkeletonGrid({ count = 6 }: CardSkeletonGridProps) {
         </div>
       ))}
     </div>
-  )
+  );
 }

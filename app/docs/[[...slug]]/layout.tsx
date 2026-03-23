@@ -1,10 +1,10 @@
-import type { ReactNode } from "react"
+import type { ReactNode } from 'react';
 
 export default async function DocsCatchAllLayout({
   children,
 }: {
-  children: ReactNode
-  params: Promise<{ slug?: string[] }>
+  children: ReactNode;
+  params: Promise<{ slug?: string[] }>;
 }) {
-  return children
+  return children;
 }

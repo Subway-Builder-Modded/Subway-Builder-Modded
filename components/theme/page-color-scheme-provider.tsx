@@ -1,26 +1,29 @@
-"use client"
+'use client';
 
-import { createContext, useContext, useMemo } from "react"
-import { usePathname } from "next/navigation"
+import { createContext, useContext, useMemo } from 'react';
+import { usePathname } from 'next/navigation';
 
-import { resolveSiteColorScheme, type SiteColorSchemeId } from "@/config/theme/scheme-config"
+import {
+  resolveSiteColorScheme,
+  type SiteColorSchemeId,
+} from '@/config/theme/scheme-config';
 
-const PageColorSchemeContext = createContext<SiteColorSchemeId>("default")
+const PageColorSchemeContext = createContext<SiteColorSchemeId>('default');
 
 export function usePageColorScheme() {
-  return useContext(PageColorSchemeContext)
+  return useContext(PageColorSchemeContext);
 }
 
 export function PageColorSchemeProvider({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const pathname = usePathname()
+  const pathname = usePathname();
   const scheme = useMemo(
-    () => resolveSiteColorScheme(pathname ?? "/"),
-    [pathname]
-  )
+    () => resolveSiteColorScheme(pathname ?? '/'),
+    [pathname],
+  );
 
   return (
     <PageColorSchemeContext value={scheme}>
@@ -28,6 +31,5 @@ export function PageColorSchemeProvider({
         {children}
       </div>
     </PageColorSchemeContext>
-  )
+  );
 }
-

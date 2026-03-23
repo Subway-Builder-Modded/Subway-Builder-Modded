@@ -235,7 +235,7 @@ api.hooks.onGameSaved((saveName) => {
 
 ## All Available Hooks {#all-available-hooks}
 
-| **Hook**            |  **Callback arguments**                        |
+| **Hook**            | **Callback arguments**                         |
 | ------------------- | ---------------------------------------------- |
 | `onGameInit`        | (none)                                         |
 | `onDayChange`       | `day: number`                                  |
@@ -322,7 +322,9 @@ if (result.success) {
 
   // Build the blueprints (costs money)
   const buildResult = await api.build.buildBlueprints();
-  console.log(`Built ${buildResult.builtTrackCount} tracks, cost: $${buildResult.totalCost}`);
+  console.log(
+    `Built ${buildResult.builtTrackCount} tracks, cost: $${buildResult.totalCost}`,
+  );
 }
 ```
 
@@ -362,7 +364,10 @@ await api.storage.set('settings', { sound: true, difficulty: 'hard' });
 
 // Load
 const score = await api.storage.get('highScore', 0);
-const settings = await api.storage.get('settings', { sound: true, difficulty: 'normal' });
+const settings = await api.storage.get('settings', {
+  sound: true,
+  difficulty: 'normal',
+});
 
 // Delete
 await api.storage.delete('highScore');

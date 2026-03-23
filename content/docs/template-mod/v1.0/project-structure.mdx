@@ -98,7 +98,10 @@ panel:
 import { useState } from 'react';
 
 const api = window.SubwayBuilderAPI;
-const { Button } = api.utils.components as Record<string, React.ComponentType<any>>;
+const { Button } = api.utils.components as Record<
+  string,
+  React.ComponentType<any>
+>;
 
 export function ExamplePanel() {
   const [count, setCount] = useState(0);
@@ -121,7 +124,8 @@ the game's API at runtime:
 const React = window.SubwayBuilderAPI.utils.React;
 
 export default React;
-export const { useState, useEffect, useCallback, useMemo, useRef /* ... */ } = React;
+export const { useState, useEffect, useCallback, useMemo, useRef /* ... */ } =
+  React;
 
 // JSX runtime exports
 export const jsx = React.createElement;

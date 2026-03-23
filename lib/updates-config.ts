@@ -1,1 +1,1 @@
-export * from "@/config/content/updates"
+export * from '@/config/content/updates';

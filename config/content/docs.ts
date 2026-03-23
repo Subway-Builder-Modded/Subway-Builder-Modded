@@ -12,181 +12,191 @@ import {
   SearchCode,
   BookText,
   type LucideIcon,
-} from "lucide-react"
+} from 'lucide-react';
 
-export type DocsInstanceId = "railyard" | "template-mod"
+export type DocsInstanceId = 'railyard' | 'template-mod';
 
 export type DocsSidebarOrderItem =
   | string
   | {
-      key: string
-      children?: DocsSidebarOrderItem[]
-    }
+      key: string;
+      children?: DocsSidebarOrderItem[];
+    };
 
 export type DocsVersion = {
-  value: string
-  label: string
-  icon?: LucideIcon
-  deprecated?: boolean
-  sidebarOrder?: DocsSidebarOrderItem[]
-}
+  value: string;
+  label: string;
+  icon?: LucideIcon;
+  deprecated?: boolean;
+  sidebarOrder?: DocsSidebarOrderItem[];
+};
 
 export type DocsInstance = {
-  id: DocsInstanceId
-  label: string
-  basePath: string
-  icon: LucideIcon
+  id: DocsInstanceId;
+  label: string;
+  basePath: string;
+  icon: LucideIcon;
   sidebarHeader?: {
-    icon: LucideIcon
-  }
-  versioned: boolean
-  latestVersion?: string
-  versions?: DocsVersion[]
-  sidebarOrder?: DocsSidebarOrderItem[]
+    icon: LucideIcon;
+  };
+  versioned: boolean;
+  latestVersion?: string;
+  versions?: DocsVersion[];
+  sidebarOrder?: DocsSidebarOrderItem[];
   hub: {
-    description: string
+    description: string;
     cards: {
-      title: string
-      description: string
-      icon: LucideIcon
-      docPath: string
-    }[]
-  }
-}
+      title: string;
+      description: string;
+      icon: LucideIcon;
+      docPath: string;
+    }[];
+  };
+};
 
 export const DOCS_INSTANCES: DocsInstance[] = [
   {
-    id: "railyard",
-    label: "Railyard",
-    basePath: "/railyard/docs",
+    id: 'railyard',
+    label: 'Railyard',
+    basePath: '/railyard/docs',
     icon: TrainTrack,
     sidebarHeader: {
       icon: BookText,
     },
     versioned: true,
-    latestVersion: "v0.1",
+    latestVersion: 'v0.1',
     versions: [
       {
-        value: "v0.1",
-        label: "v0.1",
+        value: 'v0.1',
+        label: 'v0.1',
         icon: Tag,
         sidebarOrder: [
           {
-            key: "players",
+            key: 'players',
             children: [
-              "install-guide-windows",
-              "install-guide-macos",
-              "install-guide-linux",
-              "github-token"
+              'install-guide-windows',
+              'install-guide-macos',
+              'install-guide-linux',
+              'github-token',
             ],
           },
           {
-            key: "developers",
+            key: 'developers',
             children: [
-              "publishing-projects",
-              "using-custom-url",
-              "data-quality"
+              'publishing-projects',
+              'using-custom-url',
+              'data-quality',
             ],
           },
         ],
       },
     ],
     hub: {
-      description: "All-in-one Map and Mod Manager for Subway Builder.",
+      description: 'All-in-one Map and Mod Manager for Subway Builder.',
       cards: [
         {
-          title: "Players",
-          description: "The ultimate guide for players getting started with Railyard, including installation, setup, and configuration.",
+          title: 'Players',
+          description:
+            'The ultimate guide for players getting started with Railyard, including installation, setup, and configuration.',
           icon: Users,
-          docPath: "players",
+          docPath: 'players',
         },
         {
-          title: "Developers",
-          description: "Learn exactly how to make your project compatible with Railyard and how to submit it to the registry.",
+          title: 'Developers',
+          description:
+            'Learn exactly how to make your project compatible with Railyard and how to submit it to the registry.',
           icon: CodeXml,
-          docPath: "developers",
+          docPath: 'developers',
         },
       ],
     },
   },
   {
-    id: "template-mod",
-    label: "Template Mod",
-    basePath: "/template-mod/docs",
+    id: 'template-mod',
+    label: 'Template Mod',
+    basePath: '/template-mod/docs',
     icon: Package,
     sidebarHeader: {
       icon: BookText,
     },
     versioned: true,
-    latestVersion: "v1.0",
+    latestVersion: 'v1.0',
     versions: [
       {
-        value: "v1.0",
-        label: "v1.0",
+        value: 'v1.0',
+        label: 'v1.0',
         icon: Tag,
         sidebarOrder: [
-          "getting-started",
-          "project-structure",
-          "common-patterns",
-          "react-components",
-          "debugging",
-          "type-reference",
+          'getting-started',
+          'project-structure',
+          'common-patterns',
+          'react-components',
+          'debugging',
+          'type-reference',
         ],
       },
     ],
     hub: {
-      description: "The all-inclusive TypeScript template to create your own mods for Subway Builder.",
+      description:
+        'The all-inclusive TypeScript template to create your own mods for Subway Builder.',
       cards: [
         {
-          title: "Getting Started",
-          description: "Get started with the Subway Builder Modded Template Mod.",
+          title: 'Getting Started',
+          description:
+            'Get started with the Subway Builder Modded Template Mod.',
           icon: Plus,
-          docPath: "getting-started",
+          docPath: 'getting-started',
         },
         {
-          title: "Project Structure",
-          description: "Learn how to organize your project when creating a custom mod.",
+          title: 'Project Structure',
+          description:
+            'Learn how to organize your project when creating a custom mod.',
           icon: Folder,
-          docPath: "project-structure",
+          docPath: 'project-structure',
         },
         {
-          title: "Common Patterns",
-          description: "Learn about common patterns that may be useful.",
+          title: 'Common Patterns',
+          description: 'Learn about common patterns that may be useful.',
           icon: Link2,
-          docPath: "common-patterns",
+          docPath: 'common-patterns',
         },
         {
-          title: "React Components",
-          description: "Learn about the various React components that are available for you to use.",
+          title: 'React Components',
+          description:
+            'Learn about the various React components that are available for you to use.',
           icon: Atom,
-          docPath: "react-components",
+          docPath: 'react-components',
         },
         {
-          title: "Debugging",
-          description: "Learn how to properly debug and test your mod.",
+          title: 'Debugging',
+          description: 'Learn how to properly debug and test your mod.',
           icon: Bug,
-          docPath: "debugging",
+          docPath: 'debugging',
         },
         {
-          title: "Type Reference",
-          description: "Organization of the template's full TypeScript type definitions for the Subway Builder Modding API.",
+          title: 'Type Reference',
+          description:
+            "Organization of the template's full TypeScript type definitions for the Subway Builder Modding API.",
           icon: SearchCode,
-          docPath: "type-reference",
+          docPath: 'type-reference',
         },
       ],
     },
   },
-]
+];
 
 export function getDocsInstanceById(id: string) {
-  return DOCS_INSTANCES.find((instance) => instance.id === id)
+  return DOCS_INSTANCES.find((instance) => instance.id === id);
 }
 
-export function getSidebarOrder(instance: DocsInstance, version: string | null): DocsSidebarOrderItem[] {
+export function getSidebarOrder(
+  instance: DocsInstance,
+  version: string | null,
+): DocsSidebarOrderItem[] {
   if (instance.versioned && version && instance.versions) {
-    const matchedVersion = instance.versions.find((v) => v.value === version)
-    return matchedVersion?.sidebarOrder ?? instance.sidebarOrder ?? []
+    const matchedVersion = instance.versions.find((v) => v.value === version);
+    return matchedVersion?.sidebarOrder ?? instance.sidebarOrder ?? [];
   }
 
-  return instance.sidebarOrder ?? []
+  return instance.sidebarOrder ?? [];
 }

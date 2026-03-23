@@ -1,19 +1,19 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "maplibre-gl/dist/maplibre-gl.css";
-@import "./schemes/default.css";
-@import "./schemes/railyard.css";
-@import "./schemes/template-mod.css";
-@import "./schemes/registry.css";
-@import "./schemes/website.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import 'maplibre-gl/dist/maplibre-gl.css';
+@import './schemes/default.css';
+@import './schemes/railyard.css';
+@import './schemes/template-mod.css';
+@import './schemes/registry.css';
+@import './schemes/website.css';
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
-  font-family: "HelveticaNeueBold";
-  src: url("/fonts/HelveticaNeueBold.otf") format("opentype");
+  font-family: 'HelveticaNeueBold';
+  src: url('/fonts/HelveticaNeueBold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -74,42 +74,74 @@
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
-  --animate-marquee-left: marquee-left var(--marquee-duration) linear var(--marquee-loop-count);
-  --animate-marquee-right: marquee-right var(--marquee-duration) linear var(--marquee-loop-count);
-  --animate-marquee-left-rtl: marquee-left-rtl var(--marquee-duration) linear var(--marquee-loop-count);
-  --animate-marquee-right-rtl: marquee-right-rtl var(--marquee-duration) linear var(--marquee-loop-count);
-  --animate-marquee-up: marquee-up var(--marquee-duration) linear var(--marquee-loop-count);
-  --animate-marquee-down: marquee-down var(--marquee-duration) linear var(--marquee-loop-count);
+  --animate-marquee-left: marquee-left var(--marquee-duration) linear
+    var(--marquee-loop-count);
+  --animate-marquee-right: marquee-right var(--marquee-duration) linear
+    var(--marquee-loop-count);
+  --animate-marquee-left-rtl: marquee-left-rtl var(--marquee-duration) linear
+    var(--marquee-loop-count);
+  --animate-marquee-right-rtl: marquee-right-rtl var(--marquee-duration) linear
+    var(--marquee-loop-count);
+  --animate-marquee-up: marquee-up var(--marquee-duration) linear
+    var(--marquee-loop-count);
+  --animate-marquee-down: marquee-down var(--marquee-duration) linear
+    var(--marquee-loop-count);
 
   @keyframes marquee-left {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(calc(-100% - var(--marquee-gap))); }
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(calc(-100% - var(--marquee-gap)));
+    }
   }
   @keyframes marquee-right {
-    0% { transform: translateX(calc(-100% - var(--marquee-gap))); }
-    100% { transform: translateX(0%); }
+    0% {
+      transform: translateX(calc(-100% - var(--marquee-gap)));
+    }
+    100% {
+      transform: translateX(0%);
+    }
   }
   @keyframes marquee-up {
-    0% { transform: translateY(0%); }
-    100% { transform: translateY(calc(-100% - var(--marquee-gap))); }
+    0% {
+      transform: translateY(0%);
+    }
+    100% {
+      transform: translateY(calc(-100% - var(--marquee-gap)));
+    }
   }
   @keyframes marquee-down {
-    0% { transform: translateY(calc(-100% - var(--marquee-gap))); }
-    100% { transform: translateY(0%); }
+    0% {
+      transform: translateY(calc(-100% - var(--marquee-gap)));
+    }
+    100% {
+      transform: translateY(0%);
+    }
   }
   @keyframes marquee-left-rtl {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(calc(100% + var(--marquee-gap))); }
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(calc(100% + var(--marquee-gap)));
+    }
   }
   @keyframes marquee-right-rtl {
-    0% { transform: translateX(calc(100% + var(--marquee-gap))); }
-    100% { transform: translateX(0%); }
+    0% {
+      transform: translateX(calc(100% + var(--marquee-gap)));
+    }
+    100% {
+      transform: translateX(0%);
+    }
   }
 }
 
 :root {
-  --font-sans: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  --font-geist-mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-sans: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-geist-mono:
+    'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
   --background: oklch(0.98 0 0);
   --foreground: oklch(0.13 0 0);
 
@@ -248,7 +280,9 @@ body {
   text-decoration: none;
   opacity: 0;
   color: var(--primary) !important;
-  transition: opacity 150ms ease, color 150ms ease;
+  transition:
+    opacity 150ms ease,
+    color 150ms ease;
 }
 
 h1:hover .heading-anchor,
@@ -285,31 +319,48 @@ h6:hover .heading-anchor,
   }
 }
 
-[data-color-scheme] main a:not([class*="text-"]):not(.text-current) {
+[data-color-scheme] main a:not([class*='text-']):not(.text-current) {
   color: var(--suite-link-light, var(--suite-accent-light));
-  text-decoration-color: color-mix(in srgb, var(--suite-link-light, var(--suite-accent-light)) 50%, transparent);
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--suite-link-light, var(--suite-accent-light)) 50%,
+    transparent
+  );
 }
 
-[data-color-scheme] main a:not([class*="text-"]):not(.text-current):hover {
-  color: color-mix(in srgb, var(--suite-link-light, var(--suite-accent-light)) 85%, black);
+[data-color-scheme] main a:not([class*='text-']):not(.text-current):hover {
+  color: color-mix(
+    in srgb,
+    var(--suite-link-light, var(--suite-accent-light)) 85%,
+    black
+  );
 }
 
-.dark [data-color-scheme] main a:not([class*="text-"]):not(.text-current) {
+.dark [data-color-scheme] main a:not([class*='text-']):not(.text-current) {
   color: var(--suite-link-dark, var(--suite-accent-dark));
-  text-decoration-color: color-mix(in srgb, var(--suite-link-dark, var(--suite-accent-dark)) 55%, transparent);
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--suite-link-dark, var(--suite-accent-dark)) 55%,
+    transparent
+  );
 }
 
-.dark [data-color-scheme] main a:not([class*="text-"]):not(.text-current):hover {
-  color: color-mix(in srgb, var(--suite-link-dark, var(--suite-accent-dark)) 88%, white);
+.dark
+  [data-color-scheme]
+  main
+  a:not([class*='text-']):not(.text-current):hover {
+  color: color-mix(
+    in srgb,
+    var(--suite-link-dark, var(--suite-accent-dark)) 88%,
+    white
+  );
 }
-
-
 
 .theme-transitioning,
 .theme-transitioning * {
   transition-property: color, background-color, border-color !important;
   transition-duration: 280ms !important;
-  transition-timing-function: cubic-bezier(.22, .9, .35, 1) !important;
+  transition-timing-function: cubic-bezier(0.22, 0.9, 0.35, 1) !important;
   transition-delay: 0ms !important;
 }
 
@@ -320,7 +371,6 @@ h6:hover .heading-anchor,
   }
 }
 
-
 @supports (view-transition-name: root) {
   html {
     view-transition-name: root;
@@ -329,10 +379,9 @@ h6:hover .heading-anchor,
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation-duration: 240ms;
-    animation-timing-function: cubic-bezier(.22, .9, .35, 1);
+    animation-timing-function: cubic-bezier(0.22, 0.9, 0.35, 1);
   }
 }
-
 
 .theme-switching-menu [data-theme-menu] {
   animation: none !important;
@@ -353,4 +402,3 @@ h6:hover .heading-anchor,
 [data-theme-menu] {
   view-transition-name: none;
 }
-

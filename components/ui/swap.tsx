@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { Slot as SlotPrimitive } from "radix-ui";
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { useAsRef } from "@/hooks/use-as-ref";
-import { useIsomorphicLayoutEffect } from "@/hooks/use-isomorphic-layout-effect";
-import { useLazyRef } from "@/hooks/use-lazy-ref";
+import { Slot as SlotPrimitive } from 'radix-ui';
+import * as React from 'react';
+import { cn } from '@/lib/utils';
+import { useAsRef } from '@/hooks/use-as-ref';
+import { useIsomorphicLayoutEffect } from '@/hooks/use-isomorphic-layout-effect';
+import { useLazyRef } from '@/hooks/use-lazy-ref';
 
-interface DivProps extends React.ComponentProps<"div"> {
+interface DivProps extends React.ComponentProps<'div'> {
   asChild?: boolean;
 }
 
 function getDataState(swapped: boolean) {
-  return swapped ? "on" : "off";
+  return swapped ? 'on' : 'off';
 }
 
 interface StoreState {
@@ -52,8 +52,8 @@ interface SwapProps extends DivProps {
   swapped?: boolean;
   defaultSwapped?: boolean;
   onSwappedChange?: (swapped: boolean) => void;
-  activationMode?: "click" | "hover";
-  animation?: "fade" | "rotate" | "flip" | "scale";
+  activationMode?: 'click' | 'hover';
+  animation?: 'fade' | 'rotate' | 'flip' | 'scale';
   disabled?: boolean;
 }
 
@@ -62,8 +62,8 @@ function Swap(props: SwapProps) {
     swapped: swappedProp,
     defaultSwapped,
     onSwappedChange,
-    activationMode = "click",
-    animation = "fade",
+    activationMode = 'click',
+    animation = 'fade',
     disabled,
     asChild,
     className,
@@ -90,7 +90,7 @@ function Swap(props: SwapProps) {
     onKeyDown: onKeyDownProp,
   });
 
-  const isClickMode = activationMode === "click";
+  const isClickMode = activationMode === 'click';
 
   const store = React.useMemo<Store>(() => {
     return {
@@ -102,7 +102,7 @@ function Swap(props: SwapProps) {
       setState: (key, value) => {
         if (Object.is(stateRef.current[key], value)) return;
 
-        if (key === "swapped" && typeof value === "boolean") {
+        if (key === 'swapped' && typeof value === 'boolean') {
           stateRef.current.swapped = value;
           propsRef.current.onSwappedChange?.(value);
         } else {
@@ -123,20 +123,20 @@ function Swap(props: SwapProps) {
 
   useIsomorphicLayoutEffect(() => {
     if (swappedProp !== undefined) {
-      store.setState("swapped", swappedProp);
+      store.setState('swapped', swappedProp);
     }
   }, [swappedProp]);
 
   const onToggle = React.useCallback(() => {
     if (propsRef.current.disabled) return;
 
-    store.setState("swapped", !store.getState().swapped);
+    store.setState('swapped', !store.getState().swapped);
   }, [store, propsRef]);
 
   const onClick = React.useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       propsRef.current.onClick?.(event);
-      if (event.defaultPrevented || propsRef.current.activationMode !== "click")
+      if (event.defaultPrevented || propsRef.current.activationMode !== 'click')
         return;
 
       onToggle();
@@ -149,12 +149,12 @@ function Swap(props: SwapProps) {
       propsRef.current.onMouseEnter?.(event);
       if (
         event.defaultPrevented ||
-        activationMode !== "hover" ||
+        activationMode !== 'hover' ||
         propsRef.current.disabled
       )
         return;
 
-      store.setState("swapped", true);
+      store.setState('swapped', true);
     },
     [propsRef, activationMode, store],
   );
@@ -164,12 +164,12 @@ function Swap(props: SwapProps) {
       propsRef.current.onMouseLeave?.(event);
       if (
         event.defaultPrevented ||
-        activationMode !== "hover" ||
+        activationMode !== 'hover' ||
         propsRef.current.disabled
       )
         return;
 
-      store.setState("swapped", false);
+      store.setState('swapped', false);
     },
     [propsRef, activationMode, store],
   );
@@ -179,12 +179,12 @@ function Swap(props: SwapProps) {
       propsRef.current.onKeyDown?.(event);
       if (
         event.defaultPrevented ||
-        propsRef.current.activationMode !== "click" ||
+        propsRef.current.activationMode !== 'click' ||
         propsRef.current.disabled
       )
         return;
 
-      if (event.key === "Enter" || event.key === " ") {
+      if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         onToggle();
       }
@@ -192,22 +192,22 @@ function Swap(props: SwapProps) {
     [propsRef, onToggle],
   );
 
-  const RootPrimitive = asChild ? SlotPrimitive.Slot : "div";
+  const RootPrimitive = asChild ? SlotPrimitive.Slot : 'div';
 
   return (
     <StoreContext.Provider value={store}>
       <RootPrimitive
-        role={isClickMode ? "button" : undefined}
+        role={isClickMode ? 'button' : undefined}
         aria-pressed={isClickMode ? swapped : undefined}
         aria-disabled={disabled}
         data-slot="swap"
         data-animation={animation}
         data-state={getDataState(swapped)}
-        data-disabled={disabled ? "" : undefined}
+        data-disabled={disabled ? '' : undefined}
         tabIndex={isClickMode && !disabled ? 0 : undefined}
         {...rootProps}
         className={cn(
-          "relative inline-flex cursor-pointer select-none items-center justify-center data-disabled:cursor-not-allowed data-disabled:opacity-50",
+          'relative inline-flex cursor-pointer select-none items-center justify-center data-disabled:cursor-not-allowed data-disabled:opacity-50',
           className,
         )}
         onClick={onClick}
@@ -224,7 +224,7 @@ function SwapOn(props: DivProps) {
 
   const swapped = useStore((state) => state.swapped);
 
-  const OnPrimitive = asChild ? SlotPrimitive.Slot : "div";
+  const OnPrimitive = asChild ? SlotPrimitive.Slot : 'div';
 
   return (
     <OnPrimitive
@@ -232,10 +232,10 @@ function SwapOn(props: DivProps) {
       data-state={getDataState(swapped)}
       {...onProps}
       className={cn(
-        "transition-all duration-300 data-[state=off]:absolute data-[state=off]:opacity-0 data-[state=on]:opacity-100 motion-reduce:transition-none",
-        "[*[data-animation=rotate]_&]:data-[state=off]:rotate-180 [*[data-animation=rotate]_&]:data-[state=on]:rotate-0 motion-reduce:[*[data-animation=rotate]_&]:data-[state=off]:rotate-0",
-        "[*[data-animation=flip]_&]:data-[state=off]:transform-[rotateY(180deg)] [*[data-animation=flip]_&]:data-[state=on]:transform-[rotateY(0deg)] motion-reduce:[*[data-animation=flip]_&]:data-[state=off]:transform-[rotateY(0deg)]",
-        "[*[data-animation=scale]_&]:data-[state=off]:scale-0 [*[data-animation=scale]_&]:data-[state=on]:scale-100 motion-reduce:[*[data-animation=scale]_&]:data-[state=off]:scale-100",
+        'transition-all duration-300 data-[state=off]:absolute data-[state=off]:opacity-0 data-[state=on]:opacity-100 motion-reduce:transition-none',
+        '[*[data-animation=rotate]_&]:data-[state=off]:rotate-180 [*[data-animation=rotate]_&]:data-[state=on]:rotate-0 motion-reduce:[*[data-animation=rotate]_&]:data-[state=off]:rotate-0',
+        '[*[data-animation=flip]_&]:data-[state=off]:transform-[rotateY(180deg)] [*[data-animation=flip]_&]:data-[state=on]:transform-[rotateY(0deg)] motion-reduce:[*[data-animation=flip]_&]:data-[state=off]:transform-[rotateY(0deg)]',
+        '[*[data-animation=scale]_&]:data-[state=off]:scale-0 [*[data-animation=scale]_&]:data-[state=on]:scale-100 motion-reduce:[*[data-animation=scale]_&]:data-[state=off]:scale-100',
         className,
       )}
     />
@@ -247,7 +247,7 @@ function SwapOff(props: DivProps) {
 
   const swapped = useStore((state) => state.swapped);
 
-  const OffPrimitive = asChild ? SlotPrimitive.Slot : "div";
+  const OffPrimitive = asChild ? SlotPrimitive.Slot : 'div';
 
   return (
     <OffPrimitive
@@ -255,10 +255,10 @@ function SwapOff(props: DivProps) {
       data-state={getDataState(swapped)}
       {...offProps}
       className={cn(
-        "transition-all duration-300 data-[state=on]:absolute data-[state=off]:opacity-100 data-[state=on]:opacity-0 motion-reduce:transition-none",
-        "[*[data-animation=rotate]_&]:data-[state=off]:rotate-0 [*[data-animation=rotate]_&]:data-[state=on]:rotate-180 motion-reduce:[*[data-animation=rotate]_&]:data-[state=on]:rotate-0",
-        "[*[data-animation=flip]_&]:data-[state=off]:transform-[rotateY(0deg)] [*[data-animation=flip]_&]:data-[state=on]:transform-[rotateY(180deg)] motion-reduce:[*[data-animation=flip]_&]:data-[state=on]:transform-[rotateY(0deg)]",
-        "[*[data-animation=scale]_&]:data-[state=off]:scale-100 [*[data-animation=scale]_&]:data-[state=on]:scale-0 motion-reduce:[*[data-animation=scale]_&]:data-[state=on]:scale-100",
+        'transition-all duration-300 data-[state=on]:absolute data-[state=off]:opacity-100 data-[state=on]:opacity-0 motion-reduce:transition-none',
+        '[*[data-animation=rotate]_&]:data-[state=off]:rotate-0 [*[data-animation=rotate]_&]:data-[state=on]:rotate-180 motion-reduce:[*[data-animation=rotate]_&]:data-[state=on]:rotate-0',
+        '[*[data-animation=flip]_&]:data-[state=off]:transform-[rotateY(0deg)] [*[data-animation=flip]_&]:data-[state=on]:transform-[rotateY(180deg)] motion-reduce:[*[data-animation=flip]_&]:data-[state=on]:transform-[rotateY(0deg)]',
+        '[*[data-animation=scale]_&]:data-[state=off]:scale-100 [*[data-animation=scale]_&]:data-[state=on]:scale-0 motion-reduce:[*[data-animation=scale]_&]:data-[state=on]:scale-100',
         className,
       )}
     />

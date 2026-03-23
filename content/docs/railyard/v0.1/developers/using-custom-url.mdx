@@ -6,6 +6,7 @@ title: Using Custom URL
 If you have multiple projects, you can host them all on the same repository via a custom Update JSON file. In this file, you can place all the necessary information required for Railyard to fetch updates for all of your projects.
 
 ## Step 1 - Setting Up the Directory {#setting-up-the-directory}
+
 The first step is to set up the Update JSON files. You will need several of these, one for every project.
 
 Create a new folder in your repository and call it something like `releases` or `railyard`. This is where your Update JSON files will be located. Create a new `JSON` file for every project. Inside each file, you can place the custom update schema found below and update it to match your project.
@@ -83,7 +84,11 @@ Versions **must** be in [semantic versioning format](https://semver.org/). `1.0`
 
 You can find the `sha256` directly on the releases page.
 
-<img width="1000" alt="image" src="/images/docs/railyard/github-assets-sha256.png" />
+<img
+  width="1000"
+  alt="image"
+  src="/images/docs/railyard/github-assets-sha256.png"
+/>
 
 :::
 

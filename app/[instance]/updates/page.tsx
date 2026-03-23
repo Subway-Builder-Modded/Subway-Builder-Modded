@@ -1,37 +1,40 @@
-import type { Metadata } from "next"
-import Link from "next/link"
-import { notFound } from "next/navigation"
-import { ChevronRight, Megaphone } from "lucide-react"
-import type { CSSProperties } from "react"
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { ChevronRight, Megaphone } from 'lucide-react';
+import type { CSSProperties } from 'react';
 
-import { PageHeader } from "@/components/page/page-header"
-import { ReleaseTagBadge } from "@/components/updates/release-tag-badge"
-import { ThemedShowcaseCard } from "@/components/ui/themed-showcase-card"
-import { getUpdateProjectById, UPDATE_PROJECTS } from "@/config/content/updates"
-import { UPDATES_PAGE_COPY } from "@/config/ui/site-content"
-import { hexAlpha } from "@/lib/color"
-import { getAllUpdatesForProject, type UpdateMeta } from "@/lib/updates.server"
+import { PageHeader } from '@/components/page/page-header';
+import { ReleaseTagBadge } from '@/components/updates/release-tag-badge';
+import { ThemedShowcaseCard } from '@/components/ui/themed-showcase-card';
+import {
+  getUpdateProjectById,
+  UPDATE_PROJECTS,
+} from '@/config/content/updates';
+import { UPDATES_PAGE_COPY } from '@/config/ui/site-content';
+import { hexAlpha } from '@/lib/color';
+import { getAllUpdatesForProject, type UpdateMeta } from '@/lib/updates.server';
 
-export const dynamicParams = false
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  return UPDATE_PROJECTS.map((p) => ({ instance: p.id }))
+  return UPDATE_PROJECTS.map((p) => ({ instance: p.id }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ instance: string }>
+  params: Promise<{ instance: string }>;
 }): Promise<Metadata> {
-  const { instance: projectId } = await params
-  const project = getUpdateProjectById(projectId)
+  const { instance: projectId } = await params;
+  const project = getUpdateProjectById(projectId);
 
-  if (!project) return { title: "Updates | Subway Builder Modded" }
+  if (!project) return { title: 'Updates | Subway Builder Modded' };
 
   return {
     title: `${project.label} Changelogs | Subway Builder Modded`,
     description: `Changelogs and release notes for ${project.label}.`,
-  }
+  };
 }
 
 function VersionCard({
@@ -39,9 +42,9 @@ function VersionCard({
   isLatest,
   accent,
 }: {
-  update: UpdateMeta
-  isLatest: boolean
-  accent: { light: string; dark: string }
+  update: UpdateMeta;
+  isLatest: boolean;
+  accent: { light: string; dark: string };
 }) {
   return (
     <Link href={update.href} className="group block outline-none">
@@ -52,8 +55,14 @@ function VersionCard({
       >
         <div className="relative flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
           <div className="min-w-0">
-            <h2 className="truncate text-xl font-bold leading-tight text-foreground">{update.title}</h2>
-            {update.date ? <p className="mt-0.5 text-sm text-muted-foreground">{update.date}</p> : null}
+            <h2 className="truncate text-xl font-bold leading-tight text-foreground">
+              {update.title}
+            </h2>
+            {update.date ? (
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                {update.date}
+              </p>
+            ) : null}
           </div>
 
           <div className="flex shrink-0 items-center gap-2 sm:justify-end">
@@ -64,28 +73,40 @@ function VersionCard({
         </div>
       </ThemedShowcaseCard>
     </Link>
-  )
+  );
 }
 
 export default async function ProjectHubPage({
   params,
 }: {
-  params: Promise<{ instance: string }>
+  params: Promise<{ instance: string }>;
 }) {
-  const { instance: projectId } = await params
-  const project = getUpdateProjectById(projectId)
-  if (!project) notFound()
-  const ProjectIcon = project.icon
+  const { instance: projectId } = await params;
+  const project = getUpdateProjectById(projectId);
+  if (!project) notFound();
+  const ProjectIcon = project.icon;
   const badgeStyle = {
-    ["--instance-badge-border-light" as string]: hexAlpha(project.accentColor.light, 0.44),
-    ["--instance-badge-border-dark" as string]: hexAlpha(project.accentColor.dark, 0.5),
-    ["--instance-badge-bg-light" as string]: hexAlpha(project.accentColor.light, 0.12),
-    ["--instance-badge-bg-dark" as string]: hexAlpha(project.accentColor.dark, 0.2),
-    ["--instance-badge-text-light" as string]: project.accentColor.light,
-    ["--instance-badge-text-dark" as string]: project.accentColor.dark,
-  } as CSSProperties
+    ['--instance-badge-border-light' as string]: hexAlpha(
+      project.accentColor.light,
+      0.44,
+    ),
+    ['--instance-badge-border-dark' as string]: hexAlpha(
+      project.accentColor.dark,
+      0.5,
+    ),
+    ['--instance-badge-bg-light' as string]: hexAlpha(
+      project.accentColor.light,
+      0.12,
+    ),
+    ['--instance-badge-bg-dark' as string]: hexAlpha(
+      project.accentColor.dark,
+      0.2,
+    ),
+    ['--instance-badge-text-light' as string]: project.accentColor.light,
+    ['--instance-badge-text-dark' as string]: project.accentColor.dark,
+  } as CSSProperties;
 
-  const updates = await getAllUpdatesForProject(projectId)
+  const updates = await getAllUpdatesForProject(projectId);
 
   return (
     <section className="relative px-5 pb-12 pt-8 sm:px-8 sm:pt-10">
@@ -108,16 +129,28 @@ export default async function ProjectHubPage({
               icon: ProjectIcon,
               colorScheme: {
                 border: {
-                  light: badgeStyle["--instance-badge-border-light" as keyof CSSProperties] as string,
-                  dark: badgeStyle["--instance-badge-border-dark" as keyof CSSProperties] as string,
+                  light: badgeStyle[
+                    '--instance-badge-border-light' as keyof CSSProperties
+                  ] as string,
+                  dark: badgeStyle[
+                    '--instance-badge-border-dark' as keyof CSSProperties
+                  ] as string,
                 },
                 background: {
-                  light: badgeStyle["--instance-badge-bg-light" as keyof CSSProperties] as string,
-                  dark: badgeStyle["--instance-badge-bg-dark" as keyof CSSProperties] as string,
+                  light: badgeStyle[
+                    '--instance-badge-bg-light' as keyof CSSProperties
+                  ] as string,
+                  dark: badgeStyle[
+                    '--instance-badge-bg-dark' as keyof CSSProperties
+                  ] as string,
                 },
                 text: {
-                  light: badgeStyle["--instance-badge-text-light" as keyof CSSProperties] as string,
-                  dark: badgeStyle["--instance-badge-text-dark" as keyof CSSProperties] as string,
+                  light: badgeStyle[
+                    '--instance-badge-text-light' as keyof CSSProperties
+                  ] as string,
+                  dark: badgeStyle[
+                    '--instance-badge-text-dark' as keyof CSSProperties
+                  ] as string,
                 },
               },
             },
@@ -142,5 +175,5 @@ export default async function ProjectHubPage({
         )}
       </div>
     </section>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import {
   BadgeCheck,
@@ -8,48 +8,48 @@ import {
   MapPin,
   Package,
   Tag,
-} from "lucide-react"
-import type { ComponentType, Dispatch, SetStateAction } from "react"
+} from 'lucide-react';
+import type { ComponentType, Dispatch, SetStateAction } from 'react';
 
-import { Separator } from "@/components/ui/separator"
-import type { SearchFilterState } from "@/hooks/use-filtered-items"
-import type { AssetType } from "@/lib/railyard/asset-types"
-import { filterVisibleListingValues } from "@/lib/railyard/listing-counts"
+import { Separator } from '@/components/ui/separator';
+import type { SearchFilterState } from '@/hooks/use-filtered-items';
+import type { AssetType } from '@/lib/railyard/asset-types';
+import { filterVisibleListingValues } from '@/lib/railyard/listing-counts';
 import {
   LEVEL_OF_DETAIL_VALUES,
   LOCATION_TAGS,
   SOURCE_QUALITY_VALUES,
   formatSourceQuality,
-} from "@/lib/railyard/map-filter-values"
-import { SEARCH_FILTER_EMPTY_LABELS } from "@/lib/railyard/search"
-import { cn } from "@/lib/utils"
+} from '@/lib/railyard/map-filter-values';
+import { SEARCH_FILTER_EMPTY_LABELS } from '@/lib/railyard/search';
+import { cn } from '@/lib/utils';
 
 const FILTER_SECTION_TITLE_CLASS =
-  "text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2 px-1"
+  'text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2 px-1';
 const FILTER_SECTION_OPTION_CLASS =
-  "w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-left text-sm transition-colors cursor-pointer select-none"
+  'w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-left text-sm transition-colors cursor-pointer select-none';
 const FILTER_SECTION_CLEAR_CLASS =
-  "mt-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+  'mt-2 text-xs text-muted-foreground hover:text-foreground transition-colors';
 
 interface SidebarFiltersProps {
-  filters: SearchFilterState
-  onFiltersChange: Dispatch<SetStateAction<SearchFilterState>>
-  onTypeChange: (type: AssetType) => void
-  availableTags: string[]
-  availableSpecialDemand: string[]
-  modTagCounts: Record<string, number>
-  mapLocationCounts: Record<string, number>
-  mapSourceQualityCounts: Record<string, number>
-  mapLevelOfDetailCounts: Record<string, number>
-  mapSpecialDemandCounts: Record<string, number>
-  modCount: number
-  mapCount: number
+  filters: SearchFilterState;
+  onFiltersChange: Dispatch<SetStateAction<SearchFilterState>>;
+  onTypeChange: (type: AssetType) => void;
+  availableTags: string[];
+  availableSpecialDemand: string[];
+  modTagCounts: Record<string, number>;
+  mapLocationCounts: Record<string, number>;
+  mapSourceQualityCounts: Record<string, number>;
+  mapLevelOfDetailCounts: Record<string, number>;
+  mapSpecialDemandCounts: Record<string, number>;
+  modCount: number;
+  mapCount: number;
 }
 
 const typeOptions = [
-  { value: "map" as const, label: "Maps", icon: MapPin },
-  { value: "mod" as const, label: "Mods", icon: Package },
-]
+  { value: 'map' as const, label: 'Maps', icon: MapPin },
+  { value: 'mod' as const, label: 'Mods', icon: Package },
+];
 
 export function SidebarFilters({
   filters,
@@ -68,7 +68,7 @@ export function SidebarFilters({
   const counts: Record<AssetType, number> = {
     mod: modCount,
     map: mapCount,
-  }
+  };
 
   return (
     <div className="space-y-5">
@@ -81,12 +81,12 @@ export function SidebarFilters({
               type="button"
               onClick={() => onTypeChange(value)}
               className={cn(
-                "w-full flex items-center justify-between gap-2 px-3 py-2 rounded-md text-sm transition-colors",
+                'w-full flex items-center justify-between gap-2 px-3 py-2 rounded-md text-sm transition-colors',
                 filters.type === value
-                  ? "bg-accent text-accent-foreground font-medium"
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent/60"
+                  ? 'bg-accent text-accent-foreground font-medium'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/60',
               )}
-              aria-current={filters.type === value ? "true" : undefined}
+              aria-current={filters.type === value ? 'true' : undefined}
             >
               <span className="flex items-center gap-2">
                 <Icon className="h-3.5 w-3.5 shrink-0" />
@@ -94,8 +94,10 @@ export function SidebarFilters({
               </span>
               <span
                 className={cn(
-                  "text-xs tabular-nums",
-                  filters.type === value ? "text-foreground" : "text-muted-foreground"
+                  'text-xs tabular-nums',
+                  filters.type === value
+                    ? 'text-foreground'
+                    : 'text-muted-foreground',
                 )}
               >
                 {counts[value]}
@@ -105,7 +107,7 @@ export function SidebarFilters({
         </nav>
       </div>
 
-      {filters.type !== "map" && (
+      {filters.type !== 'map' && (
         <>
           <Separator />
           <ChecklistFilterSection
@@ -125,7 +127,7 @@ export function SidebarFilters({
         </>
       )}
 
-      {filters.type !== "mod" && (
+      {filters.type !== 'mod' && (
         <>
           <Separator />
           <ChecklistFilterSection
@@ -185,18 +187,18 @@ export function SidebarFilters({
         </>
       )}
     </div>
-  )
+  );
 }
 
 interface FilterSectionProperties {
-  title: string
-  values: readonly string[]
-  counts: Record<string, number>
-  selected: string[]
-  icon: ComponentType<{ className?: string }>
-  onChange: (values: string[]) => void
-  emptyLabel?: string
-  formatValue?: (value: string) => string
+  title: string;
+  values: readonly string[];
+  counts: Record<string, number>;
+  selected: string[];
+  icon: ComponentType<{ className?: string }>;
+  onChange: (values: string[]) => void;
+  emptyLabel?: string;
+  formatValue?: (value: string) => string;
 }
 
 function ChecklistFilterSection({
@@ -209,15 +211,15 @@ function ChecklistFilterSection({
   emptyLabel = SEARCH_FILTER_EMPTY_LABELS.generic,
   formatValue = (value) => value,
 }: FilterSectionProperties) {
-  const visibleValues = filterVisibleListingValues(values, counts, selected)
+  const visibleValues = filterVisibleListingValues(values, counts, selected);
 
   const toggle = (value: string) => {
     onChange(
       selected.includes(value)
         ? selected.filter((selectedValue) => selectedValue !== value)
-        : [...selected, value]
-    )
-  }
+        : [...selected, value],
+    );
+  };
 
   return (
     <div>
@@ -232,22 +234,27 @@ function ChecklistFilterSection({
               role="button"
               tabIndex={0}
               onClick={() => toggle(value)}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(value) } }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  toggle(value);
+                }
+              }}
               className={cn(
                 FILTER_SECTION_OPTION_CLASS,
-                "justify-between",
+                'justify-between',
                 selected.includes(value)
-                  ? "text-foreground bg-accent/60"
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent/40"
+                  ? 'text-foreground bg-accent/60'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/40',
               )}
             >
               <span className="flex items-center gap-2">
                 <span
                   className={cn(
-                    "size-4 shrink-0 rounded-sm border border-input flex items-center justify-center transition-colors",
+                    'size-4 shrink-0 rounded-sm border border-input flex items-center justify-center transition-colors',
                     selected.includes(value)
-                      ? "bg-primary border-primary text-primary-foreground"
-                      : "bg-background text-transparent"
+                      ? 'bg-primary border-primary text-primary-foreground'
+                      : 'bg-background text-transparent',
                   )}
                   aria-hidden="true"
                 >
@@ -263,24 +270,33 @@ function ChecklistFilterSection({
         </div>
       )}
       {selected.length > 0 && (
-        <button type="button" onClick={() => onChange([])} className={FILTER_SECTION_CLEAR_CLASS}>
+        <button
+          type="button"
+          onClick={() => onChange([])}
+          className={FILTER_SECTION_CLEAR_CLASS}
+        >
           Clear {title.toLowerCase()}
         </button>
       )}
     </div>
-  )
+  );
 }
 
 interface TitleProperties {
-  title: string
-  icon?: ComponentType<{ className?: string }>
+  title: string;
+  icon?: ComponentType<{ className?: string }>;
 }
 
 function FilterSectionTitle({ title, icon: Icon }: TitleProperties) {
   return (
-    <p className={cn(FILTER_SECTION_TITLE_CLASS, Icon && "flex items-center gap-1.5")}>
+    <p
+      className={cn(
+        FILTER_SECTION_TITLE_CLASS,
+        Icon && 'flex items-center gap-1.5',
+      )}
+    >
       {Icon && <Icon className="h-3.5 w-3.5" />}
       {title}
     </p>
-  )
+  );
 }

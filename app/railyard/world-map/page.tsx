@@ -1,12 +1,12 @@
-import type { Metadata } from "next"
-import { Globe } from "lucide-react"
-import { WorldMap } from "@/components/railyard/world-map"
-import { PageHeader } from "@/components/page/page-header"
+import type { Metadata } from 'next';
+import { Globe } from 'lucide-react';
+import { WorldMap } from '@/components/railyard/world-map';
+import { PageHeader } from '@/components/page/page-header';
 
 export const metadata: Metadata = {
-  title: "World Map | Railyard",
-  description: "A plain, interactive 2D world map powered by MapLibre GL JS.",
-}
+  title: 'World Map | Railyard',
+  description: 'A plain, interactive 2D world map powered by MapLibre GL JS.',
+};
 
 export default function WorldMapPage() {
   return (
@@ -25,5 +25,5 @@ export default function WorldMapPage() {
         </div>
       </div>
     </section>
-  )
+  );
 }

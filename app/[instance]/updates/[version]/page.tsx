@@ -1,71 +1,74 @@
-import fs from "node:fs/promises"
-import type { Metadata } from "next"
-import { notFound } from "next/navigation"
-import { compileMDX } from "next-mdx-remote/rsc"
-import rehypeAutolinkHeadings from "rehype-autolink-headings"
-import rehypeExternalLinks from "rehype-external-links"
-import rehypePrettyCode from "rehype-pretty-code"
-import { ArrowLeft, ExternalLink } from "lucide-react"
-import remarkDirective from "remark-directive"
-import remarkFlexibleCodeTitles from "remark-flexible-code-titles"
-import remarkGfm from "remark-gfm"
-import { remarkHeadingId } from "remark-custom-heading-id"
+import fs from 'node:fs/promises';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { compileMDX } from 'next-mdx-remote/rsc';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeExternalLinks from 'rehype-external-links';
+import rehypePrettyCode from 'rehype-pretty-code';
+import { ArrowLeft, ExternalLink } from 'lucide-react';
+import remarkDirective from 'remark-directive';
+import remarkFlexibleCodeTitles from 'remark-flexible-code-titles';
+import remarkGfm from 'remark-gfm';
+import { remarkHeadingId } from 'remark-custom-heading-id';
 
-import { HomeLinkButton } from "@/components/home/home-link-button"
-import { ReleaseTagBadge } from "@/components/updates/release-tag-badge"
-import { UpdateSection } from "@/components/updates/update-section"
-import { ThemedShowcaseCard } from "@/components/ui/themed-showcase-card"
-import { getUpdateProjectById } from "@/config/content/updates"
-import { useMDXComponents as getMDXComponents } from "@/mdx-components"
-import remarkAdmonitionDirectives from "@/lib/remark-admonition-directives"
+import { HomeLinkButton } from '@/components/home/home-link-button';
+import { ReleaseTagBadge } from '@/components/updates/release-tag-badge';
+import { UpdateSection } from '@/components/updates/update-section';
+import { ThemedShowcaseCard } from '@/components/ui/themed-showcase-card';
+import { getUpdateProjectById } from '@/config/content/updates';
+import { useMDXComponents as getMDXComponents } from '@/mdx-components';
+import remarkAdmonitionDirectives from '@/lib/remark-admonition-directives';
 import {
   getAllUpdateParams,
   getUpdateFilePath,
   readUpdateFrontmatter,
   type UpdateFrontmatter,
-} from "@/lib/updates.server"
+} from '@/lib/updates.server';
 
-export const dynamicParams = false
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const params = await getAllUpdateParams()
-  return params.map((entry) => ({ instance: entry.project, version: entry.version }))
+  const params = await getAllUpdateParams();
+  return params.map((entry) => ({
+    instance: entry.project,
+    version: entry.version,
+  }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ instance: string; version: string }>
+  params: Promise<{ instance: string; version: string }>;
 }): Promise<Metadata> {
-  const { instance: projectId, version } = await params
-  const project = getUpdateProjectById(projectId)
-  if (!project) return { title: "Update | Subway Builder Modded" }
+  const { instance: projectId, version } = await params;
+  const project = getUpdateProjectById(projectId);
+  if (!project) return { title: 'Update | Subway Builder Modded' };
 
-  const filePath = getUpdateFilePath(projectId, version)
-  if (!filePath) return { title: `${project.label} | Subway Builder Modded` }
+  const filePath = getUpdateFilePath(projectId, version);
+  if (!filePath) return { title: `${project.label} | Subway Builder Modded` };
 
-  const frontmatter = await readUpdateFrontmatter(filePath)
-  const title = frontmatter?.title ?? `${project.label} ${version}`
+  const frontmatter = await readUpdateFrontmatter(filePath);
+  const title = frontmatter?.title ?? `${project.label} ${version}`;
 
   return {
     title: `${title} | Subway Builder Modded`,
     description: `Release notes for ${title}.`,
-  }
+  };
 }
 
 export default async function UpdatePage({
   params,
 }: {
-  params: Promise<{ instance: string; version: string }>
+  params: Promise<{ instance: string; version: string }>;
 }) {
-  const { instance: projectId, version } = await params
-  const project = getUpdateProjectById(projectId)
-  if (!project) notFound()
+  const { instance: projectId, version } = await params;
+  const project = getUpdateProjectById(projectId);
+  if (!project) notFound();
 
-  const filePath = getUpdateFilePath(projectId, version)
-  if (!filePath) notFound()
+  const filePath = getUpdateFilePath(projectId, version);
+  if (!filePath) notFound();
 
-  const source = await fs.readFile(filePath, "utf8")
+  const source = await fs.readFile(filePath, 'utf8');
   const { content, frontmatter } = await compileMDX<UpdateFrontmatter>({
     source,
     options: {
@@ -79,31 +82,45 @@ export default async function UpdatePage({
           remarkAdmonitionDirectives,
         ],
         rehypePlugins: [
-          [rehypePrettyCode, { theme: { dark: "github-dark", light: "github-light-high-contrast" }, keepBackground: false }],
+          [
+            rehypePrettyCode,
+            {
+              theme: {
+                dark: 'github-dark',
+                light: 'github-light-high-contrast',
+              },
+              keepBackground: false,
+            },
+          ],
           [
             rehypeExternalLinks,
-            { target: "_blank", rel: ["nofollow", "noopener", "noreferrer"] },
+            { target: '_blank', rel: ['nofollow', 'noopener', 'noreferrer'] },
           ],
           [
             rehypeAutolinkHeadings,
             {
-              behavior: "append",
-              properties: { className: ["heading-anchor"], ariaLabel: "Link to section" },
-              content: { type: "text", value: "#" },
+              behavior: 'append',
+              properties: {
+                className: ['heading-anchor'],
+                ariaLabel: 'Link to section',
+              },
+              content: { type: 'text', value: '#' },
             },
           ],
         ],
       },
     },
     components: getMDXComponents({
-      UpdateSection: (props) => <UpdateSection {...props} themeId={project.id} />,
+      UpdateSection: (props) => (
+        <UpdateSection {...props} themeId={project.id} />
+      ),
     }),
-  })
+  });
 
-  const title = frontmatter?.title ?? `${project.label} ${version}`
-  const date = frontmatter?.date
-  const tag = frontmatter?.tag ?? "release"
-  const githubUrl = frontmatter?.githubUrl
+  const title = frontmatter?.title ?? `${project.label} ${version}`;
+  const date = frontmatter?.date;
+  const tag = frontmatter?.tag ?? 'release';
+  const githubUrl = frontmatter?.githubUrl;
 
   return (
     <section className="relative px-5 pb-12 pt-8 sm:px-8 sm:pt-10">
@@ -117,11 +134,11 @@ export default async function UpdatePage({
             <div className="mb-4">
               <HomeLinkButton
                 link={{
-                  label: "Back",
+                  label: 'Back',
                   href: `/${project.id}/updates`,
                   icon: ArrowLeft,
-                  variant: "outline",
-                  size: "sm",
+                  variant: 'outline',
+                  size: 'sm',
                 }}
               />
             </div>
@@ -137,16 +154,22 @@ export default async function UpdatePage({
                 <ExternalLink className="size-5 opacity-65 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             ) : (
-              <h2 className="text-2xl font-black tracking-tight text-foreground sm:text-3xl">{title}</h2>
+              <h2 className="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
+                {title}
+              </h2>
             )}
 
             <div className="mt-4 flex flex-wrap items-center gap-2.5">
-              {date ? <p className="text-sm text-muted-foreground">{date}</p> : null}
-              {{
-                release: <ReleaseTagBadge kind="release" size="sm" />,
-                beta: <ReleaseTagBadge kind="beta" size="sm" />,
-                alpha: <ReleaseTagBadge kind="alpha" size="sm" />,
-              }[tag]}
+              {date ? (
+                <p className="text-sm text-muted-foreground">{date}</p>
+              ) : null}
+              {
+                {
+                  release: <ReleaseTagBadge kind="release" size="sm" />,
+                  beta: <ReleaseTagBadge kind="beta" size="sm" />,
+                  alpha: <ReleaseTagBadge kind="alpha" size="sm" />,
+                }[tag]
+              }
             </div>
           </div>
         </ThemedShowcaseCard>
@@ -156,5 +179,5 @@ export default async function UpdatePage({
         </article>
       </div>
     </section>
-  )
+  );
 }

@@ -1,31 +1,37 @@
-import fs from "node:fs/promises"
-import path from "node:path"
-import type { Metadata } from "next"
-import { compileMDX } from "next-mdx-remote/rsc"
-import { Scale } from "lucide-react"
-import remarkGfm from "remark-gfm"
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import type { Metadata } from 'next';
+import { compileMDX } from 'next-mdx-remote/rsc';
+import { Scale } from 'lucide-react';
+import remarkGfm from 'remark-gfm';
 
-import { PageHeader } from "@/components/page/page-header"
-import { ThemedShowcaseCard } from "@/components/ui/themed-showcase-card"
-import { SHARED_TEXT_COLOR } from "@/config/theme/colors"
-import { hexAlpha } from "@/lib/color"
-import { useMDXComponents as getMDXComponents } from "@/mdx-components"
+import { PageHeader } from '@/components/page/page-header';
+import { ThemedShowcaseCard } from '@/components/ui/themed-showcase-card';
+import { SHARED_TEXT_COLOR } from '@/config/theme/colors';
+import { hexAlpha } from '@/lib/color';
+import { useMDXComponents as getMDXComponents } from '@/mdx-components';
 
 type LicenseFrontmatter = {
-  title?: string
-  description?: string
-}
+  title?: string;
+  description?: string;
+};
 
-const LICENSE_MDX_PATH = path.join(process.cwd(), "content", "license", "gpl-3.0.mdx")
-const NEUTRAL_ACCENT = SHARED_TEXT_COLOR
+const LICENSE_MDX_PATH = path.join(
+  process.cwd(),
+  'content',
+  'license',
+  'gpl-3.0.mdx',
+);
+const NEUTRAL_ACCENT = SHARED_TEXT_COLOR;
 
 export const metadata: Metadata = {
-  title: "License | Subway Builder Modded",
-  description: "GNU General Public License v3.0 for Subway Builder Modded projects.",
-}
+  title: 'License | Subway Builder Modded',
+  description:
+    'GNU General Public License v3.0 for Subway Builder Modded projects.',
+};
 
 export default async function LicensePage() {
-  const source = await fs.readFile(LICENSE_MDX_PATH, "utf8")
+  const source = await fs.readFile(LICENSE_MDX_PATH, 'utf8');
 
   const { content, frontmatter } = await compileMDX<LicenseFrontmatter>({
     source,
@@ -36,10 +42,10 @@ export default async function LicensePage() {
       },
     },
     components: getMDXComponents(),
-  })
+  });
 
-  const title = frontmatter?.title ?? "GNU General Public License v3.0"
-  const description = frontmatter?.description
+  const title = frontmatter?.title ?? 'GNU General Public License v3.0';
+  const description = frontmatter?.description;
 
   return (
     <section className="relative px-5 pb-12 pt-8 sm:px-8 sm:pt-10">
@@ -62,8 +68,14 @@ export default async function LicensePage() {
           className="relative mb-8 w-full"
         >
           <div className="relative">
-            <h1 className="text-3xl font-black tracking-tight text-foreground sm:text-4xl">{title}</h1>
-            {description ? <p className="mt-3 text-sm text-muted-foreground">{description}</p> : null}
+            <h1 className="text-3xl font-black tracking-tight text-foreground sm:text-4xl">
+              {title}
+            </h1>
+            {description ? (
+              <p className="mt-3 text-sm text-muted-foreground">
+                {description}
+              </p>
+            ) : null}
           </div>
         </ThemedShowcaseCard>
 
@@ -72,6 +84,5 @@ export default async function LicensePage() {
         </article>
       </div>
     </section>
-  )
+  );
 }
-

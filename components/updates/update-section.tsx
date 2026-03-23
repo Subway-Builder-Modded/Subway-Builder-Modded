@@ -1,35 +1,53 @@
-import * as React from "react"
+import * as React from 'react';
 
-import { UPDATE_SECTION_CONFIG, type UpdateSectionType } from "@/config/content/updates"
-import { PROJECT_COLOR_SCHEMES } from "@/config/theme/colors"
-import { UPDATE_SECTION_ICON_MAP } from "@/config/ui/site-content"
-import { hexAlpha } from "@/lib/color"
-import { cn } from "@/lib/utils"
+import {
+  UPDATE_SECTION_CONFIG,
+  type UpdateSectionType,
+} from '@/config/content/updates';
+import { PROJECT_COLOR_SCHEMES } from '@/config/theme/colors';
+import { UPDATE_SECTION_ICON_MAP } from '@/config/ui/site-content';
+import { hexAlpha } from '@/lib/color';
+import { cn } from '@/lib/utils';
 
 export interface UpdateSectionProps {
-  type: UpdateSectionType
-  children?: React.ReactNode
-  className?: string
-  themeId?: string
+  type: UpdateSectionType;
+  children?: React.ReactNode;
+  className?: string;
+  themeId?: string;
 }
 
-export function UpdateSection({ type, children, className, themeId }: UpdateSectionProps) {
-  const config = UPDATE_SECTION_CONFIG[type]
-  if (!config) return null
-  const SectionIcon = UPDATE_SECTION_ICON_MAP[type]
-  const theme = themeId && themeId in PROJECT_COLOR_SCHEMES
-    ? PROJECT_COLOR_SCHEMES[themeId as keyof typeof PROJECT_COLOR_SCHEMES]
-    : PROJECT_COLOR_SCHEMES.website
+export function UpdateSection({
+  type,
+  children,
+  className,
+  themeId,
+}: UpdateSectionProps) {
+  const config = UPDATE_SECTION_CONFIG[type];
+  if (!config) return null;
+  const SectionIcon = UPDATE_SECTION_ICON_MAP[type];
+  const theme =
+    themeId && themeId in PROJECT_COLOR_SCHEMES
+      ? PROJECT_COLOR_SCHEMES[themeId as keyof typeof PROJECT_COLOR_SCHEMES]
+      : PROJECT_COLOR_SCHEMES.website;
 
   return (
     <section
-      className={cn("relative mb-8 overflow-hidden rounded-xl border border-border/60 bg-card/70 p-4 last:mb-0 sm:p-5", className)}
+      className={cn(
+        'relative mb-8 overflow-hidden rounded-xl border border-border/60 bg-card/70 p-4 last:mb-0 sm:p-5',
+        className,
+      )}
       style={
         {
-          ["--section-accent-light" as string]: theme.accentColor.light,
-          ["--section-accent-dark" as string]: theme.accentColor.dark,
-          ["--section-soft-light" as string]: hexAlpha(theme.accentColor.light, 0.15),
-          ["--section-soft-dark" as string]: hexAlpha(theme.accentColor.dark, 0.2),
+          ['--section-accent-light' as string]: theme.accentColor.light,
+          ['--section-accent-dark' as string]: theme.accentColor.dark,
+          ['--section-soft-light' as string]: hexAlpha(
+            theme.accentColor.light,
+            0.15,
+          ),
+          ['--section-soft-dark' as string]: hexAlpha(
+            theme.accentColor.dark,
+            0.2,
+          ),
         } as React.CSSProperties
       }
     >
@@ -52,13 +70,13 @@ export function UpdateSection({ type, children, className, themeId }: UpdateSect
 
       <div
         className={cn(
-          "[&_ul]:my-0 [&_ul]:ml-5 [&_ul]:list-disc [&_ul]:space-y-1.5",
-          "[&_li]:leading-7 [&_li]:text-foreground",
-          "[&_p]:my-0 [&_p]:leading-7",
+          '[&_ul]:my-0 [&_ul]:ml-5 [&_ul]:list-disc [&_ul]:space-y-1.5',
+          '[&_li]:leading-7 [&_li]:text-foreground',
+          '[&_p]:my-0 [&_p]:leading-7',
         )}
       >
         {children}
       </div>
     </section>
-  )
+  );
 }

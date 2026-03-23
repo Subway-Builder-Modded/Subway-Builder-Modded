@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Slot as SlotPrimitive } from "radix-ui";
-import * as React from "react";
-import { useComposedRefs } from "@/lib/compose-refs";
-import { cn } from "@/lib/utils";
+import { Slot as SlotPrimitive } from 'radix-ui';
+import * as React from 'react';
+import { useComposedRefs } from '@/lib/compose-refs';
+import { cn } from '@/lib/utils';
 
 interface GetBadgeLabel<T> {
   /**
@@ -16,7 +16,7 @@ interface GetBadgeLabel<T> {
 
 type BadgeOverflowElement = React.ComponentRef<typeof BadgeOverflow>;
 
-type BadgeOverflowProps<T = string> = React.ComponentProps<"div"> &
+type BadgeOverflowProps<T = string> = React.ComponentProps<'div'> &
   (T extends object ? GetBadgeLabel<T> : Partial<GetBadgeLabel<T>>) & {
     items: T[];
     lineCount?: number;
@@ -41,9 +41,9 @@ function BadgeOverflow<T = string>(props: BadgeOverflowProps<T>) {
 
   const getBadgeLabel = React.useCallback(
     (item: T): string => {
-      if (typeof item === "object" && !getBadgeLabelProp) {
+      if (typeof item === 'object' && !getBadgeLabelProp) {
         throw new Error(
-          "`getBadgeLabel` is required when using array of objects",
+          '`getBadgeLabel` is required when using array of objects',
         );
       }
       return getBadgeLabelProp ? getBadgeLabelProp(item) : (item as string);
@@ -181,7 +181,7 @@ function BadgeOverflow<T = string>(props: BadgeOverflowProps<T>) {
     badgeWidths,
   ]);
 
-  const Comp = asChild ? SlotPrimitive.Slot : "div";
+  const Comp = asChild ? SlotPrimitive.Slot : 'div';
 
   return (
     <>
@@ -208,7 +208,7 @@ function BadgeOverflow<T = string>(props: BadgeOverflowProps<T>) {
           data-slot="badge-overflow"
           {...rootProps}
           ref={composedRef}
-          className={cn("flex flex-wrap", className)}
+          className={cn('flex flex-wrap', className)}
           style={{
             gap: badgeGap,
             ...style,
@@ -233,7 +233,7 @@ function BadgeOverflow<T = string>(props: BadgeOverflowProps<T>) {
           data-slot="badge-overflow"
           {...rootProps}
           ref={composedRef}
-          className={cn("flex flex-wrap", className)}
+          className={cn('flex flex-wrap', className)}
           style={{
             gap: badgeGap,
             minHeight: placeholderHeight,

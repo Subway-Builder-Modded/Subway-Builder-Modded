@@ -1,14 +1,22 @@
-"use client"
+'use client';
 
-import type { CSSProperties } from "react"
-import { Avatar } from "@/components/ui/avatar"
-import { Link } from "@/components/ui/link"
-import { AppIcon } from "@/components/common/app-icon"
-import { FOOTER_NAV_SECTIONS, FOOTER_SOCIAL_LINKS, getFooterNavColorScheme } from "@/config/navigation/footer"
-import { SITE_DESCRIPTION, SITE_NAME, SITE_LOGO_PATH } from "@/config/site/metadata"
+import type { CSSProperties } from 'react';
+import { Avatar } from '@/components/ui/avatar';
+import { Link } from '@/components/ui/link';
+import { AppIcon } from '@/components/common/app-icon';
+import {
+  FOOTER_NAV_SECTIONS,
+  FOOTER_SOCIAL_LINKS,
+  getFooterNavColorScheme,
+} from '@/config/navigation/footer';
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_LOGO_PATH,
+} from '@/config/site/metadata';
 
 export default function AppFooter() {
-  const sectionCount = Math.max(1, FOOTER_NAV_SECTIONS.length)
+  const sectionCount = Math.max(1, FOOTER_NAV_SECTIONS.length);
 
   return (
     <footer className="bg-sidebar">
@@ -16,19 +24,25 @@ export default function AppFooter() {
         <div className="grid gap-10 md:grid-cols-[1fr_max-content] md:items-center md:gap-x-12">
           <div
             className="grid grid-cols-1 gap-8 md:justify-self-start md:gap-x-[clamp(1.25rem,2.8vw,3rem)] md:[grid-template-columns:repeat(var(--footer-column-count),minmax(0,max-content))]"
-            style={{ ["--footer-column-count" as string]: String(sectionCount) }}
+            style={{
+              ['--footer-column-count' as string]: String(sectionCount),
+            }}
           >
             {FOOTER_NAV_SECTIONS.map((section) => {
-              const scheme = getFooterNavColorScheme(section.colorScheme)
+              const scheme = getFooterNavColorScheme(section.colorScheme);
               const sectionStyle = {
-                ["--footer-accent-light" as string]: scheme.accentColor.light,
-                ["--footer-accent-dark" as string]: scheme.accentColor.dark,
-                ["--footer-muted-light" as string]: scheme.mutedColor.light,
-                ["--footer-muted-dark" as string]: scheme.mutedColor.dark,
-              } as CSSProperties
+                ['--footer-accent-light' as string]: scheme.accentColor.light,
+                ['--footer-accent-dark' as string]: scheme.accentColor.dark,
+                ['--footer-muted-light' as string]: scheme.mutedColor.light,
+                ['--footer-muted-dark' as string]: scheme.mutedColor.dark,
+              } as CSSProperties;
 
               return (
-                <div key={section.id} style={sectionStyle} className="flex flex-col items-start text-left">
+                <div
+                  key={section.id}
+                  style={sectionStyle}
+                  className="flex flex-col items-start text-left"
+                >
                   <div className="mb-4 flex items-center justify-start gap-2">
                     <AppIcon
                       icon={section.icon}
@@ -47,20 +61,26 @@ export default function AppFooter() {
                           href={link.href}
                           className="flex items-center justify-start gap-2 [--text:var(--footer-muted-light)] hover:[--text:var(--footer-accent-light)] dark:[--text:var(--footer-muted-dark)] dark:hover:[--text:var(--footer-accent-dark)]"
                         >
-                          <AppIcon icon={link.icon} className="size-4 stroke-[2.25]" />
+                          <AppIcon
+                            icon={link.icon}
+                            className="size-4 stroke-[2.25]"
+                          />
                           <span>{link.label}</span>
                         </Link>
-                      )
+                      );
                     })}
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
 
           <div className="flex w-full flex-col items-center gap-3 text-center md:w-auto md:justify-self-end md:items-end md:text-right">
             <div className="flex items-center justify-center gap-2 md:justify-end">
-              <Link href="/" className="flex items-center gap-2 font-bold text-foreground transition-colors hover:text-secondary">
+              <Link
+                href="/"
+                className="flex items-center gap-2 font-bold text-foreground transition-colors hover:text-secondary"
+              >
                 <Avatar
                   isSquare
                   size="sm"
@@ -71,7 +91,9 @@ export default function AppFooter() {
               </Link>
             </div>
 
-            <p className="max-w-xs text-sm text-muted-foreground md:max-w-sm">{SITE_DESCRIPTION}</p>
+            <p className="max-w-xs text-sm text-muted-foreground md:max-w-sm">
+              {SITE_DESCRIPTION}
+            </p>
           </div>
         </div>
 
@@ -96,10 +118,12 @@ export default function AppFooter() {
 
         <div className="flex flex-col items-stretch gap-4">
           <p className="text-center text-sm text-muted-foreground">
-            © {SITE_NAME} {new Date().getFullYear()}. Not affiliated with Subway Builder or Redistricter, LLC. All content is community-created and shared under appropriate licenses.
+            © {SITE_NAME} {new Date().getFullYear()}. Not affiliated with Subway
+            Builder or Redistricter, LLC. All content is community-created and
+            shared under appropriate licenses.
           </p>
         </div>
       </div>
     </footer>
-  )
+  );
 }

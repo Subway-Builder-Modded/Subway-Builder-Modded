@@ -1,125 +1,133 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import NextLink from "next/link"
-import { useTheme } from "next-themes"
-import { getNavbarThemeColors } from "@/lib/navbar-colors"
-import { cn } from "@/lib/utils"
-import { isExternalHref } from "@/lib/url"
-import type { NavbarItem } from "@/config/navigation/navbar"
-import { AppIcon } from "@/components/common/app-icon"
+import * as React from 'react';
+import NextLink from 'next/link';
+import { useTheme } from 'next-themes';
+import { getNavbarThemeColors } from '@/lib/navbar-colors';
+import { cn } from '@/lib/utils';
+import { isExternalHref } from '@/lib/url';
+import type { NavbarItem } from '@/config/navigation/navbar';
+import { AppIcon } from '@/components/common/app-icon';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu';
 
 type NavigationDropdownMenuProps = {
-  item: NavbarItem
-  className: string
-  open?: boolean
-  onOpenChange?: (open: boolean) => void
-}
+  item: NavbarItem;
+  className: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
 
-export function NavigationDropdownMenu({ item, className, open, onOpenChange }: NavigationDropdownMenuProps) {
-  const { resolvedTheme } = useTheme()
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false)
-  const [isTriggerHovered, setIsTriggerHovered] = React.useState(false)
-  const [hoveredDropdownItemId, setHoveredDropdownItemId] = React.useState<string | null>(null)
-  const hoverCloseTimeoutRef = React.useRef<number | null>(null)
-  const closeLockTimeoutRef = React.useRef<number | null>(null)
-  const isClosingMenuRef = React.useRef(false)
-  const isTriggerHoveredRef = React.useRef(false)
-  const isContentHoveredRef = React.useRef(false)
+export function NavigationDropdownMenu({
+  item,
+  className,
+  open,
+  onOpenChange,
+}: NavigationDropdownMenuProps) {
+  const { resolvedTheme } = useTheme();
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false);
+  const [isTriggerHovered, setIsTriggerHovered] = React.useState(false);
+  const [hoveredDropdownItemId, setHoveredDropdownItemId] = React.useState<
+    string | null
+  >(null);
+  const hoverCloseTimeoutRef = React.useRef<number | null>(null);
+  const closeLockTimeoutRef = React.useRef<number | null>(null);
+  const isClosingMenuRef = React.useRef(false);
+  const isTriggerHoveredRef = React.useRef(false);
+  const isContentHoveredRef = React.useRef(false);
 
-  const isDark = resolvedTheme === "dark"
+  const isDark = resolvedTheme === 'dark';
 
   const clearHoverClose = React.useCallback(() => {
     if (hoverCloseTimeoutRef.current) {
-      window.clearTimeout(hoverCloseTimeoutRef.current)
-      hoverCloseTimeoutRef.current = null
+      window.clearTimeout(hoverCloseTimeoutRef.current);
+      hoverCloseTimeoutRef.current = null;
     }
-  }, [])
+  }, []);
 
   const clearCloseLock = React.useCallback(() => {
     if (closeLockTimeoutRef.current) {
-      window.clearTimeout(closeLockTimeoutRef.current)
-      closeLockTimeoutRef.current = null
+      window.clearTimeout(closeLockTimeoutRef.current);
+      closeLockTimeoutRef.current = null;
     }
-    isClosingMenuRef.current = false
-  }, [])
+    isClosingMenuRef.current = false;
+  }, []);
 
   const beginCloseLock = React.useCallback(() => {
-    clearCloseLock()
-    isClosingMenuRef.current = true
+    clearCloseLock();
+    isClosingMenuRef.current = true;
     closeLockTimeoutRef.current = window.setTimeout(() => {
-      isClosingMenuRef.current = false
-      closeLockTimeoutRef.current = null
-    }, 210)
-  }, [clearCloseLock])
+      isClosingMenuRef.current = false;
+      closeLockTimeoutRef.current = null;
+    }, 210);
+  }, [clearCloseLock]);
 
-  const isControlled = typeof open === "boolean" && typeof onOpenChange === "function"
-  const menuOpen = isControlled ? open : uncontrolledOpen
+  const isControlled =
+    typeof open === 'boolean' && typeof onOpenChange === 'function';
+  const menuOpen = isControlled ? open : uncontrolledOpen;
 
   const setMenuOpen = React.useCallback(
     (nextOpen: boolean) => {
       if (isControlled) {
-        onOpenChange?.(nextOpen)
-        return
+        onOpenChange?.(nextOpen);
+        return;
       }
 
-      setUncontrolledOpen(nextOpen)
+      setUncontrolledOpen(nextOpen);
     },
     [isControlled, onOpenChange],
-  )
+  );
 
   const closeMenu = React.useCallback(() => {
-    beginCloseLock()
-    setMenuOpen(false)
-  }, [beginCloseLock, setMenuOpen])
+    beginCloseLock();
+    setMenuOpen(false);
+  }, [beginCloseLock, setMenuOpen]);
 
   const scheduleHoverClose = React.useCallback(() => {
-    clearHoverClose()
+    clearHoverClose();
     hoverCloseTimeoutRef.current = window.setTimeout(() => {
       if (!isTriggerHoveredRef.current && !isContentHoveredRef.current) {
-        closeMenu()
+        closeMenu();
       }
-      hoverCloseTimeoutRef.current = null
-    }, 180)
-  }, [clearHoverClose, closeMenu])
+      hoverCloseTimeoutRef.current = null;
+    }, 180);
+  }, [clearHoverClose, closeMenu]);
 
   const openMenu = React.useCallback(() => {
-    clearHoverClose()
-    clearCloseLock()
-    setMenuOpen(true)
-  }, [clearCloseLock, clearHoverClose, setMenuOpen])
+    clearHoverClose();
+    clearCloseLock();
+    setMenuOpen(true);
+  }, [clearCloseLock, clearHoverClose, setMenuOpen]);
 
   React.useEffect(() => {
     return () => {
       if (hoverCloseTimeoutRef.current) {
-        window.clearTimeout(hoverCloseTimeoutRef.current)
+        window.clearTimeout(hoverCloseTimeoutRef.current);
       }
       if (closeLockTimeoutRef.current) {
-        window.clearTimeout(closeLockTimeoutRef.current)
+        window.clearTimeout(closeLockTimeoutRef.current);
       }
-    }
-  }, [])
+    };
+  }, []);
 
-  const dropdownItems = item.dropdown ?? []
-  const triggerHoverColors = getNavbarThemeColors(item, isDark)
+  const dropdownItems = item.dropdown ?? [];
+  const triggerHoverColors = getNavbarThemeColors(item, isDark);
 
   return (
     <DropdownMenu
       open={menuOpen}
       onOpenChange={(nextOpen: boolean) => {
         if (nextOpen) {
-          clearCloseLock()
-          setMenuOpen(true)
-          return
+          clearCloseLock();
+          setMenuOpen(true);
+          return;
         }
 
-        closeMenu()
+        closeMenu();
       }}
       modal={false}
     >
@@ -127,7 +135,11 @@ export function NavigationDropdownMenu({ item, className, open, onOpenChange }: 
         <button
           type="button"
           aria-label={item.title ?? item.id}
-          className={cn("outline-none", className, !triggerHoverColors && "hover:bg-secondary/60 hover:text-primary")}
+          className={cn(
+            'outline-none',
+            className,
+            !triggerHoverColors && 'hover:bg-secondary/60 hover:text-primary',
+          )}
           style={
             isTriggerHovered && triggerHoverColors
               ? {
@@ -137,14 +149,14 @@ export function NavigationDropdownMenu({ item, className, open, onOpenChange }: 
               : undefined
           }
           onPointerEnter={() => {
-            isTriggerHoveredRef.current = true
-            setIsTriggerHovered(true)
-            openMenu()
+            isTriggerHoveredRef.current = true;
+            setIsTriggerHovered(true);
+            openMenu();
           }}
           onPointerLeave={() => {
-            isTriggerHoveredRef.current = false
-            setIsTriggerHovered(false)
-            scheduleHoverClose()
+            isTriggerHoveredRef.current = false;
+            setIsTriggerHovered(false);
+            scheduleHoverClose();
           }}
           onFocus={() => setIsTriggerHovered(true)}
           onBlur={() => setIsTriggerHovered(false)}
@@ -157,35 +169,35 @@ export function NavigationDropdownMenu({ item, className, open, onOpenChange }: 
         align="end"
         sideOffset={0}
         onPointerDownOutside={() => {
-          clearHoverClose()
-          closeMenu()
+          clearHoverClose();
+          closeMenu();
         }}
         onEscapeKeyDown={() => {
-          clearHoverClose()
-          closeMenu()
+          clearHoverClose();
+          closeMenu();
         }}
         onPointerEnter={() => {
-          isContentHoveredRef.current = true
-          openMenu()
+          isContentHoveredRef.current = true;
+          openMenu();
         }}
         onPointerLeave={() => {
-          isContentHoveredRef.current = false
-          setHoveredDropdownItemId(null)
-          scheduleHoverClose()
+          isContentHoveredRef.current = false;
+          setHoveredDropdownItemId(null);
+          scheduleHoverClose();
         }}
         className="min-w-56 !bg-background ring-1 ring-border rounded-xl shadow-lg duration-200 ease-[cubic-bezier(.22,.9,.35,1)] data-open:duration-220 data-open:ease-[cubic-bezier(.22,.9,.35,1)] data-closed:duration-190 data-closed:ease-[cubic-bezier(.3,.0,.2,1)]"
       >
         {dropdownItems.map((dropdownItem) => {
-          const hoverColors = getNavbarThemeColors(dropdownItem, isDark)
-          const isHovered = hoveredDropdownItemId === dropdownItem.id
+          const hoverColors = getNavbarThemeColors(dropdownItem, isDark);
+          const isHovered = hoveredDropdownItemId === dropdownItem.id;
           const hoveredIconStyle =
             isHovered && hoverColors
-              ? {
+              ? ({
                   color: hoverColors.text,
                   stroke: hoverColors.text,
-                } satisfies React.CSSProperties
-              : undefined
-          const isExternal = isExternalHref(dropdownItem.href)
+                } satisfies React.CSSProperties)
+              : undefined;
+          const isExternal = isExternalHref(dropdownItem.href);
 
           return (
             <DropdownMenuItem
@@ -193,21 +205,21 @@ export function NavigationDropdownMenu({ item, className, open, onOpenChange }: 
               key={dropdownItem.id}
               style={
                 hoverColors
-                  ? {
-                      "--navbar-hover-text": hoverColors.text,
-                      "--navbar-hover-bg": hoverColors.background,
-                    } as React.CSSProperties
+                  ? ({
+                      '--navbar-hover-text': hoverColors.text,
+                      '--navbar-hover-bg': hoverColors.background,
+                    } as React.CSSProperties)
                   : undefined
               }
               className={cn(
-                "rounded-lg px-3 py-2 text-sm font-medium text-muted-fg transition-colors duration-250 ease-[cubic-bezier(.22,.9,.35,1)]",
+                'rounded-lg px-3 py-2 text-sm font-medium text-muted-fg transition-colors duration-250 ease-[cubic-bezier(.22,.9,.35,1)]',
                 hoverColors &&
-                  "hover:!text-[var(--navbar-hover-text)] hover:!bg-[var(--navbar-hover-bg)] data-[highlighted]:!text-[var(--navbar-hover-text)] data-[highlighted]:!bg-[var(--navbar-hover-bg)]",
+                  'hover:!text-[var(--navbar-hover-text)] hover:!bg-[var(--navbar-hover-bg)] data-[highlighted]:!text-[var(--navbar-hover-text)] data-[highlighted]:!bg-[var(--navbar-hover-bg)]',
               )}
             >
               {isExternal ? (
                 <a
-                  href={dropdownItem.href ?? "#"}
+                  href={dropdownItem.href ?? '#'}
                   target="_blank"
                   rel="noreferrer"
                   className="flex w-full items-center gap-2 no-underline"
@@ -219,17 +231,39 @@ export function NavigationDropdownMenu({ item, className, open, onOpenChange }: 
                         }
                       : undefined
                   }
-                  onPointerEnter={() => setHoveredDropdownItemId(dropdownItem.id)}
-                  onPointerLeave={() => setHoveredDropdownItemId((current) => (current === dropdownItem.id ? null : current))}
+                  onPointerEnter={() =>
+                    setHoveredDropdownItemId(dropdownItem.id)
+                  }
+                  onPointerLeave={() =>
+                    setHoveredDropdownItemId((current) =>
+                      current === dropdownItem.id ? null : current,
+                    )
+                  }
                   onMouseEnter={() => setHoveredDropdownItemId(dropdownItem.id)}
-                  onMouseLeave={() => setHoveredDropdownItemId((current) => (current === dropdownItem.id ? null : current))}
+                  onMouseLeave={() =>
+                    setHoveredDropdownItemId((current) =>
+                      current === dropdownItem.id ? null : current,
+                    )
+                  }
                 >
-                  <AppIcon icon={dropdownItem.icon} className="size-4 shrink-0" style={hoveredIconStyle} />
-                  <span style={isHovered && hoverColors ? { color: hoverColors.text } : undefined}>{dropdownItem.title}</span>
+                  <AppIcon
+                    icon={dropdownItem.icon}
+                    className="size-4 shrink-0"
+                    style={hoveredIconStyle}
+                  />
+                  <span
+                    style={
+                      isHovered && hoverColors
+                        ? { color: hoverColors.text }
+                        : undefined
+                    }
+                  >
+                    {dropdownItem.title}
+                  </span>
                 </a>
               ) : (
                 <NextLink
-                  href={dropdownItem.href ?? "#"}
+                  href={dropdownItem.href ?? '#'}
                   className="flex w-full items-center gap-2 no-underline"
                   style={
                     isHovered && hoverColors
@@ -239,19 +273,41 @@ export function NavigationDropdownMenu({ item, className, open, onOpenChange }: 
                         }
                       : undefined
                   }
-                  onPointerEnter={() => setHoveredDropdownItemId(dropdownItem.id)}
-                  onPointerLeave={() => setHoveredDropdownItemId((current) => (current === dropdownItem.id ? null : current))}
+                  onPointerEnter={() =>
+                    setHoveredDropdownItemId(dropdownItem.id)
+                  }
+                  onPointerLeave={() =>
+                    setHoveredDropdownItemId((current) =>
+                      current === dropdownItem.id ? null : current,
+                    )
+                  }
                   onMouseEnter={() => setHoveredDropdownItemId(dropdownItem.id)}
-                  onMouseLeave={() => setHoveredDropdownItemId((current) => (current === dropdownItem.id ? null : current))}
+                  onMouseLeave={() =>
+                    setHoveredDropdownItemId((current) =>
+                      current === dropdownItem.id ? null : current,
+                    )
+                  }
                 >
-                  <AppIcon icon={dropdownItem.icon} className="size-4 shrink-0" style={hoveredIconStyle} />
-                  <span style={isHovered && hoverColors ? { color: hoverColors.text } : undefined}>{dropdownItem.title}</span>
+                  <AppIcon
+                    icon={dropdownItem.icon}
+                    className="size-4 shrink-0"
+                    style={hoveredIconStyle}
+                  />
+                  <span
+                    style={
+                      isHovered && hoverColors
+                        ? { color: hoverColors.text }
+                        : undefined
+                    }
+                  >
+                    {dropdownItem.title}
+                  </span>
                 </NextLink>
               )}
             </DropdownMenuItem>
-          )
+          );
         })}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

@@ -1,12 +1,17 @@
-import type { Metadata } from "next"
-import "./global.css"
-import { ThemeProvider } from "@/components/theme/theme-provider"
-import { PageColorSchemeProvider } from "@/components/theme/page-color-scheme-provider"
-import AppNavbar from "@/components/navigation/app-navbar"
-import { ScrollRestoration } from "@/components/navigation/scroll-restoration"
-import { FooterBars } from "@/components/ui/footer-bars"
-import AppFooter from "@/components/layout/app-footer"
-import { resolveSiteMetadataBase, SITE_DESCRIPTION, SITE_LOGO_PATH, SITE_NAME } from "@/config/site/metadata"
+import type { Metadata } from 'next';
+import './global.css';
+import { ThemeProvider } from '@/components/theme/theme-provider';
+import { PageColorSchemeProvider } from '@/components/theme/page-color-scheme-provider';
+import AppNavbar from '@/components/navigation/app-navbar';
+import { ScrollRestoration } from '@/components/navigation/scroll-restoration';
+import { FooterBars } from '@/components/ui/footer-bars';
+import AppFooter from '@/components/layout/app-footer';
+import {
+  resolveSiteMetadataBase,
+  SITE_DESCRIPTION,
+  SITE_LOGO_PATH,
+  SITE_NAME,
+} from '@/config/site/metadata';
 
 export const metadata: Metadata = {
   metadataBase: resolveSiteMetadataBase(),
@@ -16,15 +21,15 @@ export const metadata: Metadata = {
     images: [{ url: SITE_LOGO_PATH }],
   },
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
     images: [SITE_LOGO_PATH],
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -37,13 +42,21 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <PageColorSchemeProvider>
             <ScrollRestoration />
             <div className="flex min-h-screen flex-col pt-14">
               <AppNavbar />
               <main className="flex-1">{children}</main>
-              <footer id="site-footer" className="border-t border-border/50 bg-background backdrop-blur-sm">
+              <footer
+                id="site-footer"
+                className="border-t border-border/50 bg-background backdrop-blur-sm"
+              >
                 <div className="mx-auto flex items-center justify-center">
                   <FooterBars />
                 </div>
@@ -54,5 +67,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

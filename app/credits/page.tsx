@@ -1,22 +1,23 @@
-import type { Metadata } from "next"
-import Link from "next/link"
-import { ExternalLink, type LucideIcon } from "lucide-react"
-import Markdown from "react-markdown"
-import remarkGfm from "remark-gfm"
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { ExternalLink, type LucideIcon } from 'lucide-react';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
-import { PageHeader } from "@/components/page/page-header"
-import { ThemedShowcaseCard } from "@/components/ui/themed-showcase-card"
-import { CREDIT_SECTIONS, type CreditSection } from "@/config/content/credits"
-import { CREDITS_PAGE_CONTENT } from "@/config/ui/site-content"
-import { hexAlpha } from "@/lib/color"
+import { PageHeader } from '@/components/page/page-header';
+import { ThemedShowcaseCard } from '@/components/ui/themed-showcase-card';
+import { CREDIT_SECTIONS, type CreditSection } from '@/config/content/credits';
+import { CREDITS_PAGE_CONTENT } from '@/config/ui/site-content';
+import { hexAlpha } from '@/lib/color';
 
 export const metadata: Metadata = {
-  title: "Credits | Subway Builder Modded",
-  description: "Subway Builder Modded is a community-driven project made possible by dedicated contributors.",
-}
+  title: 'Credits | Subway Builder Modded',
+  description:
+    'Subway Builder Modded is a community-driven project made possible by dedicated contributors.',
+};
 
-const SECTION_ICON_MAP = CREDITS_PAGE_CONTENT.sectionIcons
-const CREDITS_ACCENT = CREDITS_PAGE_CONTENT.accentHex
+const SECTION_ICON_MAP = CREDITS_PAGE_CONTENT.sectionIcons;
+const CREDITS_ACCENT = CREDITS_PAGE_CONTENT.accentHex;
 
 function CreditRoleMarkdown({ content }: { content: string }) {
   return (
@@ -25,35 +26,50 @@ function CreditRoleMarkdown({ content }: { content: string }) {
       components={{
         p: ({ children }) => <>{children}</>,
         a: ({ href, children }) => {
-          if (!href) return <>{children}</>
+          if (!href) return <>{children}</>;
 
           const className =
-            "underline decoration-muted-foreground/55 underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
+            'underline decoration-muted-foreground/55 underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground';
 
-          if (href.startsWith("/")) {
+          if (href.startsWith('/')) {
             return (
               <Link href={href} className={className}>
                 {children}
               </Link>
-            )
+            );
           }
 
           return (
-            <a href={href} target="_blank" rel="noreferrer" className={className}>
+            <a
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className={className}
+            >
               {children}
             </a>
-          )
+          );
         },
-        strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
-        em: ({ children }) => <em className="italic text-foreground/90">{children}</em>,
+        strong: ({ children }) => (
+          <strong className="font-semibold text-foreground">{children}</strong>
+        ),
+        em: ({ children }) => (
+          <em className="italic text-foreground/90">{children}</em>
+        ),
       }}
     >
       {content}
     </Markdown>
-  )
+  );
 }
 
-function CreditsSectionHeader({ title, icon: Icon }: { title: string; icon: LucideIcon }) {
+function CreditsSectionHeader({
+  title,
+  icon: Icon,
+}: {
+  title: string;
+  icon: LucideIcon;
+}) {
   return (
     <div className="mb-5 flex items-center gap-3">
       <span
@@ -66,19 +82,33 @@ function CreditsSectionHeader({ title, icon: Icon }: { title: string; icon: Luci
       >
         <Icon className="size-4" />
       </span>
-      <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-muted-foreground">{title}</h2>
+      <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-muted-foreground">
+        {title}
+      </h2>
       <div className="h-px flex-1 bg-border" />
     </div>
-  )
+  );
 }
 
-function CreditPersonCard({ section, person }: { section: CreditSection; person: CreditSection["people"][number] }) {
-  const Icon = SECTION_ICON_MAP[section.icon]
+function CreditPersonCard({
+  section,
+  person,
+}: {
+  section: CreditSection;
+  person: CreditSection['people'][number];
+}) {
+  const Icon = SECTION_ICON_MAP[section.icon];
   const creditsPalette = {
     accent: { light: CREDITS_ACCENT, dark: CREDITS_ACCENT },
-    primary: { light: hexAlpha(CREDITS_ACCENT, 0.14), dark: hexAlpha(CREDITS_ACCENT, 0.14) },
-    secondary: { light: hexAlpha(CREDITS_ACCENT, 0.5), dark: hexAlpha(CREDITS_ACCENT, 0.5) },
-  }
+    primary: {
+      light: hexAlpha(CREDITS_ACCENT, 0.14),
+      dark: hexAlpha(CREDITS_ACCENT, 0.14),
+    },
+    secondary: {
+      light: hexAlpha(CREDITS_ACCENT, 0.5),
+      dark: hexAlpha(CREDITS_ACCENT, 0.5),
+    },
+  };
 
   return (
     <ThemedShowcaseCard
@@ -109,7 +139,9 @@ function CreditPersonCard({ section, person }: { section: CreditSection; person:
             <ExternalLink className="size-3.5 opacity-70" />
           </Link>
         ) : (
-          <p className="text-base font-semibold text-foreground">{person.name}</p>
+          <p className="text-base font-semibold text-foreground">
+            {person.name}
+          </p>
         )}
 
         {person.role ? (
@@ -119,16 +151,18 @@ function CreditPersonCard({ section, person }: { section: CreditSection; person:
         ) : null}
       </div>
     </ThemedShowcaseCard>
-  )
+  );
 }
 
 function CreditsSection({ section }: { section: CreditSection }) {
-  const Icon = SECTION_ICON_MAP[section.icon]
+  const Icon = SECTION_ICON_MAP[section.icon];
 
   return (
     <section>
       <CreditsSectionHeader title={section.title} icon={Icon} />
-      <p className="mb-5 text-sm leading-relaxed text-muted-foreground">{section.description}</p>
+      <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
+        {section.description}
+      </p>
 
       <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {section.people.map((person) => (
@@ -138,7 +172,7 @@ function CreditsSection({ section }: { section: CreditSection }) {
         ))}
       </ul>
     </section>
-  )
+  );
 }
 
 export default function CreditsPage() {
@@ -158,5 +192,5 @@ export default function CreditsPage() {
         </div>
       </div>
     </section>
-  )
+  );
 }

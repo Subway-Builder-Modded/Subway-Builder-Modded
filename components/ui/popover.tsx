@@ -1,12 +1,12 @@
-"use client"
+'use client';
 
-import type { DialogTriggerProps, PopoverProps } from "react-aria-components"
+import type { DialogTriggerProps, PopoverProps } from 'react-aria-components';
 import {
   DialogTrigger as DialogTriggerPrimitive,
   OverlayArrow,
   Popover as PopoverPrimitive,
-} from "react-aria-components"
-import { cx } from "@/lib/primitive"
+} from 'react-aria-components';
+import { cx } from '@/lib/primitive';
 import {
   DialogBody,
   DialogClose,
@@ -15,20 +15,20 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./dialog"
+} from './dialog';
 
 const Popover = (props: DialogTriggerProps) => {
-  return <DialogTriggerPrimitive {...props} />
-}
+  return <DialogTriggerPrimitive {...props} />;
+};
 
-const PopoverTitle = DialogTitle
-const PopoverHeader = DialogHeader
-const PopoverBody = DialogBody
-const PopoverFooter = DialogFooter
+const PopoverTitle = DialogTitle;
+const PopoverHeader = DialogHeader;
+const PopoverBody = DialogBody;
+const PopoverFooter = DialogFooter;
 
 interface PopoverContentProps extends PopoverProps {
-  arrow?: boolean
-  ref?: React.Ref<HTMLDivElement>
+  arrow?: boolean;
+  ref?: React.Ref<HTMLDivElement>;
 }
 
 const PopoverContent = ({
@@ -38,18 +38,18 @@ const PopoverContent = ({
   ref,
   ...props
 }: PopoverContentProps) => {
-  const offset = props.offset ?? (arrow ? 12 : 8)
+  const offset = props.offset ?? (arrow ? 12 : 8);
   return (
     <PopoverPrimitive
       ref={ref}
       offset={offset}
       className={cx(
-        "[--visual-viewport-vertical-padding:16px] sm:[--visual-viewport-vertical-padding:32px]",
-        "group/popover min-w-(--trigger-width) max-w-xs origin-(--trigger-anchor-point) rounded-(--popover-radius) bg-overlay text-overlay-fg shadow-xs outline-hidden ring ring-muted-fg/20 drop-shadow-xl transition-transform [--gutter:--spacing(6)] [--popover-radius:var(--radius-xl)] sm:text-sm dark:ring-border dark:backdrop-saturate-200 **:[[role=dialog]]:[--gutter:--spacing(6)]",
-        "entering:fade-in exiting:fade-out entering:animate-in exiting:animate-out",
-        "placement-left:entering:slide-in-from-right-1 placement-right:entering:slide-in-from-left-1 placement-top:entering:slide-in-from-bottom-1 placement-bottom:entering:slide-in-from-top-1",
-        "placement-left:exiting:slide-out-to-right-1 placement-right:exiting:slide-out-to-left-1 placement-top:exiting:slide-out-to-bottom-1 placement-bottom:exiting:slide-out-to-top-1",
-        "forced-colors:bg-[Canvas]",
+        '[--visual-viewport-vertical-padding:16px] sm:[--visual-viewport-vertical-padding:32px]',
+        'group/popover min-w-(--trigger-width) max-w-xs origin-(--trigger-anchor-point) rounded-(--popover-radius) bg-overlay text-overlay-fg shadow-xs outline-hidden ring ring-muted-fg/20 drop-shadow-xl transition-transform [--gutter:--spacing(6)] [--popover-radius:var(--radius-xl)] sm:text-sm dark:ring-border dark:backdrop-saturate-200 **:[[role=dialog]]:[--gutter:--spacing(6)]',
+        'entering:fade-in exiting:fade-out entering:animate-in exiting:animate-out',
+        'placement-left:entering:slide-in-from-right-1 placement-right:entering:slide-in-from-left-1 placement-top:entering:slide-in-from-bottom-1 placement-bottom:entering:slide-in-from-top-1',
+        'placement-left:exiting:slide-out-to-right-1 placement-right:exiting:slide-out-to-left-1 placement-top:exiting:slide-out-to-bottom-1 placement-bottom:exiting:slide-out-to-top-1',
+        'forced-colors:bg-[Canvas]',
         className,
       )}
       {...props}
@@ -68,20 +68,23 @@ const PopoverContent = ({
               </svg>
             </OverlayArrow>
           )}
-          <div data-slot="popover-inner" className="max-h-[inherit] overflow-y-auto">
-            {typeof children === "function" ? children(values) : children}
+          <div
+            data-slot="popover-inner"
+            className="max-h-[inherit] overflow-y-auto"
+          >
+            {typeof children === 'function' ? children(values) : children}
           </div>
         </>
       )}
     </PopoverPrimitive>
-  )
-}
+  );
+};
 
-const PopoverTrigger = DialogTrigger
-const PopoverClose = DialogClose
-const PopoverDescription = DialogDescription
+const PopoverTrigger = DialogTrigger;
+const PopoverClose = DialogClose;
+const PopoverDescription = DialogDescription;
 
-export type { PopoverProps, PopoverContentProps }
+export type { PopoverProps, PopoverContentProps };
 export {
   Popover,
   PopoverTrigger,
@@ -92,4 +95,4 @@ export {
   PopoverFooter,
   PopoverHeader,
   PopoverTitle,
-}
+};

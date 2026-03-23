@@ -1,34 +1,30 @@
-import type { ReactNode } from "react"
-import { notFound } from "next/navigation"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
-import { AppDocsSidebar } from "@/components/docs/docs-sidebar"
-import { resolveDocsRouteForInstance } from "@/lib/docs/shared"
-import { getAllDocsDocSlugs, getSidebarTree } from "@/lib/docs/server"
+import type { ReactNode } from 'react';
+import { notFound } from 'next/navigation';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { AppDocsSidebar } from '@/components/docs/docs-sidebar';
+import { resolveDocsRouteForInstance } from '@/lib/docs/shared';
+import { getAllDocsDocSlugs, getSidebarTree } from '@/lib/docs/server';
 
 export default async function DocsCatchAllLayout({
   children,
   params,
 }: {
-  children: ReactNode
-  params: Promise<{ instance: string; slug?: string[] }>
+  children: ReactNode;
+  params: Promise<{ instance: string; slug?: string[] }>;
 }) {
-  const { instance: instanceId, slug } = await params
-  const normalizedSlug = slug?.filter(Boolean)
-  const resolved = resolveDocsRouteForInstance(instanceId, slug)
+  const { instance: instanceId, slug } = await params;
+  const normalizedSlug = slug?.filter(Boolean);
+  const resolved = resolveDocsRouteForInstance(instanceId, slug);
 
-  if (!resolved) notFound()
+  if (!resolved) notFound();
 
   if (!normalizedSlug?.length) {
-    return (
-      <section className="w-full px-4 pb-12 md:px-6">
-        {children}
-      </section>
-    )
+    return <section className="w-full px-4 pb-12 md:px-6">{children}</section>;
   }
 
-  const tree = await getSidebarTree(resolved.instance, resolved.version)
+  const tree = await getSidebarTree(resolved.instance, resolved.version);
 
-  const allSlugs = await getAllDocsDocSlugs()
+  const allSlugs = await getAllDocsDocSlugs();
 
   const versionDocSlugs = resolved.instance.versioned
     ? Object.fromEntries(
@@ -37,13 +33,13 @@ export default async function DocsCatchAllLayout({
           allSlugs
             .filter(
               (parts) =>
-                parts[0] === resolved.instance.id && parts[1] === version.value
+                parts[0] === resolved.instance.id && parts[1] === version.value,
             )
-            .map((parts) => parts.slice(2).join("/"))
+            .map((parts) => parts.slice(2).join('/'))
             .filter(Boolean),
-        ])
+        ]),
       )
-    : {}
+    : {};
 
   return (
     <section className="w-full">
@@ -56,5 +52,5 @@ export default async function DocsCatchAllLayout({
         </SidebarInset>
       </SidebarProvider>
     </section>
-  )
+  );
 }

@@ -1,8 +1,14 @@
-"use client"
+'use client';
 
-import { createElement, useCallback, useEffect, useMemo, useState } from "react"
-import Link from "next/link"
-import { useSearchParams } from "next/navigation"
+import {
+  createElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import {
   ArrowDownToLine,
   ChevronLeft,
@@ -12,13 +18,13 @@ import {
   ExternalLink,
   Users,
   X,
-} from "lucide-react"
-import Markdown from "react-markdown"
-import rehypeRaw from "rehype-raw"
+} from 'lucide-react';
+import Markdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 
-import { GalleryImage } from "@/components/railyard/gallery-image"
-import { ReleaseTagBadge } from "@/components/updates/release-tag-badge"
-import { Badge } from "@/components/ui/badge"
+import { GalleryImage } from '@/components/railyard/gallery-image';
+import { ReleaseTagBadge } from '@/components/updates/release-tag-badge';
+import { Badge } from '@/components/ui/badge';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -26,9 +32,9 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
-import { Skeleton } from "@/components/ui/skeleton"
+} from '@/components/ui/breadcrumb';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -36,167 +42,187 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { useRegistryItem } from "@/hooks/use-registry-item"
-import { useVersions } from "@/hooks/use-versions"
-import { getCountryFlagIcon } from "@/lib/railyard/flags"
-import { mergeVersionDownloads, withZeroDownloads } from "@/lib/railyard/version-downloads"
-import { cn } from "@/lib/utils"
+} from '@/components/ui/table';
+import { useRegistryItem } from '@/hooks/use-registry-item';
+import { useVersions } from '@/hooks/use-versions';
+import { getCountryFlagIcon } from '@/lib/railyard/flags';
+import {
+  mergeVersionDownloads,
+  withZeroDownloads,
+} from '@/lib/railyard/version-downloads';
+import { cn } from '@/lib/utils';
 import type {
   AssetDownloadCountsByVersion,
   MapManifest,
   ModManifest,
   RegistryIntegrityReport,
   VersionInfo,
-} from "@/types/registry"
+} from '@/types/registry';
 
 interface ProjectPageProps {
-  type: "mods" | "maps"
-  id: string
+  type: 'mods' | 'maps';
+  id: string;
 }
 
-const BASE_URL = "https://raw.githubusercontent.com/Subway-Builder-Modded/The-Railyard/main"
+const BASE_URL =
+  'https://raw.githubusercontent.com/Subway-Builder-Modded/The-Railyard/main';
 
 function isMapManifest(item: ModManifest | MapManifest): item is MapManifest {
-  return "city_code" in item
+  return 'city_code' in item;
 }
 
 function formatDate(dateString: string): string {
   try {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    })
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
   } catch {
-    return dateString
+    return dateString;
   }
 }
 
 function formatDownloads(count: number): string {
-  if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)}M`
-  if (count >= 1_000) return `${(count / 1_000).toFixed(1)}K`
-  return count.toLocaleString()
+  if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)}M`;
+  if (count >= 1_000) return `${(count / 1_000).toFixed(1)}K`;
+  return count.toLocaleString();
 }
 
-async function fetchIntegrity(type: "mods" | "maps"): Promise<RegistryIntegrityReport | null> {
+async function fetchIntegrity(
+  type: 'mods' | 'maps',
+): Promise<RegistryIntegrityReport | null> {
   try {
-    const response = await fetch(`${BASE_URL}/${type}/integrity.json`)
-    if (!response.ok) return null
-    return response.json()
+    const response = await fetch(`${BASE_URL}/${type}/integrity.json`);
+    if (!response.ok) return null;
+    return response.json();
   } catch {
-    return null
+    return null;
   }
 }
 
-async function fetchDownloadCounts(type: "mods" | "maps"): Promise<AssetDownloadCountsByVersion> {
+async function fetchDownloadCounts(
+  type: 'mods' | 'maps',
+): Promise<AssetDownloadCountsByVersion> {
   try {
-    const response = await fetch(`${BASE_URL}/${type}/downloads.json`)
-    if (!response.ok) return {}
-    return response.json()
+    const response = await fetch(`${BASE_URL}/${type}/downloads.json`);
+    if (!response.ok) return {};
+    return response.json();
   } catch {
-    return {}
+    return {};
   }
 }
 
 export function ProjectPage({ type, id }: ProjectPageProps) {
-  const { item, loading: itemLoading, error: itemError } = useRegistryItem(type, id)
+  const {
+    item,
+    loading: itemLoading,
+    error: itemError,
+  } = useRegistryItem(type, id);
   const {
     versions: fetchedVersions,
     loading: versionsLoading,
     error: versionsError,
-  } = useVersions(item?.update)
+  } = useVersions(item?.update);
 
-  const [versions, setVersions] = useState<VersionInfo[]>([])
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
-  const [showInstallPrompt, setShowInstallPrompt] = useState(false)
+  const [versions, setVersions] = useState<VersionInfo[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
 
-  const searchParams = useSearchParams()
-  const from = searchParams.get("from")
+  const searchParams = useSearchParams();
+  const from = searchParams.get('from');
   const browseHref = useMemo(() => {
-    if (!from) return "/railyard/browse"
-    const decoded = decodeURIComponent(from)
-    return decoded.startsWith("/railyard/browse") ? decoded : "/railyard/browse"
-  }, [from])
+    if (!from) return '/railyard/browse';
+    const decoded = decodeURIComponent(from);
+    return decoded.startsWith('/railyard/browse')
+      ? decoded
+      : '/railyard/browse';
+  }, [from]);
 
-  const browseLabel = "Browse"
-  const isMap = item ? isMapManifest(item) : false
-  const mapItem = item as MapManifest | null
-  const mapCountryCode = mapItem?.country?.trim().toUpperCase()
-  const countryFlag = getCountryFlagIcon(mapCountryCode)
-  const galleryImages = item?.gallery ?? []
+  const browseLabel = 'Browse';
+  const isMap = item ? isMapManifest(item) : false;
+  const mapItem = item as MapManifest | null;
+  const mapCountryCode = mapItem?.country?.trim().toUpperCase();
+  const countryFlag = getCountryFlagIcon(mapCountryCode);
+  const galleryImages = item?.gallery ?? [];
 
   useEffect(() => {
-    let cancelled = false
+    let cancelled = false;
 
     async function buildDisplayVersions() {
       if (!item) {
-        setVersions([])
-        return
+        setVersions([]);
+        return;
       }
 
-      const visibleVersions = type === "mods"
-        ? fetchedVersions.filter((version) => Boolean(version.manifest))
-        : fetchedVersions
+      const visibleVersions =
+        type === 'mods'
+          ? fetchedVersions.filter((version) => Boolean(version.manifest))
+          : fetchedVersions;
 
       const [integrity, countsByAsset] = await Promise.all([
         fetchIntegrity(type),
         fetchDownloadCounts(type),
-      ])
+      ]);
 
-      let mergedVersions = withZeroDownloads(visibleVersions)
-      const countsForAsset = countsByAsset[item.id] ?? {}
+      let mergedVersions = withZeroDownloads(visibleVersions);
+      const countsForAsset = countsByAsset[item.id] ?? {};
       mergedVersions = mergeVersionDownloads(
         visibleVersions,
         countsForAsset,
-        `${type}:${item.id}`
-      )
+        `${type}:${item.id}`,
+      );
 
-      const completeVersions = integrity?.listings?.[item.id]?.complete_versions
+      const completeVersions =
+        integrity?.listings?.[item.id]?.complete_versions;
       const filteredByIntegrity = Array.isArray(completeVersions)
-        ? mergedVersions.filter((version) => completeVersions.includes(version.version))
-        : mergedVersions
+        ? mergedVersions.filter((version) =>
+            completeVersions.includes(version.version),
+          )
+        : mergedVersions;
 
       if (!cancelled) {
-        setVersions(filteredByIntegrity)
+        setVersions(filteredByIntegrity);
       }
     }
 
-    buildDisplayVersions()
+    buildDisplayVersions();
 
     return () => {
-      cancelled = true
-    }
-  }, [fetchedVersions, id, item, type])
+      cancelled = true;
+    };
+  }, [fetchedVersions, id, item, type]);
 
-  const latestVersion = versions[0]
+  const latestVersion = versions[0];
 
   const openLightbox = useCallback((index: number) => {
-    setLightboxIndex(index)
-  }, [])
+    setLightboxIndex(index);
+  }, []);
 
   const openInRailyard = useCallback(() => {
-    setShowInstallPrompt(false)
+    setShowInstallPrompt(false);
 
-    const deepLink = `railyard://open?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`
-    window.location.href = deepLink
-  }, [id, type])
+    const deepLink = `railyard://open?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
+    window.location.href = deepLink;
+  }, [id, type]);
 
   const closeLightbox = useCallback(() => {
-    setLightboxIndex(null)
-  }, [])
+    setLightboxIndex(null);
+  }, []);
 
   const prevImage = useCallback(() => {
     setLightboxIndex((previous) =>
-      previous !== null ? (previous - 1 + galleryImages.length) % galleryImages.length : null
-    )
-  }, [galleryImages.length])
+      previous !== null
+        ? (previous - 1 + galleryImages.length) % galleryImages.length
+        : null,
+    );
+  }, [galleryImages.length]);
 
   const nextImage = useCallback(() => {
     setLightboxIndex((previous) =>
-      previous !== null ? (previous + 1) % galleryImages.length : null
-    )
-  }, [galleryImages.length])
+      previous !== null ? (previous + 1) % galleryImages.length : null,
+    );
+  }, [galleryImages.length]);
 
   if (itemLoading) {
     return (
@@ -210,7 +236,7 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
         <Skeleton className="h-6 w-32 mt-8 mb-4" />
         <Skeleton className="h-40 w-full" />
       </main>
-    )
+    );
   }
 
   if (itemError || !item) {
@@ -233,13 +259,16 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
         </Breadcrumb>
         <div className="mt-12 text-center">
           <CircleAlert className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-          <p className="text-lg font-medium text-foreground">{itemError ?? "Project not found"}</p>
+          <p className="text-lg font-medium text-foreground">
+            {itemError ?? 'Project not found'}
+          </p>
           <p className="text-sm text-muted-foreground mt-1">
-            The mod or map you&apos;re looking for doesn&apos;t exist in the registry.
+            The mod or map you&apos;re looking for doesn&apos;t exist in the
+            registry.
           </p>
         </div>
       </main>
-    )
+    );
   }
 
   return (
@@ -273,9 +302,11 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
                 type="button"
                 onClick={() => openLightbox(index)}
                 className={cn(
-                  "shrink-0 rounded-lg overflow-hidden border border-border hover:border-foreground/20 transition-all cursor-pointer",
-                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                  galleryImages.length === 1 ? "w-full max-h-80" : "w-64 h-40 sm:w-80 sm:h-48"
+                  'shrink-0 rounded-lg overflow-hidden border border-border hover:border-foreground/20 transition-all cursor-pointer',
+                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                  galleryImages.length === 1
+                    ? 'w-full max-h-80'
+                    : 'w-64 h-40 sm:w-80 sm:h-48',
                 )}
               >
                 <GalleryImage
@@ -283,8 +314,10 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
                   id={id}
                   imagePath={imagePath}
                   className={cn(
-                    "object-cover",
-                    galleryImages.length === 1 ? "w-full max-h-80" : "w-64 h-40 sm:w-80 sm:h-48"
+                    'object-cover',
+                    galleryImages.length === 1
+                      ? 'w-full max-h-80'
+                      : 'w-64 h-40 sm:w-80 sm:h-48',
                   )}
                 />
               </button>
@@ -297,17 +330,25 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
             <h1 className="text-2xl font-bold text-foreground">{item.name}</h1>
-            <p className="text-sm text-muted-foreground mt-1">by {item.author}</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              by {item.author}
+            </p>
           </div>
 
           {isMap && mapItem && (
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               {mapItem.city_code && (
-                <span className="font-mono font-bold text-foreground text-base">{mapItem.city_code}</span>
+                <span className="font-mono font-bold text-foreground text-base">
+                  {mapItem.city_code}
+                </span>
               )}
               {mapItem.country && (
                 <span className="inline-flex items-center gap-1">
-                  {countryFlag ? createElement(countryFlag, { className: "h-3.5 w-[18px] rounded-[1px]" }) : null}
+                  {countryFlag
+                    ? createElement(countryFlag, {
+                        className: 'h-3.5 w-[18px] rounded-[1px]',
+                      })
+                    : null}
                   <span>{mapItem.country}</span>
                 </span>
               )}
@@ -326,7 +367,12 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
             rehypePlugins={[rehypeRaw]}
             components={{
               a: ({ href, children, ...props }) => (
-                <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  {...props}
+                >
                   {children}
                 </a>
               ),
@@ -374,14 +420,18 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
         ) : versionsError ? (
           <p className="text-sm text-muted-foreground">{versionsError}</p>
         ) : versions.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No versions available.</p>
+          <p className="text-sm text-muted-foreground">
+            No versions available.
+          </p>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Version</TableHead>
                 <TableHead>Date</TableHead>
-                <TableHead className="hidden sm:table-cell">Changelog</TableHead>
+                <TableHead className="hidden sm:table-cell">
+                  Changelog
+                </TableHead>
                 <TableHead className="text-right">Downloads</TableHead>
                 <TableHead className="w-[80px]"></TableHead>
               </TableRow>
@@ -390,7 +440,9 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
               {versions.map((version) => (
                 <TableRow key={version.version}>
                   <TableCell>
-                    <span className="font-medium text-foreground">{version.version}</span>
+                    <span className="font-medium text-foreground">
+                      {version.version}
+                    </span>
                     {version.prerelease && (
                       <span className="ml-2 inline-flex align-middle">
                         <ReleaseTagBadge kind="beta" size="sm" />
@@ -402,9 +454,13 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
                       </span>
                     )}
                   </TableCell>
-                  <TableCell className="text-muted-foreground">{formatDate(version.date)}</TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {formatDate(version.date)}
+                  </TableCell>
                   <TableCell className="hidden sm:table-cell text-muted-foreground max-w-xs truncate">
-                    {version.changelog ? version.changelog.split("\n")[0].slice(0, 120) : "—"}
+                    {version.changelog
+                      ? version.changelog.split('\n')[0].slice(0, 120)
+                      : '—'}
                   </TableCell>
                   <TableCell className="text-right text-muted-foreground tabular-nums">
                     {formatDownloads(version.downloads)}
@@ -446,12 +502,17 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
-            <ArrowDownToLine className="h-10 w-10 text-muted-foreground mx-auto mb-4" aria-hidden="true" />
+            <ArrowDownToLine
+              className="h-10 w-10 text-muted-foreground mx-auto mb-4"
+              aria-hidden="true"
+            />
             <h3 className="text-lg font-semibold text-foreground mb-2">
-              Download Railyard to install this {type === "mods" ? "mod" : "map"}
+              Download Railyard to install this{' '}
+              {type === 'mods' ? 'mod' : 'map'}
             </h3>
             <p className="text-sm text-muted-foreground mb-6">
-              Railyard is a free desktop app that lets you browse, install, and manage Subway Builder content.
+              Railyard is a free desktop app that lets you browse, install, and
+              manage Subway Builder content.
             </p>
             <div className="flex gap-3 justify-center">
               <Link
@@ -493,8 +554,8 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
             <button
               type="button"
               onClick={(event) => {
-                event.stopPropagation()
-                prevImage()
+                event.stopPropagation();
+                prevImage();
               }}
               className="absolute left-4 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
               aria-label="Previous image"
@@ -519,8 +580,8 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
             <button
               type="button"
               onClick={(event) => {
-                event.stopPropagation()
-                nextImage()
+                event.stopPropagation();
+                nextImage();
               }}
               className="absolute right-4 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
               aria-label="Next image"
@@ -537,5 +598,5 @@ export function ProjectPage({ type, id }: ProjectPageProps) {
         </div>
       )}
     </main>
-  )
+  );
 }

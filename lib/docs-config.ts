@@ -1,1 +1,1 @@
-export * from "@/config/content/docs"
+export * from '@/config/content/docs';

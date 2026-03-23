@@ -1,1 +1,1 @@
-export * from "@/config/content/credits"
+export * from '@/config/content/credits';

@@ -1,11 +1,11 @@
-import type { Metadata } from "next"
-import { Suspense } from "react"
-import { BrowsePage } from "@/components/railyard/browse-page"
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import { BrowsePage } from '@/components/railyard/browse-page';
 
 export const metadata: Metadata = {
-  title: "Browse | Railyard",
-  description: "Discover and install maps and mods for Subway Builder..",
-}
+  title: 'Browse | Railyard',
+  description: 'Discover and install maps and mods for Subway Builder..',
+};
 
 export default function BrowseRoutePage() {
   return (
@@ -14,5 +14,5 @@ export default function BrowseRoutePage() {
         <BrowsePage />
       </Suspense>
     </main>
-  )
+  );
 }

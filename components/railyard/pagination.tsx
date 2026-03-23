@@ -1,23 +1,23 @@
-"use client"
+'use client';
 
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { PER_PAGE_OPTIONS, type PerPage } from "@/lib/railyard/constants"
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { PER_PAGE_OPTIONS, type PerPage } from '@/lib/railyard/constants';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select';
 
 interface PaginationProps {
-  page: number
-  totalPages: number
-  totalResults: number
-  perPage: PerPage
-  onPageChange: (page: number) => void
-  onPerPageChange: (perPage: PerPage) => void
+  page: number;
+  totalPages: number;
+  totalResults: number;
+  perPage: PerPage;
+  onPageChange: (page: number) => void;
+  onPerPageChange: (perPage: PerPage) => void;
 }
 
 export function Pagination({
@@ -28,21 +28,21 @@ export function Pagination({
   onPageChange,
   onPerPageChange,
 }: PaginationProps) {
-  if (totalResults === 0) return null
+  if (totalResults === 0) return null;
 
   const getPageNumbers = () => {
-    const pages: number[] = []
-    const start = Math.max(1, page - 2)
-    const end = Math.min(totalPages, start + 4)
+    const pages: number[] = [];
+    const start = Math.max(1, page - 2);
+    const end = Math.min(totalPages, start + 4);
     for (let i = Math.max(1, end - 4); i <= end; i++) {
-      pages.push(i)
+      pages.push(i);
     }
-    return pages
-  }
+    return pages;
+  };
 
-  const pageNumbers = getPageNumbers()
-  const rangeStart = (page - 1) * perPage + 1
-  const rangeEnd = Math.min(page * perPage, totalResults)
+  const pageNumbers = getPageNumbers();
+  const rangeStart = (page - 1) * perPage + 1;
+  const rangeEnd = Math.min(page * perPage, totalResults);
 
   return (
     <div className="flex items-center justify-between pt-2 border-t border-border flex-wrap gap-2">
@@ -84,14 +84,14 @@ export function Pagination({
               key={p}
               type="button"
               className={cn(
-                "h-7 w-7 flex items-center justify-center rounded-md text-xs transition-colors",
+                'h-7 w-7 flex items-center justify-center rounded-md text-xs transition-colors',
                 p === page
-                  ? "bg-secondary text-secondary-foreground font-semibold"
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                  ? 'bg-secondary text-secondary-foreground font-semibold'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-accent',
               )}
               onClick={() => onPageChange(p)}
               aria-label={`Page ${p}`}
-              aria-current={p === page ? "page" : undefined}
+              aria-current={p === page ? 'page' : undefined}
             >
               {p}
             </button>
@@ -113,5 +113,5 @@ export function Pagination({
         {rangeStart}–{rangeEnd} of {totalResults}
       </p>
     </div>
-  )
+  );
 }

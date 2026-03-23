@@ -1,11 +1,11 @@
-"use client"
+'use client';
 
-import Image from "next/image"
-import { motion, useScroll, useTransform } from "motion/react"
-import type { ReactNode } from "react"
+import Image from 'next/image';
+import { motion, useScroll, useTransform } from 'motion/react';
+import type { ReactNode } from 'react';
 
-import { HomeLinkButton } from "@/components/home/home-link-button"
-import { HomeProjectCardView } from "@/components/home/home-project-card"
+import { HomeLinkButton } from '@/components/home/home-link-button';
+import { HomeProjectCardView } from '@/components/home/home-project-card';
 import {
   HOME_COMMUNITY_SECTION,
   HOME_HERO,
@@ -13,58 +13,70 @@ import {
   HOME_PROJECT_SECTION,
   HOME_SUBWAY_BARS,
   HOME_THEME,
-} from "@/config/site/homepage"
+} from '@/config/site/homepage';
 
 function SectionShell({
   title,
   description,
   children,
 }: {
-  title: string
-  description?: string
-  children: ReactNode
+  title: string;
+  description?: string;
+  children: ReactNode;
 }) {
   return (
     <section className="relative z-10 px-[clamp(1.25rem,4.5vw,3.5rem)]">
       <div className="w-full overflow-hidden rounded-[2rem] border border-border/70 bg-gradient-to-br from-background/96 via-background/90 to-background/84 px-[clamp(1.1rem,3.6vw,2.4rem)] py-14 shadow-md backdrop-blur-md sm:py-16">
         <div className="w-full">
           <div className="flex items-center gap-4">
-            <h2 className="text-xl font-bold tracking-tight text-foreground">{title}</h2>
+            <h2 className="text-xl font-bold tracking-tight text-foreground">
+              {title}
+            </h2>
             <div className="h-px flex-1 bg-border" />
           </div>
-          {description ? <p className="mt-3 w-full text-sm text-muted-foreground sm:text-base">{description}</p> : null}
+          {description ? (
+            <p className="mt-3 w-full text-sm text-muted-foreground sm:text-base">
+              {description}
+            </p>
+          ) : null}
           <div className="mt-8">{children}</div>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function SectionDivider() {
   return (
-    <div className="relative z-10 px-[clamp(1.25rem,4.5vw,3.5rem)] py-7 sm:py-8" aria-hidden="true">
+    <div
+      className="relative z-10 px-[clamp(1.25rem,4.5vw,3.5rem)] py-7 sm:py-8"
+      aria-hidden="true"
+    >
       <div className="w-full">
         <div className="h-px bg-border/70" />
       </div>
     </div>
-  )
+  );
 }
 
 export default function Page() {
-  const { scrollY } = useScroll()
-  const heroScale = useTransform(scrollY, [-240, 0, 900], [1, 1, 1.32])
-  const heroY = useTransform(scrollY, [-240, 0, 900], [0, 0, -140])
+  const { scrollY } = useScroll();
+  const heroScale = useTransform(scrollY, [-240, 0, 900], [1, 1, 1.32]);
+  const heroY = useTransform(scrollY, [-240, 0, 900], [0, 0, -140]);
 
   return (
     <main
       className="relative min-h-screen text-foreground"
       style={{
-        ["--home-accent-light" as string]: HOME_THEME.accent.light,
-        ["--home-accent-dark" as string]: HOME_THEME.accent.dark,
+        ['--home-accent-light' as string]: HOME_THEME.accent.light,
+        ['--home-accent-dark' as string]: HOME_THEME.accent.dark,
       }}
     >
       <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
-        <motion.div className="absolute inset-0" style={{ scale: heroScale, y: heroY }}>
+        <motion.div
+          className="absolute inset-0"
+          style={{ scale: heroScale, y: heroY }}
+        >
           <Image
             src={HOME_HERO.backgroundImage.light}
             alt={HOME_HERO.backgroundImage.alt}
@@ -107,19 +119,18 @@ export default function Page() {
 
               <div className="mt-5 flex flex-wrap items-center justify-center gap-2.5">
                 {HOME_HERO.primaryActions.map((action) => (
-                  <HomeLinkButton
-                    key={action.label}
-                    link={action}
-                  />
+                  <HomeLinkButton key={action.label} link={action} />
                 ))}
               </div>
             </div>
           </div>
-
         </div>
       </section>
 
-      <SectionShell title={HOME_PROJECT_SECTION.title} description={HOME_PROJECT_SECTION.description}>
+      <SectionShell
+        title={HOME_PROJECT_SECTION.title}
+        description={HOME_PROJECT_SECTION.description}
+      >
         <div className="flex flex-wrap items-stretch justify-center gap-5">
           {HOME_PROJECT_SECTION.cards.map((card) => (
             <HomeProjectCardView
@@ -133,7 +144,10 @@ export default function Page() {
 
       <SectionDivider />
 
-      <SectionShell title={HOME_OPEN_SOURCE_SECTION.title} description={HOME_OPEN_SOURCE_SECTION.description}>
+      <SectionShell
+        title={HOME_OPEN_SOURCE_SECTION.title}
+        description={HOME_OPEN_SOURCE_SECTION.description}
+      >
         <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="rounded-xl border border-border/70 bg-card/70 p-5">
             <ul className="space-y-2.5 text-sm text-muted-foreground sm:text-base">
@@ -149,10 +163,7 @@ export default function Page() {
           <div className="rounded-xl border border-border/70 bg-card/70 p-5">
             <div className="flex flex-col gap-2.5">
               {HOME_OPEN_SOURCE_SECTION.links.map((link) => (
-                <HomeLinkButton
-                  key={link.label}
-                  link={link}
-                />
+                <HomeLinkButton key={link.label} link={link} />
               ))}
             </div>
           </div>
@@ -161,18 +172,18 @@ export default function Page() {
 
       <SectionDivider />
 
-      <SectionShell title={HOME_COMMUNITY_SECTION.title} description={HOME_COMMUNITY_SECTION.description}>
+      <SectionShell
+        title={HOME_COMMUNITY_SECTION.title}
+        description={HOME_COMMUNITY_SECTION.description}
+      >
         <div className="flex flex-wrap items-center justify-start gap-3">
           {HOME_COMMUNITY_SECTION.links.map((link) => (
-            <HomeLinkButton
-              key={link.label}
-              link={link}
-            />
+            <HomeLinkButton key={link.label} link={link} />
           ))}
         </div>
       </SectionShell>
 
       <div className="h-16" />
     </main>
-  )
+  );
 }

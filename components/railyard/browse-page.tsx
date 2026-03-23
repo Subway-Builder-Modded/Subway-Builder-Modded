@@ -1,71 +1,72 @@
-"use client"
+'use client';
 
-import { AlertCircle, SearchX } from "lucide-react"
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { AlertCircle, SearchX } from 'lucide-react';
+import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { CardSkeletonGrid } from "@/components/railyard/card-skeleton-grid"
-import { EmptyState } from "@/components/railyard/empty-state"
-import { ItemCard } from "./item-card"
-import { Pagination } from "@/components/railyard/pagination"
-import { SearchBar } from "@/components/railyard/search-bar"
-import { SidebarFilters } from "@/components/railyard/sidebar-filters"
-import { SortSelect } from "@/components/railyard/sort-select"
-import { ViewModeToggle } from "@/components/railyard/view-mode-toggle"
-import { createRandomSeed, useFilteredItems } from "@/hooks/use-filtered-items"
-import { useRegistry } from "@/hooks/use-registry"
-import { buildAssetListingCounts } from "@/lib/railyard/listing-counts"
-import { buildSpecialDemandValues } from "@/lib/railyard/map-filter-values"
+import { CardSkeletonGrid } from '@/components/railyard/card-skeleton-grid';
+import { EmptyState } from '@/components/railyard/empty-state';
+import { ItemCard } from './item-card';
+import { Pagination } from '@/components/railyard/pagination';
+import { SearchBar } from '@/components/railyard/search-bar';
+import { SidebarFilters } from '@/components/railyard/sidebar-filters';
+import { SortSelect } from '@/components/railyard/sort-select';
+import { ViewModeToggle } from '@/components/railyard/view-mode-toggle';
+import { createRandomSeed, useFilteredItems } from '@/hooks/use-filtered-items';
+import { useRegistry } from '@/hooks/use-registry';
+import { buildAssetListingCounts } from '@/lib/railyard/listing-counts';
+import { buildSpecialDemandValues } from '@/lib/railyard/map-filter-values';
 import {
   normalizeSearchViewMode,
   type SearchViewMode,
-} from "@/lib/railyard/search-view-mode"
-import { cn } from "@/lib/utils"
+} from '@/lib/railyard/search-view-mode';
+import { cn } from '@/lib/utils';
 
-const VIEW_MODE_STORAGE_KEY = "railyard:browse:view-mode:v1"
+const VIEW_MODE_STORAGE_KEY = 'railyard:browse:view-mode:v1';
 
-function normalizeType(value: string | null): "mod" | "map" | undefined {
-  if (value === "mod" || value === "map") return value
-  if (value === "mods") return "mod"
-  if (value === "maps") return "map"
-  return undefined
+function normalizeType(value: string | null): 'mod' | 'map' | undefined {
+  if (value === 'mod' || value === 'map') return value;
+  if (value === 'mods') return 'mod';
+  if (value === 'maps') return 'map';
+  return undefined;
 }
 
 export function BrowsePage() {
-  const { mods, maps, loading, error, modDownloadTotals, mapDownloadTotals } = useRegistry()
+  const { mods, maps, loading, error, modDownloadTotals, mapDownloadTotals } =
+    useRegistry();
   const isClient = useSyncExternalStore(
     () => () => {},
     () => true,
-    () => false
-  )
+    () => false,
+  );
 
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const queryType = normalizeType(searchParams.get("type"))
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const queryType = normalizeType(searchParams.get('type'));
 
   const [viewMode, setViewMode] = useState<SearchViewMode>(() => {
-    if (typeof window === "undefined") return "full"
+    if (typeof window === 'undefined') return 'full';
     return normalizeSearchViewMode(
       window.localStorage.getItem(VIEW_MODE_STORAGE_KEY),
-      "full"
-    )
-  })
+      'full',
+    );
+  });
 
   useEffect(() => {
-    if (typeof window === "undefined") return
-    window.localStorage.setItem(VIEW_MODE_STORAGE_KEY, viewMode)
-  }, [viewMode])
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem(VIEW_MODE_STORAGE_KEY, viewMode);
+  }, [viewMode]);
 
   const allTags = useMemo(() => {
-    const modTags = mods.flatMap((manifest) => manifest.tags ?? [])
-    return [...new Set(modTags)].sort()
-  }, [mods])
+    const modTags = mods.flatMap((manifest) => manifest.tags ?? []);
+    return [...new Set(modTags)].sort();
+  }, [mods]);
 
   const availableSpecialDemand = useMemo(
     () => buildSpecialDemandValues(maps),
-    [maps]
-  )
+    [maps],
+  );
 
   const {
     modTagCounts,
@@ -73,7 +74,7 @@ export function BrowsePage() {
     mapSourceQualityCounts,
     mapLevelOfDetailCounts,
     mapSpecialDemandCounts,
-  } = useMemo(() => buildAssetListingCounts(mods, maps), [mods, maps])
+  } = useMemo(() => buildAssetListingCounts(mods, maps), [mods, maps]);
 
   const {
     items,
@@ -90,58 +91,66 @@ export function BrowsePage() {
     modDownloadTotals,
     mapDownloadTotals,
     initialType: queryType,
-  })
+  });
 
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set("type", filters.type)
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('type', filters.type);
 
-    const next = params.toString()
-    const current = searchParams.toString()
+    const next = params.toString();
+    const current = searchParams.toString();
     if (next !== current) {
-      router.replace(next ? `${pathname}?${next}` : pathname, { scroll: false })
+      router.replace(next ? `${pathname}?${next}` : pathname, {
+        scroll: false,
+      });
     }
-  }, [filters.type, pathname, router, searchParams])
+  }, [filters.type, pathname, router, searchParams]);
 
   const resultsLayoutClassName = useMemo(() => {
-    if (viewMode === "list") return "space-y-4"
-    if (viewMode === "compact") {
-      return "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"
+    if (viewMode === 'list') return 'space-y-4';
+    if (viewMode === 'compact') {
+      return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3';
     }
-    return "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
-  }, [viewMode])
+    return 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4';
+  }, [viewMode]);
 
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
         <AlertCircle className="h-10 w-10 text-destructive mb-3" />
-        <h3 className="text-sm font-semibold text-foreground">Failed to load registry</h3>
+        <h3 className="text-sm font-semibold text-foreground">
+          Failed to load registry
+        </h3>
         <p className="mt-1 text-sm text-muted-foreground max-w-sm">{error}</p>
       </div>
-    )
+    );
   }
 
-  const modCount = mods.length
-  const mapCount = maps.length
+  const modCount = mods.length;
+  const mapCount = maps.length;
 
   if (!isClient) {
     return (
       <div className="space-y-5">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground text-balance">Browse</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground text-balance">
+            Browse
+          </h1>
           <p className="text-sm text-muted-foreground mt-0.5">
             Discover and install maps and mods for Subway Builder.
           </p>
         </div>
         <CardSkeletonGrid count={12} />
       </div>
-    )
+    );
   }
 
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground text-balance">Browse</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground text-balance">
+          Browse
+        </h1>
         <p className="text-sm text-muted-foreground mt-0.5">
           Discover and install maps and mods for Subway Builder.
         </p>
@@ -149,7 +158,9 @@ export function BrowsePage() {
 
       <SearchBar
         query={filters.query}
-        onQueryChange={(value) => setFilters((prev) => ({ ...prev, query: value }))}
+        onQueryChange={(value) =>
+          setFilters((prev) => ({ ...prev, query: value }))
+        }
       />
 
       <div className="flex gap-6 items-start">
@@ -177,11 +188,16 @@ export function BrowsePage() {
                 <span className="inline-block h-4 w-24 bg-muted rounded animate-pulse" />
               ) : (
                 <>
-                  <span className="font-medium text-foreground">{totalResults}</span>{" "}
-                  result{totalResults !== 1 ? "s" : ""}
+                  <span className="font-medium text-foreground">
+                    {totalResults}
+                  </span>{' '}
+                  result{totalResults !== 1 ? 's' : ''}
                   {filters.query && (
                     <span className="ml-1">
-                      for <span className="italic">&quot;{filters.query}&quot;</span>
+                      for{' '}
+                      <span className="italic">
+                        &quot;{filters.query}&quot;
+                      </span>
                     </span>
                   )}
                 </>
@@ -196,7 +212,9 @@ export function BrowsePage() {
                     ...prev,
                     sort: value,
                     randomSeed:
-                      value.field === "random" ? createRandomSeed() : prev.randomSeed,
+                      value.field === 'random'
+                        ? createRandomSeed()
+                        : prev.randomSeed,
                   }))
                 }
                 tab={filters.type}
@@ -213,7 +231,7 @@ export function BrowsePage() {
               description={
                 filters.query
                   ? `No items match "${filters.query}"`
-                  : "No items match the current filters"
+                  : 'No items match the current filters'
               }
             />
           ) : (
@@ -226,7 +244,7 @@ export function BrowsePage() {
                     item={item}
                     viewMode={viewMode}
                     totalDownloads={
-                      itemType === "mod"
+                      itemType === 'mod'
                         ? (modDownloadTotals[item.id] ?? 0)
                         : (mapDownloadTotals[item.id] ?? 0)
                     }
@@ -248,5 +266,5 @@ export function BrowsePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

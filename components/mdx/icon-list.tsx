@@ -1,33 +1,32 @@
-import * as React from "react"
-import * as LucideIcons from "lucide-react"
-import type { LucideIcon, LucideProps } from "lucide-react"
+import * as React from 'react';
+import * as LucideIcons from 'lucide-react';
+import type { LucideIcon, LucideProps } from 'lucide-react';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
-type IconListProps = React.ComponentProps<"div">
+type IconListProps = React.ComponentProps<'div'>;
 
-type IconItemProps = Omit<React.ComponentProps<"div">, "color"> & {
-  icon: LucideIcon | keyof typeof LucideIcons
-  iconProps?: LucideProps
+type IconItemProps = Omit<React.ComponentProps<'div'>, 'color'> & {
+  icon: LucideIcon | keyof typeof LucideIcons;
+  iconProps?: LucideProps;
 } & Pick<
     LucideProps,
-    "color" | "size" | "strokeWidth" | "absoluteStrokeWidth" | "fill"
-  >
+    'color' | 'size' | 'strokeWidth' | 'absoluteStrokeWidth' | 'fill'
+  >;
 
 function isRenderableComponent(value: unknown): value is LucideIcon {
   return (
-    typeof value === "function" ||
-    (typeof value === "object" && value !== null)
-  )
+    typeof value === 'function' || (typeof value === 'object' && value !== null)
+  );
 }
 
-function resolveLucideIcon(icon: IconItemProps["icon"]): LucideIcon | null {
+function resolveLucideIcon(icon: IconItemProps['icon']): LucideIcon | null {
   if (isRenderableComponent(icon)) {
-    return icon as LucideIcon
+    return icon as LucideIcon;
   }
 
-  const maybeIcon = LucideIcons[icon]
-  return isRenderableComponent(maybeIcon) ? (maybeIcon as LucideIcon) : null
+  const maybeIcon = LucideIcons[icon];
+  return isRenderableComponent(maybeIcon) ? (maybeIcon as LucideIcon) : null;
 }
 
 export function IconList({ className, ...props }: IconListProps) {
@@ -35,10 +34,10 @@ export function IconList({ className, ...props }: IconListProps) {
     <div
       role="list"
       data-slot="mdx-icon-list"
-      className={cn("my-6 space-y-2", className)}
+      className={cn('my-6 space-y-2', className)}
       {...props}
     />
-  )
+  );
 }
 
 export function IconItem({
@@ -53,23 +52,23 @@ export function IconItem({
   className,
   ...props
 }: IconItemProps) {
-  const Icon = resolveLucideIcon(icon)
-  const resolvedFill = iconProps?.fill ?? fill ?? "none"
+  const Icon = resolveLucideIcon(icon);
+  const resolvedFill = iconProps?.fill ?? fill ?? 'none';
 
   return (
     <div
       role="listitem"
       data-slot="mdx-icon-item"
       className={cn(
-        "grid grid-cols-[1.125rem_minmax(0,1fr)] items-start gap-x-2",
-        className
+        'grid grid-cols-[1.125rem_minmax(0,1fr)] items-start gap-x-2',
+        className,
       )}
       {...props}
     >
       {Icon ? (
         <Icon
           aria-hidden="true"
-          size={size ?? "1em"}
+          size={size ?? '1em'}
           color={color}
           strokeWidth={strokeWidth}
           absoluteStrokeWidth={absoluteStrokeWidth}
@@ -85,5 +84,5 @@ export function IconItem({
         {children}
       </div>
     </div>
-  )
+  );
 }

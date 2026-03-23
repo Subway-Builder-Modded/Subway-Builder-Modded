@@ -1,10 +1,10 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import NextLink from "next/link"
-import { usePathname } from "next/navigation"
-import { useTheme } from "next-themes"
-import { Archive, ChevronDown, PanelLeftCloseIcon, Tag } from "lucide-react"
+import * as React from 'react';
+import NextLink from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useTheme } from 'next-themes';
+import { Archive, ChevronDown, PanelLeftCloseIcon, Tag } from 'lucide-react';
 
 import {
   Sidebar,
@@ -12,9 +12,9 @@ import {
   SidebarFooter,
   SidebarHeader,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { cn } from "@/lib/utils"
-import { useFooterOffset } from "@/hooks/use-footer-offset"
+} from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
+import { useFooterOffset } from '@/hooks/use-footer-offset';
 import {
   buildDocsHubHref,
   buildVersionedDocHref,
@@ -24,54 +24,54 @@ import {
   isLatestVersion,
   type DocsSidebarEntry,
   type DocsSidebarTree,
-} from "@/lib/docs/shared"
-import {
-  type DocsInstance,
-  type DocsVersion,
-} from "@/config/content/docs"
-import { normalizePath } from "@/lib/url"
-import { PROJECT_COLOR_SCHEMES, getModeHex } from "@/config/theme/colors"
-import { PageHeader } from "@/components/page/page-header"
+} from '@/lib/docs/shared';
+import { type DocsInstance, type DocsVersion } from '@/config/content/docs';
+import { normalizePath } from '@/lib/url';
+import { PROJECT_COLOR_SCHEMES, getModeHex } from '@/config/theme/colors';
+import { PageHeader } from '@/components/page/page-header';
 
 type AppDocsSidebarProps = {
-  tree?: DocsSidebarTree
-  versionDocSlugs?: Record<string, string[]>
-}
+  tree?: DocsSidebarTree;
+  versionDocSlugs?: Record<string, string[]>;
+};
 
-const SWITCHER_ROW_HIGHLIGHT_ALPHA = 0.12
-const SWITCHER_ICON_CONTRAST_ALPHA = 0.08
+const SWITCHER_ROW_HIGHLIGHT_ALPHA = 0.12;
+const SWITCHER_ICON_CONTRAST_ALPHA = 0.08;
 
 function withAlpha(color: string, alpha: number) {
-  const normalized = color.trim()
+  const normalized = color.trim();
 
-  if (!normalized.startsWith("#")) {
-    return color
+  if (!normalized.startsWith('#')) {
+    return color;
   }
 
-  const hex = normalized.slice(1)
+  const hex = normalized.slice(1);
   const fullHex =
     hex.length === 3
-      ? hex.split("").map((char) => `${char}${char}`).join("")
+      ? hex
+          .split('')
+          .map((char) => `${char}${char}`)
+          .join('')
       : hex.length === 6
         ? hex
-        : null
+        : null;
 
   if (!fullHex) {
-    return color
+    return color;
   }
 
-  const r = Number.parseInt(fullHex.slice(0, 2), 16)
-  const g = Number.parseInt(fullHex.slice(2, 4), 16)
-  const b = Number.parseInt(fullHex.slice(4, 6), 16)
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+  const r = Number.parseInt(fullHex.slice(0, 2), 16);
+  const g = Number.parseInt(fullHex.slice(2, 4), 16);
+  const b = Number.parseInt(fullHex.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 function getInstanceAccent(instance: DocsInstance, isDark: boolean) {
-  return getModeHex(PROJECT_COLOR_SCHEMES[instance.id].accentColor, isDark)
+  return getModeHex(PROJECT_COLOR_SCHEMES[instance.id].accentColor, isDark);
 }
 
 function getInstanceBadgeScheme(instance: DocsInstance) {
-  const accent = PROJECT_COLOR_SCHEMES[instance.id].accentColor
+  const accent = PROJECT_COLOR_SCHEMES[instance.id].accentColor;
 
   return {
     border: {
@@ -83,41 +83,46 @@ function getInstanceBadgeScheme(instance: DocsInstance) {
       dark: withAlpha(accent.dark, 0.2),
     },
     text: accent,
-  }
+  };
 }
 
 function getSwitcherRowBackground(accent: string, highlighted: boolean) {
-  return highlighted ? withAlpha(accent, SWITCHER_ROW_HIGHLIGHT_ALPHA) : undefined
+  return highlighted
+    ? withAlpha(accent, SWITCHER_ROW_HIGHLIGHT_ALPHA)
+    : undefined;
 }
 
 function getSwitcherIconBackground(
   accent: string,
   isDark: boolean,
-  highlighted: boolean
+  highlighted: boolean,
 ) {
   if (highlighted) {
-    return withAlpha(accent, SWITCHER_ROW_HIGHLIGHT_ALPHA + SWITCHER_ICON_CONTRAST_ALPHA)
+    return withAlpha(
+      accent,
+      SWITCHER_ROW_HIGHLIGHT_ALPHA + SWITCHER_ICON_CONTRAST_ALPHA,
+    );
   }
 
   return isDark
     ? `rgba(255, 255, 255, ${SWITCHER_ICON_CONTRAST_ALPHA})`
-    : `rgba(0, 0, 0, ${SWITCHER_ICON_CONTRAST_ALPHA})`
+    : `rgba(0, 0, 0, ${SWITCHER_ICON_CONTRAST_ALPHA})`;
 }
 
 function useOnClickOutside(
   ref: React.RefObject<HTMLElement | null>,
-  handler: () => void
+  handler: () => void,
 ) {
   React.useEffect(() => {
     function handlePointerDown(event: MouseEvent) {
-      const target = event.target as Node
-      if (!ref.current || ref.current.contains(target)) return
-      handler()
+      const target = event.target as Node;
+      if (!ref.current || ref.current.contains(target)) return;
+      handler();
     }
 
-    document.addEventListener("mousedown", handlePointerDown)
-    return () => document.removeEventListener("mousedown", handlePointerDown)
-  }, [ref, handler])
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => document.removeEventListener('mousedown', handlePointerDown);
+  }, [ref, handler]);
 }
 
 function VersionIcon({
@@ -127,41 +132,40 @@ function VersionIcon({
   isDark,
   active,
 }: {
-  instance: DocsInstance
-  version: DocsVersion
-  accent: string
-  isDark: boolean
-  active?: boolean
+  instance: DocsInstance;
+  version: DocsVersion;
+  accent: string;
+  isDark: boolean;
+  active?: boolean;
 }) {
-  const Icon = version.icon ?? (isLatestVersion(instance, version.value) ? Tag : Archive)
+  const Icon =
+    version.icon ?? (isLatestVersion(instance, version.value) ? Tag : Archive);
 
   return (
     <span
       className={cn(
-        "flex size-7 shrink-0 items-center justify-center rounded-md border bg-background text-muted-foreground",
-        active && "text-foreground"
+        'flex size-7 shrink-0 items-center justify-center rounded-md border bg-background text-muted-foreground',
+        active && 'text-foreground',
       )}
-      style={
-        {
-          backgroundColor: getSwitcherIconBackground(accent, isDark, !!active),
-          borderColor: active ? withAlpha(accent, 0.5) : undefined,
-          color: active ? accent : undefined,
-        }
-      }
+      style={{
+        backgroundColor: getSwitcherIconBackground(accent, isDark, !!active),
+        borderColor: active ? withAlpha(accent, 0.5) : undefined,
+        color: active ? accent : undefined,
+      }}
     >
       <Icon className="size-3.5" />
     </span>
-  )
+  );
 }
 
 function StatusBadge({
   kind,
   accent,
 }: {
-  kind: "latest" | "deprecated"
-  accent: string
+  kind: 'latest' | 'deprecated';
+  accent: string;
 }) {
-  if (kind === "latest") {
+  if (kind === 'latest') {
     return (
       <span
         className="inline-flex h-4.5 items-center rounded-full border px-1.5 text-[9px] font-semibold normal-case tracking-[0.08em]"
@@ -173,14 +177,14 @@ function StatusBadge({
       >
         Latest
       </span>
-    )
+    );
   }
 
   return (
     <span className="inline-flex h-4.5 items-center rounded-full border border-amber-500/40 bg-amber-500/10 px-1.5 text-[9px] font-semibold normal-case tracking-[0.08em] text-amber-500">
       Deprecated
     </span>
-  )
+  );
 }
 
 function DropdownTrigger({
@@ -189,10 +193,10 @@ function DropdownTrigger({
   onToggle,
   children,
 }: {
-  open: boolean
-  accent: string
-  onToggle: () => void
-  children: React.ReactNode
+  open: boolean;
+  accent: string;
+  onToggle: () => void;
+  children: React.ReactNode;
 }) {
   return (
     <button
@@ -200,9 +204,13 @@ function DropdownTrigger({
       aria-expanded={open}
       onClick={onToggle}
       onKeyDown={(event) => {
-        if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
-          event.preventDefault()
-          onToggle()
+        if (
+          event.key === 'ArrowDown' ||
+          event.key === 'Enter' ||
+          event.key === ' '
+        ) {
+          event.preventDefault();
+          onToggle();
         }
       }}
       className="flex h-10 w-full items-center gap-2 rounded-lg border bg-card px-2.5 text-left text-sm shadow-xs transition-colors hover:bg-accent/45"
@@ -214,27 +222,29 @@ function DropdownTrigger({
       {children}
       <ChevronDown
         className={cn(
-          "ml-auto size-4 shrink-0 text-muted-foreground transition-transform duration-150",
-          open && "rotate-180"
+          'ml-auto size-4 shrink-0 text-muted-foreground transition-transform duration-150',
+          open && 'rotate-180',
         )}
         style={open ? { color: accent } : undefined}
       />
     </button>
-  )
+  );
 }
 
 function DropdownPanel({
   open,
   children,
 }: {
-  open: boolean
-  children: React.ReactNode
+  open: boolean;
+  children: React.ReactNode;
 }) {
   return (
     <div
       className={cn(
-        "grid transition-all duration-200 ease-out",
-        open ? "mt-1.5 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
+        'grid transition-all duration-200 ease-out',
+        open
+          ? 'mt-1.5 grid-rows-[1fr] opacity-100'
+          : 'mt-0 grid-rows-[0fr] opacity-0',
       )}
     >
       <div className="min-h-0 overflow-x-visible overflow-y-hidden">
@@ -243,7 +253,7 @@ function DropdownPanel({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function VersionDropdownRow({
@@ -253,21 +263,21 @@ function VersionDropdownRow({
   href,
   isDark,
 }: {
-  instance: DocsInstance
-  version: DocsVersion
-  isActive: boolean
-  href: string
-  isDark: boolean
+  instance: DocsInstance;
+  version: DocsVersion;
+  isActive: boolean;
+  href: string;
+  isDark: boolean;
 }) {
-  const accent = getInstanceAccent(instance, isDark)
-  const latest = isLatestVersion(instance, version.value)
-  const [hovered, setHovered] = React.useState(false)
-  const highlighted = isActive || hovered
+  const accent = getInstanceAccent(instance, isDark);
+  const latest = isLatestVersion(instance, version.value);
+  const [hovered, setHovered] = React.useState(false);
+  const highlighted = isActive || hovered;
 
   return (
     <NextLink
       href={href}
-      aria-current={isActive ? "page" : undefined}
+      aria-current={isActive ? 'page' : undefined}
       className="flex min-h-9 items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors"
       style={
         highlighted
@@ -293,149 +303,158 @@ function VersionDropdownRow({
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="truncate font-medium">{version.label}</span>
           {latest ? <StatusBadge kind="latest" accent={accent} /> : null}
-          {version.deprecated ? <StatusBadge kind="deprecated" accent={accent} /> : null}
+          {version.deprecated ? (
+            <StatusBadge kind="deprecated" accent={accent} />
+          ) : null}
         </div>
       </div>
     </NextLink>
-  )
+  );
 }
 
 function entryIsSelfActive(entry: DocsSidebarEntry, pathname: string): boolean {
-  if (entry.kind === "page") {
-    return normalizePath(pathname) === normalizePath(entry.href)
+  if (entry.kind === 'page') {
+    return normalizePath(pathname) === normalizePath(entry.href);
   }
 
-  return !!entry.href && normalizePath(pathname) === normalizePath(entry.href)
+  return !!entry.href && normalizePath(pathname) === normalizePath(entry.href);
 }
 
-function entryHasActiveDescendant(entry: DocsSidebarEntry, pathname: string): boolean {
-  if (entry.kind === "page") {
-    return normalizePath(pathname) === normalizePath(entry.href)
+function entryHasActiveDescendant(
+  entry: DocsSidebarEntry,
+  pathname: string,
+): boolean {
+  if (entry.kind === 'page') {
+    return normalizePath(pathname) === normalizePath(entry.href);
   }
 
   return entry.items.some((child) => {
-    if (child.kind === "page") {
-      return normalizePath(pathname) === normalizePath(child.href)
+    if (child.kind === 'page') {
+      return normalizePath(pathname) === normalizePath(child.href);
     }
 
-    return entryIsSelfActive(child, pathname) || entryHasActiveDescendant(child, pathname)
-  })
+    return (
+      entryIsSelfActive(child, pathname) ||
+      entryHasActiveDescendant(child, pathname)
+    );
+  });
 }
 
 function collectCategoryKeys(entry: DocsSidebarEntry, out = new Set<string>()) {
-  if (entry.kind !== "category") return out
+  if (entry.kind !== 'category') return out;
 
-  out.add(entry.key)
+  out.add(entry.key);
 
   for (const child of entry.items) {
-    collectCategoryKeys(child, out)
+    collectCategoryKeys(child, out);
   }
 
-  return out
+  return out;
 }
 
 function removeCategoryBranch(entry: DocsSidebarEntry, openKeys: Set<string>) {
-  const next = new Set(openKeys)
-  const keysToRemove = collectCategoryKeys(entry)
+  const next = new Set(openKeys);
+  const keysToRemove = collectCategoryKeys(entry);
 
-  keysToRemove.forEach((key) => next.delete(key))
-  return next
+  keysToRemove.forEach((key) => next.delete(key));
+  return next;
 }
 
 function collectActiveCategoryKeys(
   entries: DocsSidebarEntry[],
   pathname: string,
-  out = new Set<string>()
+  out = new Set<string>(),
 ) {
   for (const entry of entries) {
-    if (entry.kind !== "category") continue
+    if (entry.kind !== 'category') continue;
 
-    const selfActive = entryIsSelfActive(entry, pathname)
+    const selfActive = entryIsSelfActive(entry, pathname);
     const childActive = entry.items.some((child) =>
-      child.kind === "page"
+      child.kind === 'page'
         ? normalizePath(pathname) === normalizePath(child.href)
-        : entryIsSelfActive(child, pathname) || entryHasActiveDescendant(child, pathname)
-    )
+        : entryIsSelfActive(child, pathname) ||
+          entryHasActiveDescendant(child, pathname),
+    );
 
-    if (selfActive || childActive) out.add(entry.key)
+    if (selfActive || childActive) out.add(entry.key);
 
-    collectActiveCategoryKeys(entry.items, pathname, out)
+    collectActiveCategoryKeys(entry.items, pathname, out);
   }
 
-  return out
+  return out;
 }
 
 function findActiveEntry(
   entries: DocsSidebarEntry[],
   pathname: string,
-  openKeys: Set<string>
+  openKeys: Set<string>,
 ): DocsSidebarEntry | null {
-  const normalizedPathname = normalizePath(pathname)
+  const normalizedPathname = normalizePath(pathname);
 
   for (const entry of entries) {
-    if (entry.kind === "page") {
-      if (normalizedPathname === normalizePath(entry.href)) return entry
-      continue
+    if (entry.kind === 'page') {
+      if (normalizedPathname === normalizePath(entry.href)) return entry;
+      continue;
     }
 
-    const selfActive = entryIsSelfActive(entry, normalizedPathname)
+    const selfActive = entryIsSelfActive(entry, normalizedPathname);
     const descendantActive = entry.items.some((child) =>
-      child.kind === "page"
+      child.kind === 'page'
         ? normalizedPathname === normalizePath(child.href)
         : entryIsSelfActive(child, normalizedPathname) ||
-          entryHasActiveDescendant(child, normalizedPathname)
-    )
+          entryHasActiveDescendant(child, normalizedPathname),
+    );
 
-    if (!selfActive && !descendantActive) continue
+    if (!selfActive && !descendantActive) continue;
 
     if (openKeys.has(entry.key)) {
-      const deeper = findActiveEntry(entry.items, normalizedPathname, openKeys)
-      return deeper ?? entry
+      const deeper = findActiveEntry(entry.items, normalizedPathname, openKeys);
+      return deeper ?? entry;
     }
 
-    return entry
+    return entry;
   }
 
-  return null
+  return null;
 }
 
 function SidebarActiveIndicator({
   active,
   accent,
 }: {
-  active: boolean
-  accent: string
+  active: boolean;
+  accent: string;
 }) {
   return (
     <span
       className={cn(
-        "absolute top-1.5 bottom-1.5 left-0 w-[2px] rounded-full transition-opacity duration-200",
-        active ? "opacity-100" : "opacity-0"
+        'absolute top-1.5 bottom-1.5 left-0 w-[2px] rounded-full transition-opacity duration-200',
+        active ? 'opacity-100' : 'opacity-0',
       )}
       style={{ backgroundColor: accent }}
     />
-  )
+  );
 }
 
 function getSidebarDepthClassName(depth: number) {
-  if (depth <= 0) return ""
-  if (depth === 1) return "pl-5"
-  if (depth === 2) return "pl-8"
-  if (depth === 3) return "pl-11"
-  return "pl-13"
+  if (depth <= 0) return '';
+  if (depth === 1) return 'pl-5';
+  if (depth === 2) return 'pl-8';
+  if (depth === 3) return 'pl-11';
+  return 'pl-13';
 }
 
 function SidebarDocsHeader({
   activeInstance,
   activeVersion,
 }: {
-  activeInstance: DocsInstance
-  activeVersion: ReturnType<typeof getActiveVersionFromPathname>
+  activeInstance: DocsInstance;
+  activeVersion: ReturnType<typeof getActiveVersionFromPathname>;
 }) {
-  const headerTitle = "Docs"
-  const HeaderIcon = activeInstance.sidebarHeader?.icon ?? activeInstance.icon
-  const instanceBadgeScheme = getInstanceBadgeScheme(activeInstance)
-  const VersionIconGlyph = activeVersion?.icon ?? Tag
+  const headerTitle = 'Docs';
+  const HeaderIcon = activeInstance.sidebarHeader?.icon ?? activeInstance.icon;
+  const instanceBadgeScheme = getInstanceBadgeScheme(activeInstance);
+  const VersionIconGlyph = activeVersion?.icon ?? Tag;
 
   return (
     <PageHeader
@@ -444,8 +463,14 @@ function SidebarDocsHeader({
       colorScheme={{
         accent: PROJECT_COLOR_SCHEMES[activeInstance.id].accentColor,
         spotlight: {
-          light: withAlpha(PROJECT_COLOR_SCHEMES[activeInstance.id].accentColor.light, 0.18),
-          dark: withAlpha(PROJECT_COLOR_SCHEMES[activeInstance.id].accentColor.dark, 0.23),
+          light: withAlpha(
+            PROJECT_COLOR_SCHEMES[activeInstance.id].accentColor.light,
+            0.18,
+          ),
+          dark: withAlpha(
+            PROJECT_COLOR_SCHEMES[activeInstance.id].accentColor.dark,
+            0.23,
+          ),
         },
       }}
       badges={[
@@ -458,7 +483,7 @@ function SidebarDocsHeader({
       size="sidebar"
       className="mb-4"
     />
-  )
+  );
 }
 
 function VersionSwitcher({
@@ -470,22 +495,27 @@ function VersionSwitcher({
   versionDocSlugs,
   isDark,
 }: {
-  activeInstance: DocsInstance
-  activeVersion: NonNullable<ReturnType<typeof getActiveVersionFromPathname>>
-  pathname: string
-  open: boolean
-  setOpen: (value: boolean) => void
-  versionDocSlugs?: Record<string, string[]>
-  isDark: boolean
+  activeInstance: DocsInstance;
+  activeVersion: NonNullable<ReturnType<typeof getActiveVersionFromPathname>>;
+  pathname: string;
+  open: boolean;
+  setOpen: (value: boolean) => void;
+  versionDocSlugs?: Record<string, string[]>;
+  isDark: boolean;
 }) {
-  const currentDocSlug = getDocSlugFromPathname(activeInstance, pathname)
-  if (!activeInstance.versioned || !activeInstance.versions?.length) return null
+  const currentDocSlug = getDocSlugFromPathname(activeInstance, pathname);
+  if (!activeInstance.versioned || !activeInstance.versions?.length)
+    return null;
 
-  const accent = getInstanceAccent(activeInstance, isDark)
+  const accent = getInstanceAccent(activeInstance, isDark);
 
   return (
     <div>
-      <DropdownTrigger open={open} accent={accent} onToggle={() => setOpen(!open)}>
+      <DropdownTrigger
+        open={open}
+        accent={accent}
+        onToggle={() => setOpen(!open)}
+      >
         <VersionIcon
           instance={activeInstance}
           version={activeVersion}
@@ -495,7 +525,9 @@ function VersionSwitcher({
         />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="truncate text-sm font-medium">{activeVersion.label}</span>
+            <span className="truncate text-sm font-medium">
+              {activeVersion.label}
+            </span>
             {isLatestVersion(activeInstance, activeVersion.value) ? (
               <StatusBadge kind="latest" accent={accent} />
             ) : null}
@@ -509,10 +541,11 @@ function VersionSwitcher({
       <DropdownPanel open={open}>
         <div className="space-y-0.5">
           {activeInstance.versions.map((version) => {
-            const targetDocSlugs = versionDocSlugs?.[version.value] ?? []
-            const targetHref = currentDocSlug && targetDocSlugs.includes(currentDocSlug)
-              ? buildVersionedDocHref(activeInstance, version.value, pathname)
-              : buildDocsHubHref(activeInstance)
+            const targetDocSlugs = versionDocSlugs?.[version.value] ?? [];
+            const targetHref =
+              currentDocSlug && targetDocSlugs.includes(currentDocSlug)
+                ? buildVersionedDocHref(activeInstance, version.value, pathname)
+                : buildDocsHubHref(activeInstance);
 
             return (
               <VersionDropdownRow
@@ -523,12 +556,12 @@ function VersionSwitcher({
                 href={targetHref}
                 isDark={isDark}
               />
-            )
+            );
           })}
         </div>
       </DropdownPanel>
     </div>
-  )
+  );
 }
 
 function SidebarNavEntry({
@@ -540,36 +573,41 @@ function SidebarNavEntry({
   depth = 0,
   activeIndicatorKey,
 }: {
-  entry: DocsSidebarEntry
-  pathname: string
-  openKeys: Set<string>
-  setOpenKeys: React.Dispatch<React.SetStateAction<Set<string>>>
-  accent: string
-  depth?: number
-  activeIndicatorKey: string | null
+  entry: DocsSidebarEntry;
+  pathname: string;
+  openKeys: Set<string>;
+  setOpenKeys: React.Dispatch<React.SetStateAction<Set<string>>>;
+  accent: string;
+  depth?: number;
+  activeIndicatorKey: string | null;
 }) {
-  if (entry.kind === "page") {
-    const showIndicator = activeIndicatorKey === entry.key
+  if (entry.kind === 'page') {
+    const showIndicator = activeIndicatorKey === entry.key;
     const activeStyle = showIndicator
       ? {
           backgroundColor: withAlpha(accent, 0.1),
           color: accent,
         }
-      : undefined
+      : undefined;
 
     return (
       <li className="relative">
         <SidebarActiveIndicator active={showIndicator} accent={accent} />
         <div
           className={cn(
-            "relative flex w-full items-center rounded-md transition-colors",
-            showIndicator ? "text-foreground" : "text-muted-foreground hover:bg-accent/45 hover:text-foreground"
+            'relative flex w-full items-center rounded-md transition-colors',
+            showIndicator
+              ? 'text-foreground'
+              : 'text-muted-foreground hover:bg-accent/45 hover:text-foreground',
           )}
           style={activeStyle}
         >
           <NextLink
             href={entry.href}
-            className={cn("min-w-0 flex-1 px-2.5 py-1.5 pr-3 text-sm", getSidebarDepthClassName(depth))}
+            className={cn(
+              'min-w-0 flex-1 px-2.5 py-1.5 pr-3 text-sm',
+              getSidebarDepthClassName(depth),
+            )}
           >
             <span className="block truncate">{entry.title}</span>
           </NextLink>
@@ -581,63 +619,65 @@ function SidebarNavEntry({
           </span>
         </div>
       </li>
-    )
+    );
   }
 
-  const isOpen = openKeys.has(entry.key)
-  const showIndicator = activeIndicatorKey === entry.key
+  const isOpen = openKeys.has(entry.key);
+  const showIndicator = activeIndicatorKey === entry.key;
 
   const toggle = () => {
     setOpenKeys((prev) => {
       if (prev.has(entry.key)) {
-        return removeCategoryBranch(entry, prev)
+        return removeCategoryBranch(entry, prev);
       }
 
-      const next = new Set(prev)
-      next.add(entry.key)
-      return next
-    })
-  }
+      const next = new Set(prev);
+      next.add(entry.key);
+      return next;
+    });
+  };
 
   const onMainClick = () => {
     setOpenKeys((prev) => {
       if (!entry.href) {
         if (prev.has(entry.key)) {
-          return removeCategoryBranch(entry, prev)
+          return removeCategoryBranch(entry, prev);
         }
 
-        const next = new Set(prev)
-        next.add(entry.key)
-        return next
+        const next = new Set(prev);
+        next.add(entry.key);
+        return next;
       }
 
       if (prev.has(entry.key)) {
-        return prev
+        return prev;
       }
 
-      const next = new Set(prev)
-      next.add(entry.key)
-      return next
-    })
-  }
+      const next = new Set(prev);
+      next.add(entry.key);
+      return next;
+    });
+  };
 
   const rowClassName = cn(
-    "group relative flex w-full items-center rounded-md transition-colors",
-    showIndicator ? "text-foreground" : "text-muted-foreground hover:bg-accent/45 hover:text-foreground"
-  )
+    'group relative flex w-full items-center rounded-md transition-colors',
+    showIndicator
+      ? 'text-foreground'
+      : 'text-muted-foreground hover:bg-accent/45 hover:text-foreground',
+  );
 
   const labelClassName = cn(
-    "min-w-0 flex-1 px-2.5 py-1.5 pr-3 text-left text-sm",
+    'min-w-0 flex-1 px-2.5 py-1.5 pr-3 text-left text-sm',
     getSidebarDepthClassName(depth),
-    showIndicator ? "font-medium" : ""
-  )
+    showIndicator ? 'font-medium' : '',
+  );
 
   const activeStyle = showIndicator
     ? {
         backgroundColor: withAlpha(accent, 0.1),
         color: accent,
       }
-    : undefined
+    : undefined;
 
   return (
     <li>
@@ -664,12 +704,17 @@ function SidebarNavEntry({
 
         <button
           type="button"
-          aria-label={isOpen ? `Collapse ${entry.title}` : `Expand ${entry.title}`}
+          aria-label={
+            isOpen ? `Collapse ${entry.title}` : `Expand ${entry.title}`
+          }
           onClick={toggle}
           className="mr-1 flex size-6 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ChevronDown
-            className={cn("size-3.5 transition-transform duration-200", isOpen && "rotate-180")}
+            className={cn(
+              'size-3.5 transition-transform duration-200',
+              isOpen && 'rotate-180',
+            )}
             style={showIndicator ? { color: accent } : undefined}
           />
         </button>
@@ -677,8 +722,8 @@ function SidebarNavEntry({
 
       <div
         className={cn(
-          "grid transition-all duration-200 ease-out",
-          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+          'grid transition-all duration-200 ease-out',
+          isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
         )}
       >
         <div className="min-h-0 overflow-hidden">
@@ -699,77 +744,78 @@ function SidebarNavEntry({
         </div>
       </div>
     </li>
-  )
+  );
 }
 
 export function AppDocsSidebar({ tree, versionDocSlugs }: AppDocsSidebarProps) {
-  const pathname = usePathname()
-  const { isMobile, state, toggleSidebar } = useSidebar()
-  const { resolvedTheme } = useTheme()
-  const [mounted, setMounted] = React.useState(false)
+  const pathname = usePathname();
+  const { isMobile, state, toggleSidebar } = useSidebar();
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  const isDark = mounted ? resolvedTheme !== "light" : false
+  const isDark = mounted ? resolvedTheme !== 'light' : false;
 
   const activeInstance = React.useMemo(
     () => getActiveInstanceFromPathname(pathname),
-    [pathname]
-  )
+    [pathname],
+  );
   const activeVersion = React.useMemo(
     () => getActiveVersionFromPathname(activeInstance, pathname),
-    [activeInstance, pathname]
-  )
+    [activeInstance, pathname],
+  );
 
-  const [isVersionDropdownOpen, setIsVersionDropdownOpen] = React.useState(false)
+  const [isVersionDropdownOpen, setIsVersionDropdownOpen] =
+    React.useState(false);
   const [openKeys, setOpenKeys] = React.useState<Set<string>>(() =>
-    collectActiveCategoryKeys(tree?.entries ?? [], pathname)
-  )
+    collectActiveCategoryKeys(tree?.entries ?? [], pathname),
+  );
 
-  const versionSwitcherRef = React.useRef<HTMLDivElement | null>(null)
-  useOnClickOutside(versionSwitcherRef, () => setIsVersionDropdownOpen(false))
+  const versionSwitcherRef = React.useRef<HTMLDivElement | null>(null);
+  useOnClickOutside(versionSwitcherRef, () => setIsVersionDropdownOpen(false));
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setIsVersionDropdownOpen(false)
+      if (event.key === 'Escape') setIsVersionDropdownOpen(false);
     }
 
-    window.addEventListener("keydown", onKeyDown)
-    return () => window.removeEventListener("keydown", onKeyDown)
-  }, [])
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   React.useEffect(() => {
-    setIsVersionDropdownOpen(false)
-  }, [pathname])
+    setIsVersionDropdownOpen(false);
+  }, [pathname]);
 
   React.useLayoutEffect(() => {
-    setOpenKeys(collectActiveCategoryKeys(tree?.entries ?? [], pathname))
-  }, [tree?.entries, pathname])
+    setOpenKeys(collectActiveCategoryKeys(tree?.entries ?? [], pathname));
+  }, [tree?.entries, pathname]);
 
   const activeIndicatorKey = React.useMemo(() => {
-    const entry = findActiveEntry(tree?.entries ?? [], pathname, openKeys)
-    return entry?.key ?? null
-  }, [tree?.entries, pathname, openKeys])
+    const entry = findActiveEntry(tree?.entries ?? [], pathname, openKeys);
+    return entry?.key ?? null;
+  }, [tree?.entries, pathname, openKeys]);
 
-  const footerOffset = useFooterOffset()
-  const isCollapsed = state === "collapsed"
-  const accent = getInstanceAccent(activeInstance, isDark)
+  const footerOffset = useFooterOffset();
+  const isCollapsed = state === 'collapsed';
+  const accent = getInstanceAccent(activeInstance, isDark);
 
-  const [showExpandButton, setShowExpandButton] = React.useState(false)
+  const [showExpandButton, setShowExpandButton] = React.useState(false);
 
   React.useEffect(() => {
     if (!isMobile && isCollapsed) {
       const timeout = window.setTimeout(() => {
-        setShowExpandButton(true)
-      }, 200)
+        setShowExpandButton(true);
+      }, 200);
 
-      return () => window.clearTimeout(timeout)
+      return () => window.clearTimeout(timeout);
     }
 
-    setShowExpandButton(false)
-  }, [isCollapsed, isMobile])
+    setShowExpandButton(false);
+  }, [isCollapsed, isMobile]);
 
   return (
     <>
@@ -779,7 +825,7 @@ export function AppDocsSidebar({ tree, versionDocSlugs }: AppDocsSidebarProps) {
         className="overflow-visible border-r border-sidebar-border bg-sidebar"
       >
         <SidebarHeader className="gap-4 border-b border-sidebar-border bg-sidebar px-3.5 pt-4 pb-4">
-          <div className={cn("space-y-4", !mounted && "invisible")}>
+          <div className={cn('space-y-4', !mounted && 'invisible')}>
             <SidebarDocsHeader
               activeInstance={activeInstance}
               activeVersion={activeVersion}
@@ -839,9 +885,12 @@ export function AppDocsSidebar({ tree, versionDocSlugs }: AppDocsSidebarProps) {
           className="fixed left-4 z-30 hidden h-9 w-9 items-center justify-center rounded-md border border-sidebar-border bg-sidebar text-muted-foreground shadow-md backdrop-blur animate-in fade-in-0 zoom-in-95 duration-150 hover:bg-accent hover:text-foreground md:flex"
           style={{ bottom: `calc(${footerOffset}px + 1rem)` }}
         >
-          <PanelLeftCloseIcon className="size-4 rotate-180" style={{ color: accent }} />
+          <PanelLeftCloseIcon
+            className="size-4 rotate-180"
+            style={{ color: accent }}
+          />
         </button>
       ) : null}
     </>
-  )
+  );
 }
