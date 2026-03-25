@@ -1,8 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState, type CSSProperties } from 'react';
-import { useTheme } from 'next-themes';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { ThemeMenu } from '@/components/navigation/theme-menu';
 import { NavigationDropdownMenu } from '@/components/navigation/icon-dropdown-menu';
 import { AppIcon } from '@/components/common/app-icon';
@@ -28,27 +27,50 @@ import {
   NavbarStart,
   NavbarTrigger,
 } from '@/components/ui/navbar';
-import type { NavbarItem as NavbarConfigItem } from '@/config/navigation/navbar';
+import type {
+  NavbarItem as NavbarConfigItem,
+  NavbarItemColors,
+} from '@/config/navigation/navbar';
 import { NAVBAR_ITEMS } from '@/config/navigation/navbar';
-import { getNavbarThemeColors } from '@/lib/navbar-colors';
+import { getNavbarConfiguredColors } from '@/lib/navbar-colors';
 import { isExternalHref } from '@/lib/url';
 import { cn } from '@/lib/utils';
 
 const socialLinkClassName =
-  'group rounded-lg p-2 text-muted-fg no-underline transform-gpu transition-transform duration-180 ease-out hover:scale-[1.04] active:scale-[0.97]';
+  'flex items-center gap-x-2 rounded-lg px-[clamp(0.45rem,0.95vw,0.7rem)] py-[clamp(0.4rem,0.82vw,0.56rem)] text-[clamp(0.8rem,0.95vw,0.9rem)] font-semibold text-muted-fg no-underline transition-all duration-200 ease-[cubic-bezier(.22,.9,.35,1)] hover:bg-accent/45 hover:text-primary';
+
+const navbarHoverVariableClassName =
+  '[--navbar-hover-text:var(--navbar-hover-text-light)] [--navbar-hover-bg:var(--navbar-hover-bg-light)] dark:[--navbar-hover-text:var(--navbar-hover-text-dark)] dark:[--navbar-hover-bg:var(--navbar-hover-bg-dark)]';
 
 export default function AppNavbar(props: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { resolvedTheme } = useTheme();
+  const headerRef = useRef<HTMLDivElement>(null);
   const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const update = () => {
+      const offset = Math.ceil(el.getBoundingClientRect().height + 12 + 12);
+      document.documentElement.style.setProperty('--app-navbar-offset', `${offset}px`);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener('resize', update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', update);
+      document.documentElement.style.removeProperty('--app-navbar-offset');
+    };
+  }, []);
   const [hoveredNavbarItemId, setHoveredNavbarItemId] = useState<string | null>(
     null,
   );
   const [hoveredLeftDropdownItemId, setHoveredLeftDropdownItemId] = useState<
     string | null
   >(null);
-  const isDark = resolvedTheme === 'dark';
 
   const leftItems = useMemo(
     () => NAVBAR_ITEMS.filter((item) => item.position === 'left'),
@@ -72,20 +94,21 @@ export default function AppNavbar(props: NavbarProps) {
     return pathname === inferredRoot || pathname.startsWith(`${inferredRoot}/`);
   };
 
-  const toHoverStyle = (colors?: {
-    text: string;
-    background: string;
-  }): CSSProperties | undefined => {
+  const toHoverStyle = (
+    colors?: NavbarItemColors,
+  ): CSSProperties | undefined => {
     if (!colors) return undefined;
 
     return {
-      '--navbar-hover-text': colors.text,
-      '--navbar-hover-bg': colors.background,
+      '--navbar-hover-text-light': colors.light.text,
+      '--navbar-hover-bg-light': colors.light.background,
+      '--navbar-hover-text-dark': colors.dark.text,
+      '--navbar-hover-bg-dark': colors.dark.background,
     } as CSSProperties;
   };
 
   const renderLeftItem = (item: NavbarConfigItem) => {
-    const itemHoverColors = getNavbarThemeColors(item, isDark);
+    const itemHoverColors = getNavbarConfiguredColors(item);
     const isTopItemHovered = hoveredNavbarItemId === item.id;
     const isCurrentItem = isCurrentNavbarItem(item);
 
@@ -111,6 +134,8 @@ export default function AppNavbar(props: NavbarProps) {
               <NavigationMenuItem value={item.id}>
                 <NavigationMenuTrigger
                   className={cn(
+                    'gap-x-2',
+                    itemHoverColors && navbarHoverVariableClassName,
                     style?.triggerClassName,
                     itemHoverColors &&
                       'hover:!text-[var(--navbar-hover-text)] hover:!bg-[var(--navbar-hover-bg)] data-[state=open]:!text-[var(--navbar-hover-text)] data-[state=open]:!bg-[var(--navbar-hover-bg)]',
@@ -119,7 +144,7 @@ export default function AppNavbar(props: NavbarProps) {
                     isTopItemHovered && itemHoverColors
                       ? {
                           ...toHoverStyle(itemHoverColors),
-                          color: itemHoverColors.text,
+                          color: 'var(--navbar-hover-text)',
                         }
                       : toHoverStyle(itemHoverColors)
                   }
@@ -141,8 +166,8 @@ export default function AppNavbar(props: NavbarProps) {
                     style={
                       isTopItemHovered && itemHoverColors
                         ? {
-                            color: itemHoverColors.text,
-                            stroke: itemHoverColors.text,
+                            color: 'var(--navbar-hover-text)',
+                            stroke: 'var(--navbar-hover-text)',
                           }
                         : undefined
                     }
@@ -152,7 +177,7 @@ export default function AppNavbar(props: NavbarProps) {
                       className="font-semibold tracking-wide"
                       style={
                         isTopItemHovered && itemHoverColors
-                          ? { color: itemHoverColors.text }
+                          ? { color: 'var(--navbar-hover-text)' }
                           : undefined
                       }
                     >
@@ -169,10 +194,8 @@ export default function AppNavbar(props: NavbarProps) {
                 >
                   <ul className="grid gap-y-1 p-1">
                     {item.dropdown.map((dropdownItem) => {
-                      const dropdownHoverColors = getNavbarThemeColors(
-                        dropdownItem,
-                        isDark,
-                      );
+                      const dropdownHoverColors =
+                        getNavbarConfiguredColors(dropdownItem);
                       const dropdownHoverKey = `${item.id}:${dropdownItem.id}`;
                       const isDropdownItemHovered =
                         hoveredLeftDropdownItemId === dropdownHoverKey;
@@ -192,7 +215,8 @@ export default function AppNavbar(props: NavbarProps) {
                                 : undefined
                             }
                             className={cn(
-                              'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-fg transition-all duration-200 ease-[cubic-bezier(.22,.9,.35,1)] hover:bg-secondary/60 hover:text-primary',
+                              'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-fg transition-all duration-200 ease-[cubic-bezier(.22,.9,.35,1)] hover:bg-accent/45 hover:text-primary',
+                              dropdownHoverColors && navbarHoverVariableClassName,
                               dropdownHoverColors &&
                                 'hover:!text-[var(--navbar-hover-text)] hover:!bg-[var(--navbar-hover-bg)] data-[active]:!text-[var(--navbar-hover-text)] data-[active]:!bg-[var(--navbar-hover-bg)]',
                               style?.dropdownItemClassName,
@@ -201,9 +225,8 @@ export default function AppNavbar(props: NavbarProps) {
                               isDropdownItemHovered && dropdownHoverColors
                                 ? {
                                     ...toHoverStyle(dropdownHoverColors),
-                                    color: dropdownHoverColors.text,
-                                    backgroundColor:
-                                      dropdownHoverColors.background,
+                                    color: 'var(--navbar-hover-text)',
+                                    backgroundColor: 'var(--navbar-hover-bg)',
                                   }
                                 : toHoverStyle(dropdownHoverColors)
                             }
@@ -230,8 +253,8 @@ export default function AppNavbar(props: NavbarProps) {
                               style={
                                 isDropdownItemHovered && dropdownHoverColors
                                   ? {
-                                      color: dropdownHoverColors.text,
-                                      stroke: dropdownHoverColors.text,
+                                      color: 'var(--navbar-hover-text)',
+                                      stroke: 'var(--navbar-hover-text)',
                                     }
                                   : undefined
                               }
@@ -239,7 +262,7 @@ export default function AppNavbar(props: NavbarProps) {
                             <span
                               style={
                                 isDropdownItemHovered && dropdownHoverColors
-                                  ? { color: dropdownHoverColors.text }
+                                  ? { color: 'var(--navbar-hover-text)' }
                                   : undefined
                               }
                             >
@@ -268,6 +291,7 @@ export default function AppNavbar(props: NavbarProps) {
         isCurrent={isCurrentItem}
         href={item.href ?? '#'}
         className={cn(
+          itemHoverColors && navbarHoverVariableClassName,
           itemHoverColors &&
             'hover:!text-[var(--navbar-hover-text)] hover:!bg-[var(--navbar-hover-bg)] hover:*:data-[slot=icon]:!text-[var(--navbar-hover-text)] active:!text-[var(--navbar-hover-text)] active:!bg-[var(--navbar-hover-bg)] active:*:data-[slot=icon]:!text-[var(--navbar-hover-text)]',
         )}
@@ -275,8 +299,8 @@ export default function AppNavbar(props: NavbarProps) {
           hoveredNavbarItemId === item.id && itemHoverColors
             ? {
                 ...toHoverStyle(itemHoverColors),
-                color: itemHoverColors.text,
-                backgroundColor: itemHoverColors.background,
+                color: 'var(--navbar-hover-text)',
+                backgroundColor: 'var(--navbar-hover-bg)',
               }
             : toHoverStyle(itemHoverColors)
         }
@@ -297,14 +321,14 @@ export default function AppNavbar(props: NavbarProps) {
           icon={item.icon}
           style={
             hoveredNavbarItemId === item.id && itemHoverColors
-              ? { color: itemHoverColors.text, stroke: itemHoverColors.text }
+              ? { color: 'var(--navbar-hover-text)', stroke: 'var(--navbar-hover-text)' }
               : undefined
           }
         />
         <span
           style={
             hoveredNavbarItemId === item.id && itemHoverColors
-              ? { color: itemHoverColors.text }
+              ? { color: 'var(--navbar-hover-text)' }
               : undefined
           }
         >
@@ -315,7 +339,7 @@ export default function AppNavbar(props: NavbarProps) {
   };
 
   const renderRightItem = (item: NavbarConfigItem) => {
-    const itemHoverColors = getNavbarThemeColors(item, isDark);
+    const itemHoverColors = getNavbarConfiguredColors(item);
     const isItemHovered = hoveredNavbarItemId === item.id;
 
     const handleRightItemOpenChange = (nextOpen: boolean) => {
@@ -331,10 +355,8 @@ export default function AppNavbar(props: NavbarProps) {
       return (
         <ThemeMenu
           key={item.id}
-          className={cn(
-            socialLinkClassName,
-            'hover:bg-secondary/60 hover:text-primary',
-          )}
+          title={item.title}
+          className={socialLinkClassName}
           items={item.dropdown}
           open={activeDropdownId === item.id}
           onOpenChange={handleRightItemOpenChange}
@@ -363,7 +385,7 @@ export default function AppNavbar(props: NavbarProps) {
         rel={isExternalHref(item.href) ? 'noreferrer' : undefined}
         className={cn(
           socialLinkClassName,
-          !itemHoverColors && 'hover:bg-secondary/60 hover:text-primary',
+          itemHoverColors && navbarHoverVariableClassName,
           itemHoverColors &&
             'hover:!text-[var(--navbar-hover-text)] hover:!bg-[var(--navbar-hover-bg)]',
         )}
@@ -371,8 +393,8 @@ export default function AppNavbar(props: NavbarProps) {
           isItemHovered && itemHoverColors
             ? {
                 ...toHoverStyle(itemHoverColors),
-                color: itemHoverColors.text,
-                backgroundColor: itemHoverColors.background,
+                color: 'var(--navbar-hover-text)',
+                backgroundColor: 'var(--navbar-hover-bg)',
               }
             : toHoverStyle(itemHoverColors)
         }
@@ -393,7 +415,7 @@ export default function AppNavbar(props: NavbarProps) {
           icon={item.icon}
           style={
             isItemHovered && itemHoverColors
-              ? { color: itemHoverColors.text, stroke: itemHoverColors.text }
+              ? { color: 'var(--navbar-hover-text)', stroke: 'var(--navbar-hover-text)' }
               : undefined
           }
         />
@@ -403,7 +425,7 @@ export default function AppNavbar(props: NavbarProps) {
 
   return (
     <NavbarProvider>
-      <Navbar isSticky {...props}>
+      <Navbar isSticky ref={headerRef} {...props}>
         <NavbarStart>
           <Link
             href="/"
@@ -439,17 +461,15 @@ export default function AppNavbar(props: NavbarProps) {
         <NavbarTrigger />
         <NavbarSpacer />
         {rightItems.map((item) => {
-          const itemHoverColors = getNavbarThemeColors(item, isDark);
+          const itemHoverColors = getNavbarConfiguredColors(item);
           const isItemHovered = hoveredNavbarItemId === item.id;
 
           if (item.id === 'theme') {
             return (
               <ThemeMenu
                 key={item.id}
-                className={cn(
-                  socialLinkClassName,
-                  'hover:bg-secondary/60 hover:text-primary',
-                )}
+                title={item.title}
+                className={socialLinkClassName}
                 items={item.dropdown}
               />
             );
@@ -474,7 +494,7 @@ export default function AppNavbar(props: NavbarProps) {
               rel={isExternalHref(item.href) ? 'noreferrer' : undefined}
               className={cn(
                 socialLinkClassName,
-                !itemHoverColors && 'hover:bg-secondary/60 hover:text-primary',
+                itemHoverColors && navbarHoverVariableClassName,
                 itemHoverColors &&
                   'hover:!text-[var(--navbar-hover-text)] hover:!bg-[var(--navbar-hover-bg)]',
               )}
@@ -482,8 +502,8 @@ export default function AppNavbar(props: NavbarProps) {
                 isItemHovered && itemHoverColors
                   ? {
                       ...toHoverStyle(itemHoverColors),
-                      color: itemHoverColors.text,
-                      backgroundColor: itemHoverColors.background,
+                      color: 'var(--navbar-hover-text)',
+                      backgroundColor: 'var(--navbar-hover-bg)',
                     }
                   : toHoverStyle(itemHoverColors)
               }
@@ -505,8 +525,8 @@ export default function AppNavbar(props: NavbarProps) {
                 style={
                   isItemHovered && itemHoverColors
                     ? {
-                        color: itemHoverColors.text,
-                        stroke: itemHoverColors.text,
+                        color: 'var(--navbar-hover-text)',
+                        stroke: 'var(--navbar-hover-text)',
                       }
                     : undefined
                 }

@@ -99,6 +99,7 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
     title: 'Railyard',
     icon: TrainTrack,
     position: 'left',
+    colors: getHoverColors('railyard'),
     styleVars: {
       '--instance-accent-light':
         PROJECT_COLOR_SCHEMES['railyard'].accentColor.light,
@@ -106,10 +107,8 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
         PROJECT_COLOR_SCHEMES['railyard'].accentColor.dark,
     },
     specialStyle: {
-      triggerClassName:
-        'relative isolate overflow-hidden h-auto gap-x-2 rounded-lg border border-border/80 px-2 py-2 text-sm font-semibold !text-foreground bg-card shadow-sm transition-all duration-300 ease-[cubic-bezier(.16,1,.3,1)] hover:-translate-y-0.5 hover:border-transparent hover:shadow-xl hover:shadow-black/12 dark:hover:shadow-black/35 data-open:-translate-y-0.5 data-popup-open:-translate-y-0.5 data-open:border-transparent data-popup-open:border-transparent data-open:shadow-xl data-popup-open:shadow-xl data-open:shadow-black/12 data-popup-open:shadow-black/12 dark:data-open:shadow-black/35 dark:data-popup-open:shadow-black/35 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-[var(--instance-accent-light)] dark:before:bg-[var(--instance-accent-dark)] after:pointer-events-none after:absolute after:-right-8 after:-top-8 after:size-20 after:rounded-full after:bg-[var(--instance-accent-light)]/20 dark:after:bg-[var(--instance-accent-dark)]/24 after:blur-2xl after:opacity-80 after:transition-opacity after:duration-300 hover:after:opacity-100 data-open:after:opacity-100 data-popup-open:after:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--instance-accent-light)]/50 dark:focus-visible:ring-[var(--instance-accent-dark)]/50',
       activeUnderlineClassName:
-        'absolute left-2 right-2 z-0 -bottom-[calc(var(--navbar-gutter)+1px)] h-(--gutter) rounded-full bg-[var(--instance-accent-light)] dark:bg-[var(--instance-accent-dark)] [--gutter:--spacing(0.5)]',
+        'absolute inset-x-2 -bottom-[0.38rem] h-1 rounded-full bg-[var(--instance-accent-light)] dark:bg-[var(--instance-accent-dark)]',
     },
     dropdown: [
       {
@@ -154,6 +153,7 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
     title: 'Template Mod',
     icon: Package,
     position: 'left',
+    colors: getHoverColors('template-mod'),
     styleVars: {
       '--instance-accent-light':
         PROJECT_COLOR_SCHEMES['template-mod'].accentColor.light,
@@ -161,10 +161,8 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
         PROJECT_COLOR_SCHEMES['template-mod'].accentColor.dark,
     },
     specialStyle: {
-      triggerClassName:
-        'relative isolate overflow-hidden h-auto gap-x-2 rounded-lg border border-border/80 px-2 py-2 text-sm font-semibold !text-foreground bg-card shadow-sm transition-all duration-300 ease-[cubic-bezier(.16,1,.3,1)] hover:-translate-y-0.5 hover:border-transparent hover:shadow-xl hover:shadow-black/12 dark:hover:shadow-black/35 data-open:-translate-y-0.5 data-popup-open:-translate-y-0.5 data-open:border-transparent data-popup-open:border-transparent data-open:shadow-xl data-popup-open:shadow-xl data-open:shadow-black/12 data-popup-open:shadow-black/12 dark:data-open:shadow-black/35 dark:data-popup-open:shadow-black/35 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-[var(--instance-accent-light)] dark:before:bg-[var(--instance-accent-dark)] after:pointer-events-none after:absolute after:-right-8 after:-top-8 after:size-20 after:rounded-full after:bg-[var(--instance-accent-light)]/20 dark:after:bg-[var(--instance-accent-dark)]/24 after:blur-2xl after:opacity-80 after:transition-opacity after:duration-300 hover:after:opacity-100 data-open:after:opacity-100 data-popup-open:after:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--instance-accent-light)]/50 dark:focus-visible:ring-[var(--instance-accent-dark)]/50',
       activeUnderlineClassName:
-        'absolute left-2 right-2 z-0 -bottom-[calc(var(--navbar-gutter)+1px)] h-(--gutter) rounded-full bg-[var(--instance-accent-light)] dark:bg-[var(--instance-accent-dark)] [--gutter:--spacing(0.5)]',
+        'absolute inset-x-2 -bottom-[0.38rem] h-1 rounded-full bg-[var(--instance-accent-light)] dark:bg-[var(--instance-accent-dark)]',
     },
     dropdown: [
       {
@@ -192,6 +190,7 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
   },
   {
     id: 'community',
+    title: 'Community',
     href: 'https://discord.gg/syG9YHMyeG',
     icon: HeartHandshake,
     position: 'right',
@@ -212,6 +211,7 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
   },
   {
     id: 'discord',
+    title: 'Discord',
     href: 'https://discord.gg/syG9YHMyeG',
     icon: {
       type: 'mask',
@@ -238,6 +238,7 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
   },
   {
     id: 'github',
+    title: 'GitHub',
     href: 'https://github.com/Subway-Builder-Modded',
     icon: {
       type: 'mask',
