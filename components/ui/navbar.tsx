@@ -168,7 +168,7 @@ const Navbar = ({
       <div
         className={twMerge(
           'relative isolate hidden [--navbar-gutter:--spacing(2.5)] md:block',
-          isSticky && 'mx-auto w-[min(1840px,calc(100vw-1.5rem))] px-[clamp(1rem,2.8vw,2.5rem)]',
+          isSticky && 'mx-auto w-[min(2200px,calc(100vw-3rem))] px-0',
           !isSticky && ['default', 'inset'].includes(intent) && 'px-4 py-(--navbar-gutter)',
           !isSticky && intent === 'default' && 'border-b bg-sidebar',
           !isSticky && intent === 'float' &&
@@ -180,7 +180,7 @@ const Navbar = ({
           className={twMerge(
             'flex w-full items-center',
             isSticky &&
-              'min-h-[4rem] flex-wrap justify-between rounded-2xl border border-border/70 bg-background/90 px-[clamp(0.8rem,2vw,1.4rem)] py-1.5 shadow-sm backdrop-blur-md',
+              'min-h-[4rem] flex-wrap justify-between rounded-2xl border border-border/70 bg-background/90 px-[clamp(0.7rem,1.6vw,1.2rem)] py-1.5 shadow-sm backdrop-blur-md',
             className,
           )}
         >
@@ -317,7 +317,7 @@ const NavbarMobile = ({
       ref={ref}
       data-slot="navbar-mobile"
       className={twMerge(
-        'group/navbar-mobile flex items-center gap-x-3 px-4 py-2.5 md:hidden',
+        'group/navbar-mobile flex items-center gap-x-2 px-4 py-2.5 md:hidden',
         'group-has-data-navbar-sticky/navbar:sticky group-has-data-navbar-sticky/navbar:bg-sidebar',
         'group-has-data-navbar-sticky/navbar:group-has-placement-top/navbar:top-0 group-has-data-navbar-sticky/navbar:group-has-placement-top/navbar:border-b',
         'group-has-data-navbar-sticky/navbar:group-has-placement-bottom/navbar:bottom-0 group-has-data-navbar-sticky/navbar:group-has-placement-bottom/navbar:border-t',

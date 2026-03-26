@@ -440,7 +440,7 @@ function SidebarActiveIndicator({
   return (
     <span
       className={cn(
-        'absolute top-1.5 bottom-1.5 left-0 w-[2px] rounded-full transition-opacity duration-200',
+        'absolute top-1.5 bottom-1.5 right-0 w-[2px] rounded-full transition-opacity duration-200',
         active ? 'opacity-100' : 'opacity-0',
       )}
       style={{ backgroundColor: accent }}
@@ -492,7 +492,7 @@ function SidebarDocsHeader({
         },
       ]}
       size="sidebar"
-      className="mb-4"
+      className="mb-4 w-full"
     />
   );
 }
@@ -594,9 +594,10 @@ function SidebarNavEntry({
 }) {
   if (entry.kind === 'page') {
     const showIndicator = activeIndicatorKey === entry.key;
+    const hoverBackground = withAlpha(accent, 0.1);
     const activeStyle = showIndicator
       ? {
-          backgroundColor: withAlpha(accent, 0.1),
+          backgroundColor: hoverBackground,
           color: accent,
         }
       : undefined;
@@ -609,9 +610,13 @@ function SidebarNavEntry({
             'relative flex w-full items-center rounded-md transition-colors',
             showIndicator
               ? 'text-foreground'
-              : 'text-muted-foreground hover:bg-accent/45 hover:text-foreground',
+              : 'text-muted-foreground hover:bg-[var(--docs-sidebar-hover-bg)] hover:text-[var(--docs-sidebar-hover-fg)]',
           )}
-          style={activeStyle}
+          style={{
+            ...(activeStyle ?? {}),
+            ['--docs-sidebar-hover-bg' as string]: hoverBackground,
+            ['--docs-sidebar-hover-fg' as string]: accent,
+          }}
         >
           <NextLink
             href={entry.href}
@@ -674,7 +679,7 @@ function SidebarNavEntry({
     'group relative flex w-full items-center rounded-md transition-colors',
     showIndicator
       ? 'text-foreground'
-      : 'text-muted-foreground hover:bg-accent/45 hover:text-foreground',
+      : 'text-muted-foreground hover:bg-[var(--docs-sidebar-hover-bg)] hover:text-[var(--docs-sidebar-hover-fg)]',
   );
 
   const labelClassName = cn(
@@ -683,16 +688,24 @@ function SidebarNavEntry({
     showIndicator ? 'font-medium' : '',
   );
 
+  const hoverBackground = withAlpha(accent, 0.1);
   const activeStyle = showIndicator
     ? {
-        backgroundColor: withAlpha(accent, 0.1),
+        backgroundColor: hoverBackground,
         color: accent,
       }
     : undefined;
 
   return (
     <li>
-      <div className={rowClassName} style={activeStyle}>
+      <div
+        className={rowClassName}
+        style={{
+          ...(activeStyle ?? {}),
+          ['--docs-sidebar-hover-bg' as string]: hoverBackground,
+          ['--docs-sidebar-hover-fg' as string]: accent,
+        }}
+      >
         <SidebarActiveIndicator active={showIndicator} accent={accent} />
 
         {entry.href ? (
@@ -825,7 +838,7 @@ function SidebarPanelContent({
     <>
       <div className="shrink-0 border-b border-border/60 px-[clamp(0.65rem,1.4vw,1rem)] pt-[clamp(0.65rem,1.4vw,1rem)] pb-[clamp(0.42rem,0.88vw,0.6rem)]">
         <div className={cn('space-y-3', !mounted && 'invisible')}>
-          <div className="flex items-start justify-between gap-2">
+          <div className="relative flex items-start justify-center">
             <SidebarDocsHeader
               activeInstance={activeInstance}
               activeVersion={activeVersion}
@@ -835,7 +848,7 @@ function SidebarPanelContent({
                 type="button"
                 onClick={onCollapse}
                 aria-label="Collapse docs sidebar"
-                className="mt-0.5 shrink-0 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-accent/45 hover:text-primary"
+                className="pointer-events-auto absolute right-0 top-0 z-20 mt-0.5 shrink-0 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-accent/45 hover:text-primary"
               >
                 <PanelLeftCloseIcon className="h-4 w-4" />
               </button>
@@ -911,12 +924,18 @@ export function AppDocsSidebar({
           '--app-navbar-offset',
         ),
       ) || 88;
-    const idealTop = navbarOffset + 12;
+    const idealTop = navbarOffset + 60;
 
     const containerLeft = containerRef?.current
       ? containerRef.current.getBoundingClientRect().left
       : 0;
     setSidebarLeft(containerLeft + EDGE_GAP_PX);
+
+    if (!open) {
+      setSidebarTop(idealTop);
+      setSidebarMaxHeight(window.innerHeight - idealTop - EDGE_GAP_PX);
+      return;
+    }
 
     const footer = document.getElementById('site-footer');
     const panelEl = panelRef.current;
@@ -931,14 +950,16 @@ export function AppDocsSidebar({
       setSidebarTop(idealTop);
       setSidebarMaxHeight(window.innerHeight - idealTop - EDGE_GAP_PX);
     }
-  }, [containerRef]);
+  }, [containerRef, open]);
 
   React.useLayoutEffect(() => {
     updateLayout();
   }, [updateLayout]);
 
   React.useEffect(() => {
-    window.addEventListener('scroll', updateLayout, { passive: true });
+    if (open) {
+      window.addEventListener('scroll', updateLayout, { passive: true });
+    }
     window.addEventListener('resize', updateLayout, { passive: true });
     const ro = new ResizeObserver(updateLayout);
     if (containerRef?.current) ro.observe(containerRef.current);
@@ -948,7 +969,7 @@ export function AppDocsSidebar({
       window.removeEventListener('resize', updateLayout);
       ro.disconnect();
     };
-  }, [updateLayout, containerRef]);
+  }, [updateLayout, containerRef, open]);
 
   React.useLayoutEffect(() => {
     const scrollEl = scrollRef.current;
@@ -1129,9 +1150,9 @@ export function DocsSidebarShell({
         containerRef={containerRef}
       />
       <div
-        className="min-w-0 w-full transition-[margin-left] duration-200 ease-out"
+        className="min-w-0 w-full transition-[padding-left] duration-200 ease-out"
         style={{
-          marginLeft:
+          paddingLeft:
             !isMobileResolved && open
               ? `${SIDEBAR_TOTAL_OFFSET_REM}rem`
               : undefined,
