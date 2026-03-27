@@ -7,6 +7,57 @@ import {
 } from '@/lib/railyard/github-releases';
 import type { UpdateConfig, VersionInfo } from '@/types/registry';
 
+const GAME_DEP_KEY = 'subway-builder';
+
+interface ManifestDeps {
+  dependencies?: Record<string, string>;
+}
+
+async function fetchManifestDeps(url: string): Promise<ManifestDeps | null> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return (await res.json()) as ManifestDeps;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Mirrors the Go backend's enrichVersions: fetches manifest.json for each
+ * version that has one, then populates game_version (from the "subway-builder"
+ * dependency key) and dependencies (all other deps).
+ */
+async function enrichVersionsFromManifests(
+  versions: VersionInfo[],
+): Promise<VersionInfo[]> {
+  const results = await Promise.allSettled(
+    versions.map(async (v): Promise<VersionInfo> => {
+      if (!v.manifest) return v;
+      const manifest = await fetchManifestDeps(v.manifest);
+      if (!manifest?.dependencies) return v;
+
+      const deps = manifest.dependencies;
+      const gameVersion = deps[GAME_DEP_KEY] ?? v.game_version;
+      const modDeps: Record<string, string> = {};
+      for (const [id, range] of Object.entries(deps)) {
+        if (id !== GAME_DEP_KEY) modDeps[id] = range;
+      }
+
+      return {
+        ...v,
+        game_version: gameVersion,
+        dependencies:
+          Object.keys(modDeps).length > 0 ? modDeps : v.dependencies,
+      };
+    }),
+  );
+
+  return results.map((result, i) =>
+    result.status === 'fulfilled' ? result.value : versions[i],
+  );
+}
+
 interface UseVersionsResult {
   versions: VersionInfo[];
   loading: boolean;
@@ -38,10 +89,12 @@ export function useVersions(update?: UpdateConfig): UseVersionsResult {
         setLoading(true);
         setError(null);
 
+        let mapped: VersionInfo[] = [];
+
         if (currentUpdate.type === 'github' && currentUpdate.repo) {
           const releases = await getGithubReleases(currentUpdate.repo);
 
-          const mapped: VersionInfo[] = releases.map((release) => {
+          mapped = releases.map((release) => {
             const manifestAsset = release.assets.find(
               (a) => a.name === 'manifest.json',
             );
@@ -59,22 +112,36 @@ export function useVersions(update?: UpdateConfig): UseVersionsResult {
               changelog: release.body || '',
               date: release.published_at,
               download_url: zipAsset?.browser_download_url ?? '',
-              game_version: '',
+              game_version: release.game_version ?? '',
               sha256: '',
               downloads: totalDownloads,
               manifest: manifestAsset?.browser_download_url,
               prerelease: release.prerelease,
+              dependencies: release.dependencies,
             };
           });
-
-          if (!cancelled) setVersions(mapped);
         } else if (currentUpdate.url) {
-          const parsed: VersionInfo[] = await getCustomVersions(
-            currentUpdate.url,
-          );
-
-          if (!cancelled) setVersions(parsed);
+          const entries = await getCustomVersions(currentUpdate.url);
+          mapped = entries.map((entry) => ({
+            version: entry.version,
+            name: entry.name || entry.version,
+            changelog: entry.changelog,
+            date: entry.date,
+            download_url: entry.download_url,
+            game_version: entry.game_version,
+            sha256: entry.sha256,
+            downloads: entry.downloads,
+            manifest: entry.manifest,
+            prerelease: entry.prerelease,
+            dependencies: entry.dependencies,
+          }));
         }
+
+        // Enrich with manifest data (game_version + dependencies), mirroring
+        // the Go backend's enrichVersions call.
+        const enriched = await enrichVersionsFromManifests(mapped);
+
+        if (!cancelled) setVersions(enriched);
       } catch (err) {
         if (!cancelled) {
           setError(

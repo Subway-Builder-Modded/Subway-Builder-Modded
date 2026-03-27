@@ -12,6 +12,10 @@ export interface GithubRelease {
   published_at: string;
   prerelease: boolean;
   assets: GithubReleaseAsset[];
+  // Populated by the build-time cache enrichment script (mirrors Go enrichVersions).
+  // Not present in raw GitHub API responses.
+  game_version?: string;
+  dependencies?: Record<string, string>;
 }
 
 export interface CustomVersionEntry {
@@ -25,6 +29,7 @@ export interface CustomVersionEntry {
   downloads: number;
   manifest?: string;
   prerelease: boolean;
+  dependencies?: Record<string, string>;
 }
 
 interface GithubReleaseCacheFile {
@@ -68,6 +73,16 @@ function sanitizeRelease(input: unknown): GithubRelease {
   const entry = (input ?? {}) as Record<string, unknown>;
   const rawAssets = Array.isArray(entry.assets) ? entry.assets : [];
 
+  const rawDeps = entry.dependencies;
+  const dependencies: Record<string, string> | undefined =
+    rawDeps && typeof rawDeps === 'object' && !Array.isArray(rawDeps)
+      ? Object.fromEntries(
+          Object.entries(rawDeps as Record<string, unknown>).filter(
+            ([, v]) => typeof v === 'string',
+          ) as [string, string][],
+        )
+      : undefined;
+
   return {
     tag_name: typeof entry.tag_name === 'string' ? entry.tag_name : '',
     name: typeof entry.name === 'string' ? entry.name : '',
@@ -94,11 +109,23 @@ function sanitizeRelease(input: unknown): GithubRelease {
             : 0,
       };
     }),
+    game_version:
+      typeof entry.game_version === 'string' ? entry.game_version : undefined,
+    dependencies,
   };
 }
 
 function sanitizeCustomVersion(input: unknown): CustomVersionEntry {
   const entry = (input ?? {}) as Record<string, unknown>;
+  const rawDeps = entry.dependencies;
+  const dependencies: Record<string, string> | undefined =
+    rawDeps && typeof rawDeps === 'object' && !Array.isArray(rawDeps)
+      ? Object.fromEntries(
+          Object.entries(rawDeps as Record<string, unknown>).filter(
+            ([, v]) => typeof v === 'string',
+          ) as [string, string][],
+        )
+      : undefined;
   return {
     version: typeof entry.version === 'string' ? entry.version : '',
     name:
@@ -120,6 +147,7 @@ function sanitizeCustomVersion(input: unknown): CustomVersionEntry {
         : 0,
     manifest: typeof entry.manifest === 'string' ? entry.manifest : undefined,
     prerelease: Boolean(entry.prerelease),
+    dependencies,
   };
 }
 
