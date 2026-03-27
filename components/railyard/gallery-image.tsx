@@ -1,11 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import { Package, MapPin } from 'lucide-react';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
-import { buildGalleryUrl, buildGalleryCdnUrl } from '@/hooks/use-registry';
+import { useGalleryImage } from '@/hooks/use-gallery-image';
 
 interface GalleryImageProps {
   type: 'mods' | 'maps';
@@ -20,12 +18,14 @@ export function GalleryImage({
   imagePath,
   className,
 }: GalleryImageProps) {
-  const [state, setState] = useState<'loading' | 'loaded' | 'cdn' | 'error'>(
-    imagePath ? 'loading' : 'error',
-  );
+  const { imageUrl, loading, error } = useGalleryImage(type, id, imagePath);
   const FallbackIcon = type === 'mods' ? Package : MapPin;
 
-  if (!imagePath || state === 'error') {
+  if (loading) {
+    return <Skeleton className={cn('w-full', className)} />;
+  }
+
+  if (!imageUrl || error) {
     return (
       <div
         className={cn(
@@ -41,29 +41,13 @@ export function GalleryImage({
     );
   }
 
-  const primaryUrl = buildGalleryUrl(type, id, imagePath);
-  const cdnUrl = buildGalleryCdnUrl(type, id, imagePath);
-
   return (
-    <>
-      {state === 'loading' && <Skeleton className={cn('w-full', className)} />}
-      <Image
-        src={state === 'cdn' ? cdnUrl : primaryUrl}
-        alt=""
-        fill
-        unoptimized
-        sizes="(max-width: 768px) 100vw, 33vw"
-        className={cn(
-          'w-full object-cover',
-          state === 'loading' && 'hidden',
-          className,
-        )}
-        onLoad={() => setState('loaded')}
-        onError={() => {
-          if (state === 'loading') setState('cdn');
-          else setState('error');
-        }}
-      />
-    </>
+    <img
+      src={imageUrl}
+      alt=""
+      className={cn('w-full object-cover', className)}
+      loading="lazy"
+      decoding="async"
+    />
   );
 }

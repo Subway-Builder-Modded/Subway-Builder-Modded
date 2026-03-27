@@ -85,5 +85,4 @@ export interface VersionInfo {
   downloads: number;
   manifest?: string;
   prerelease: boolean;
-  dependencies?: Record<string, string>;
 }

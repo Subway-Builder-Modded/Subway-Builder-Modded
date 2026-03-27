@@ -18,6 +18,7 @@ import { SearchBar } from '@/components/railyard/search-bar';
 import { SortSelect } from '@/components/railyard/sort-select';
 import { ViewModeToggle } from '@/components/railyard/view-mode-toggle';
 import { createRandomSeed, useFilteredItems } from '@/hooks/use-filtered-items';
+import { preloadGalleryImage } from '@/hooks/use-gallery-image';
 import { useRegistry } from '@/hooks/use-registry';
 import { buildAssetListingCounts } from '@/lib/railyard/listing-counts';
 import { buildSpecialDemandValues } from '@/lib/railyard/map-filter-values';
@@ -122,6 +123,19 @@ export function BrowsePage() {
       });
     }
   }, [filters.type, pathname, router, searchParams]);
+
+  useEffect(() => {
+    if (loading || items.length === 0) return;
+    void Promise.allSettled(
+      items.map(({ type: itemType, item }) =>
+        preloadGalleryImage(
+          itemType === 'mod' ? 'mods' : 'maps',
+          item.id,
+          item.gallery?.[0],
+        ),
+      ),
+    );
+  }, [items, loading]);
 
   const resultsLayoutClassName = useMemo(() => {
     if (viewMode === 'list') return 'space-y-4';

@@ -8,7 +8,6 @@ import {
   Download,
   FileText,
   Gamepad2,
-  Package,
   Tag,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -16,13 +15,11 @@ import { useEffect, useMemo, useState } from 'react';
 import Markdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 
-import { ChangelogDependencies } from '@/components/railyard/changelog-dependencies';
 import { EmptyState } from '@/components/railyard/empty-state';
 import { ErrorBanner } from '@/components/railyard/error-banner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { useRegistryItem } from '@/hooks/use-registry-item';
 import { useVersions } from '@/hooks/use-versions';
 import {
@@ -99,7 +96,6 @@ export function ChangelogPage({
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState('changelog');
 
   const projectHref = `/railyard/${type}/${id}`;
 
@@ -311,88 +307,40 @@ export function ChangelogPage({
           </div>
 
           <div className="space-y-4">
-            <ToggleGroup
-              type="single"
-              value={activeTab}
-              variant="default"
-              size="sm"
-              spacing={1}
-              onValueChange={(tab: string) => {
-                if (tab) setActiveTab(tab);
-              }}
-              className="rounded-xl border border-border/70 bg-background p-0.5 shadow-sm"
-            >
-              <ToggleGroupItem
-                value="changelog"
-                className="h-9 rounded-lg px-3 text-sm font-semibold text-muted-foreground hover:bg-accent/45 hover:text-primary data-[state=on]:bg-accent/45 data-[state=on]:text-primary"
-              >
-                <FileText className="h-4 w-4" />
-                Changelog
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                value="dependencies"
-                className="h-9 rounded-lg px-3 text-sm font-semibold text-muted-foreground hover:bg-accent/45 hover:text-primary data-[state=on]:bg-accent/45 data-[state=on]:text-primary"
-              >
-                <Package className="h-4 w-4" />
-                Dependencies
-                {(() => {
-                  const count = Object.keys(
-                    versionInfo.dependencies ?? {},
-                  ).length;
-                  return count > 0 ? (
-                    <Badge variant="secondary" className="ml-0.5 text-xs">
-                      {count}
-                    </Badge>
-                  ) : null;
-                })()}
-              </ToggleGroupItem>
-            </ToggleGroup>
-
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-4">
               <div>
-                {activeTab === 'changelog' && (
-                  <div className="rounded-xl border border-border bg-card">
-                    <div className="border-b border-border px-4 py-3">
-                      <h2 className="text-sm font-semibold">Changelog</h2>
-                    </div>
-                    <div className="p-4">
-                      {versionInfo.changelog ? (
-                        <div className="prose prose-sm prose-neutral dark:prose-invert max-w-none text-sm leading-relaxed">
-                          <Markdown
-                            rehypePlugins={[rehypeRaw]}
-                            components={{
-                              a: ({ href, children, ...props }) => (
-                                <a
-                                  {...props}
-                                  href={href}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  {children}
-                                </a>
-                              ),
-                            }}
-                          >
-                            {versionInfo.changelog}
-                          </Markdown>
-                        </div>
-                      ) : (
-                        <p className="text-sm text-muted-foreground italic">
-                          No changelog provided for this version.
-                        </p>
-                      )}
-                    </div>
+                <div className="rounded-xl border border-border bg-card">
+                  <div className="border-b border-border px-4 py-3">
+                    <h2 className="text-sm font-semibold">Changelog</h2>
                   </div>
-                )}
-
-                {activeTab === 'dependencies' && (
-                  <ChangelogDependencies
-                    type={type}
-                    itemId={id}
-                    versionInfo={versionInfo}
-                    mods={[]}
-                  />
-                )}
+                  <div className="p-4">
+                    {versionInfo.changelog ? (
+                      <div className="prose prose-sm prose-neutral dark:prose-invert max-w-none text-sm leading-relaxed">
+                        <Markdown
+                          rehypePlugins={[rehypeRaw]}
+                          components={{
+                            a: ({ href, children, ...props }) => (
+                              <a
+                                {...props}
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {children}
+                              </a>
+                            ),
+                          }}
+                        >
+                          {versionInfo.changelog}
+                        </Markdown>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground italic">
+                        No changelog provided for this version.
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
 
               <div className="rounded-xl border border-border bg-card h-fit">

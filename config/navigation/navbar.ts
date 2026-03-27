@@ -103,6 +103,7 @@ export type AppNavbarDropdownItem = {
   id: string;
   title?: string;
   href?: string;
+  activeMatchPaths?: string[];
   icon?: NavbarIcon;
   schemeId?: NavbarColorSchemeId;
   action?: NavbarAction;
@@ -314,6 +315,7 @@ export const APP_NAVBAR_ITEMS: AppNavbarItem[] = [
         id: 'railyard-browse',
         title: 'Browse',
         href: '/railyard/browse',
+        activeMatchPaths: ['/railyard/mods', '/railyard/maps'],
         icon: FileSearchCorner,
         schemeId: 'railyard',
       },

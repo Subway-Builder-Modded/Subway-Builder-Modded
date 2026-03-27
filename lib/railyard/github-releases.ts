@@ -12,10 +12,7 @@ export interface GithubRelease {
   published_at: string;
   prerelease: boolean;
   assets: GithubReleaseAsset[];
-  // Populated by the build-time cache enrichment script (mirrors Go enrichVersions).
-  // Not present in raw GitHub API responses.
   game_version?: string;
-  dependencies?: Record<string, string>;
 }
 
 export interface CustomVersionEntry {
@@ -29,7 +26,6 @@ export interface CustomVersionEntry {
   downloads: number;
   manifest?: string;
   prerelease: boolean;
-  dependencies?: Record<string, string>;
 }
 
 interface GithubReleaseCacheFile {
@@ -73,16 +69,6 @@ function sanitizeRelease(input: unknown): GithubRelease {
   const entry = (input ?? {}) as Record<string, unknown>;
   const rawAssets = Array.isArray(entry.assets) ? entry.assets : [];
 
-  const rawDeps = entry.dependencies;
-  const dependencies: Record<string, string> | undefined =
-    rawDeps && typeof rawDeps === 'object' && !Array.isArray(rawDeps)
-      ? Object.fromEntries(
-          Object.entries(rawDeps as Record<string, unknown>).filter(
-            ([, v]) => typeof v === 'string',
-          ) as [string, string][],
-        )
-      : undefined;
-
   return {
     tag_name: typeof entry.tag_name === 'string' ? entry.tag_name : '',
     name: typeof entry.name === 'string' ? entry.name : '',
@@ -111,21 +97,11 @@ function sanitizeRelease(input: unknown): GithubRelease {
     }),
     game_version:
       typeof entry.game_version === 'string' ? entry.game_version : undefined,
-    dependencies,
   };
 }
 
 function sanitizeCustomVersion(input: unknown): CustomVersionEntry {
   const entry = (input ?? {}) as Record<string, unknown>;
-  const rawDeps = entry.dependencies;
-  const dependencies: Record<string, string> | undefined =
-    rawDeps && typeof rawDeps === 'object' && !Array.isArray(rawDeps)
-      ? Object.fromEntries(
-          Object.entries(rawDeps as Record<string, unknown>).filter(
-            ([, v]) => typeof v === 'string',
-          ) as [string, string][],
-        )
-      : undefined;
   return {
     version: typeof entry.version === 'string' ? entry.version : '',
     name:
@@ -147,7 +123,6 @@ function sanitizeCustomVersion(input: unknown): CustomVersionEntry {
         : 0,
     manifest: typeof entry.manifest === 'string' ? entry.manifest : undefined,
     prerelease: Boolean(entry.prerelease),
-    dependencies,
   };
 }
 
@@ -180,9 +155,18 @@ async function fetchCustomVersionsDirect(
 
 export async function getGithubReleases(
   repo: string,
+  options?: { preferNetwork?: boolean },
 ): Promise<GithubRelease[]> {
   const normalizedRepo = repo.trim();
   if (!normalizedRepo) return [];
+
+  if (options?.preferNetwork) {
+    try {
+      return await fetchGitHubReleasesDirect(normalizedRepo);
+    } catch {
+      // Fall back to cache/direct fallback path below.
+    }
+  }
 
   const cache = await getReleaseCache();
   const cached = cache?.repos[normalizeRepo(normalizedRepo)];
@@ -193,9 +177,18 @@ export async function getGithubReleases(
 
 export async function getCustomVersions(
   url: string,
+  options?: { preferNetwork?: boolean },
 ): Promise<CustomVersionEntry[]> {
   const normalizedUrl = normalizeCustomUrl(url);
   if (!normalizedUrl) return [];
+
+  if (options?.preferNetwork) {
+    try {
+      return await fetchCustomVersionsDirect(normalizedUrl);
+    } catch {
+      // Fall back to cache/direct fallback path below.
+    }
+  }
 
   const cache = await getReleaseCache();
   const cached = cache?.custom_urls?.[normalizedUrl];

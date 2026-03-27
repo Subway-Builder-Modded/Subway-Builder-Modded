@@ -567,17 +567,28 @@ function NavbarDropdown({
     const scheme = resolveScheme(dropdownItem.schemeId ?? item.schemeId);
     const style = toSchemeStyle(scheme);
     const href = dropdownItem.href;
-    const hrefDepth = href ? href.split('/').filter(Boolean).length : 0;
-    const isActive = href
-      ? isActivePath(pathname, href) &&
-        !dropdownItems.some(
-          (other) =>
-            other.href &&
-            other.href !== href &&
-            isActivePath(pathname, other.href) &&
-            other.href.split('/').filter(Boolean).length > hrefDepth,
-        )
-      : false;
+    const getActiveDepth = (itemToCheck: AppNavbarDropdownItem): number => {
+      const paths = [
+        itemToCheck.href,
+        ...(itemToCheck.activeMatchPaths ?? []),
+      ].filter((value): value is string => Boolean(value));
+
+      let best = -1;
+      for (const path of paths) {
+        if (isActivePath(pathname, path)) {
+          const depth = path.split('/').filter(Boolean).length;
+          if (depth > best) best = depth;
+        }
+      }
+      return best;
+    };
+
+    const activeDepth = getActiveDepth(dropdownItem);
+    const maxDropdownDepth = dropdownItems.reduce((best, itemToCheck) => {
+      const depth = getActiveDepth(itemToCheck);
+      return depth > best ? depth : best;
+    }, -1);
+    const isActive = activeDepth >= 0 && activeDepth === maxDropdownDepth;
     const dropdownLabel = dropdownItem.title ?? dropdownItem.id;
     const icon = (
       <AppIcon
