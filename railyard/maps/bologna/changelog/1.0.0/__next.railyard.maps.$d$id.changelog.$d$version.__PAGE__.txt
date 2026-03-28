@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:"$Sreact.suspense"
+3:I[862858,["/_next/static/chunks/a1bdf01b8fa4532b.js","/_next/static/chunks/dec01cb36b1b9431.js","/_next/static/chunks/e569f3a282b9a27f.js","/_next/static/chunks/ac5646f356684f53.js","/_next/static/chunks/098987feb302e5ee.js","/_next/static/chunks/205e5dfb4d37245c.js","/_next/static/chunks/d70d37841afae976.js","/_next/static/chunks/cdf90b1e9e407103.js","/_next/static/chunks/b5df237607f900e2.js","/_next/static/chunks/a75d651d8a63a124.js","/_next/static/chunks/16753ec14fddc950.js"],"ChangelogPage"]
+4:I[836345,["/_next/static/chunks/a08246dd4530a7b2.js","/_next/static/chunks/3437b8eaa45632a6.js"],"OutletBoundary"]
+0:{"buildId":"RvGxrTGAHLuFV5CVHrtkl","rsc":["$","$1","c",{"children":[["$","$2",null,{"fallback":null,"children":["$","$L3",null,{"type":"maps","id":"bologna","version":"1.0.0"}]}],[["$","script","script-0",{"src":"/_next/static/chunks/b5df237607f900e2.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/a75d651d8a63a124.js","async":true}],["$","script","script-2",{"src":"/_next/static/chunks/16753ec14fddc950.js","async":true}]],["$","$L4",null,{"children":["$","$2",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
+5:null
