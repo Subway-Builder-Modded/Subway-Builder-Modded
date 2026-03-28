@@ -484,6 +484,15 @@ function getSidebarDepthClassName(depth: number) {
   return 'pl-13';
 }
 
+function getSidebarDepthTypographyClassName(depth: number) {
+  if (depth <= 0) return 'font-semibold text-sm';
+  return 'font-normal text-sm';
+}
+
+function getSidebarDepthToneClassName(depth: number) {
+  return depth <= 1 ? 'text-foreground' : 'text-muted-foreground';
+}
+
 function SidebarDocsHeader({
   activeInstance,
 }: {
@@ -638,7 +647,10 @@ function SidebarNavEntry({
             'relative flex w-full items-center rounded-md transition-colors',
             showIndicator
               ? 'text-foreground'
-              : 'text-muted-foreground hover:bg-[var(--docs-sidebar-hover-bg)] hover:text-[var(--docs-sidebar-hover-fg)]',
+              : cn(
+                  getSidebarDepthToneClassName(depth),
+                  'hover:bg-[var(--docs-sidebar-hover-bg)] hover:text-[var(--docs-sidebar-hover-fg)]',
+                ),
           )}
           style={{
             ...(activeStyle ?? {}),
@@ -649,8 +661,9 @@ function SidebarNavEntry({
           <NextLink
             href={entry.href}
             className={cn(
-              'min-w-0 flex-1 px-2.5 py-1.5 pr-3 text-sm',
+              'min-w-0 flex-1 px-2.5 py-1.5 pr-3',
               getSidebarDepthClassName(depth),
+              getSidebarDepthTypographyClassName(depth),
             )}
           >
             <span className="block truncate">{entry.title}</span>
@@ -707,13 +720,16 @@ function SidebarNavEntry({
     'group relative flex w-full items-center rounded-md transition-colors',
     showIndicator
       ? 'text-foreground'
-      : 'text-muted-foreground hover:bg-[var(--docs-sidebar-hover-bg)] hover:text-[var(--docs-sidebar-hover-fg)]',
+      : cn(
+          getSidebarDepthToneClassName(depth),
+          'hover:bg-[var(--docs-sidebar-hover-bg)] hover:text-[var(--docs-sidebar-hover-fg)]',
+        ),
   );
 
   const labelClassName = cn(
-    'min-w-0 flex-1 px-2.5 py-1.5 pr-3 text-left text-sm',
+    'min-w-0 flex-1 px-2.5 py-1.5 pr-3 text-left',
     getSidebarDepthClassName(depth),
-    depth === 0 ? 'font-semibold' : showIndicator ? 'font-medium' : '',
+    getSidebarDepthTypographyClassName(depth),
   );
 
   const hoverBackground = withAlpha(accent, 0.1);
@@ -760,7 +776,7 @@ function SidebarNavEntry({
             isOpen ? `Collapse ${entry.title}` : `Expand ${entry.title}`
           }
           onClick={toggle}
-          className="mr-1 flex size-6 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground group-hover:text-[var(--docs-sidebar-hover-fg)]"
+          className="mr-1 flex size-6 items-center justify-center rounded-sm text-muted-foreground transition-colors group-hover:text-[var(--docs-sidebar-hover-fg)]"
         >
           <ChevronDown
             className={cn(

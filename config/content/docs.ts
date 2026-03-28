@@ -77,11 +77,11 @@ export const DOCS_INSTANCES: DocsInstance[] = [
             key: 'players',
             children: [
               {
-                key: 'install-railyard',
+                key: 'installing-railyard',
                 children: [
-                  'install-guide-windows',
-                  'install-guide-macos',
-                  'install-guide-linux',
+                  'windows',
+                  'macos',
+                  'linux',
                 ],
               },
               'github-token',
