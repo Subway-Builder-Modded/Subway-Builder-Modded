@@ -713,7 +713,7 @@ function SidebarNavEntry({
   const labelClassName = cn(
     'min-w-0 flex-1 px-2.5 py-1.5 pr-3 text-left text-sm',
     getSidebarDepthClassName(depth),
-    showIndicator ? 'font-medium' : '',
+    depth === 0 ? 'font-semibold' : showIndicator ? 'font-medium' : '',
   );
 
   const hoverBackground = withAlpha(accent, 0.1);
