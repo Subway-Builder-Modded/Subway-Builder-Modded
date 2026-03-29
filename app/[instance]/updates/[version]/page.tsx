@@ -46,29 +46,30 @@ export async function generateMetadata({
   const project = getUpdateProjectById(projectId);
   if (!project) {
     return buildEmbedMetadata({
-      title: 'Update | Subway Builder Modded',
-      description: 'Release notes for Subway Builder Modded.',
+      title: 'Updates',
+      description:
+        'Changelogs and release notes for Subway Builder Modded projects.',
     });
   }
 
   const filePath = getUpdateFilePath(projectId, version);
   if (!filePath) {
     return buildEmbedMetadata({
-      title: `${project.label} | Subway Builder Modded`,
-      description: `Changelogs and release notes for ${project.label}.`,
+      title: `Updates | ${project.label}`,
+      description: `Changelogs and release notes for ${project.label} ${version}.`,
     });
   }
 
   const frontmatter = await readUpdateFrontmatter(filePath);
-  const title = frontmatter?.title ?? `${project.label} ${version}`;
+  const title = `${version} Changelog`;
   const baseDescription =
     frontmatter?.description?.trim() ||
-    `Release notes for ${title}.`;
+    `Changelogs and release notes for ${project.label} ${title}.`;
   const routePath = `/${project.id}/updates/${version}`;
   const description = resolveEmbedDescription(routePath, baseDescription);
 
   return buildEmbedMetadata({
-    title: `${title} | Subway Builder Modded`,
+    title: `${title} | ${project.label}`,
     description,
   });
 }

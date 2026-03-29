@@ -78,11 +78,7 @@ export const DOCS_INSTANCES: DocsInstance[] = [
             children: [
               {
                 key: 'installing-railyard',
-                children: [
-                  'windows',
-                  'macos',
-                  'linux',
-                ],
+                children: ['windows', 'macos', 'linux'],
               },
               'github-token',
               'country-flag-emojis',
@@ -134,7 +130,7 @@ export const DOCS_INSTANCES: DocsInstance[] = [
         {
           title: 'Players',
           description:
-            'The ultimate guide for players getting started with Railyard, including installation, setup, and configuration.',
+            'The guide for players getting started with Railyard, including installation, setup, and configuration.',
           icon: Users,
           docPath: 'players',
         },

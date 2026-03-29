@@ -5,7 +5,8 @@ import { buildEmbedMetadata } from '@/config/site/metadata';
 
 export const metadata: Metadata = buildEmbedMetadata({
   title: 'Browse | Railyard',
-  description: 'Discover and install community maps and mods for Subway Builder.',
+  description:
+    'Discover and install community-made content for Subway Builder.',
 });
 
 export default function BrowseRoutePage() {

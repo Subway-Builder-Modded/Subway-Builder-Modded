@@ -1,6 +1,7 @@
 import * as React from 'react';
 import type { MDXComponents } from 'mdx/types';
 import Link from 'next/link';
+import Image from 'next/image';
 import * as LucideIcons from 'lucide-react';
 import type { LucideIcon, LucideProps } from 'lucide-react';
 import { Tabs, TabItem } from '@/components/mdx/mdx-tabs';
@@ -9,6 +10,7 @@ import { CodeBlock } from '@/components/mdx/code-block';
 import { DocsCardGrid, DocsCard } from '@/components/docs/docs-home-cards';
 import { RailyardTaggingRegions } from '@/components/docs/railyard/tagging-regions';
 import { UpdateSection } from '@/components/updates/update-section';
+import { cn } from '@/lib/utils';
 
 import {
   Admonition,
@@ -25,6 +27,16 @@ import {
   Example,
   Announcement,
 } from '@/components/ui/admonition';
+
+type MdxImageProps = Omit<
+  React.ComponentProps<typeof Image>,
+  'src' | 'alt' | 'width' | 'height'
+> & {
+  alt?: string;
+  height?: number | string;
+  src?: string;
+  width?: number | string;
+};
 
 function slugify(text: string) {
   return text
@@ -45,6 +57,64 @@ function textFromChildren(children: React.ReactNode): string {
   }
 
   return '';
+}
+
+function toDimension(value: number | string | undefined) {
+  if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+    return value;
+  }
+
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (!trimmed) return undefined;
+
+    const parsed = Number(trimmed);
+    if (Number.isFinite(parsed) && parsed > 0) {
+      return parsed;
+    }
+  }
+
+  return undefined;
+}
+
+function MdxImage({
+  alt = '',
+  fill,
+  height,
+  src,
+  width,
+  ...props
+}: MdxImageProps) {
+  if (!src) return null;
+
+  const normalizedWidth = toDimension(width);
+  const normalizedHeight = toDimension(height);
+
+  if (fill || (normalizedWidth && normalizedHeight)) {
+    return (
+      <Image
+        alt={alt}
+        fill={fill}
+        height={normalizedHeight}
+        src={src}
+        width={normalizedWidth}
+        {...props}
+      />
+    );
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      alt={alt}
+      decoding="async"
+      height={normalizedHeight}
+      loading="lazy"
+      src={src}
+      width={normalizedWidth}
+      {...(props as React.ImgHTMLAttributes<HTMLImageElement>)}
+    />
+  );
 }
 
 function MdxLink({
@@ -147,6 +217,7 @@ const baseComponents: MDXComponents = {
   UpdateSection,
   IconList,
   IconItem,
+  Image: MdxImage,
 
   a: MdxLink,
 
@@ -202,9 +273,12 @@ const baseComponents: MDXComponents = {
     );
   },
 
-  p: (props) => (
+  p: ({ className, ...props }) => (
     <p
-      className="leading-7 break-words [overflow-wrap:anywhere] [&:not(:first-child)]:mt-6"
+      className={cn(
+        'leading-7 break-words [overflow-wrap:anywhere] [&:not(:first-child)]:mt-6',
+        className,
+      )}
       {...props}
     />
   ),

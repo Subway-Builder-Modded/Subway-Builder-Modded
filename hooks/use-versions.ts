@@ -19,7 +19,9 @@ export async function fetchVersionsForUpdate(
     });
 
     return releases.map((release) => {
-      const manifestAsset = release.assets.find((a) => a.name === 'manifest.json');
+      const manifestAsset = release.assets.find(
+        (a) => a.name === 'manifest.json',
+      );
       const zipAsset = release.assets.find((a) => a.name.endsWith('.zip'));
       const totalDownloads = release.assets.reduce(
         (sum, a) => sum + a.download_count,

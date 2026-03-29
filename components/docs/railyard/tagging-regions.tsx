@@ -338,7 +338,9 @@ function buildFilteredRegions() {
 
 export function RailyardTaggingRegions() {
   const regions = React.useMemo(buildFilteredRegions, []);
-  const [activeRegionId, setActiveRegionId] = React.useState(regions[0]?.id ?? '');
+  const [activeRegionId, setActiveRegionId] = React.useState(
+    regions[0]?.id ?? '',
+  );
   const [searchQuery, setSearchQuery] = React.useState('');
 
   React.useEffect(() => {
@@ -348,7 +350,9 @@ export function RailyardTaggingRegions() {
   }, [activeRegionId, regions]);
 
   const activeRegion =
-    regions.find((region) => region.id === activeRegionId) ?? regions[0] ?? null;
+    regions.find((region) => region.id === activeRegionId) ??
+    regions[0] ??
+    null;
 
   const countryIndex = React.useMemo(
     () =>

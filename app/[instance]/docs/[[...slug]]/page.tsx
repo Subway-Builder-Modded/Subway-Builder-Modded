@@ -103,13 +103,13 @@ export async function generateMetadata({
 
   if (!resolved) {
     return buildEmbedMetadata({
-      title: 'Docs | Subway Builder Modded',
+      title: 'Docs',
       description: 'Documentation for Subway Builder Modded projects.',
     });
   }
 
   if (!normalizedSlug?.length) {
-    const title = `${resolved.instance.label} Docs | Subway Builder Modded`;
+    const title = `Docs | ${resolved.instance.label}`;
     const description = resolveEmbedDescription(
       buildDocsHubHref(resolved.instance),
       resolved.instance.hub.description,
@@ -118,7 +118,7 @@ export async function generateMetadata({
   }
 
   if (!resolved.docSlug) {
-    const title = `${resolved.instance.label} Docs | Subway Builder Modded`;
+    const title = `Docs | ${resolved.instance.label}`;
     const description = resolveEmbedDescription(
       buildDocsHubHref(resolved.instance),
       resolved.instance.hub.description,
@@ -137,11 +137,10 @@ export async function generateMetadata({
     resolved.docSlug,
   );
   const baseDescription =
-    frontmatter?.description?.trim() ||
-    resolved.instance.hub.description;
+    frontmatter?.description?.trim() || resolved.instance.hub.description;
   const metadataTitle = title
-    ? `${title} | ${resolved.instance.label} | Subway Builder Modded`
-    : `${resolved.instance.label} Docs | Subway Builder Modded`;
+    ? `${title} | ${resolved.instance.label}`
+    : `Docs | ${resolved.instance.label}`;
   const description = resolveEmbedDescription(routePath, baseDescription);
 
   return buildEmbedMetadata({

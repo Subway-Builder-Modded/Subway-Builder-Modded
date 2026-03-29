@@ -1,16 +1,13 @@
 type EmbedDescriptionOverrideMap = Record<string, string>;
 
-// Define per-page embed descriptions here.
 // Keys are absolute pathname values (for example: "/railyard/docs/v0.2/players").
 export const EMBED_DESCRIPTION_OVERRIDES: EmbedDescriptionOverrideMap = {
-  '/railyard/docs':
-    'Documentation for Railyard players and developers, including setup, publishing, and best practices.',
+  '/railyard/docs': 'All-in-one Map and Mod Manager for Subway Builder.',
   '/template-mod/docs':
-    'Documentation for Template Mod, including setup, architecture, and API usage patterns.',
-  '/railyard/updates':
-    'Changelogs and release notes for Railyard.',
+    'The all-inclusive TypeScript template to create your own mods for Subway Builder.',
+  '/railyard/updates': 'All-in-one Map and Mod Manager for Subway Builder.',
   '/template-mod/updates':
-    'Changelogs and release notes for Template Mod.',
+    'The all-inclusive TypeScript template to create your own mods for Subway Builder.',
 };
 
 export function resolveEmbedDescription(

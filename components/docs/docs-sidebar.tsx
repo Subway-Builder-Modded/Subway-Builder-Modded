@@ -112,9 +112,7 @@ function getInstanceBadgeScheme(instance: DocsInstance) {
 }
 
 function getNeutralInteractiveBackground(isDark: boolean, alpha: number) {
-  return isDark
-    ? `rgba(255, 255, 255, ${alpha})`
-    : `rgba(0, 0, 0, ${alpha})`;
+  return isDark ? `rgba(255, 255, 255, ${alpha})` : `rgba(0, 0, 0, ${alpha})`;
 }
 
 function getSwitcherRowBackground({
@@ -178,8 +176,7 @@ function VersionIcon({
   isDark: boolean;
 }) {
   const latest = isLatestVersion(instance, version.value);
-  const Icon =
-    version.icon ?? (latest ? Tag : Archive);
+  const Icon = version.icon ?? (latest ? Tag : Archive);
 
   return (
     <span
@@ -506,7 +503,7 @@ function getSidebarDepthTypographyClassName(depth: number) {
   return 'font-normal text-sm';
 }
 
-function getSidebarDepthToneClassName(depth: number) {
+function getSidebarDepthToneClassName() {
   return 'text-foreground';
 }
 
@@ -665,7 +662,7 @@ function SidebarNavEntry({
             showIndicator
               ? 'text-foreground'
               : cn(
-                  getSidebarDepthToneClassName(depth),
+                  getSidebarDepthToneClassName(),
                   'hover:bg-[var(--docs-sidebar-hover-bg)] hover:text-[var(--docs-sidebar-hover-fg)]',
                 ),
           )}
@@ -738,7 +735,7 @@ function SidebarNavEntry({
     showIndicator
       ? 'text-foreground'
       : cn(
-          getSidebarDepthToneClassName(depth),
+          getSidebarDepthToneClassName(),
           'hover:bg-[var(--docs-sidebar-hover-bg)] hover:text-[var(--docs-sidebar-hover-fg)]',
         ),
   );
@@ -955,7 +952,8 @@ function SidebarPanelContent({
 }
 
 const EDGE_GAP_PX = 24;
-const MOBILE_SIDEBAR_TOP_OFFSET = 'calc(var(--app-navbar-offset, 5.5rem) - 1.5rem)';
+const MOBILE_SIDEBAR_TOP_OFFSET =
+  'calc(var(--app-navbar-offset, 5.5rem) - 1.5rem)';
 const DESKTOP_SIDEBAR_TOP_GAP_PX = 12;
 
 function getNavbarOffset() {
@@ -1000,7 +998,10 @@ export function AppDocsSidebar({
       : 0;
     setSidebarLeft(Math.max(EDGE_GAP_PX, containerLeft + EDGE_GAP_PX));
 
-    const viewportBound = Math.max(220, window.innerHeight - idealTop - EDGE_GAP_PX);
+    const viewportBound = Math.max(
+      220,
+      window.innerHeight - idealTop - EDGE_GAP_PX,
+    );
     const footer = document.getElementById('site-footer');
     let maxHeight = viewportBound;
     if (footer) {

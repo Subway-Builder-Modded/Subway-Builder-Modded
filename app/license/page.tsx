@@ -26,9 +26,9 @@ const LICENSE_MDX_PATH = path.join(
 const NEUTRAL_ACCENT = SHARED_TEXT_COLOR;
 
 export const metadata: Metadata = buildEmbedMetadata({
-  title: 'License | Subway Builder Modded',
+  title: 'License',
   description:
-    'GNU General Public License v3.0 for Subway Builder Modded projects.',
+    'Terms and licensing information for Subway Builder Modded projects.',
 });
 
 export default async function LicensePage() {

@@ -96,15 +96,6 @@ export const FOOTER_NAV_SECTIONS: FooterNavSection[] = [
         href: '/license',
         icon: Scale,
       },
-      {
-        id: 'github',
-        label: 'GitHub',
-        href: 'https://github.com/Subway-Builder-Modded',
-        icon: {
-          type: 'mask',
-          src: '/assets/github.svg',
-        },
-      },
     ],
   },
   {

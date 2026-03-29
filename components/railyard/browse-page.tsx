@@ -151,7 +151,7 @@ export function BrowsePage() {
         <PageHeader
           icon={Compass}
           title="Browse"
-          description="Discover and install maps and mods for Subway Builder."
+          description="Discover and install community-made content for Subway Builder."
         />
         <CardSkeletonGrid count={12} />
       </div>
@@ -188,7 +188,7 @@ export function BrowsePage() {
         <PageHeader
           icon={Compass}
           title="Browse"
-          description="Discover and install maps and mods for Subway Builder."
+          description="Discover and install community-made content for Subway Builder."
         />
 
         {error && <ErrorBanner message={error} />}

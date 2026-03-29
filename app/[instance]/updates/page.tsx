@@ -33,12 +33,13 @@ export async function generateMetadata({
 
   if (!project) {
     return buildEmbedMetadata({
-      title: 'Updates | Subway Builder Modded',
-      description: 'Changelogs and release notes for Subway Builder Modded projects.',
+      title: 'Updates',
+      description:
+        'Changelogs and release notes for Subway Builder Modded projects.',
     });
   }
 
-  const title = `${project.label} Changelogs | Subway Builder Modded`;
+  const title = `Updates | ${project.label}`;
   const description = resolveEmbedDescription(
     project.basePath,
     `Changelogs and release notes for ${project.label}.`,

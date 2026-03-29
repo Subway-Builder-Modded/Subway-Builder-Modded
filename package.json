@@ -7,11 +7,11 @@
     "prebuild": "node --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/generate-github-release-cache.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "lint:strict": "eslint . --max-warnings=0",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "lint": "eslint --max-warnings=0",
+    "lint:fix": "eslint --max-warnings=0 --fix",
+    "check": "pnpm run lint && pnpm run format:check"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",

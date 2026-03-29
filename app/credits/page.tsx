@@ -12,9 +12,9 @@ import { CREDITS_PAGE_CONTENT } from '@/config/ui/site-content';
 import { hexAlpha } from '@/lib/color';
 
 export const metadata: Metadata = buildEmbedMetadata({
-  title: 'Credits | Subway Builder Modded',
+  title: 'Credits',
   description:
-    'Subway Builder Modded is a community-driven project made possible by dedicated contributors.',
+    'The people and contributors helping Subway Builder Modded move forward.',
 });
 
 const SECTION_ICON_MAP = CREDITS_PAGE_CONTENT.sectionIcons;

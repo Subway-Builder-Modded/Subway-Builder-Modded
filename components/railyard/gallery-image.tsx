@@ -1,6 +1,7 @@
 'use client';
 
 import { Package, MapPin } from 'lucide-react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGalleryImage } from '@/hooks/use-gallery-image';
@@ -42,7 +43,7 @@ export function GalleryImage({
   }
 
   return (
-    <img
+    <Image
       src={imageUrl}
       alt=""
       className={cn('w-full object-cover', className)}

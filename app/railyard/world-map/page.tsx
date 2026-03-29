@@ -6,7 +6,8 @@ import { buildEmbedMetadata } from '@/config/site/metadata';
 
 export const metadata: Metadata = buildEmbedMetadata({
   title: 'World Map | Railyard',
-  description: 'A plain, interactive 2D world map powered by MapLibre GL JS.',
+  description:
+    'Explore a map of all of the user-submitted maps available on Railyard.',
 });
 
 export default function WorldMapPage() {

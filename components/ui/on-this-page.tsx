@@ -51,7 +51,9 @@ export function DocsOnThisPage({ headings }: { headings: TocHeading[] }) {
     [pathname],
   );
   const [activeId, setActiveId] = React.useState<string>('');
-  const [visibleHeadings, setVisibleHeadings] = React.useState<TocHeading[]>([]);
+  const [visibleHeadings, setVisibleHeadings] = React.useState<TocHeading[]>(
+    [],
+  );
 
   React.useEffect(() => {
     setMounted(true);
