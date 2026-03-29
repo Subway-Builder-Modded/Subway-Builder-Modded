@@ -34,7 +34,7 @@ export async function generateMetadata({
   if (!project) {
     return buildEmbedMetadata({
       title: 'Updates | Subway Builder Modded',
-      description: 'Changelogs and release notes for Subway Builder Modded.',
+      description: 'Changelogs and release notes for Subway Builder Modded projects.',
     });
   }
 

@@ -9,7 +9,7 @@ import AppFooter from '@/components/layout/app-footer';
 import {
   resolveSiteMetadataBase,
   SITE_DESCRIPTION,
-  SITE_LOGO_PATH,
+  SITE_OG_IMAGE_PATH,
   SITE_NAME,
 } from '@/config/site/metadata';
 
@@ -18,11 +18,11 @@ export const metadata: Metadata = {
   title: SITE_NAME,
   description: SITE_DESCRIPTION,
   openGraph: {
-    images: [{ url: SITE_LOGO_PATH }],
+    images: [{ url: SITE_OG_IMAGE_PATH }],
   },
   twitter: {
     card: 'summary_large_image',
-    images: [SITE_LOGO_PATH],
+    images: [SITE_OG_IMAGE_PATH],
   },
 };
 
