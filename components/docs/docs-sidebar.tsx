@@ -490,7 +490,7 @@ function getSidebarDepthTypographyClassName(depth: number) {
 }
 
 function getSidebarDepthToneClassName(depth: number) {
-  return depth <= 1 ? 'text-foreground' : 'text-muted-foreground';
+  return 'text-foreground';
 }
 
 function SidebarDocsHeader({
