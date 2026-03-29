@@ -1,13 +1,20 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { TrainFront } from 'lucide-react';
 
 import { LineBullet } from '@/components/ui/line-bullet';
+import { buildNoEmbedMetadata } from '@/config/site/metadata';
 
 const LINES = [
   { id: '4', color: '#419245' },
   { id: '0', color: '#818284' },
   { id: '4', color: '#B3488F' },
 ] as const;
+
+export const metadata: Metadata = buildNoEmbedMetadata({
+  title: '404 | Subway Builder Modded',
+  description: 'The requested page could not be found.',
+});
 
 export default function NotFound() {
   return (

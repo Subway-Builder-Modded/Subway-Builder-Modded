@@ -1,14 +1,35 @@
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { ProjectPage } from '@/components/railyard/project-page';
-
-const BASE_URL =
-  'https://raw.githubusercontent.com/Subway-Builder-Modded/The-Railyard/main';
+import { buildNoEmbedMetadata } from '@/config/site/metadata';
+import {
+  buildRailyardProjectEmbedMetadata,
+  getRegistryStaticIds,
+} from '@/lib/railyard/registry.server';
 
 export async function generateStaticParams() {
-  const res = await fetch(`${BASE_URL}/maps/index.json`);
-  const data = await res.json();
-  const ids: string[] = data.maps ?? [];
+  const ids = await getRegistryStaticIds('maps');
   return ids.map((id) => ({ id }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const metadata = await buildRailyardProjectEmbedMetadata({
+    type: 'maps',
+    id,
+  });
+
+  return (
+    metadata ??
+    buildNoEmbedMetadata({
+      title: 'Not Found | Railyard',
+      description: 'This Railyard project could not be found.',
+    })
+  );
 }
 
 export default async function MapProjectPage({

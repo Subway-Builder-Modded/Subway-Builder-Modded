@@ -1,4 +1,4 @@
-name: Deploy Subway Builder Site
+name: Deploy Site
 
 on:
   push:

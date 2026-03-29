@@ -54,3 +54,37 @@ export function buildEmbedMetadata({
     },
   };
 }
+
+export function buildNoEmbedMetadata({
+  title,
+  description,
+}: {
+  title: string;
+  description?: string;
+}): Metadata {
+  return {
+    title,
+    description,
+    robots: {
+      index: false,
+      follow: false,
+      nocache: true,
+      googleBot: {
+        index: false,
+        follow: false,
+        noimageindex: true,
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      images: [],
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+      images: [],
+    },
+  };
+}
