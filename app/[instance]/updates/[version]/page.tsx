@@ -11,9 +11,9 @@ import remarkFlexibleCodeTitles from 'remark-flexible-code-titles';
 import remarkGfm from 'remark-gfm';
 import { remarkHeadingId } from 'remark-custom-heading-id';
 
-import { HomeLinkButton } from '@/components/home/home-link-button';
-import { ReleaseTagBadge } from '@/components/updates/release-tag-badge';
-import { UpdateSection } from '@/components/updates/update-section';
+import { HomeLinkButton } from '@/features/home/components/home-link-button';
+import { ReleaseTagBadge } from '@/features/updates/components/release-tag-badge';
+import { UpdateSection } from '@/features/updates/components/update-section';
 import { ThemedShowcaseCard } from '@/components/ui/themed-showcase-card';
 import { getUpdateProjectById } from '@/config/content/updates';
 import { resolveEmbedDescription } from '@/config/site/embed-descriptions';

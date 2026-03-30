@@ -9,7 +9,7 @@ import {
   HOME_PROJECT_SECTION,
 } from '@/config/site/homepage';
 
-vi.mock('@/components/home/home-hero-background', () => ({
+vi.mock('@/features/home/components/home-hero-background', () => ({
   HomeHeroBackground: ({ alt }: { alt: string }) => (
     <div data-testid="home-hero-background" aria-label={alt} />
   ),

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { ProjectPage } from '@/components/railyard/project-page';
+import { ProjectPage } from '@/features/railyard/components/project-page';
 import { buildNoEmbedMetadata } from '@/config/site/metadata';
 import {
   buildRailyardProjectEmbedMetadata,

@@ -4,7 +4,7 @@ import { ExternalLink, type LucideIcon } from 'lucide-react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-import { PageHeader } from '@/components/page/page-header';
+import { PageHeader } from '@/components/shared/page-header';
 import { ThemedShowcaseCard } from '@/components/ui/themed-showcase-card';
 import { CREDIT_SECTIONS, type CreditSection } from '@/config/content/credits';
 import { buildEmbedMetadata } from '@/config/site/metadata';

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
-import { DocsSidebarShell } from '@/components/docs/docs-sidebar';
+import { DocsSidebarShell } from '@/features/docs/components/docs-sidebar';
 import { resolveDocsRouteForInstance } from '@/lib/docs/shared';
 import { getAllDocsDocSlugs, getSidebarTree } from '@/lib/docs/server';
 

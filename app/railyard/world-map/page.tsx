@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Globe } from 'lucide-react';
-import { WorldMap } from '@/components/railyard/world-map';
-import { PageHeader } from '@/components/page/page-header';
+import { WorldMap } from '@/features/railyard/components/world-map';
+import { PageHeader } from '@/components/shared/page-header';
 import { buildEmbedMetadata } from '@/config/site/metadata';
 
 export const metadata: Metadata = buildEmbedMetadata({
