@@ -14,9 +14,12 @@ export const dynamic = 'force-static';
 
 export async function generateStaticParams() {
   const data = loadRegistryAnalytics();
-  return data.authors.map((a) => ({
+  const params = data.authors.map((a) => ({
     author: a.author,
   }));
+  if (params.length > 0) return params;
+  // Static export fallback when analytics files are unavailable in CI.
+  return [{ author: '__registry-data-unavailable__' }];
 }
 
 export async function generateMetadata({
