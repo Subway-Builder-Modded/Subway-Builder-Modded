@@ -10,12 +10,21 @@ import {
 } from '@/config/site/metadata';
 import type { ListingType } from '@/types/registry-analytics';
 
-export function generateStaticParams() {
+export const dynamicParams = false;
+export const dynamic = 'force-static';
+
+export async function generateStaticParams() {
   const data = loadRegistryAnalytics();
-  return data.allTime.map((r) => ({
+  const params = data.allTime.map((r) => ({
     type: r.listing_type,
     id: r.id,
   }));
+  if (params.length > 0) return params;
+  // Static export fallback when analytics files are unavailable in CI.
+  return [
+    { type: 'mod', id: '__registry-data-unavailable__' },
+    { type: 'map', id: '__registry-data-unavailable__' },
+  ];
 }
 
 export async function generateMetadata({

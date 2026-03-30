@@ -1,4 +1,4 @@
-import { readFileSync, statSync } from 'fs';
+import { existsSync, readFileSync, statSync } from 'fs';
 import path from 'path';
 import type {
   DailyDataPoint,
@@ -74,16 +74,47 @@ function parseCSV(text: string): Record<string, string>[] {
   });
 }
 
-const ANALYTICS_DIR = path.join(
-  process.cwd(),
-  '..',
-  'The-Railyard',
-  'analytics',
-);
+function resolveAnalyticsDir(): string {
+  const envDir = process.env['REGISTRY_ANALYTICS_DIR']?.trim();
+  const candidates = [
+    envDir || '',
+    path.join(process.cwd(), '..', 'The-Railyard', 'analytics'),
+    path.join(process.cwd(), 'The-Railyard', 'analytics'),
+    path.join(process.cwd(), 'analytics'),
+    path.join(process.cwd(), 'public', 'analytics'),
+  ].filter(Boolean);
+
+  for (const dir of candidates) {
+    if (existsSync(path.join(dir, 'most_popular_all_time.csv'))) {
+      return dir;
+    }
+  }
+
+  // Keep a stable fallback path for callers; readFile() handles missing files safely.
+  return path.join(process.cwd(), 'analytics');
+}
+
+const ANALYTICS_DIR = resolveAnalyticsDir();
+let warnedMissingAnalytics = false;
 
 function readFile(filename: string): Record<string, string>[] {
-  const text = readFileSync(path.join(ANALYTICS_DIR, filename), 'utf-8');
-  return parseCSV(text);
+  const fullPath = path.join(ANALYTICS_DIR, filename);
+  try {
+    const text = readFileSync(fullPath, 'utf-8');
+    return parseCSV(text);
+  } catch (error) {
+    const err = error as NodeJS.ErrnoException;
+    if (err.code === 'ENOENT') {
+      if (!warnedMissingAnalytics) {
+        warnedMissingAnalytics = true;
+        console.warn(
+          `[registry] Analytics directory not found or incomplete at "${ANALYTICS_DIR}". Building with empty registry data.`,
+        );
+      }
+      return [];
+    }
+    throw error;
+  }
 }
 
 function readAuthorAlias(row: Record<string, string>): string {
