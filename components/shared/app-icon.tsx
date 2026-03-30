@@ -89,7 +89,6 @@ export function AppIcon({
       aria-hidden={decorative}
       aria-label={ariaLabel}
       role={decorative ? undefined : 'img'}
-      title={title}
       className={commonClassName}
       style={commonStyle}
       size={size}
