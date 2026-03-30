@@ -1,6 +1,4 @@
-import type { ProjectColorId } from '@/config/theme/colors';
-
-export type SiteColorSchemeId = 'default' | ProjectColorId;
+import type { SiteColorSchemeId } from '@/config/theme/contracts';
 
 export type SiteColorSchemeRouteRule = {
   pattern: string;

@@ -1,4 +1,5 @@
-import type { LucideIcon } from 'lucide-react';
+import type { AppIconValue } from '@/lib/icons';
+import type { ProjectColorId } from '@/config/theme/contracts';
 
 export type NavbarPosition = 'left' | 'right';
 
@@ -18,23 +19,11 @@ export type NavbarModeColor = {
   dark: string;
 };
 
-export type NavbarMaskIcon = {
-  type: 'mask';
-  src: string;
-};
-
-export type NavbarImageIcon = {
-  type: 'image';
-  src: string;
-};
-
-export type NavbarIcon = LucideIcon | NavbarMaskIcon | NavbarImageIcon;
-
 export type NavbarDropdownItem = {
   id: string;
   title?: string;
   href?: string;
-  icon?: NavbarIcon;
+  icon?: AppIconValue;
   colors?: NavbarItemColors;
   color?: NavbarItemColors;
 };
@@ -43,7 +32,7 @@ export type NavbarItem = {
   id: string;
   title?: string;
   href?: string;
-  icon?: NavbarIcon;
+  icon?: AppIconValue;
   position: NavbarPosition;
   colors?: NavbarItemColors;
   color?: NavbarItemColors;
@@ -86,7 +75,7 @@ export type AppNavbarDropdownItem = {
   title?: string;
   href?: string;
   activeMatchPaths?: string[];
-  icon?: NavbarIcon;
+  icon?: AppIconValue;
   schemeId?: NavbarColorSchemeId;
   action?: NavbarAction;
 };
@@ -95,7 +84,7 @@ export type AppNavbarItem = {
   id: string;
   title?: string;
   href?: string;
-  icon?: NavbarIcon;
+  icon?: AppIconValue;
   position: NavbarPosition;
   schemeId?: NavbarColorSchemeId;
   presentation?: AppNavbarItemPresentation;
@@ -110,7 +99,7 @@ export type AppNavbarItemPresentation = {
 export type AppNavbarBrand = {
   title: string;
   href: string;
-  icon: NavbarIcon;
+  icon: AppIconValue;
 };
 
 export type AppNavbarSizing = {
@@ -155,10 +144,7 @@ export type AppNavbarConfig = {
 };
 
 export type NavbarColorSchemeId =
-  | 'railyard'
-  | 'registry'
-  | 'template-mod'
-  | 'website'
+  | ProjectColorId
   | 'themeLight'
   | 'themeDark'
   | 'themeSystem';

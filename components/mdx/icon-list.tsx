@@ -1,32 +1,23 @@
 import * as React from 'react';
-import * as LucideIcons from 'lucide-react';
-import type { LucideIcon, LucideProps } from 'lucide-react';
-
+import type { LucideProps } from 'lucide-react';
+import { AppIcon } from '@/components/shared/app-icon';
+import { resolveAppIcon, type AppIconInput } from '@/lib/icons';
 import { cn } from '@/lib/utils';
 
 type IconListProps = React.ComponentProps<'div'>;
 
 type IconItemProps = Omit<React.ComponentProps<'div'>, 'color'> & {
-  icon: LucideIcon | keyof typeof LucideIcons;
+  icon: AppIconInput;
   iconProps?: LucideProps;
 } & Pick<
     LucideProps,
     'color' | 'size' | 'strokeWidth' | 'absoluteStrokeWidth' | 'fill'
   >;
 
-function isRenderableComponent(value: unknown): value is LucideIcon {
-  return (
-    typeof value === 'function' || (typeof value === 'object' && value !== null)
-  );
-}
-
-function resolveLucideIcon(icon: IconItemProps['icon']): LucideIcon | null {
-  if (isRenderableComponent(icon)) {
-    return icon as LucideIcon;
-  }
-
-  const maybeIcon = LucideIcons[icon];
-  return isRenderableComponent(maybeIcon) ? (maybeIcon as LucideIcon) : null;
+function resolveIconSize(size: LucideProps['size']) {
+  if (typeof size === 'number') return size;
+  if (typeof size === 'string' && size.trim()) return size;
+  return '1em';
 }
 
 export function IconList({ className, ...props }: IconListProps) {
@@ -52,8 +43,8 @@ export function IconItem({
   className,
   ...props
 }: IconItemProps) {
-  const Icon = resolveLucideIcon(icon);
-  const resolvedFill = iconProps?.fill ?? fill ?? 'none';
+  const resolvedIcon = resolveAppIcon(icon);
+  const resolvedSize = resolveIconSize(size ?? iconProps?.size);
 
   return (
     <div
@@ -65,16 +56,19 @@ export function IconItem({
       )}
       {...props}
     >
-      {Icon ? (
-        <Icon
-          aria-hidden="true"
-          size={size ?? '1em'}
-          color={color}
-          strokeWidth={strokeWidth}
-          absoluteStrokeWidth={absoluteStrokeWidth}
-          fill={resolvedFill}
+      {resolvedIcon ? (
+        <AppIcon
+          icon={resolvedIcon}
           className="mt-[0.45em] inline-block align-[-0.125em]"
-          {...iconProps}
+          size={resolvedSize}
+          style={{ color }}
+          lucideProps={{
+            color,
+            strokeWidth,
+            absoluteStrokeWidth,
+            fill: iconProps?.fill ?? fill ?? 'none',
+            ...iconProps,
+          }}
         />
       ) : (
         <span aria-hidden="true" className="inline-block h-[1em] w-[1em]" />

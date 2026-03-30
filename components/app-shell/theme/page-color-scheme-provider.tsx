@@ -1,13 +1,7 @@
 'use client';
 
-import { createContext } from 'react';
 import { usePathname } from 'next/navigation';
-import {
-  resolveSiteColorScheme,
-  type SiteColorSchemeId,
-} from '@/config/theme/scheme-config';
-
-const PageColorSchemeContext = createContext<SiteColorSchemeId>('default');
+import { resolveSiteColorScheme } from '@/config/theme/route-schemes';
 
 export function PageColorSchemeProvider({
   children,
@@ -18,10 +12,8 @@ export function PageColorSchemeProvider({
   const scheme = resolveSiteColorScheme(pathname ?? '/');
 
   return (
-    <PageColorSchemeContext value={scheme}>
-      <div data-color-scheme={scheme} className="min-h-screen">
-        {children}
-      </div>
-    </PageColorSchemeContext>
+    <div data-color-scheme={scheme} className="min-h-screen">
+      {children}
+    </div>
   );
 }
