@@ -76,7 +76,7 @@ const DEFAULT_COLORS = [
 
 type ChartContextProps = {
   config: ChartConfig;
-  data?: Record<string, any>[];
+  data?: ChartDataPoint[];
   layout: ChartLayout;
   dataKey?: string;
   selectedLegend: string | null;
@@ -167,7 +167,7 @@ interface BaseChartProps<
 > extends React.HTMLAttributes<HTMLDivElement> {
   containerHeight?: number;
   config: ChartConfig;
-  data: Record<string, any>[];
+  data: ChartDataPoint[];
   dataKey: string;
   colors?: readonly (ChartColorKeys | (string & {}))[];
   type?: ChartType;
@@ -275,6 +275,8 @@ const Chart = ({
   );
 };
 
+type ChartDataPoint = Record<string, unknown>;
+
 const THEMES = { light: '', dark: '.dark' } as const;
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
@@ -375,7 +377,10 @@ const XAxis = ({
 
   const ticks =
     displayEdgeLabelsOnly && data?.length && dataKey
-      ? [data[0]?.[dataKey], data[data.length - 1]?.[dataKey]]
+      ? [data[0]?.[dataKey], data[data.length - 1]?.[dataKey]].filter(
+          (value): value is string | number =>
+            typeof value === 'string' || typeof value === 'number',
+        )
       : undefined;
 
   const tick = layout === 'horizontal' ? tickHorizontal : undefined;
@@ -622,7 +627,7 @@ type ChartLegendContentProps = ToggleButtonGroupProps &
     payload?: ReadonlyArray<LegendPayload>;
     hideIcon?: boolean;
     nameKey?: string;
-    ref?: React.Ref<any>;
+    ref?: React.Ref<HTMLDivElement>;
   };
 
 const ChartLegendContent = ({

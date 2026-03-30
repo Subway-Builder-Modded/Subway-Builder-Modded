@@ -928,7 +928,7 @@ function SidebarPanelContent({
 
       <div
         ref={scrollRef}
-        className="sidebar-scroll min-h-0 flex-1 overflow-y-auto overflow-x-clip px-[clamp(0.65rem,1.4vw,1rem)] py-2.5"
+        className="min-h-0 flex-1 overflow-y-auto overflow-x-clip px-[clamp(0.65rem,1.4vw,1rem)] py-2.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         onWheelCapture={(e) => e.stopPropagation()}
       >
         <nav aria-label="Docs navigation">

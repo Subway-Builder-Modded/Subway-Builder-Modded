@@ -3,15 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
+    "dev:turbo": "next dev",
     "prebuild": "node --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/generate-github-release-cache.mjs",
     "build": "next build",
     "start": "next start",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "lint": "eslint --max-warnings=0",
-    "lint:fix": "eslint --max-warnings=0 --fix",
-    "check": "pnpm run lint && pnpm run format:check"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "format": "prettier --write \"**/*.{ts,tsx,mdx}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\"",
+    "lint": "eslint --max-warnings=0 --no-error-on-unmatched-pattern \"**/*.{ts,tsx,mdx}\"",
+    "lint:fix": "eslint --max-warnings=0 --fix --no-error-on-unmatched-pattern \"**/*.{ts,tsx,mdx}\"",
+    "check": "pnpm run lint && pnpm run format:check && pnpm run test && pnpm run test:coverage"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
@@ -37,7 +41,7 @@
     "lucide-react": "^0.577.0",
     "maplibre-gl": "^5.21.0",
     "motion": "^12.35.0",
-    "next": "16.1.6",
+    "next": "16.2.1",
     "next-mdx-remote": "^6.0.0",
     "next-themes": "^0.4.6",
     "radix-ui": "^1.4.3",
@@ -66,17 +70,23 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "eslint-config-prettier": "^10.1.8",
+    "jsdom": "^26.1.0",
     "prettier": "^3.8.1",
     "remark-mdx": "^3.1.1",
     "remark-parse": "^11.0.0",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "unified": "^11.0.5"
+    "unified": "^11.0.5",
+    "vitest": "^3.2.4"
   }
 }

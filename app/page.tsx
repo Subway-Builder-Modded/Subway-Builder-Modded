@@ -1,11 +1,10 @@
-'use client';
-
-import Image from 'next/image';
-import { motion, useScroll, useTransform } from 'motion/react';
-import type { ReactNode } from 'react';
-
+import { HomeHeroBackground } from '@/components/home/home-hero-background';
 import { HomeLinkButton } from '@/components/home/home-link-button';
 import { HomeProjectCardView } from '@/components/home/home-project-card';
+import {
+  HomeSectionDivider,
+  HomeSectionShell,
+} from '@/components/home/home-sections';
 import {
   HOME_COMMUNITY_SECTION,
   HOME_HERO,
@@ -15,55 +14,7 @@ import {
   HOME_THEME,
 } from '@/config/site/homepage';
 
-function SectionShell({
-  title,
-  description,
-  children,
-}: {
-  title: string;
-  description?: string;
-  children: ReactNode;
-}) {
-  return (
-    <section className="relative z-10 px-[clamp(1.25rem,4.5vw,3.5rem)]">
-      <div className="w-full overflow-hidden rounded-[2rem] border border-border/70 bg-gradient-to-br from-background/96 via-background/90 to-background/84 px-[clamp(1.1rem,3.6vw,2.4rem)] py-14 shadow-md backdrop-blur-md sm:py-16">
-        <div className="w-full">
-          <div className="flex items-center gap-4">
-            <h2 className="text-xl font-bold tracking-tight text-foreground">
-              {title}
-            </h2>
-            <div className="h-px flex-1 bg-border" />
-          </div>
-          {description ? (
-            <p className="mt-3 w-full text-sm text-muted-foreground sm:text-base">
-              {description}
-            </p>
-          ) : null}
-          <div className="mt-8">{children}</div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function SectionDivider() {
-  return (
-    <div
-      className="relative z-10 px-[clamp(1.25rem,4.5vw,3.5rem)] py-7 sm:py-8"
-      aria-hidden="true"
-    >
-      <div className="w-full">
-        <div className="h-px bg-border/70" />
-      </div>
-    </div>
-  );
-}
-
 export default function Page() {
-  const { scrollY } = useScroll();
-  const heroScale = useTransform(scrollY, [-240, 0, 900], [1, 1, 1.32]);
-  const heroY = useTransform(scrollY, [-240, 0, 900], [0, 0, -140]);
-
   return (
     <main
       className="relative min-h-screen text-foreground"
@@ -72,28 +23,11 @@ export default function Page() {
         ['--home-accent-dark' as string]: HOME_THEME.accent.dark,
       }}
     >
-      <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
-        <motion.div
-          className="absolute inset-0"
-          style={{ scale: heroScale, y: heroY }}
-        >
-          <Image
-            src={HOME_HERO.backgroundImage.light}
-            alt={HOME_HERO.backgroundImage.alt}
-            fill
-            priority
-            className="object-cover brightness-[1.12] blur-[6px] dark:hidden"
-          />
-          <Image
-            src={HOME_HERO.backgroundImage.dark}
-            alt={HOME_HERO.backgroundImage.alt}
-            fill
-            priority
-            className="hidden object-cover brightness-[0.72] blur-[6px] dark:block"
-          />
-        </motion.div>
-        <div className="absolute inset-0 bg-white/14 dark:bg-black/30" />
-      </div>
+      <HomeHeroBackground
+        lightSrc={HOME_HERO.backgroundImage.light}
+        darkSrc={HOME_HERO.backgroundImage.dark}
+        alt={HOME_HERO.backgroundImage.alt}
+      />
 
       <section className="relative z-20 h-[calc(100svh-clamp(3.75rem,6vh,4.75rem))] overflow-hidden px-[clamp(0.85rem,3.5vw,2.4rem)] pt-[clamp(2.25rem,4.3vh,3.8rem)] pb-[clamp(0.45rem,1vh,0.85rem)] mb-[clamp(4rem,9vh,8.5rem)]">
         <div className="grid h-full w-full grid-rows-[minmax(0,1fr)_auto] gap-[clamp(0.4rem,1vh,0.75rem)] overflow-visible -translate-y-[clamp(0.6rem,1.8vh,1.5rem)]">
@@ -127,7 +61,7 @@ export default function Page() {
         </div>
       </section>
 
-      <SectionShell
+      <HomeSectionShell
         title={HOME_PROJECT_SECTION.title}
         description={HOME_PROJECT_SECTION.description}
       >
@@ -140,11 +74,11 @@ export default function Page() {
             />
           ))}
         </div>
-      </SectionShell>
+      </HomeSectionShell>
 
-      <SectionDivider />
+      <HomeSectionDivider />
 
-      <SectionShell
+      <HomeSectionShell
         title={HOME_OPEN_SOURCE_SECTION.title}
         description={HOME_OPEN_SOURCE_SECTION.description}
       >
@@ -168,11 +102,11 @@ export default function Page() {
             </div>
           </div>
         </div>
-      </SectionShell>
+      </HomeSectionShell>
 
-      <SectionDivider />
+      <HomeSectionDivider />
 
-      <SectionShell
+      <HomeSectionShell
         title={HOME_COMMUNITY_SECTION.title}
         description={HOME_COMMUNITY_SECTION.description}
       >
@@ -181,7 +115,7 @@ export default function Page() {
             <HomeLinkButton key={link.label} link={link} />
           ))}
         </div>
-      </SectionShell>
+      </HomeSectionShell>
 
       <div className="h-16" />
     </main>

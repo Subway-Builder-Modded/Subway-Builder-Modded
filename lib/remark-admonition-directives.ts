@@ -17,34 +17,63 @@ const DIRECTIVE_COMPONENT_MAP: Record<string, string> = {
   tab: 'Tab',
 };
 
-function extractTitle(node: any) {
+type DirectiveAttributeValue = string | boolean | null | undefined;
+
+type GenericNode = {
+  type: string;
+  [key: string]: unknown;
+};
+
+type DirectiveNode = GenericNode & {
+  type: 'containerDirective' | 'leafDirective' | 'textDirective';
+  name?: string;
+  label?: string;
+  attributes?: Record<string, DirectiveAttributeValue>;
+};
+
+type MdxJsxAttributeNode = {
+  type: 'mdxJsxAttribute';
+  name: string;
+  value: string | boolean;
+};
+
+type MdxJsxFlowElementNode = GenericNode & {
+  type: 'mdxJsxFlowElement';
+  name: string;
+  attributes: MdxJsxAttributeNode[];
+};
+
+function isDirectiveNode(node: GenericNode): node is DirectiveNode {
+  return (
+    node.type === 'containerDirective' ||
+    node.type === 'leafDirective' ||
+    node.type === 'textDirective'
+  );
+}
+
+function extractTitle(node: DirectiveNode) {
   if (node.label) return node.label;
   if (node.attributes?.title) return node.attributes.title;
   if (node.attributes?.label) return node.attributes.label;
   return null;
 }
 
-function hasFlag(node: any, flag: string) {
+function hasFlag(node: DirectiveNode, flag: string) {
   const attrs = node.attributes ?? {};
   return attrs[flag] === '' || attrs[flag] === true || attrs[flag] === 'true';
 }
 
 export default function remarkAdmonitionDirectives() {
-  return (tree: any) => {
-    visit(tree, (node: any) => {
-      if (
-        node.type !== 'containerDirective' &&
-        node.type !== 'leafDirective' &&
-        node.type !== 'textDirective'
-      ) {
-        return;
-      }
+  return (tree: GenericNode) => {
+    visit(tree, (node) => {
+      if (!isDirectiveNode(node)) return;
 
-      const componentName = DIRECTIVE_COMPONENT_MAP[node.name];
+      const directiveName = typeof node.name === 'string' ? node.name : '';
+      const componentName = DIRECTIVE_COMPONENT_MAP[directiveName];
       if (!componentName) return;
 
       const title = extractTitle(node);
-      const attributes: any[] = [];
+      const attributes: MdxJsxAttributeNode[] = [];
 
       if (title) {
         attributes.push({
@@ -99,9 +128,10 @@ export default function remarkAdmonitionDirectives() {
         });
       }
 
-      node.type = 'mdxJsxFlowElement';
-      node.name = componentName;
-      node.attributes = attributes;
+      const mdxNode = node as unknown as MdxJsxFlowElementNode;
+      mdxNode.type = 'mdxJsxFlowElement';
+      mdxNode.name = componentName;
+      mdxNode.attributes = attributes;
     });
   };
 }
