@@ -14,4 +14,3 @@ describe('mdx platform utils', () => {
     expect(toDimension('abc')).toBeUndefined();
   });
 });
-

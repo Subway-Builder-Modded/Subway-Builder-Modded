@@ -98,9 +98,7 @@ export function LineBullet({
         hoverColorOverride,
       )
     : {
-        ...getCurrentSuiteModeHex(
-          resolvedHoverColorRole ?? resolvedColorRole,
-        ),
+        ...getCurrentSuiteModeHex(resolvedHoverColorRole ?? resolvedColorRole),
         ...hoverColorOverride,
       };
 

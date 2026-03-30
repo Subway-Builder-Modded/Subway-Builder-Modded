@@ -19,4 +19,3 @@ export type SiteColorSchemeId = (typeof SITE_COLOR_SCHEME_IDS)[number];
 export function isProjectColorId(value: string): value is ProjectColorId {
   return PROJECT_COLOR_IDS.includes(value as ProjectColorId);
 }
-

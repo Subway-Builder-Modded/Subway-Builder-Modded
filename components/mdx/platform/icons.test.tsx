@@ -10,7 +10,9 @@ describe('MdxIcon', () => {
 
   it('renders shared asset icons by registry name', () => {
     render(<MdxIcon name="github" />);
-    expect(document.querySelector('[style*="/assets/github.svg"]')).toBeTruthy();
+    expect(
+      document.querySelector('[style*="/assets/github.svg"]'),
+    ).toBeTruthy();
   });
 
   it('uses fallback and warns for invalid icon names', () => {
@@ -18,7 +20,9 @@ describe('MdxIcon', () => {
       .spyOn(console, 'warn')
       .mockImplementation(() => undefined);
 
-    render(<MdxIcon name="nope-icon" fallback={<span data-testid="fallback" />} />);
+    render(
+      <MdxIcon name="nope-icon" fallback={<span data-testid="fallback" />} />,
+    );
     expect(screen.getByTestId('fallback')).toBeInTheDocument();
     expect(consoleWarnSpy).toHaveBeenCalledWith(
       '[MDX Icon] Unknown icon "nope-icon".',

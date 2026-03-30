@@ -10,4 +10,3 @@ describe('mdx component registry', () => {
     expect(typeof registry.Tabs).toBe('function');
   });
 });
-

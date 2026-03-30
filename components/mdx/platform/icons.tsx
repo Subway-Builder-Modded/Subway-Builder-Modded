@@ -64,4 +64,3 @@ export const mdxIconComponents: MDXComponents = {
   Icon: MdxIcon,
   SiteIcon: MdxIcon,
 };
-

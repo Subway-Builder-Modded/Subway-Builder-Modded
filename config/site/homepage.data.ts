@@ -214,4 +214,3 @@ export const HOME_COMMUNITY_SECTION = {
     },
   ] satisfies HomeLink[],
 } as const;
-

@@ -30,4 +30,3 @@ export const mdxAdmonitionComponents: MDXComponents = {
   Example,
   Announcement,
 };
-

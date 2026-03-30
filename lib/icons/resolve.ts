@@ -29,8 +29,7 @@ export function isImageIcon(
 
 export function isLucideIcon(icon: AppIconDefinition): icon is LucideIcon {
   return (
-    typeof icon === 'function' ||
-    (typeof icon === 'object' && icon !== null)
+    typeof icon === 'function' || (typeof icon === 'object' && icon !== null)
   );
 }
 

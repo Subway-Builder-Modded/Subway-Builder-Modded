@@ -57,4 +57,3 @@ export function resolveSiteColorScheme(pathname: string): SiteColorSchemeId {
 
   return 'default';
 }
-

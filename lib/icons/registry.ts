@@ -15,4 +15,3 @@ export const APP_ICON_ALIASES: Record<string, AppIconRegistryName> = {
   'github-mask': 'github',
   'subway-builder': 'subwayBuilder',
 };
-

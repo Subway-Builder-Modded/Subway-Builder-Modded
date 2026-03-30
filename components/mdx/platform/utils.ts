@@ -38,4 +38,3 @@ export function toDimension(value: number | string | undefined) {
 
   return undefined;
 }
-
