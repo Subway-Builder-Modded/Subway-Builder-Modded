@@ -10,6 +10,8 @@ import {
 } from '@/config/site/metadata';
 import type { ListingType } from '@/types/registry-analytics';
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   const data = loadRegistryAnalytics();
   return data.allTime.map((r) => ({

@@ -9,6 +9,8 @@ import {
   buildNoEmbedMetadata,
 } from '@/config/site/metadata';
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   const data = loadRegistryAnalytics();
   return data.authors.map((a) => ({
