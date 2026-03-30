@@ -13,6 +13,9 @@ interface GalleryImageProps {
   className?: string;
 }
 
+const FALLBACK_IMAGE_WIDTH = 1280;
+const FALLBACK_IMAGE_HEIGHT = 720;
+
 export function GalleryImage({
   type,
   id,
@@ -46,6 +49,8 @@ export function GalleryImage({
     <Image
       src={imageUrl}
       alt=""
+      width={FALLBACK_IMAGE_WIDTH}
+      height={FALLBACK_IMAGE_HEIGHT}
       className={cn('w-full object-cover', className)}
       loading="lazy"
       decoding="async"

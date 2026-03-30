@@ -1,0 +1,24 @@
+import { describe, expect, it } from 'vitest';
+import { resolveSiteColorScheme } from '@/config/theme/scheme-config';
+
+describe('resolveSiteColorScheme', () => {
+  it('resolves project schemes for matching paths', () => {
+    expect(resolveSiteColorScheme('/railyard')).toBe('railyard');
+    expect(resolveSiteColorScheme('/railyard/docs')).toBe('railyard');
+    expect(resolveSiteColorScheme('/template-mod')).toBe('template-mod');
+    expect(resolveSiteColorScheme('/template-mod/updates/v1.0.0')).toBe(
+      'template-mod',
+    );
+  });
+
+  it('normalizes missing leading slash and trailing slash', () => {
+    expect(resolveSiteColorScheme('railyard/docs')).toBe('railyard');
+    expect(resolveSiteColorScheme('/railyard/')).toBe('railyard');
+  });
+
+  it('falls back to default for non-matching routes', () => {
+    expect(resolveSiteColorScheme('/')).toBe('default');
+    expect(resolveSiteColorScheme('/docs')).toBe('default');
+    expect(resolveSiteColorScheme('/registry')).toBe('default');
+  });
+});
