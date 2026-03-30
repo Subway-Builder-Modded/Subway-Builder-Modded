@@ -1,4 +1,4 @@
-import RailyardPage from '@/components/railyard/railyard-page';
+import RailyardPage from '@/features/railyard/components/railyard-page';
 
 export default function Page() {
   return <RailyardPage />;

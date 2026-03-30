@@ -4,8 +4,8 @@ import { notFound } from 'next/navigation';
 import { ChevronRight, Megaphone } from 'lucide-react';
 import type { CSSProperties } from 'react';
 
-import { PageHeader } from '@/components/page/page-header';
-import { ReleaseTagBadge } from '@/components/updates/release-tag-badge';
+import { PageHeader } from '@/components/shared/page-header';
+import { ReleaseTagBadge } from '@/features/updates/components/release-tag-badge';
 import { ThemedShowcaseCard } from '@/components/ui/themed-showcase-card';
 import {
   getUpdateProjectById,

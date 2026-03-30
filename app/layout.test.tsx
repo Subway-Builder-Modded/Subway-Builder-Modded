@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { AppLayoutShell } from '@/app/layout';
+import { AppLayoutShell } from '@/components/app-shell/root-layout-shell';
 
-vi.mock('@/components/navigation/app-navbar', () => ({
+vi.mock('@/components/app-shell/navigation/app-navbar', () => ({
   default: () => <nav data-testid="app-navbar">Navbar</nav>,
 }));
 
-vi.mock('@/components/layout/app-footer', () => ({
+vi.mock('@/components/app-shell/footer/app-footer', () => ({
   default: () => <div data-testid="app-footer">Footer</div>,
 }));
 
@@ -15,21 +15,21 @@ vi.mock('@/components/ui/footer-bars', () => ({
   FooterBars: () => <div data-testid="footer-bars">Bars</div>,
 }));
 
-vi.mock('@/components/navigation/scroll-restoration', () => ({
+vi.mock('@/components/app-shell/navigation/scroll-restoration', () => ({
   ScrollRestoration: () => <div data-testid="scroll-restoration" />,
 }));
 
-vi.mock('@/components/theme/theme-hydration-script', () => ({
+vi.mock('@/components/app-shell/theme/theme-hydration-script', () => ({
   ThemeHydrationScript: () => <script data-testid="theme-hydration-script" />,
 }));
 
-vi.mock('@/components/theme/theme-provider', () => ({
+vi.mock('@/components/app-shell/theme/theme-provider', () => ({
   ThemeProvider: ({ children }: { children: React.ReactNode }) => (
     <>{children}</>
   ),
 }));
 
-vi.mock('@/components/theme/page-color-scheme-provider', () => ({
+vi.mock('@/components/app-shell/theme/page-color-scheme-provider', () => ({
   PageColorSchemeProvider: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="page-color-scheme-provider">{children}</div>
   ),

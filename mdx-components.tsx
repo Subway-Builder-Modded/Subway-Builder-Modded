@@ -7,9 +7,12 @@ import type { LucideIcon, LucideProps } from 'lucide-react';
 import { Tabs, TabItem } from '@/components/mdx/mdx-tabs';
 import { IconList, IconItem } from '@/components/mdx/icon-list';
 import { CodeBlock } from '@/components/mdx/code-block';
-import { DocsCardGrid, DocsCard } from '@/components/docs/docs-home-cards';
-import { RailyardTaggingRegions } from '@/components/docs/railyard/tagging-regions';
-import { UpdateSection } from '@/components/updates/update-section';
+import {
+  DocsCardGrid,
+  DocsCard,
+} from '@/features/docs/components/docs-home-cards';
+import { RailyardTaggingRegions } from '@/features/docs/components/railyard/tagging-regions';
+import { UpdateSection } from '@/features/updates/components/update-section';
 import { cn } from '@/lib/utils';
 
 import {

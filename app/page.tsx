@@ -1,10 +1,10 @@
-import { HomeHeroBackground } from '@/components/home/home-hero-background';
-import { HomeLinkButton } from '@/components/home/home-link-button';
-import { HomeProjectCardView } from '@/components/home/home-project-card';
+import { HomeHeroBackground } from '@/features/home/components/home-hero-background';
+import { HomeLinkButton } from '@/features/home/components/home-link-button';
+import { HomeProjectCardView } from '@/features/home/components/home-project-card';
 import {
   HomeSectionDivider,
   HomeSectionShell,
-} from '@/components/home/home-sections';
+} from '@/features/home/components/home-sections';
 import {
   HOME_COMMUNITY_SECTION,
   HOME_HERO,

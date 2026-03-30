@@ -5,7 +5,7 @@ import { compileMDX } from 'next-mdx-remote/rsc';
 import { Scale } from 'lucide-react';
 import remarkGfm from 'remark-gfm';
 
-import { PageHeader } from '@/components/page/page-header';
+import { PageHeader } from '@/components/shared/page-header';
 import { ThemedShowcaseCard } from '@/components/ui/themed-showcase-card';
 import { buildEmbedMetadata } from '@/config/site/metadata';
 import { SHARED_TEXT_COLOR } from '@/config/theme/colors';

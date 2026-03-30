@@ -30,7 +30,7 @@ import {
   type DocsFrontmatter,
 } from '@/lib/docs/server';
 import { DOCS_INSTANCES } from '@/config/content/docs';
-import { InstanceDocsHubPage } from '@/components/docs/instance-docs-hub-page';
+import { InstanceDocsHubPage } from '@/features/docs/components/instance-docs-hub-page';
 import { resolveEmbedDescription } from '@/config/site/embed-descriptions';
 import { buildEmbedMetadata } from '@/config/site/metadata';
 import {

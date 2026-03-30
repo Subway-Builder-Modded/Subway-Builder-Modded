@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { BrowsePage } from '@/components/railyard/browse-page';
+import { BrowsePage } from '@/features/railyard/components/browse-page';
 import { buildEmbedMetadata } from '@/config/site/metadata';
 
 export const metadata: Metadata = buildEmbedMetadata({
