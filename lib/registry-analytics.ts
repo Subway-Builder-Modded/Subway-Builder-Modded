@@ -138,7 +138,8 @@ type RegistryProjectTrendingKey =
 
 function readFile(fileKey: RegistryAnalyticsFileKey): Record<string, string>[] {
   const fullPath =
-    fileKey === 'mapsByPopulation' && !existsSync(REGISTRY_ANALYTICS_PATHS[fileKey])
+    fileKey === 'mapsByPopulation' &&
+    !existsSync(REGISTRY_ANALYTICS_PATHS[fileKey])
       ? MAPS_BY_POPULATION_LEGACY_PATH
       : REGISTRY_ANALYTICS_PATHS[fileKey];
   try {
