@@ -1,7 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { Download, ExternalLink, Map, Package, TrendingUp } from 'lucide-react';
+import {
+  Download,
+  ExternalLink,
+  Map,
+  Package,
+  History,
+  Trophy,
+} from 'lucide-react';
 import {
   Stat,
   StatDescription,
@@ -16,6 +23,7 @@ import type {
 import { getAuthorAnalytics } from '@/lib/registry-analytics-helpers';
 import {
   DailyDownloadChart,
+  REGISTRY_LINK_HOVER_CLS,
   getAuthorDisplayName,
   MAP_COLOR,
   MOD_COLOR,
@@ -27,6 +35,7 @@ import {
   TABLE_CELL_CLS,
   TABLE_CELL_NUMERIC_CLS,
   TABLE_ROW_CLS,
+  registryLinkStyle,
 } from './registry-shared';
 
 const STAT_HEADER_CLS =
@@ -76,7 +85,8 @@ function ListingsTable({
               <td className={TABLE_CELL_CLS}>
                 <Link
                   href={`/registry/${type}/${r.id}`}
-                  className="font-medium text-foreground underline-offset-4 transition-colors hover:underline"
+                  className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
+                  style={registryLinkStyle(color)}
                 >
                   {r.name}
                 </Link>
@@ -169,6 +179,20 @@ export function RegistryAuthorPage({
     >
       {/* Summary stats */}
       <div className="mb-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <Link
+          href="/registry?tab=authors#author-rankings"
+          className="block rounded-xl"
+        >
+          <Stat>
+            <StatIndicator variant="icon" style={purpleIconStyle}>
+              <Trophy />
+            </StatIndicator>
+            <StatLabel className={STAT_HEADER_CLS}>Author Rank</StatLabel>
+            <StatValue>{authorRow ? `#${authorRow.rank}` : '—'}</StatValue>
+            <StatDescription>by total downloads</StatDescription>
+          </Stat>
+        </Link>
+
         <Stat>
           <StatIndicator variant="icon" style={purpleIconStyle}>
             <Download />
@@ -176,15 +200,6 @@ export function RegistryAuthorPage({
           <StatLabel className={STAT_HEADER_CLS}>Total Downloads</StatLabel>
           <StatValue>{totalDownloads.toLocaleString()}</StatValue>
           <StatDescription>across all listings</StatDescription>
-        </Stat>
-
-        <Stat>
-          <StatIndicator variant="icon" style={purpleIconStyle}>
-            <TrendingUp />
-          </StatIndicator>
-          <StatLabel className={STAT_HEADER_CLS}>Author Rank</StatLabel>
-          <StatValue>{authorRow ? `#${authorRow.rank}` : '—'}</StatValue>
-          <StatDescription>by total downloads</StatDescription>
         </Stat>
 
         <Stat>
@@ -213,7 +228,7 @@ export function RegistryAuthorPage({
       {/* Daily download history */}
       {analytics.dailyData.length > 0 && (
         <section className="mb-12">
-          <SectionHeader icon={TrendingUp} title="Download History" />
+          <SectionHeader icon={History} title="Download History" />
           <div className="rounded-xl border border-border bg-card p-5 ring-1 ring-foreground/5">
             <DailyDownloadChart
               data={analytics.dailyData}

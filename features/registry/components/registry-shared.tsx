@@ -1,6 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { ArrowLeft, Search } from 'lucide-react';
 import Link from 'next/link';
@@ -206,9 +212,9 @@ export type PeriodKey = 'all' | '1d' | '3d' | '7d';
 
 const PERIODS: { value: PeriodKey; label: string }[] = [
   { value: 'all', label: 'All Time' },
-  { value: '1d', label: '24h' },
-  { value: '3d', label: '3 Days' },
-  { value: '7d', label: '7 Days' },
+  { value: '1d', label: 'Last Day' },
+  { value: '3d', label: 'Last 3 Days' },
+  { value: '7d', label: 'Last Week' },
 ];
 
 export function PeriodToggle({
@@ -277,6 +283,21 @@ export function getAuthorAttributionHref(author: {
 export function isExternalHref(href: string): boolean {
   return /^https?:\/\//i.test(href);
 }
+
+export function trimLeadingZeroDailyData(
+  data: DailyDataPoint[],
+): DailyDataPoint[] {
+  const firstNonZeroIndex = data.findIndex((point) => point.downloads > 0);
+  if (firstNonZeroIndex <= 0) return data;
+  return data.slice(firstNonZeroIndex);
+}
+
+export function registryLinkStyle(accent: string): CSSProperties {
+  return { ['--link-accent' as string]: accent };
+}
+
+export const REGISTRY_LINK_HOVER_CLS =
+  'text-foreground underline-offset-4 transition-colors hover:text-[var(--link-accent)] hover:underline hover:decoration-[var(--link-accent)]';
 
 export function useClientReady() {
   const [isReady, setIsReady] = useState(false);

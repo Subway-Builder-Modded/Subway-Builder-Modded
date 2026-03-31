@@ -11,10 +11,11 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { TrendingUp } from 'lucide-react';
+import { Trophy } from 'lucide-react';
 import Link from 'next/link';
 
 import {
+  REGISTRY_LINK_HOVER_CLS,
   getAuthorDisplayName,
   RegistryFilterControls,
   SafeChartContainer,
@@ -33,6 +34,7 @@ import {
   TABLE_ROW_CLS,
   truncateName,
   useClientReady,
+  registryLinkStyle,
 } from '@/features/registry/components/registry-shared';
 import type {
   ListingType,
@@ -150,7 +152,7 @@ function SearchGroup({
                 Author
               </th>
               <th className={TABLE_HEADER_RIGHT_CLS}>Downloads</th>
-              <th className={TABLE_HEADER_RIGHT_CLS}>+24h</th>
+              <th className={TABLE_HEADER_RIGHT_CLS}>24h</th>
             </tr>
           </thead>
           <tbody>
@@ -163,7 +165,8 @@ function SearchGroup({
                       <RankBadge rank={row.rank} />
                       <Link
                         href={`/registry/${row.listing_type}/${row.id}`}
-                        className="font-medium text-foreground underline-offset-4 transition-colors hover:underline"
+                        className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
+                        style={registryLinkStyle(accent)}
                       >
                         {row.name}
                       </Link>
@@ -174,7 +177,8 @@ function SearchGroup({
                   >
                     <Link
                       href={`/registry/author/${encodeURIComponent(row.author)}`}
-                      className="transition-colors hover:text-foreground"
+                      className={REGISTRY_LINK_HOVER_CLS}
+                      style={registryLinkStyle(accent)}
                     >
                       {getAuthorDisplayName(row)}
                     </Link>
@@ -188,9 +192,7 @@ function SearchGroup({
                   <td
                     className={`${TABLE_CELL_NUMERIC_CLS} text-muted-foreground`}
                   >
-                    {trend1d
-                      ? `+${trend1d.download_change.toLocaleString()}`
-                      : '—'}
+                    {trend1d ? trend1d.download_change.toLocaleString() : '—'}
                   </td>
                 </tr>
               );
@@ -209,11 +211,9 @@ function SearchGroup({
 function TypeBarChart({
   data,
   type,
-  isAllTime,
 }: {
   data: ChartEntry[];
   type: ListingType;
-  isAllTime: boolean;
 }) {
   const isClientReady = useClientReady();
   const color = getListingColor(type);
@@ -252,9 +252,7 @@ function TypeBarChart({
             tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }}
             axisLine={false}
             tickLine={false}
-            tickFormatter={(v: number) =>
-              isAllTime ? formatCount(v) : `+${formatCount(v)}`
-            }
+            tickFormatter={(v: number) => formatCount(v)}
             tickMargin={6}
           />
           <YAxis
@@ -271,7 +269,6 @@ function TypeBarChart({
                 active={active}
                 payload={payload as unknown[]}
                 label={label}
-                valuePrefix={isAllTime ? '' : '+'}
               />
             )}
             cursor={{ fill: 'var(--muted)', fillOpacity: 0.4 }}
@@ -334,7 +331,8 @@ function TypeTable({
                 <td className={TABLE_CELL_CLS}>
                   <Link
                     href={`/registry/${type}/${row.id}`}
-                    className="font-medium text-foreground underline-offset-4 transition-colors hover:underline"
+                    className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
+                    style={registryLinkStyle(color)}
                   >
                     {row.name}
                   </Link>
@@ -344,7 +342,8 @@ function TypeTable({
                 >
                   <Link
                     href={`/registry/author/${encodeURIComponent(row.author)}`}
-                    className="transition-colors hover:text-foreground"
+                    className={REGISTRY_LINK_HOVER_CLS}
+                    style={registryLinkStyle(color)}
                   >
                     {getAuthorDisplayName(row)}
                   </Link>
@@ -354,7 +353,9 @@ function TypeTable({
                   style={{ color }}
                 >
                   {isTrending
-                    ? `+${(row as RegistryTrendingRow).download_change.toLocaleString()}`
+                    ? (
+                        row as RegistryTrendingRow
+                      ).download_change.toLocaleString()
                     : (
                         row as RegistryListingRow
                       ).total_downloads.toLocaleString()}
@@ -410,7 +411,7 @@ function SplitPanel({
   return (
     <div className="grid gap-8 xl:grid-cols-2">
       {/* Mods */}
-      <div>
+      <div id="mod-rankings" className="scroll-mt-24">
         <div className="mb-3 flex items-center gap-2">
           <span
             className="inline-block size-2.5 rounded-sm"
@@ -420,14 +421,14 @@ function SplitPanel({
             Mods
           </h3>
         </div>
-        <TypeBarChart data={modsChart} type="mod" isAllTime={isAllTime} />
+        <TypeBarChart data={modsChart} type="mod" />
         <div className="mt-4">
           <TypeTable data={allRows} type="mod" isAllTime={isAllTime} />
         </div>
       </div>
 
       {/* Maps */}
-      <div>
+      <div id="map-rankings" className="scroll-mt-24">
         <div className="mb-3 flex items-center gap-2">
           <span
             className="inline-block size-2.5 rounded-sm"
@@ -437,7 +438,7 @@ function SplitPanel({
             Maps
           </h3>
         </div>
-        <TypeBarChart data={mapsChart} type="map" isAllTime={isAllTime} />
+        <TypeBarChart data={mapsChart} type="map" />
         <div className="mt-4">
           <TypeTable data={allRows} type="map" isAllTime={isAllTime} />
         </div>
@@ -485,7 +486,7 @@ export function RegistryTrendingSection({
 
   return (
     <section className="mb-12">
-      <SectionHeader icon={TrendingUp} title="Rankings" />
+      <SectionHeader icon={Trophy} title="Rankings" />
 
       <RegistryFilterControls
         period={!isSearching ? period : undefined}

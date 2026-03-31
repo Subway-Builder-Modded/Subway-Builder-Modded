@@ -15,6 +15,7 @@ import {
   Users,
   Database,
   ChartLine,
+  TrendingUp,
 } from 'lucide-react';
 import type {
   AppNavbarBrand,
@@ -142,6 +143,13 @@ export const APP_NAVBAR_ITEMS: AppNavbarItem[] = [
         title: 'Analytics',
         href: '/registry',
         icon: ChartLine,
+        schemeId: 'registry',
+      },
+      {
+        id: 'registry-trending',
+        title: 'Trending',
+        href: '/registry/trending',
+        icon: TrendingUp,
         schemeId: 'registry',
       },
     ],
