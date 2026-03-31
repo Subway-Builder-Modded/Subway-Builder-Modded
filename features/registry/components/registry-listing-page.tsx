@@ -8,6 +8,8 @@ import {
   Package,
   TrainTrack,
   TrendingUp,
+  History,
+  Trophy,
 } from 'lucide-react';
 import {
   Stat,
@@ -27,10 +29,9 @@ import {
 } from '@/lib/registry-analytics-helpers';
 import {
   DailyDownloadChart,
-  getAuthorAttributionHref,
+  REGISTRY_LINK_HOVER_CLS,
   getAuthorDisplayName,
   getListingColor,
-  isExternalHref,
   RankBadge,
   RegistryDetailShell,
   SectionHeader,
@@ -40,6 +41,8 @@ import {
   TABLE_CELL_NUMERIC_CLS,
   TABLE_ROW_CLS,
   TypeBadge,
+  registryLinkStyle,
+  trimLeadingZeroDailyData,
 } from './registry-shared';
 
 const STAT_HEADER_CLS =
@@ -90,7 +93,7 @@ function TrendRow({
         className={`${TABLE_CELL_NUMERIC_CLS} font-semibold`}
         style={{ color }}
       >
-        +{change.toLocaleString()}
+        {change.toLocaleString()}
       </td>
       <td className={TABLE_CELL_CLS}>
         {rank != null ? (
@@ -144,21 +147,42 @@ function PopulationCard({ analytics }: { analytics: ListingAnalytics }) {
             label: 'Population Rank',
             value: `#${pop.rank}`,
             sub: 'by population size',
+            href: '/registry?tab=population#population-rankings',
           },
-        ].map(({ label, value, sub }) => (
-          <div
-            key={label}
-            className="rounded-xl border border-border bg-card p-4 ring-1 ring-foreground/5"
-          >
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              {label}
-            </p>
-            <p className="mt-1.5 text-xl font-bold tabular-nums text-foreground">
-              {value}
-            </p>
-            {sub && <p className="mt-1 text-xs text-muted-foreground">{sub}</p>}
-          </div>
-        ))}
+        ].map(({ label, value, sub, href }) =>
+          href ? (
+            <Link
+              key={label}
+              href={href}
+              className="rounded-xl border border-border bg-card p-4 ring-1 ring-foreground/5"
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                {label}
+              </p>
+              <p className="mt-1.5 text-xl font-bold tabular-nums text-foreground">
+                {value}
+              </p>
+              {sub && (
+                <p className="mt-1 text-xs text-muted-foreground">{sub}</p>
+              )}
+            </Link>
+          ) : (
+            <div
+              key={label}
+              className="rounded-xl border border-border bg-card p-4 ring-1 ring-foreground/5"
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                {label}
+              </p>
+              <p className="mt-1.5 text-xl font-bold tabular-nums text-foreground">
+                {value}
+              </p>
+              {sub && (
+                <p className="mt-1 text-xs text-muted-foreground">{sub}</p>
+              )}
+            </div>
+          ),
+        )}
       </div>
     </section>
   );
@@ -191,8 +215,8 @@ function SiblingsSection({
           href={`https://github.com/${analytics.project.project_key}`}
           target="_blank"
           rel="noreferrer"
-          className="font-medium transition-colors"
-          style={{ color: accent }}
+          className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
+          style={registryLinkStyle(accent)}
         >
           {analytics.project.project_name}
         </a>
@@ -217,7 +241,8 @@ function SiblingsSection({
                 <td className={TABLE_CELL_CLS}>
                   <Link
                     href={`/registry/${s.listing_type}/${s.id}`}
-                    className="font-medium text-foreground underline-offset-4 transition-colors hover:underline"
+                    className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
+                    style={registryLinkStyle(getListingColor(s.listing_type))}
                   >
                     {s.name}
                   </Link>
@@ -277,8 +302,7 @@ export function RegistryListingPage({
       </RegistryDetailShell>
     );
   }
-  const authorHref = getAuthorAttributionHref(listing);
-  const authorIsExternal = isExternalHref(authorHref);
+  const authorHref = `/registry/author/${encodeURIComponent(listing.author)}`;
 
   return (
     <RegistryDetailShell
@@ -288,10 +312,8 @@ export function RegistryListingPage({
           by{' '}
           <Link
             href={authorHref}
-            target={authorIsExternal ? '_blank' : undefined}
-            rel={authorIsExternal ? 'noreferrer' : undefined}
-            className="font-medium !no-underline hover:!no-underline"
-            style={{ color }}
+            className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
+            style={registryLinkStyle(color)}
           >
             {getAuthorDisplayName(listing)}
           </Link>
@@ -334,6 +356,22 @@ export function RegistryListingPage({
     >
       {/* Summary stats */}
       <div className="mb-10 grid grid-cols-2 gap-4 xl:grid-cols-4">
+        <Link
+          href={`/registry?tab=content#${type}-rankings`}
+          className="block rounded-xl"
+        >
+          <Stat>
+            <StatIndicator variant="icon" style={iconStyle}>
+              <Trophy />
+            </StatIndicator>
+            <StatLabel className={STAT_HEADER_CLS}>
+              {type === 'mod' ? 'Mod' : 'Map'} Rank
+            </StatLabel>
+            <StatValue>#{listing.rank}</StatValue>
+            <StatDescription>among {type}s</StatDescription>
+          </Stat>
+        </Link>
+
         <Stat>
           <StatIndicator variant="icon" style={iconStyle}>
             <Download />
@@ -348,22 +386,11 @@ export function RegistryListingPage({
             <TrendingUp />
           </StatIndicator>
           <StatLabel className={STAT_HEADER_CLS}>
-            {type === 'mod' ? 'Mod' : 'Map'} Rank
-          </StatLabel>
-          <StatValue>#{listing.rank}</StatValue>
-          <StatDescription>among {type}s</StatDescription>
-        </Stat>
-
-        <Stat>
-          <StatIndicator variant="icon" style={iconStyle}>
-            <Package />
-          </StatIndicator>
-          <StatLabel className={STAT_HEADER_CLS}>
             Downloads (Last Day)
           </StatLabel>
           <StatValue>
             {analytics.trend1d
-              ? `+${analytics.trend1d.download_change.toLocaleString()}`
+              ? analytics.trend1d.download_change.toLocaleString()
               : '—'}
           </StatValue>
           <StatDescription>last 24 hours</StatDescription>
@@ -378,7 +405,7 @@ export function RegistryListingPage({
           </StatLabel>
           <StatValue>
             {analytics.trend7d
-              ? `+${analytics.trend7d.download_change.toLocaleString()}`
+              ? analytics.trend7d.download_change.toLocaleString()
               : '—'}
           </StatValue>
           <StatDescription>last 7 days</StatDescription>
@@ -389,13 +416,13 @@ export function RegistryListingPage({
       {analytics.dailyData.length > 0 && (
         <section className="mb-12">
           <SectionHeader
-            icon={TrendingUp}
+            icon={History}
             title="Download History"
             accent={color}
           />
           <div className="rounded-xl border border-border bg-card p-5 ring-1 ring-foreground/5">
             <DailyDownloadChart
-              data={analytics.dailyData}
+              data={trimLeadingZeroDailyData(analytics.dailyData)}
               color={color}
               height={200}
             />

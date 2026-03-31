@@ -12,6 +12,7 @@ import {
   Globe,
   Database,
   ChartLine,
+  TrendingUp,
 } from 'lucide-react';
 import {
   PROJECT_COLOR_SCHEMES,
@@ -149,6 +150,12 @@ export const FOOTER_NAV_SECTIONS: FooterNavSection[] = [
         label: 'Analytics',
         href: '/registry',
         icon: ChartLine,
+      },
+      {
+        id: 'registry-trending',
+        label: 'Trending',
+        href: '/registry/trending',
+        icon: TrendingUp,
       },
     ],
   },

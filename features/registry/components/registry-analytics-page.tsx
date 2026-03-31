@@ -1,7 +1,15 @@
 'use client';
 
-import { LineChart, LayoutGrid, TrendingUp, Users } from 'lucide-react';
-import { useState } from 'react';
+import {
+  LineChart,
+  LayoutGrid,
+  TrendingUp,
+  Users,
+  Globe,
+  Package,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { PageHeader } from '@/components/shared/page-header';
 import { cn } from '@/lib/utils';
 import type { RegistryAnalyticsData } from '@/types/registry-analytics';
@@ -10,12 +18,13 @@ import { RegistrySummaryStats } from './registry-summary-stats';
 import { RegistryTrendingSection } from './registry-trending-section';
 import { RegistryAuthorsSection } from './registry-authors-section';
 import { RegistryBreakdownSection } from './registry-breakdown-section';
+import { RegistryPopulationSection } from './registry-population-section';
 
 const PAGE_HEADER_SCHEME = {
   accent: { light: '#9d4edd', dark: '#c77dff' },
 };
 
-type TabKey = 'overview' | 'content' | 'authors';
+type TabKey = 'overview' | 'content' | 'authors' | 'population';
 
 const TABS: {
   key: TabKey;
@@ -23,8 +32,9 @@ const TABS: {
   icon: React.FC<{ className?: string }>;
 }[] = [
   { key: 'overview', label: 'Overview', icon: LayoutGrid },
-  { key: 'content', label: 'Content', icon: TrendingUp },
+  { key: 'content', label: 'Content', icon: Package },
   { key: 'authors', label: 'Authors', icon: Users },
+  { key: 'population', label: 'Population', icon: Globe },
 ];
 
 export function RegistryAnalyticsPage({
@@ -33,6 +43,20 @@ export function RegistryAnalyticsPage({
   data: RegistryAnalyticsData;
 }) {
   const [active, setActive] = useState<TabKey>('overview');
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab');
+    if (
+      tab === 'overview' ||
+      tab === 'content' ||
+      tab === 'authors' ||
+      tab === 'population'
+    ) {
+      setActive(tab);
+    }
+  }, []);
 
   return (
     <div className="mx-auto w-full max-w-screen-2xl px-4 py-8 sm:px-6 lg:px-8">
@@ -64,6 +88,13 @@ export function RegistryAnalyticsPage({
             </button>
           );
         })}
+        <Link
+          href="/registry/trending"
+          className="flex min-w-32 items-center justify-center gap-2 rounded-lg border border-border bg-card px-5 py-2.5 text-sm font-semibold text-muted-foreground transition-colors hover:border-border hover:bg-muted/50 hover:text-foreground"
+        >
+          <TrendingUp className="size-4" />
+          Trending
+        </Link>
       </div>
 
       {/* Tab content */}
@@ -75,6 +106,7 @@ export function RegistryAnalyticsPage({
       )}
       {active === 'content' && <RegistryTrendingSection data={data} />}
       {active === 'authors' && <RegistryAuthorsSection data={data} />}
+      {active === 'population' && <RegistryPopulationSection data={data} />}
     </div>
   );
 }

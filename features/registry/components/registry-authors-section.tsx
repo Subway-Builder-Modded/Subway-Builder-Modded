@@ -15,11 +15,13 @@ import {
 import { Map, Package, Users } from 'lucide-react';
 
 import {
+  REGISTRY_LINK_HOVER_CLS,
   SearchField,
   formatCount,
   getAuthorDisplayName,
   MAP_COLOR,
   MOD_COLOR,
+  registryLinkStyle,
   RankBadge,
   SafeChartContainer,
   SectionHeader,
@@ -104,7 +106,7 @@ function DownloadsBarChart({ authors }: { authors: RegistryAuthorRow[] }) {
             {chartData.map((_, i) => (
               <Cell
                 key={`cell-${i}`}
-                fill={MOD_COLOR}
+                fill="var(--primary)"
                 fillOpacity={0.9 - i * 0.055}
               />
             ))}
@@ -130,7 +132,8 @@ function AuthorRow({ row }: { row: RegistryAuthorRow }) {
       <td className={TABLE_CELL_CLS}>
         <Link
           href={`/registry/author/${encodeURIComponent(row.author)}`}
-          className="font-medium text-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
+          className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
+          style={registryLinkStyle('var(--primary)')}
         >
           {getAuthorDisplayName(row)}
         </Link>
@@ -242,7 +245,7 @@ export function RegistryAuthorsSection({
   data: RegistryAnalyticsData;
 }) {
   return (
-    <section className="mb-12">
+    <section id="author-rankings" className="scroll-mt-24 mb-12">
       <SectionHeader icon={Users} title="Authors" />
 
       <div className="mb-8 rounded-xl border border-border bg-card p-5 ring-1 ring-foreground/5">
