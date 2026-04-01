@@ -19,7 +19,7 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
     steps:
-      - name: Checkout
+      - name: Checkout source repo
         uses: actions/checkout@v4
 
       - name: Setup pnpm
@@ -61,20 +61,43 @@ jobs:
       - name: Generate analytics snapshot
         env:
           WEBSITE_PATH_SOURCE_DIR: ${{ github.workspace }}/out
-        run: pnpm run generate:website-analytics
+        run: pnpm run analytics
 
       - name: Build final deploy output
         env:
           RAILYARD_GITHUB_TOKEN: ${{ secrets.RAILYARD_GITHUB_TOKEN }}
         run: pnpm run build
 
-      - name: Deploy to website-dev repo
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          personal_token: ${{ secrets.WEBSITE_DEV_PAT }}
-          external_repository: Subway-Builder-Modded/website-dev
-          publish_branch: gh-pages
-          publish_dir: ./out
-          force_orphan: true
-          cname: dev.subwaybuildermodded.com
-          
+      - name: Clone target repo
+        env:
+          GH_PAT: ${{ secrets.WEBSITE_DEV_PAT }}
+        run: |
+          git clone https://x-access-token:${GH_PAT}@github.com/Subway-Builder-Modded/website-dev.git target-repo
+
+      - name: Prepare gh-pages branch
+        working-directory: target-repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
+            git checkout gh-pages || git checkout -b gh-pages origin/gh-pages
+          else
+            git checkout --orphan gh-pages
+            git rm -rf . || true
+          fi
+
+      - name: Replace site contents
+        run: |
+          shopt -s dotglob
+          rm -rf target-repo/*
+          cp -R out/* target-repo/
+          touch target-repo/.nojekyll
+          echo "dev.subwaybuildermodded.com" > target-repo/CNAME
+
+      - name: Commit and push
+        working-directory: target-repo
+        run: |
+          git add --all
+          git commit -m "Deploy dev site from ${GITHUB_SHA}" || echo "No changes to commit"
+          git push origin gh-pages
