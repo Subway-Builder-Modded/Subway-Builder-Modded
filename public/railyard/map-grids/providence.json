@@ -1,6 +1,6 @@
 {
   "mapId": "providence",
-  "generatedAt": "2026-04-01T01:49:17.986Z",
+  "generatedAt": "2026-04-01T02:17:16.507Z",
   "bbox": [
     -71.5462256942962,
     41.64600841697914,
@@ -109,7 +109,9 @@
           "jobCount": 118,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 19018,
-          "homeToWorkCommuteDistance": 29338
+          "homeToWorkCommuteDistance": 29338,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.65949822243501
         }
       },
       {
@@ -146,7 +148,9 @@
           "jobCount": 131,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17371,
-          "homeToWorkCommuteDistance": 31490
+          "homeToWorkCommuteDistance": 31490,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.66849142607226
         }
       },
       {
@@ -183,7 +187,9 @@
           "jobCount": 8,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16894,
-          "homeToWorkCommuteDistance": 26661
+          "homeToWorkCommuteDistance": 26661,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.677484629709504
         }
       },
       {
@@ -220,7 +226,9 @@
           "jobCount": 180,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15765,
-          "homeToWorkCommuteDistance": 26167
+          "homeToWorkCommuteDistance": 26167,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -257,7 +265,9 @@
           "jobCount": 54,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11714,
-          "homeToWorkCommuteDistance": 26033
+          "homeToWorkCommuteDistance": 26033,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -294,7 +304,9 @@
           "jobCount": 12,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 22476,
-          "homeToWorkCommuteDistance": 17197
+          "homeToWorkCommuteDistance": 17197,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -331,7 +343,9 @@
           "jobCount": 35,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15111,
-          "homeToWorkCommuteDistance": 26005
+          "homeToWorkCommuteDistance": 26005,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.767416666081964
         }
       },
       {
@@ -368,7 +382,9 @@
           "jobCount": 84,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 20515,
-          "homeToWorkCommuteDistance": 11744
+          "homeToWorkCommuteDistance": 11744,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -405,7 +421,9 @@
           "jobCount": 33,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13669,
-          "homeToWorkCommuteDistance": 17005
+          "homeToWorkCommuteDistance": 17005,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -442,7 +460,9 @@
           "jobCount": 324,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17990,
-          "homeToWorkCommuteDistance": 13190
+          "homeToWorkCommuteDistance": 13190,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -479,7 +499,9 @@
           "jobCount": 2,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12739,
-          "homeToWorkCommuteDistance": 17152
+          "homeToWorkCommuteDistance": 17152,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -516,7 +538,9 @@
           "jobCount": 120,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 22245,
-          "homeToWorkCommuteDistance": 18828
+          "homeToWorkCommuteDistance": 18828,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -553,7 +577,9 @@
           "jobCount": 104,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14370,
-          "homeToWorkCommuteDistance": 23406
+          "homeToWorkCommuteDistance": 23406,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -590,7 +616,9 @@
           "jobCount": 129,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17300,
-          "homeToWorkCommuteDistance": 19997
+          "homeToWorkCommuteDistance": 19997,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -627,7 +655,9 @@
           "jobCount": 596,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 22233,
-          "homeToWorkCommuteDistance": 23685
+          "homeToWorkCommuteDistance": 23685,
+          "centroidLng": -71.54172909247757,
+          "centroidLat": 41.920301127915145
         }
       },
       {
@@ -664,7 +694,9 @@
           "jobCount": 71,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14453,
-          "homeToWorkCommuteDistance": 18981
+          "homeToWorkCommuteDistance": 18981,
+          "centroidLng": -71.53273588884034,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -701,7 +733,9 @@
           "jobCount": 186,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11554,
-          "homeToWorkCommuteDistance": 19760
+          "homeToWorkCommuteDistance": 19760,
+          "centroidLng": -71.53273588884034,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -738,7 +772,9 @@
           "jobCount": 272,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 16387,
-          "homeToWorkCommuteDistance": 19419
+          "homeToWorkCommuteDistance": 19419,
+          "centroidLng": -71.53273588884034,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -775,7 +811,9 @@
           "jobCount": 112,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16203,
-          "homeToWorkCommuteDistance": 20779
+          "homeToWorkCommuteDistance": 20779,
+          "centroidLng": -71.53273588884034,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -812,7 +850,9 @@
           "jobCount": 44,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 18156,
-          "homeToWorkCommuteDistance": 16817
+          "homeToWorkCommuteDistance": 16817,
+          "centroidLng": -71.53273588884034,
+          "centroidLat": 41.89332151700341
         }
       },
       {
@@ -849,7 +889,9 @@
           "jobCount": 252,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 20713,
-          "homeToWorkCommuteDistance": 18184
+          "homeToWorkCommuteDistance": 18184,
+          "centroidLng": -71.53273588884034,
+          "centroidLat": 41.9113079242779
         }
       },
       {
@@ -886,7 +928,9 @@
           "jobCount": 46,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14122,
-          "homeToWorkCommuteDistance": 25599
+          "homeToWorkCommuteDistance": 25599,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.650505018797766
         }
       },
       {
@@ -923,7 +967,9 @@
           "jobCount": 127,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 24224,
-          "homeToWorkCommuteDistance": 28611
+          "homeToWorkCommuteDistance": 28611,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.65949822243501
         }
       },
       {
@@ -960,7 +1006,9 @@
           "jobCount": 153,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14886,
-          "homeToWorkCommuteDistance": 24575
+          "homeToWorkCommuteDistance": 24575,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.68647783334675
         }
       },
       {
@@ -997,7 +1045,9 @@
           "jobCount": 326,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 17211,
-          "homeToWorkCommuteDistance": 16830
+          "homeToWorkCommuteDistance": 16830,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -1034,7 +1084,9 @@
           "jobCount": 494,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15197,
-          "homeToWorkCommuteDistance": 20447
+          "homeToWorkCommuteDistance": 20447,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -1071,7 +1123,9 @@
           "jobCount": 617,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 15435,
-          "homeToWorkCommuteDistance": 16131
+          "homeToWorkCommuteDistance": 16131,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -1108,7 +1162,9 @@
           "jobCount": 28,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 7977,
-          "homeToWorkCommuteDistance": 15863
+          "homeToWorkCommuteDistance": 15863,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -1145,7 +1201,9 @@
           "jobCount": 32,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10560,
-          "homeToWorkCommuteDistance": 14675
+          "homeToWorkCommuteDistance": 14675,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -1182,7 +1240,9 @@
           "jobCount": 805,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 16813,
-          "homeToWorkCommuteDistance": 9736
+          "homeToWorkCommuteDistance": 9736,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -1219,7 +1279,9 @@
           "jobCount": 203,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15194,
-          "homeToWorkCommuteDistance": 11700
+          "homeToWorkCommuteDistance": 11700,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -1256,7 +1318,9 @@
           "jobCount": 130,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16119,
-          "homeToWorkCommuteDistance": 15633
+          "homeToWorkCommuteDistance": 15633,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -1293,7 +1357,9 @@
           "jobCount": 762,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16921,
-          "homeToWorkCommuteDistance": 15367
+          "homeToWorkCommuteDistance": 15367,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -1330,7 +1396,9 @@
           "jobCount": 0,
           "pointDensity": 1,
           "workToHomeCommuteDistance": -1,
-          "homeToWorkCommuteDistance": 11443
+          "homeToWorkCommuteDistance": 11443,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -1367,7 +1435,9 @@
           "jobCount": 631,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 24675,
-          "homeToWorkCommuteDistance": 31791
+          "homeToWorkCommuteDistance": 31791,
+          "centroidLng": -71.52374268520308,
+          "centroidLat": 41.9113079242779
         }
       },
       {
@@ -1404,7 +1474,9 @@
           "jobCount": 384,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 20884,
-          "homeToWorkCommuteDistance": 20140
+          "homeToWorkCommuteDistance": 20140,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.66849142607226
         }
       },
       {
@@ -1441,7 +1513,9 @@
           "jobCount": 17,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 26478,
-          "homeToWorkCommuteDistance": 15598
+          "homeToWorkCommuteDistance": 15598,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.677484629709504
         }
       },
       {
@@ -1478,7 +1552,9 @@
           "jobCount": 89,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10324,
-          "homeToWorkCommuteDistance": 19939
+          "homeToWorkCommuteDistance": 19939,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.68647783334675
         }
       },
       {
@@ -1515,7 +1591,9 @@
           "jobCount": 127,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12292,
-          "homeToWorkCommuteDistance": 17671
+          "homeToWorkCommuteDistance": 17671,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -1552,7 +1630,9 @@
           "jobCount": 248,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 13054,
-          "homeToWorkCommuteDistance": 22440
+          "homeToWorkCommuteDistance": 22440,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -1589,7 +1669,9 @@
           "jobCount": 18,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13078,
-          "homeToWorkCommuteDistance": 17627
+          "homeToWorkCommuteDistance": 17627,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -1626,7 +1708,9 @@
           "jobCount": 128,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14911,
-          "homeToWorkCommuteDistance": 19113
+          "homeToWorkCommuteDistance": 19113,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -1663,7 +1747,9 @@
           "jobCount": 26,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11024,
-          "homeToWorkCommuteDistance": 15329
+          "homeToWorkCommuteDistance": 15329,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -1700,7 +1786,9 @@
           "jobCount": 872,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 14697,
-          "homeToWorkCommuteDistance": 19088
+          "homeToWorkCommuteDistance": 19088,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -1737,7 +1825,9 @@
           "jobCount": 409,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 15962,
-          "homeToWorkCommuteDistance": 13223
+          "homeToWorkCommuteDistance": 13223,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -1774,7 +1864,9 @@
           "jobCount": 137,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17012,
-          "homeToWorkCommuteDistance": 15449
+          "homeToWorkCommuteDistance": 15449,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -1811,7 +1903,9 @@
           "jobCount": 529,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 16558,
-          "homeToWorkCommuteDistance": 19860
+          "homeToWorkCommuteDistance": 19860,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -1848,7 +1942,9 @@
           "jobCount": 110,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16974,
-          "homeToWorkCommuteDistance": 12260
+          "homeToWorkCommuteDistance": 12260,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -1885,7 +1981,9 @@
           "jobCount": 132,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17091,
-          "homeToWorkCommuteDistance": 15756
+          "homeToWorkCommuteDistance": 15756,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -1922,7 +2020,9 @@
           "jobCount": 2036,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16467,
-          "homeToWorkCommuteDistance": 16854
+          "homeToWorkCommuteDistance": 16854,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -1959,7 +2059,9 @@
           "jobCount": 57,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 23093,
-          "homeToWorkCommuteDistance": 17423
+          "homeToWorkCommuteDistance": 17423,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -1996,7 +2098,9 @@
           "jobCount": 5,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 23038,
-          "homeToWorkCommuteDistance": 14727
+          "homeToWorkCommuteDistance": 14727,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.89332151700341
         }
       },
       {
@@ -2033,7 +2137,9 @@
           "jobCount": 141,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 19209,
-          "homeToWorkCommuteDistance": 26339
+          "homeToWorkCommuteDistance": 26339,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.90231472064065
         }
       },
       {
@@ -2070,7 +2176,9 @@
           "jobCount": 451,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17913,
-          "homeToWorkCommuteDistance": 12759
+          "homeToWorkCommuteDistance": 12759,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.9113079242779
         }
       },
       {
@@ -2107,7 +2215,9 @@
           "jobCount": 217,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 21122,
-          "homeToWorkCommuteDistance": -1
+          "homeToWorkCommuteDistance": -1,
+          "centroidLng": -71.51474948156584,
+          "centroidLat": 41.920301127915145
         }
       },
       {
@@ -2144,7 +2254,9 @@
           "jobCount": 739,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 17903,
-          "homeToWorkCommuteDistance": 27352
+          "homeToWorkCommuteDistance": 27352,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.65949822243501
         }
       },
       {
@@ -2181,7 +2293,9 @@
           "jobCount": 509,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 19002,
-          "homeToWorkCommuteDistance": 20318
+          "homeToWorkCommuteDistance": 20318,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.66849142607226
         }
       },
       {
@@ -2218,7 +2332,9 @@
           "jobCount": 245,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 18801,
-          "homeToWorkCommuteDistance": 22957
+          "homeToWorkCommuteDistance": 22957,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.677484629709504
         }
       },
       {
@@ -2255,7 +2371,9 @@
           "jobCount": 640,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 13424,
-          "homeToWorkCommuteDistance": 19134
+          "homeToWorkCommuteDistance": 19134,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.68647783334675
         }
       },
       {
@@ -2292,7 +2410,9 @@
           "jobCount": 140,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12968,
-          "homeToWorkCommuteDistance": 19374
+          "homeToWorkCommuteDistance": 19374,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -2329,7 +2449,9 @@
           "jobCount": 291,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14822,
-          "homeToWorkCommuteDistance": 18215
+          "homeToWorkCommuteDistance": 18215,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -2366,7 +2488,9 @@
           "jobCount": 251,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13463,
-          "homeToWorkCommuteDistance": 17603
+          "homeToWorkCommuteDistance": 17603,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -2403,7 +2527,9 @@
           "jobCount": 13,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 21614,
-          "homeToWorkCommuteDistance": 14228
+          "homeToWorkCommuteDistance": 14228,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -2440,7 +2566,9 @@
           "jobCount": 52,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10711,
-          "homeToWorkCommuteDistance": 11181
+          "homeToWorkCommuteDistance": 11181,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.767416666081964
         }
       },
       {
@@ -2477,7 +2605,9 @@
           "jobCount": 397,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14019,
-          "homeToWorkCommuteDistance": 14118
+          "homeToWorkCommuteDistance": 14118,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -2514,7 +2644,9 @@
           "jobCount": 22,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15951,
-          "homeToWorkCommuteDistance": 13748
+          "homeToWorkCommuteDistance": 13748,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -2551,7 +2683,9 @@
           "jobCount": 155,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12494,
-          "homeToWorkCommuteDistance": 11800
+          "homeToWorkCommuteDistance": 11800,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -2588,7 +2722,9 @@
           "jobCount": 140,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11188,
-          "homeToWorkCommuteDistance": 14557
+          "homeToWorkCommuteDistance": 14557,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -2625,7 +2761,9 @@
           "jobCount": 235,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12587,
-          "homeToWorkCommuteDistance": 18879
+          "homeToWorkCommuteDistance": 18879,
+          "centroidLng": -71.50575627792858,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -2662,7 +2800,9 @@
           "jobCount": 170,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 20163,
-          "homeToWorkCommuteDistance": 19087
+          "homeToWorkCommuteDistance": 19087,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.650505018797766
         }
       },
       {
@@ -2699,7 +2839,9 @@
           "jobCount": 819,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 17541,
-          "homeToWorkCommuteDistance": 21041
+          "homeToWorkCommuteDistance": 21041,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.65949822243501
         }
       },
       {
@@ -2736,7 +2878,9 @@
           "jobCount": 205,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 19798,
-          "homeToWorkCommuteDistance": 23401
+          "homeToWorkCommuteDistance": 23401,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.66849142607226
         }
       },
       {
@@ -2773,7 +2917,9 @@
           "jobCount": 439,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 18919,
-          "homeToWorkCommuteDistance": 23177
+          "homeToWorkCommuteDistance": 23177,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.677484629709504
         }
       },
       {
@@ -2810,7 +2956,9 @@
           "jobCount": 847,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 14625,
-          "homeToWorkCommuteDistance": 18746
+          "homeToWorkCommuteDistance": 18746,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -2847,7 +2995,9 @@
           "jobCount": 645,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16239,
-          "homeToWorkCommuteDistance": 10868
+          "homeToWorkCommuteDistance": 10868,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -2884,7 +3034,9 @@
           "jobCount": 96,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13843,
-          "homeToWorkCommuteDistance": 17856
+          "homeToWorkCommuteDistance": 17856,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -2921,7 +3073,9 @@
           "jobCount": 75,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11120,
-          "homeToWorkCommuteDistance": 15914
+          "homeToWorkCommuteDistance": 15914,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -2958,7 +3112,9 @@
           "jobCount": 24,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9700,
-          "homeToWorkCommuteDistance": 11091
+          "homeToWorkCommuteDistance": 11091,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -2995,7 +3151,9 @@
           "jobCount": 49,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 6820,
-          "homeToWorkCommuteDistance": 13091
+          "homeToWorkCommuteDistance": 13091,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -3032,7 +3190,9 @@
           "jobCount": 318,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13182,
-          "homeToWorkCommuteDistance": 13211
+          "homeToWorkCommuteDistance": 13211,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -3069,7 +3229,9 @@
           "jobCount": 34,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13325,
-          "homeToWorkCommuteDistance": 11703
+          "homeToWorkCommuteDistance": 11703,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -3106,7 +3268,9 @@
           "jobCount": 269,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15689,
-          "homeToWorkCommuteDistance": 10934
+          "homeToWorkCommuteDistance": 10934,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -3143,7 +3307,9 @@
           "jobCount": 1856,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 13534,
-          "homeToWorkCommuteDistance": 15278
+          "homeToWorkCommuteDistance": 15278,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -3180,7 +3346,9 @@
           "jobCount": 194,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13953,
-          "homeToWorkCommuteDistance": 13944
+          "homeToWorkCommuteDistance": 13944,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -3217,7 +3385,9 @@
           "jobCount": 39,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12460,
-          "homeToWorkCommuteDistance": 13321
+          "homeToWorkCommuteDistance": 13321,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -3254,7 +3424,9 @@
           "jobCount": 26,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17182,
-          "homeToWorkCommuteDistance": 10335
+          "homeToWorkCommuteDistance": 10335,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -3291,7 +3463,9 @@
           "jobCount": 104,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15009,
-          "homeToWorkCommuteDistance": 10010
+          "homeToWorkCommuteDistance": 10010,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -3328,7 +3502,9 @@
           "jobCount": 34,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13358,
-          "homeToWorkCommuteDistance": 9206
+          "homeToWorkCommuteDistance": 9206,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -3365,7 +3541,9 @@
           "jobCount": 274,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17491,
-          "homeToWorkCommuteDistance": 28256
+          "homeToWorkCommuteDistance": 28256,
+          "centroidLng": -71.49676307429135,
+          "centroidLat": 41.920301127915145
         }
       },
       {
@@ -3402,7 +3580,9 @@
           "jobCount": 138,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17562,
-          "homeToWorkCommuteDistance": 23838
+          "homeToWorkCommuteDistance": 23838,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.66849142607226
         }
       },
       {
@@ -3439,7 +3619,9 @@
           "jobCount": 110,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15876,
-          "homeToWorkCommuteDistance": 21302
+          "homeToWorkCommuteDistance": 21302,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.68647783334675
         }
       },
       {
@@ -3476,7 +3658,9 @@
           "jobCount": 301,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12878,
-          "homeToWorkCommuteDistance": 19449
+          "homeToWorkCommuteDistance": 19449,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -3513,7 +3697,9 @@
           "jobCount": 160,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16493,
-          "homeToWorkCommuteDistance": 20427
+          "homeToWorkCommuteDistance": 20427,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -3550,7 +3736,9 @@
           "jobCount": 853,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 13654,
-          "homeToWorkCommuteDistance": 15244
+          "homeToWorkCommuteDistance": 15244,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -3587,7 +3775,9 @@
           "jobCount": 206,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11591,
-          "homeToWorkCommuteDistance": 8509
+          "homeToWorkCommuteDistance": 8509,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -3624,7 +3814,9 @@
           "jobCount": 16,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 21770,
-          "homeToWorkCommuteDistance": 15830
+          "homeToWorkCommuteDistance": 15830,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.740437055170226
         }
       },
       {
@@ -3661,7 +3853,9 @@
           "jobCount": 19,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12243,
-          "homeToWorkCommuteDistance": 12603
+          "homeToWorkCommuteDistance": 12603,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -3698,7 +3892,9 @@
           "jobCount": 65,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 7391,
-          "homeToWorkCommuteDistance": 10107
+          "homeToWorkCommuteDistance": 10107,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -3735,7 +3931,9 @@
           "jobCount": 42,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 7779,
-          "homeToWorkCommuteDistance": 10249
+          "homeToWorkCommuteDistance": 10249,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -3772,7 +3970,9 @@
           "jobCount": 242,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 8307,
-          "homeToWorkCommuteDistance": 9256
+          "homeToWorkCommuteDistance": 9256,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -3809,7 +4009,9 @@
           "jobCount": 1802,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 14901,
-          "homeToWorkCommuteDistance": 12055
+          "homeToWorkCommuteDistance": 12055,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -3846,7 +4048,9 @@
           "jobCount": 290,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12098,
-          "homeToWorkCommuteDistance": 9053
+          "homeToWorkCommuteDistance": 9053,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -3883,7 +4087,9 @@
           "jobCount": 177,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 14581,
-          "homeToWorkCommuteDistance": 10403
+          "homeToWorkCommuteDistance": 10403,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -3920,7 +4126,9 @@
           "jobCount": 152,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9501,
-          "homeToWorkCommuteDistance": 13731
+          "homeToWorkCommuteDistance": 13731,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -3957,7 +4165,9 @@
           "jobCount": 183,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11162,
-          "homeToWorkCommuteDistance": 11843
+          "homeToWorkCommuteDistance": 11843,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -3994,7 +4204,9 @@
           "jobCount": 45,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9935,
-          "homeToWorkCommuteDistance": 14509
+          "homeToWorkCommuteDistance": 14509,
+          "centroidLng": -71.48776987065409,
+          "centroidLat": 41.90231472064065
         }
       },
       {
@@ -4031,7 +4243,9 @@
           "jobCount": 23,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 19732,
-          "homeToWorkCommuteDistance": 15345
+          "homeToWorkCommuteDistance": 15345,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.677484629709504
         }
       },
       {
@@ -4068,7 +4282,9 @@
           "jobCount": 111,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 24111,
-          "homeToWorkCommuteDistance": 16280
+          "homeToWorkCommuteDistance": 16280,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -4105,7 +4321,9 @@
           "jobCount": 2435,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 12630,
-          "homeToWorkCommuteDistance": 13461
+          "homeToWorkCommuteDistance": 13461,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -4142,7 +4360,9 @@
           "jobCount": 388,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11593,
-          "homeToWorkCommuteDistance": 18602
+          "homeToWorkCommuteDistance": 18602,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -4179,7 +4399,9 @@
           "jobCount": 1692,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 14307,
-          "homeToWorkCommuteDistance": 11007
+          "homeToWorkCommuteDistance": 11007,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -4216,7 +4438,9 @@
           "jobCount": 739,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 11442,
-          "homeToWorkCommuteDistance": 14028
+          "homeToWorkCommuteDistance": 14028,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -4253,7 +4477,9 @@
           "jobCount": 277,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9336,
-          "homeToWorkCommuteDistance": 7642
+          "homeToWorkCommuteDistance": 7642,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.740437055170226
         }
       },
       {
@@ -4290,7 +4516,9 @@
           "jobCount": 159,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12313,
-          "homeToWorkCommuteDistance": 9198
+          "homeToWorkCommuteDistance": 9198,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -4327,7 +4555,9 @@
           "jobCount": 263,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 8911,
-          "homeToWorkCommuteDistance": 16781
+          "homeToWorkCommuteDistance": 16781,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -4364,7 +4594,9 @@
           "jobCount": 190,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12099,
-          "homeToWorkCommuteDistance": 9752
+          "homeToWorkCommuteDistance": 9752,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -4401,7 +4633,9 @@
           "jobCount": 570,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11478,
-          "homeToWorkCommuteDistance": 11840
+          "homeToWorkCommuteDistance": 11840,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -4438,7 +4672,9 @@
           "jobCount": 397,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9837,
-          "homeToWorkCommuteDistance": 10747
+          "homeToWorkCommuteDistance": 10747,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -4475,7 +4711,9 @@
           "jobCount": 89,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14097,
-          "homeToWorkCommuteDistance": 7596
+          "homeToWorkCommuteDistance": 7596,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -4512,7 +4750,9 @@
           "jobCount": 193,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11166,
-          "homeToWorkCommuteDistance": 15242
+          "homeToWorkCommuteDistance": 15242,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -4549,7 +4789,9 @@
           "jobCount": 155,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 8943,
-          "homeToWorkCommuteDistance": 11104
+          "homeToWorkCommuteDistance": 11104,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -4586,7 +4828,9 @@
           "jobCount": 175,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 8912,
-          "homeToWorkCommuteDistance": 8077
+          "homeToWorkCommuteDistance": 8077,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -4623,7 +4867,9 @@
           "jobCount": 245,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12948,
-          "homeToWorkCommuteDistance": 12135
+          "homeToWorkCommuteDistance": 12135,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -4660,7 +4906,9 @@
           "jobCount": 696,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 8201,
-          "homeToWorkCommuteDistance": 8844
+          "homeToWorkCommuteDistance": 8844,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -4697,7 +4945,9 @@
           "jobCount": 27,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9177,
-          "homeToWorkCommuteDistance": 11207
+          "homeToWorkCommuteDistance": 11207,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -4734,7 +4984,9 @@
           "jobCount": 58,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 21701,
-          "homeToWorkCommuteDistance": 11457
+          "homeToWorkCommuteDistance": 11457,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -4771,7 +5023,9 @@
           "jobCount": 1015,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 18555,
-          "homeToWorkCommuteDistance": 30123
+          "homeToWorkCommuteDistance": 30123,
+          "centroidLng": -71.47877666701686,
+          "centroidLat": 41.920301127915145
         }
       },
       {
@@ -4808,7 +5062,9 @@
           "jobCount": 689,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 18183,
-          "homeToWorkCommuteDistance": 16428
+          "homeToWorkCommuteDistance": 16428,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -4845,7 +5101,9 @@
           "jobCount": 430,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11552,
-          "homeToWorkCommuteDistance": 14723
+          "homeToWorkCommuteDistance": 14723,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -4882,7 +5140,9 @@
           "jobCount": 313,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17131,
-          "homeToWorkCommuteDistance": 11689
+          "homeToWorkCommuteDistance": 11689,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -4919,7 +5179,9 @@
           "jobCount": 324,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11146,
-          "homeToWorkCommuteDistance": 15454
+          "homeToWorkCommuteDistance": 15454,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -4956,7 +5218,9 @@
           "jobCount": 167,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 11918,
-          "homeToWorkCommuteDistance": 10525
+          "homeToWorkCommuteDistance": 10525,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.740437055170226
         }
       },
       {
@@ -4993,7 +5257,9 @@
           "jobCount": 1251,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 12037,
-          "homeToWorkCommuteDistance": 12689
+          "homeToWorkCommuteDistance": 12689,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -5030,7 +5296,9 @@
           "jobCount": 46,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 5693,
-          "homeToWorkCommuteDistance": 9891
+          "homeToWorkCommuteDistance": 9891,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.767416666081964
         }
       },
       {
@@ -5067,7 +5335,9 @@
           "jobCount": 97,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9053,
-          "homeToWorkCommuteDistance": 8976
+          "homeToWorkCommuteDistance": 8976,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -5104,7 +5374,9 @@
           "jobCount": 337,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 7910,
-          "homeToWorkCommuteDistance": 9056
+          "homeToWorkCommuteDistance": 9056,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -5141,7 +5413,9 @@
           "jobCount": 530,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 8283,
-          "homeToWorkCommuteDistance": 8149
+          "homeToWorkCommuteDistance": 8149,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -5178,7 +5452,9 @@
           "jobCount": 190,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 8568,
-          "homeToWorkCommuteDistance": 11539
+          "homeToWorkCommuteDistance": 11539,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -5215,7 +5491,9 @@
           "jobCount": 491,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10848,
-          "homeToWorkCommuteDistance": 8936
+          "homeToWorkCommuteDistance": 8936,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -5252,7 +5530,9 @@
           "jobCount": 147,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 4839,
-          "homeToWorkCommuteDistance": 8148
+          "homeToWorkCommuteDistance": 8148,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -5289,7 +5569,9 @@
           "jobCount": 119,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 8337,
-          "homeToWorkCommuteDistance": 8319
+          "homeToWorkCommuteDistance": 8319,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -5326,7 +5608,9 @@
           "jobCount": 283,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16107,
-          "homeToWorkCommuteDistance": 10315
+          "homeToWorkCommuteDistance": 10315,
+          "centroidLng": -71.4697834633796,
+          "centroidLat": 41.920301127915145
         }
       },
       {
@@ -5363,7 +5647,9 @@
           "jobCount": 491,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 16093,
-          "homeToWorkCommuteDistance": 23692
+          "homeToWorkCommuteDistance": 23692,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.650505018797766
         }
       },
       {
@@ -5400,7 +5686,9 @@
           "jobCount": 52,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10525,
-          "homeToWorkCommuteDistance": 22897
+          "homeToWorkCommuteDistance": 22897,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.65949822243501
         }
       },
       {
@@ -5437,7 +5725,9 @@
           "jobCount": 17,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16562,
-          "homeToWorkCommuteDistance": 17005
+          "homeToWorkCommuteDistance": 17005,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.677484629709504
         }
       },
       {
@@ -5474,7 +5764,9 @@
           "jobCount": 57,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13091,
-          "homeToWorkCommuteDistance": 16631
+          "homeToWorkCommuteDistance": 16631,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.68647783334675
         }
       },
       {
@@ -5511,7 +5803,9 @@
           "jobCount": 1313,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 10604,
-          "homeToWorkCommuteDistance": 16186
+          "homeToWorkCommuteDistance": 16186,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -5548,7 +5842,9 @@
           "jobCount": 14,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9998,
-          "homeToWorkCommuteDistance": 16185
+          "homeToWorkCommuteDistance": 16185,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -5585,7 +5881,9 @@
           "jobCount": 160,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15393,
-          "homeToWorkCommuteDistance": 12468
+          "homeToWorkCommuteDistance": 12468,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -5622,7 +5920,9 @@
           "jobCount": 782,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17502,
-          "homeToWorkCommuteDistance": 15482
+          "homeToWorkCommuteDistance": 15482,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -5659,7 +5959,9 @@
           "jobCount": 580,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 13211,
-          "homeToWorkCommuteDistance": 7343
+          "homeToWorkCommuteDistance": 7343,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -5696,7 +5998,9 @@
           "jobCount": 361,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11294,
-          "homeToWorkCommuteDistance": 9787
+          "homeToWorkCommuteDistance": 9787,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.740437055170226
         }
       },
       {
@@ -5733,7 +6037,9 @@
           "jobCount": 1295,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 11980,
-          "homeToWorkCommuteDistance": 10660
+          "homeToWorkCommuteDistance": 10660,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -5770,7 +6076,9 @@
           "jobCount": 1556,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 10698,
-          "homeToWorkCommuteDistance": 10748
+          "homeToWorkCommuteDistance": 10748,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -5807,7 +6115,9 @@
           "jobCount": 153,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 8124,
-          "homeToWorkCommuteDistance": 10192
+          "homeToWorkCommuteDistance": 10192,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.767416666081964
         }
       },
       {
@@ -5844,7 +6154,9 @@
           "jobCount": 108,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 7159,
-          "homeToWorkCommuteDistance": 8797
+          "homeToWorkCommuteDistance": 8797,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -5881,7 +6193,9 @@
           "jobCount": 638,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 8003,
-          "homeToWorkCommuteDistance": 9627
+          "homeToWorkCommuteDistance": 9627,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -5918,7 +6232,9 @@
           "jobCount": 100,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 9204,
-          "homeToWorkCommuteDistance": 7779
+          "homeToWorkCommuteDistance": 7779,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -5955,7 +6271,9 @@
           "jobCount": 382,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 7459,
-          "homeToWorkCommuteDistance": 11005
+          "homeToWorkCommuteDistance": 11005,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -5992,7 +6310,9 @@
           "jobCount": 520,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 4315,
-          "homeToWorkCommuteDistance": 7244
+          "homeToWorkCommuteDistance": 7244,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -6029,7 +6349,9 @@
           "jobCount": 720,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 5962,
-          "homeToWorkCommuteDistance": 9644
+          "homeToWorkCommuteDistance": 9644,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -6066,7 +6388,9 @@
           "jobCount": 320,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 11250,
-          "homeToWorkCommuteDistance": 8458
+          "homeToWorkCommuteDistance": 8458,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -6103,7 +6427,9 @@
           "jobCount": 3234,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 6920,
-          "homeToWorkCommuteDistance": 6758
+          "homeToWorkCommuteDistance": 6758,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -6140,7 +6466,9 @@
           "jobCount": 548,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10835,
-          "homeToWorkCommuteDistance": 8178
+          "homeToWorkCommuteDistance": 8178,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -6177,7 +6505,9 @@
           "jobCount": 15,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 24592,
-          "homeToWorkCommuteDistance": 9302
+          "homeToWorkCommuteDistance": 9302,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.89332151700341
         }
       },
       {
@@ -6214,7 +6544,9 @@
           "jobCount": 21,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13709,
-          "homeToWorkCommuteDistance": 10241
+          "homeToWorkCommuteDistance": 10241,
+          "centroidLng": -71.46079025974237,
+          "centroidLat": 41.9113079242779
         }
       },
       {
@@ -6251,7 +6583,9 @@
           "jobCount": 1118,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 14816,
-          "homeToWorkCommuteDistance": 21244
+          "homeToWorkCommuteDistance": 21244,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.65949822243501
         }
       },
       {
@@ -6288,7 +6622,9 @@
           "jobCount": 33,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12660,
-          "homeToWorkCommuteDistance": 10835
+          "homeToWorkCommuteDistance": 10835,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.66849142607226
         }
       },
       {
@@ -6325,7 +6661,9 @@
           "jobCount": 333,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12649,
-          "homeToWorkCommuteDistance": 19405
+          "homeToWorkCommuteDistance": 19405,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.68647783334675
         }
       },
       {
@@ -6362,7 +6700,9 @@
           "jobCount": 108,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 8013,
-          "homeToWorkCommuteDistance": 15396
+          "homeToWorkCommuteDistance": 15396,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -6399,7 +6739,9 @@
           "jobCount": 468,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 9482,
-          "homeToWorkCommuteDistance": 17184
+          "homeToWorkCommuteDistance": 17184,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -6436,7 +6778,9 @@
           "jobCount": 704,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 11530,
-          "homeToWorkCommuteDistance": 12208
+          "homeToWorkCommuteDistance": 12208,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -6473,7 +6817,9 @@
           "jobCount": 1723,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 12541,
-          "homeToWorkCommuteDistance": 12525
+          "homeToWorkCommuteDistance": 12525,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -6510,7 +6856,9 @@
           "jobCount": 1125,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 12701,
-          "homeToWorkCommuteDistance": 11881
+          "homeToWorkCommuteDistance": 11881,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.740437055170226
         }
       },
       {
@@ -6547,7 +6895,9 @@
           "jobCount": 756,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 12081,
-          "homeToWorkCommuteDistance": 15049
+          "homeToWorkCommuteDistance": 15049,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -6584,7 +6934,9 @@
           "jobCount": 579,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9840,
-          "homeToWorkCommuteDistance": 17792
+          "homeToWorkCommuteDistance": 17792,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -6621,7 +6973,9 @@
           "jobCount": 528,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10823,
-          "homeToWorkCommuteDistance": 9625
+          "homeToWorkCommuteDistance": 9625,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.767416666081964
         }
       },
       {
@@ -6658,7 +7012,9 @@
           "jobCount": 434,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10211,
-          "homeToWorkCommuteDistance": 8313
+          "homeToWorkCommuteDistance": 8313,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -6695,7 +7051,9 @@
           "jobCount": 305,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 7485,
-          "homeToWorkCommuteDistance": 8671
+          "homeToWorkCommuteDistance": 8671,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -6732,7 +7090,9 @@
           "jobCount": 910,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 8525,
-          "homeToWorkCommuteDistance": 8629
+          "homeToWorkCommuteDistance": 8629,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -6769,7 +7129,9 @@
           "jobCount": 97,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 3537,
-          "homeToWorkCommuteDistance": 7444
+          "homeToWorkCommuteDistance": 7444,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -6806,7 +7168,9 @@
           "jobCount": 46,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 5051,
-          "homeToWorkCommuteDistance": 8670
+          "homeToWorkCommuteDistance": 8670,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -6843,7 +7207,9 @@
           "jobCount": 447,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 4398,
-          "homeToWorkCommuteDistance": 5973
+          "homeToWorkCommuteDistance": 5973,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -6880,7 +7246,9 @@
           "jobCount": 65,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 4073,
-          "homeToWorkCommuteDistance": 7718
+          "homeToWorkCommuteDistance": 7718,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -6917,7 +7285,9 @@
           "jobCount": 17,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 2882,
-          "homeToWorkCommuteDistance": 9636
+          "homeToWorkCommuteDistance": 9636,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -6954,7 +7324,9 @@
           "jobCount": 115,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 8287,
-          "homeToWorkCommuteDistance": 9785
+          "homeToWorkCommuteDistance": 9785,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -6991,7 +7363,9 @@
           "jobCount": 202,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10597,
-          "homeToWorkCommuteDistance": 6979
+          "homeToWorkCommuteDistance": 6979,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -7028,7 +7402,9 @@
           "jobCount": 588,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 8187,
-          "homeToWorkCommuteDistance": 6713
+          "homeToWorkCommuteDistance": 6713,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -7065,7 +7441,9 @@
           "jobCount": 39,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10315,
-          "homeToWorkCommuteDistance": 10451
+          "homeToWorkCommuteDistance": 10451,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -7102,7 +7480,9 @@
           "jobCount": 101,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 7202,
-          "homeToWorkCommuteDistance": 6771
+          "homeToWorkCommuteDistance": 6771,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -7139,7 +7519,9 @@
           "jobCount": 2755,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12396,
-          "homeToWorkCommuteDistance": 7371
+          "homeToWorkCommuteDistance": 7371,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.90231472064065
         }
       },
       {
@@ -7176,7 +7558,9 @@
           "jobCount": 0,
           "pointDensity": 1,
           "workToHomeCommuteDistance": -1,
-          "homeToWorkCommuteDistance": 4508
+          "homeToWorkCommuteDistance": 4508,
+          "centroidLng": -71.45179705610511,
+          "centroidLat": 41.920301127915145
         }
       },
       {
@@ -7213,7 +7597,9 @@
           "jobCount": 37,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9725,
-          "homeToWorkCommuteDistance": 13841
+          "homeToWorkCommuteDistance": 13841,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -7250,7 +7636,9 @@
           "jobCount": 387,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 14169,
-          "homeToWorkCommuteDistance": 7552
+          "homeToWorkCommuteDistance": 7552,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -7287,7 +7675,9 @@
           "jobCount": 826,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 11251,
-          "homeToWorkCommuteDistance": 12455
+          "homeToWorkCommuteDistance": 12455,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -7324,7 +7714,9 @@
           "jobCount": 636,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 13070,
-          "homeToWorkCommuteDistance": 11554
+          "homeToWorkCommuteDistance": 11554,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -7361,7 +7753,9 @@
           "jobCount": 1516,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 11665,
-          "homeToWorkCommuteDistance": 12126
+          "homeToWorkCommuteDistance": 12126,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.740437055170226
         }
       },
       {
@@ -7398,7 +7792,9 @@
           "jobCount": 526,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 11292,
-          "homeToWorkCommuteDistance": 10248
+          "homeToWorkCommuteDistance": 10248,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -7435,7 +7831,9 @@
           "jobCount": 139,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14509,
-          "homeToWorkCommuteDistance": 8183
+          "homeToWorkCommuteDistance": 8183,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -7472,7 +7870,9 @@
           "jobCount": 427,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10405,
-          "homeToWorkCommuteDistance": 8606
+          "homeToWorkCommuteDistance": 8606,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -7509,7 +7909,9 @@
           "jobCount": 1046,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10154,
-          "homeToWorkCommuteDistance": 9356
+          "homeToWorkCommuteDistance": 9356,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -7546,7 +7948,9 @@
           "jobCount": 529,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10258,
-          "homeToWorkCommuteDistance": 6767
+          "homeToWorkCommuteDistance": 6767,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -7583,7 +7987,9 @@
           "jobCount": 670,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 8058,
-          "homeToWorkCommuteDistance": 5610
+          "homeToWorkCommuteDistance": 5610,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -7620,7 +8026,9 @@
           "jobCount": 482,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 5853,
-          "homeToWorkCommuteDistance": 6822
+          "homeToWorkCommuteDistance": 6822,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -7657,7 +8065,9 @@
           "jobCount": 1183,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 8772,
-          "homeToWorkCommuteDistance": 6062
+          "homeToWorkCommuteDistance": 6062,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -7694,7 +8104,9 @@
           "jobCount": 374,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 4193,
-          "homeToWorkCommuteDistance": 6528
+          "homeToWorkCommuteDistance": 6528,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -7731,7 +8143,9 @@
           "jobCount": 557,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 8730,
-          "homeToWorkCommuteDistance": 6170
+          "homeToWorkCommuteDistance": 6170,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -7768,7 +8182,9 @@
           "jobCount": 388,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 6677,
-          "homeToWorkCommuteDistance": 8401
+          "homeToWorkCommuteDistance": 8401,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -7805,7 +8221,9 @@
           "jobCount": 324,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10814,
-          "homeToWorkCommuteDistance": 10761
+          "homeToWorkCommuteDistance": 10761,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -7842,7 +8260,9 @@
           "jobCount": 139,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10509,
-          "homeToWorkCommuteDistance": 8285
+          "homeToWorkCommuteDistance": 8285,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.89332151700341
         }
       },
       {
@@ -7879,7 +8299,9 @@
           "jobCount": 143,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 18466,
-          "homeToWorkCommuteDistance": 10561
+          "homeToWorkCommuteDistance": 10561,
+          "centroidLng": -71.44280385246788,
+          "centroidLat": 41.9113079242779
         }
       },
       {
@@ -7916,7 +8338,9 @@
           "jobCount": 218,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12579,
-          "homeToWorkCommuteDistance": 12664
+          "homeToWorkCommuteDistance": 12664,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -7953,7 +8377,9 @@
           "jobCount": 10800,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14417,
-          "homeToWorkCommuteDistance": -1
+          "homeToWorkCommuteDistance": -1,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -7990,7 +8416,9 @@
           "jobCount": 213,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11848,
-          "homeToWorkCommuteDistance": 13076
+          "homeToWorkCommuteDistance": 13076,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -8027,7 +8455,9 @@
           "jobCount": 210,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12172,
-          "homeToWorkCommuteDistance": 13973
+          "homeToWorkCommuteDistance": 13973,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.740437055170226
         }
       },
       {
@@ -8064,7 +8494,9 @@
           "jobCount": 319,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10979,
-          "homeToWorkCommuteDistance": 14227
+          "homeToWorkCommuteDistance": 14227,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -8101,7 +8533,9 @@
           "jobCount": 313,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12835,
-          "homeToWorkCommuteDistance": 10146
+          "homeToWorkCommuteDistance": 10146,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -8138,7 +8572,9 @@
           "jobCount": 267,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 9442,
-          "homeToWorkCommuteDistance": 10531
+          "homeToWorkCommuteDistance": 10531,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.767416666081964
         }
       },
       {
@@ -8175,7 +8611,9 @@
           "jobCount": 1579,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10432,
-          "homeToWorkCommuteDistance": 7653
+          "homeToWorkCommuteDistance": 7653,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -8212,7 +8650,9 @@
           "jobCount": 522,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 7773,
-          "homeToWorkCommuteDistance": 7842
+          "homeToWorkCommuteDistance": 7842,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -8249,7 +8689,9 @@
           "jobCount": 1003,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 11408,
-          "homeToWorkCommuteDistance": 7466
+          "homeToWorkCommuteDistance": 7466,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -8286,7 +8728,9 @@
           "jobCount": 450,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 5485,
-          "homeToWorkCommuteDistance": 5725
+          "homeToWorkCommuteDistance": 5725,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -8323,7 +8767,9 @@
           "jobCount": 349,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 5694,
-          "homeToWorkCommuteDistance": 5478
+          "homeToWorkCommuteDistance": 5478,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -8360,7 +8806,9 @@
           "jobCount": 1377,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 7512,
-          "homeToWorkCommuteDistance": 6074
+          "homeToWorkCommuteDistance": 6074,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -8397,7 +8845,9 @@
           "jobCount": 2490,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 9286,
-          "homeToWorkCommuteDistance": 4598
+          "homeToWorkCommuteDistance": 4598,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -8434,7 +8884,9 @@
           "jobCount": 1492,
           "pointDensity": 5,
           "workToHomeCommuteDistance": 8035,
-          "homeToWorkCommuteDistance": 6541
+          "homeToWorkCommuteDistance": 6541,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -8471,7 +8923,9 @@
           "jobCount": 1300,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 5935,
-          "homeToWorkCommuteDistance": 7669
+          "homeToWorkCommuteDistance": 7669,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -8508,7 +8962,9 @@
           "jobCount": 585,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 7968,
-          "homeToWorkCommuteDistance": 9593
+          "homeToWorkCommuteDistance": 9593,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -8545,7 +9001,9 @@
           "jobCount": 481,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 6384,
-          "homeToWorkCommuteDistance": 9798
+          "homeToWorkCommuteDistance": 9798,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -8582,7 +9040,9 @@
           "jobCount": 56,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10748,
-          "homeToWorkCommuteDistance": 17145
+          "homeToWorkCommuteDistance": 17145,
+          "centroidLng": -71.43381064883062,
+          "centroidLat": 41.90231472064065
         }
       },
       {
@@ -8619,7 +9079,9 @@
           "jobCount": 2260,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 29623,
-          "homeToWorkCommuteDistance": 28081
+          "homeToWorkCommuteDistance": 28081,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.65949822243501
         }
       },
       {
@@ -8656,7 +9118,9 @@
           "jobCount": 78,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11199,
-          "homeToWorkCommuteDistance": 14845
+          "homeToWorkCommuteDistance": 14845,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -8693,7 +9157,9 @@
           "jobCount": 486,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14259,
-          "homeToWorkCommuteDistance": 14304
+          "homeToWorkCommuteDistance": 14304,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -8730,7 +9196,9 @@
           "jobCount": 664,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16175,
-          "homeToWorkCommuteDistance": 12807
+          "homeToWorkCommuteDistance": 12807,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -8767,7 +9235,9 @@
           "jobCount": 227,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13853,
-          "homeToWorkCommuteDistance": 13142
+          "homeToWorkCommuteDistance": 13142,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -8804,7 +9274,9 @@
           "jobCount": 451,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 14732,
-          "homeToWorkCommuteDistance": 14393
+          "homeToWorkCommuteDistance": 14393,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.740437055170226
         }
       },
       {
@@ -8841,7 +9313,9 @@
           "jobCount": 384,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 13838,
-          "homeToWorkCommuteDistance": 11640
+          "homeToWorkCommuteDistance": 11640,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -8878,7 +9352,9 @@
           "jobCount": 166,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11013,
-          "homeToWorkCommuteDistance": 9759
+          "homeToWorkCommuteDistance": 9759,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -8915,7 +9391,9 @@
           "jobCount": 677,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10473,
-          "homeToWorkCommuteDistance": 11629
+          "homeToWorkCommuteDistance": 11629,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.767416666081964
         }
       },
       {
@@ -8952,7 +9430,9 @@
           "jobCount": 706,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10296,
-          "homeToWorkCommuteDistance": 10580
+          "homeToWorkCommuteDistance": 10580,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -8989,7 +9469,9 @@
           "jobCount": 81,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 6062,
-          "homeToWorkCommuteDistance": 15228
+          "homeToWorkCommuteDistance": 15228,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -9026,7 +9508,9 @@
           "jobCount": 1089,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 8054,
-          "homeToWorkCommuteDistance": 6112
+          "homeToWorkCommuteDistance": 6112,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -9063,7 +9547,9 @@
           "jobCount": 235,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 7672,
-          "homeToWorkCommuteDistance": 4290
+          "homeToWorkCommuteDistance": 4290,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -9100,7 +9586,9 @@
           "jobCount": 943,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 7989,
-          "homeToWorkCommuteDistance": 4726
+          "homeToWorkCommuteDistance": 4726,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -9137,7 +9625,9 @@
           "jobCount": 4905,
           "pointDensity": 5,
           "workToHomeCommuteDistance": 8705,
-          "homeToWorkCommuteDistance": 4883
+          "homeToWorkCommuteDistance": 4883,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -9174,7 +9664,9 @@
           "jobCount": 1673,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 10161,
-          "homeToWorkCommuteDistance": 6911
+          "homeToWorkCommuteDistance": 6911,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -9211,7 +9703,9 @@
           "jobCount": 300,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 9205,
-          "homeToWorkCommuteDistance": 9247
+          "homeToWorkCommuteDistance": 9247,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -9248,7 +9742,9 @@
           "jobCount": 402,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 9356,
-          "homeToWorkCommuteDistance": 8102
+          "homeToWorkCommuteDistance": 8102,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -9285,7 +9781,9 @@
           "jobCount": 127,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 7132,
-          "homeToWorkCommuteDistance": 8973
+          "homeToWorkCommuteDistance": 8973,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -9322,7 +9820,9 @@
           "jobCount": 377,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10877,
-          "homeToWorkCommuteDistance": 7915
+          "homeToWorkCommuteDistance": 7915,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -9359,7 +9859,9 @@
           "jobCount": 290,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 7553,
-          "homeToWorkCommuteDistance": 10700
+          "homeToWorkCommuteDistance": 10700,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -9396,7 +9898,9 @@
           "jobCount": 12,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 5006,
-          "homeToWorkCommuteDistance": 10419
+          "homeToWorkCommuteDistance": 10419,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.89332151700341
         }
       },
       {
@@ -9433,7 +9937,9 @@
           "jobCount": 474,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16854,
-          "homeToWorkCommuteDistance": 19715
+          "homeToWorkCommuteDistance": 19715,
+          "centroidLng": -71.42481744519338,
+          "centroidLat": 41.920301127915145
         }
       },
       {
@@ -9470,7 +9976,9 @@
           "jobCount": 403,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 16274,
-          "homeToWorkCommuteDistance": 13669
+          "homeToWorkCommuteDistance": 13669,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -9507,7 +10015,9 @@
           "jobCount": 152,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14469,
-          "homeToWorkCommuteDistance": 15285
+          "homeToWorkCommuteDistance": 15285,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -9544,7 +10054,9 @@
           "jobCount": 61,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9968,
-          "homeToWorkCommuteDistance": 9826
+          "homeToWorkCommuteDistance": 9826,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -9581,7 +10093,9 @@
           "jobCount": 14,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15652,
-          "homeToWorkCommuteDistance": 11525
+          "homeToWorkCommuteDistance": 11525,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -9618,7 +10132,9 @@
           "jobCount": 55,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9912,
-          "homeToWorkCommuteDistance": 8117
+          "homeToWorkCommuteDistance": 8117,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.767416666081964
         }
       },
       {
@@ -9655,7 +10171,9 @@
           "jobCount": 125,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9447,
-          "homeToWorkCommuteDistance": 10788
+          "homeToWorkCommuteDistance": 10788,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -9692,7 +10210,9 @@
           "jobCount": 2548,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 9998,
-          "homeToWorkCommuteDistance": 9239
+          "homeToWorkCommuteDistance": 9239,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -9729,7 +10249,9 @@
           "jobCount": 647,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 7431,
-          "homeToWorkCommuteDistance": 8112
+          "homeToWorkCommuteDistance": 8112,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -9766,7 +10288,9 @@
           "jobCount": 4715,
           "pointDensity": 5,
           "workToHomeCommuteDistance": 4755,
-          "homeToWorkCommuteDistance": 6749
+          "homeToWorkCommuteDistance": 6749,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -9803,7 +10327,9 @@
           "jobCount": 1308,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 9466,
-          "homeToWorkCommuteDistance": 5546
+          "homeToWorkCommuteDistance": 5546,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -9840,7 +10366,9 @@
           "jobCount": 8177,
           "pointDensity": 7,
           "workToHomeCommuteDistance": 9046,
-          "homeToWorkCommuteDistance": 4420
+          "homeToWorkCommuteDistance": 4420,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -9877,7 +10405,9 @@
           "jobCount": 4311,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 10063,
-          "homeToWorkCommuteDistance": 4836
+          "homeToWorkCommuteDistance": 4836,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -9914,7 +10444,9 @@
           "jobCount": 1036,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 8375,
-          "homeToWorkCommuteDistance": 7610
+          "homeToWorkCommuteDistance": 7610,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -9951,7 +10483,9 @@
           "jobCount": 1594,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 9794,
-          "homeToWorkCommuteDistance": 5569
+          "homeToWorkCommuteDistance": 5569,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -9988,7 +10522,9 @@
           "jobCount": 162,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 9066,
-          "homeToWorkCommuteDistance": 7113
+          "homeToWorkCommuteDistance": 7113,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -10025,7 +10561,9 @@
           "jobCount": 21,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 4382,
-          "homeToWorkCommuteDistance": 5976
+          "homeToWorkCommuteDistance": 5976,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -10062,7 +10600,9 @@
           "jobCount": 147,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 5628,
-          "homeToWorkCommuteDistance": 12185
+          "homeToWorkCommuteDistance": 12185,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -10099,7 +10639,9 @@
           "jobCount": 291,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11297,
-          "homeToWorkCommuteDistance": 7924
+          "homeToWorkCommuteDistance": 7924,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -10136,7 +10678,9 @@
           "jobCount": 55,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11483,
-          "homeToWorkCommuteDistance": 8815
+          "homeToWorkCommuteDistance": 8815,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.89332151700341
         }
       },
       {
@@ -10173,7 +10717,9 @@
           "jobCount": 84,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 6704,
-          "homeToWorkCommuteDistance": 10530
+          "homeToWorkCommuteDistance": 10530,
+          "centroidLng": -71.41582424155612,
+          "centroidLat": 41.90231472064065
         }
       },
       {
@@ -10210,7 +10756,9 @@
           "jobCount": 171,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10459,
-          "homeToWorkCommuteDistance": 17488
+          "homeToWorkCommuteDistance": 17488,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -10247,7 +10795,9 @@
           "jobCount": 34,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 8468,
-          "homeToWorkCommuteDistance": 15308
+          "homeToWorkCommuteDistance": 15308,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -10284,7 +10834,9 @@
           "jobCount": 1152,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 9387,
-          "homeToWorkCommuteDistance": 14351
+          "homeToWorkCommuteDistance": 14351,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -10321,7 +10873,9 @@
           "jobCount": 434,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11327,
-          "homeToWorkCommuteDistance": 11478
+          "homeToWorkCommuteDistance": 11478,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -10358,7 +10912,9 @@
           "jobCount": 304,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 8854,
-          "homeToWorkCommuteDistance": 9854
+          "homeToWorkCommuteDistance": 9854,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.740437055170226
         }
       },
       {
@@ -10395,7 +10951,9 @@
           "jobCount": 606,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 11730,
-          "homeToWorkCommuteDistance": 10077
+          "homeToWorkCommuteDistance": 10077,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -10432,7 +10990,9 @@
           "jobCount": 413,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11640,
-          "homeToWorkCommuteDistance": 7938
+          "homeToWorkCommuteDistance": 7938,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -10469,7 +11029,9 @@
           "jobCount": 384,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 12742,
-          "homeToWorkCommuteDistance": 8354
+          "homeToWorkCommuteDistance": 8354,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.767416666081964
         }
       },
       {
@@ -10506,7 +11068,9 @@
           "jobCount": 9,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17790,
-          "homeToWorkCommuteDistance": 11388
+          "homeToWorkCommuteDistance": 11388,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -10543,7 +11107,9 @@
           "jobCount": 58,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 5312,
-          "homeToWorkCommuteDistance": 7844
+          "homeToWorkCommuteDistance": 7844,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -10580,7 +11146,9 @@
           "jobCount": 1119,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10322,
-          "homeToWorkCommuteDistance": 8102
+          "homeToWorkCommuteDistance": 8102,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -10617,7 +11185,9 @@
           "jobCount": 858,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 9616,
-          "homeToWorkCommuteDistance": 9075
+          "homeToWorkCommuteDistance": 9075,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -10654,7 +11224,9 @@
           "jobCount": 8105,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 9335,
-          "homeToWorkCommuteDistance": 5779
+          "homeToWorkCommuteDistance": 5779,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -10691,7 +11263,9 @@
           "jobCount": 6235,
           "pointDensity": 7,
           "workToHomeCommuteDistance": 9714,
-          "homeToWorkCommuteDistance": 4301
+          "homeToWorkCommuteDistance": 4301,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -10728,7 +11302,9 @@
           "jobCount": 4239,
           "pointDensity": 5,
           "workToHomeCommuteDistance": 8570,
-          "homeToWorkCommuteDistance": 3421
+          "homeToWorkCommuteDistance": 3421,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -10765,7 +11341,9 @@
           "jobCount": 1011,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 10788,
-          "homeToWorkCommuteDistance": 6993
+          "homeToWorkCommuteDistance": 6993,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -10802,7 +11380,9 @@
           "jobCount": 1018,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 12007,
-          "homeToWorkCommuteDistance": 8718
+          "homeToWorkCommuteDistance": 8718,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -10839,7 +11419,9 @@
           "jobCount": 122,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 7481,
-          "homeToWorkCommuteDistance": 10815
+          "homeToWorkCommuteDistance": 10815,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -10876,7 +11458,9 @@
           "jobCount": 363,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 16293,
-          "homeToWorkCommuteDistance": 9588
+          "homeToWorkCommuteDistance": 9588,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -10913,7 +11497,9 @@
           "jobCount": 265,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11270,
-          "homeToWorkCommuteDistance": 11531
+          "homeToWorkCommuteDistance": 11531,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -10950,7 +11536,9 @@
           "jobCount": 870,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 13036,
-          "homeToWorkCommuteDistance": 8899
+          "homeToWorkCommuteDistance": 8899,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -10987,7 +11575,9 @@
           "jobCount": 397,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12972,
-          "homeToWorkCommuteDistance": 6567
+          "homeToWorkCommuteDistance": 6567,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.90231472064065
         }
       },
       {
@@ -11024,7 +11614,9 @@
           "jobCount": 175,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 16846,
-          "homeToWorkCommuteDistance": 12558
+          "homeToWorkCommuteDistance": 12558,
+          "centroidLng": -71.40683103791889,
+          "centroidLat": 41.9113079242779
         }
       },
       {
@@ -11061,7 +11653,9 @@
           "jobCount": 134,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10737,
-          "homeToWorkCommuteDistance": 14528
+          "homeToWorkCommuteDistance": 14528,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -11098,7 +11692,9 @@
           "jobCount": 362,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 10743,
-          "homeToWorkCommuteDistance": 14019
+          "homeToWorkCommuteDistance": 14019,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -11135,7 +11731,9 @@
           "jobCount": 70,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10733,
-          "homeToWorkCommuteDistance": 12362
+          "homeToWorkCommuteDistance": 12362,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -11172,7 +11770,9 @@
           "jobCount": 97,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10360,
-          "homeToWorkCommuteDistance": 11993
+          "homeToWorkCommuteDistance": 11993,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -11209,7 +11809,9 @@
           "jobCount": 250,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 9446,
-          "homeToWorkCommuteDistance": 12159
+          "homeToWorkCommuteDistance": 12159,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -11246,7 +11848,9 @@
           "jobCount": 549,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11019,
-          "homeToWorkCommuteDistance": 10636
+          "homeToWorkCommuteDistance": 10636,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.767416666081964
         }
       },
       {
@@ -11283,7 +11887,9 @@
           "jobCount": 593,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10521,
-          "homeToWorkCommuteDistance": 9080
+          "homeToWorkCommuteDistance": 9080,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -11320,7 +11926,9 @@
           "jobCount": 200,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 12871,
-          "homeToWorkCommuteDistance": 7873
+          "homeToWorkCommuteDistance": 7873,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -11357,7 +11965,9 @@
           "jobCount": 693,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10490,
-          "homeToWorkCommuteDistance": 10276
+          "homeToWorkCommuteDistance": 10276,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -11394,7 +12004,9 @@
           "jobCount": 498,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9810,
-          "homeToWorkCommuteDistance": 8083
+          "homeToWorkCommuteDistance": 8083,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -11431,7 +12043,9 @@
           "jobCount": 638,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9084,
-          "homeToWorkCommuteDistance": 9431
+          "homeToWorkCommuteDistance": 9431,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -11468,7 +12082,9 @@
           "jobCount": 7037,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 6243,
-          "homeToWorkCommuteDistance": 6597
+          "homeToWorkCommuteDistance": 6597,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -11505,7 +12121,9 @@
           "jobCount": 188,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 6818,
-          "homeToWorkCommuteDistance": 4597
+          "homeToWorkCommuteDistance": 4597,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -11542,7 +12160,9 @@
           "jobCount": 2833,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 8854,
-          "homeToWorkCommuteDistance": 7523
+          "homeToWorkCommuteDistance": 7523,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -11579,7 +12199,9 @@
           "jobCount": 626,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 8059,
-          "homeToWorkCommuteDistance": 7665
+          "homeToWorkCommuteDistance": 7665,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -11616,7 +12238,9 @@
           "jobCount": 720,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 8796,
-          "homeToWorkCommuteDistance": 8112
+          "homeToWorkCommuteDistance": 8112,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -11653,7 +12277,9 @@
           "jobCount": 405,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 6771,
-          "homeToWorkCommuteDistance": 7958
+          "homeToWorkCommuteDistance": 7958,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -11690,7 +12316,9 @@
           "jobCount": 430,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10157,
-          "homeToWorkCommuteDistance": 8998
+          "homeToWorkCommuteDistance": 8998,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -11727,7 +12355,9 @@
           "jobCount": 713,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 5379,
-          "homeToWorkCommuteDistance": 8932
+          "homeToWorkCommuteDistance": 8932,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.89332151700341
         }
       },
       {
@@ -11764,7 +12394,9 @@
           "jobCount": 294,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11709,
-          "homeToWorkCommuteDistance": 18284
+          "homeToWorkCommuteDistance": 18284,
+          "centroidLng": -71.39783783428163,
+          "centroidLat": 41.9113079242779
         }
       },
       {
@@ -11801,7 +12433,9 @@
           "jobCount": 120,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9825,
-          "homeToWorkCommuteDistance": 15730
+          "homeToWorkCommuteDistance": 15730,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -11838,7 +12472,9 @@
           "jobCount": 48,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9080,
-          "homeToWorkCommuteDistance": 19165
+          "homeToWorkCommuteDistance": 19165,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -11875,7 +12511,9 @@
           "jobCount": 45,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11308,
-          "homeToWorkCommuteDistance": 13282
+          "homeToWorkCommuteDistance": 13282,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -11912,7 +12550,9 @@
           "jobCount": 219,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9420,
-          "homeToWorkCommuteDistance": 10706
+          "homeToWorkCommuteDistance": 10706,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -11949,7 +12589,9 @@
           "jobCount": 205,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 8373,
-          "homeToWorkCommuteDistance": 5025
+          "homeToWorkCommuteDistance": 5025,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -11986,7 +12628,9 @@
           "jobCount": 1116,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 8844,
-          "homeToWorkCommuteDistance": 7222
+          "homeToWorkCommuteDistance": 7222,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -12023,7 +12667,9 @@
           "jobCount": 140,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 8083,
-          "homeToWorkCommuteDistance": 5351
+          "homeToWorkCommuteDistance": 5351,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -12060,7 +12706,9 @@
           "jobCount": 97,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9882,
-          "homeToWorkCommuteDistance": 6179
+          "homeToWorkCommuteDistance": 6179,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -12097,7 +12745,9 @@
           "jobCount": 155,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11470,
-          "homeToWorkCommuteDistance": 6809
+          "homeToWorkCommuteDistance": 6809,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -12134,7 +12784,9 @@
           "jobCount": 627,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9923,
-          "homeToWorkCommuteDistance": 8577
+          "homeToWorkCommuteDistance": 8577,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -12171,7 +12823,9 @@
           "jobCount": 2155,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 11001,
-          "homeToWorkCommuteDistance": 8755
+          "homeToWorkCommuteDistance": 8755,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -12208,7 +12862,9 @@
           "jobCount": 597,
           "pointDensity": 4,
           "workToHomeCommuteDistance": 8653,
-          "homeToWorkCommuteDistance": 8645
+          "homeToWorkCommuteDistance": 8645,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -12245,7 +12901,9 @@
           "jobCount": 449,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 11079,
-          "homeToWorkCommuteDistance": 11397
+          "homeToWorkCommuteDistance": 11397,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.89332151700341
         }
       },
       {
@@ -12282,7 +12940,9 @@
           "jobCount": 347,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13937,
-          "homeToWorkCommuteDistance": 5081
+          "homeToWorkCommuteDistance": 5081,
+          "centroidLng": -71.3888446306444,
+          "centroidLat": 41.90231472064065
         }
       },
       {
@@ -12319,7 +12979,9 @@
           "jobCount": 19,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 4782,
-          "homeToWorkCommuteDistance": 18007
+          "homeToWorkCommuteDistance": 18007,
+          "centroidLng": -71.37985142700714,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -12356,7 +13018,9 @@
           "jobCount": 153,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17449,
-          "homeToWorkCommuteDistance": 13417
+          "homeToWorkCommuteDistance": 13417,
+          "centroidLng": -71.37985142700714,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -12393,7 +13057,9 @@
           "jobCount": 216,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14124,
-          "homeToWorkCommuteDistance": 8184
+          "homeToWorkCommuteDistance": 8184,
+          "centroidLng": -71.37985142700714,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -12430,7 +13096,9 @@
           "jobCount": 445,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 11141,
-          "homeToWorkCommuteDistance": 8809
+          "homeToWorkCommuteDistance": 8809,
+          "centroidLng": -71.37985142700714,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -12467,7 +13135,9 @@
           "jobCount": 823,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12703,
-          "homeToWorkCommuteDistance": 10095
+          "homeToWorkCommuteDistance": 10095,
+          "centroidLng": -71.37985142700714,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -12504,7 +13174,9 @@
           "jobCount": 195,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15733,
-          "homeToWorkCommuteDistance": 10355
+          "homeToWorkCommuteDistance": 10355,
+          "centroidLng": -71.37985142700714,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -12541,7 +13213,9 @@
           "jobCount": 615,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 6071,
-          "homeToWorkCommuteDistance": 8697
+          "homeToWorkCommuteDistance": 8697,
+          "centroidLng": -71.37985142700714,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -12578,7 +13252,9 @@
           "jobCount": 611,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 10673,
-          "homeToWorkCommuteDistance": 9203
+          "homeToWorkCommuteDistance": 9203,
+          "centroidLng": -71.37985142700714,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -12615,7 +13291,9 @@
           "jobCount": 1014,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 11207,
-          "homeToWorkCommuteDistance": 11837
+          "homeToWorkCommuteDistance": 11837,
+          "centroidLng": -71.37985142700714,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -12652,7 +13330,9 @@
           "jobCount": 470,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11882,
-          "homeToWorkCommuteDistance": 11776
+          "homeToWorkCommuteDistance": 11776,
+          "centroidLng": -71.37985142700714,
+          "centroidLat": 41.89332151700341
         }
       },
       {
@@ -12689,7 +13369,9 @@
           "jobCount": 370,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13232,
-          "homeToWorkCommuteDistance": 7482
+          "homeToWorkCommuteDistance": 7482,
+          "centroidLng": -71.37085822336991,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -12726,7 +13408,9 @@
           "jobCount": 193,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14173,
-          "homeToWorkCommuteDistance": 10727
+          "homeToWorkCommuteDistance": 10727,
+          "centroidLng": -71.37085822336991,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -12763,7 +13447,9 @@
           "jobCount": 342,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 11381,
-          "homeToWorkCommuteDistance": 7734
+          "homeToWorkCommuteDistance": 7734,
+          "centroidLng": -71.37085822336991,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -12800,7 +13486,9 @@
           "jobCount": 1243,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 10659,
-          "homeToWorkCommuteDistance": 8213
+          "homeToWorkCommuteDistance": 8213,
+          "centroidLng": -71.37085822336991,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -12837,7 +13525,9 @@
           "jobCount": 752,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 9822,
-          "homeToWorkCommuteDistance": 11542
+          "homeToWorkCommuteDistance": 11542,
+          "centroidLng": -71.37085822336991,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -12874,7 +13564,9 @@
           "jobCount": 201,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15467,
-          "homeToWorkCommuteDistance": 10333
+          "homeToWorkCommuteDistance": 10333,
+          "centroidLng": -71.37085822336991,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -12911,7 +13603,9 @@
           "jobCount": 308,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12649,
-          "homeToWorkCommuteDistance": 10248
+          "homeToWorkCommuteDistance": 10248,
+          "centroidLng": -71.37085822336991,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -12948,7 +13642,9 @@
           "jobCount": 646,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10954,
-          "homeToWorkCommuteDistance": 9180
+          "homeToWorkCommuteDistance": 9180,
+          "centroidLng": -71.37085822336991,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -12985,7 +13681,9 @@
           "jobCount": 271,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12433,
-          "homeToWorkCommuteDistance": 10502
+          "homeToWorkCommuteDistance": 10502,
+          "centroidLng": -71.37085822336991,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -13022,7 +13720,9 @@
           "jobCount": 408,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10223,
-          "homeToWorkCommuteDistance": 12642
+          "homeToWorkCommuteDistance": 12642,
+          "centroidLng": -71.37085822336991,
+          "centroidLat": 41.89332151700341
         }
       },
       {
@@ -13059,7 +13759,9 @@
           "jobCount": 816,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 14831,
-          "homeToWorkCommuteDistance": 14383
+          "homeToWorkCommuteDistance": 14383,
+          "centroidLng": -71.36186501973265,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -13096,7 +13798,9 @@
           "jobCount": 234,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 12750,
-          "homeToWorkCommuteDistance": 13000
+          "homeToWorkCommuteDistance": 13000,
+          "centroidLng": -71.36186501973265,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -13133,7 +13837,9 @@
           "jobCount": 65,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13549,
-          "homeToWorkCommuteDistance": 9794
+          "homeToWorkCommuteDistance": 9794,
+          "centroidLng": -71.36186501973265,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -13170,7 +13876,9 @@
           "jobCount": 199,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 12279,
-          "homeToWorkCommuteDistance": 7677
+          "homeToWorkCommuteDistance": 7677,
+          "centroidLng": -71.36186501973265,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -13207,7 +13915,9 @@
           "jobCount": 898,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 10579,
-          "homeToWorkCommuteDistance": 6862
+          "homeToWorkCommuteDistance": 6862,
+          "centroidLng": -71.36186501973265,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -13244,7 +13954,9 @@
           "jobCount": 84,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10354,
-          "homeToWorkCommuteDistance": 24451
+          "homeToWorkCommuteDistance": 24451,
+          "centroidLng": -71.36186501973265,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -13281,7 +13993,9 @@
           "jobCount": 304,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 11920,
-          "homeToWorkCommuteDistance": 7670
+          "homeToWorkCommuteDistance": 7670,
+          "centroidLng": -71.36186501973265,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -13318,7 +14032,9 @@
           "jobCount": 749,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 10407,
-          "homeToWorkCommuteDistance": 9848
+          "homeToWorkCommuteDistance": 9848,
+          "centroidLng": -71.36186501973265,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -13355,7 +14071,9 @@
           "jobCount": 473,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15469,
-          "homeToWorkCommuteDistance": 11830
+          "homeToWorkCommuteDistance": 11830,
+          "centroidLng": -71.36186501973265,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -13392,7 +14110,9 @@
           "jobCount": 0,
           "pointDensity": 1,
           "workToHomeCommuteDistance": -1,
-          "homeToWorkCommuteDistance": -1
+          "homeToWorkCommuteDistance": -1,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.65949822243501
         }
       },
       {
@@ -13429,7 +14149,9 @@
           "jobCount": 184,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14005,
-          "homeToWorkCommuteDistance": 13793
+          "homeToWorkCommuteDistance": 13793,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -13466,7 +14188,9 @@
           "jobCount": 201,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 14911,
-          "homeToWorkCommuteDistance": 12013
+          "homeToWorkCommuteDistance": 12013,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.767416666081964
         }
       },
       {
@@ -13503,7 +14227,9 @@
           "jobCount": 494,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15581,
-          "homeToWorkCommuteDistance": 12672
+          "homeToWorkCommuteDistance": 12672,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -13540,7 +14266,9 @@
           "jobCount": 265,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 15045,
-          "homeToWorkCommuteDistance": 9861
+          "homeToWorkCommuteDistance": 9861,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -13577,7 +14305,9 @@
           "jobCount": 265,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 13125,
-          "homeToWorkCommuteDistance": 11437
+          "homeToWorkCommuteDistance": 11437,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -13614,7 +14344,9 @@
           "jobCount": 590,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 13554,
-          "homeToWorkCommuteDistance": 7269
+          "homeToWorkCommuteDistance": 7269,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -13651,7 +14383,9 @@
           "jobCount": 420,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13192,
-          "homeToWorkCommuteDistance": 4110
+          "homeToWorkCommuteDistance": 4110,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -13688,7 +14422,9 @@
           "jobCount": 320,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 11789,
-          "homeToWorkCommuteDistance": 7958
+          "homeToWorkCommuteDistance": 7958,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.830369091542686
         }
       },
       {
@@ -13725,7 +14461,9 @@
           "jobCount": 301,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 11303,
-          "homeToWorkCommuteDistance": 7817
+          "homeToWorkCommuteDistance": 7817,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.83936229517993
         }
       },
       {
@@ -13762,7 +14500,9 @@
           "jobCount": 245,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12739,
-          "homeToWorkCommuteDistance": 9599
+          "homeToWorkCommuteDistance": 9599,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.84835549881718
         }
       },
       {
@@ -13799,7 +14539,9 @@
           "jobCount": 616,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12426,
-          "homeToWorkCommuteDistance": 9917
+          "homeToWorkCommuteDistance": 9917,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -13836,7 +14578,9 @@
           "jobCount": 481,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 12683,
-          "homeToWorkCommuteDistance": 10766
+          "homeToWorkCommuteDistance": 10766,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -13873,7 +14617,9 @@
           "jobCount": 166,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 9711,
-          "homeToWorkCommuteDistance": 10564
+          "homeToWorkCommuteDistance": 10564,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -13910,7 +14656,9 @@
           "jobCount": 495,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12686,
-          "homeToWorkCommuteDistance": 22411
+          "homeToWorkCommuteDistance": 22411,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.88432831336616
         }
       },
       {
@@ -13947,7 +14695,9 @@
           "jobCount": 250,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 7723,
-          "homeToWorkCommuteDistance": 10848
+          "homeToWorkCommuteDistance": 10848,
+          "centroidLng": -71.35287181609542,
+          "centroidLat": 41.89332151700341
         }
       },
       {
@@ -13984,7 +14734,9 @@
           "jobCount": 198,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13996,
-          "homeToWorkCommuteDistance": 13275
+          "homeToWorkCommuteDistance": 13275,
+          "centroidLng": -71.34387861245816,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -14021,7 +14773,9 @@
           "jobCount": 75,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15847,
-          "homeToWorkCommuteDistance": 13978
+          "homeToWorkCommuteDistance": 13978,
+          "centroidLng": -71.34387861245816,
+          "centroidLat": 41.767416666081964
         }
       },
       {
@@ -14058,7 +14812,9 @@
           "jobCount": 82,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14988,
-          "homeToWorkCommuteDistance": 16293
+          "homeToWorkCommuteDistance": 16293,
+          "centroidLng": -71.34387861245816,
+          "centroidLat": 41.785403073356456
         }
       },
       {
@@ -14095,7 +14851,9 @@
           "jobCount": 1244,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 14372,
-          "homeToWorkCommuteDistance": 13584
+          "homeToWorkCommuteDistance": 13584,
+          "centroidLng": -71.34387861245816,
+          "centroidLat": 41.80338948063095
         }
       },
       {
@@ -14132,7 +14890,9 @@
           "jobCount": 547,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 13606,
-          "homeToWorkCommuteDistance": 10051
+          "homeToWorkCommuteDistance": 10051,
+          "centroidLng": -71.34387861245816,
+          "centroidLat": 41.812382684268194
         }
       },
       {
@@ -14169,7 +14929,9 @@
           "jobCount": 457,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 12042,
-          "homeToWorkCommuteDistance": 11944
+          "homeToWorkCommuteDistance": 11944,
+          "centroidLng": -71.34387861245816,
+          "centroidLat": 41.82137588790544
         }
       },
       {
@@ -14206,7 +14968,9 @@
           "jobCount": 639,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 14759,
-          "homeToWorkCommuteDistance": -1
+          "homeToWorkCommuteDistance": -1,
+          "centroidLng": -71.34387861245816,
+          "centroidLat": 41.85734870245442
         }
       },
       {
@@ -14243,7 +15007,9 @@
           "jobCount": 654,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14812,
-          "homeToWorkCommuteDistance": 19926
+          "homeToWorkCommuteDistance": 19926,
+          "centroidLng": -71.34387861245816,
+          "centroidLat": 41.86634190609167
         }
       },
       {
@@ -14280,7 +15046,9 @@
           "jobCount": 41,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14708,
-          "homeToWorkCommuteDistance": 5454
+          "homeToWorkCommuteDistance": 5454,
+          "centroidLng": -71.34387861245816,
+          "centroidLat": 41.875335109728915
         }
       },
       {
@@ -14317,7 +15085,9 @@
           "jobCount": 121,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 10389,
-          "homeToWorkCommuteDistance": 25115
+          "homeToWorkCommuteDistance": 25115,
+          "centroidLng": -71.34387861245816,
+          "centroidLat": 41.89332151700341
         }
       },
       {
@@ -14354,7 +15124,9 @@
           "jobCount": 111,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 21958,
-          "homeToWorkCommuteDistance": 15715
+          "homeToWorkCommuteDistance": 15715,
+          "centroidLng": -71.33488540882092,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -14391,7 +15163,9 @@
           "jobCount": 39,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 18265,
-          "homeToWorkCommuteDistance": 14761
+          "homeToWorkCommuteDistance": 14761,
+          "centroidLng": -71.33488540882092,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -14428,7 +15202,9 @@
           "jobCount": 124,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 13950,
-          "homeToWorkCommuteDistance": 18187
+          "homeToWorkCommuteDistance": 18187,
+          "centroidLng": -71.33488540882092,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -14465,7 +15241,9 @@
           "jobCount": 639,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17521,
-          "homeToWorkCommuteDistance": 13311
+          "homeToWorkCommuteDistance": 13311,
+          "centroidLng": -71.33488540882092,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -14502,7 +15280,9 @@
           "jobCount": 133,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 18558,
-          "homeToWorkCommuteDistance": 16080
+          "homeToWorkCommuteDistance": 16080,
+          "centroidLng": -71.32589220518366,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -14539,7 +15319,9 @@
           "jobCount": 221,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 19957,
-          "homeToWorkCommuteDistance": 10276
+          "homeToWorkCommuteDistance": 10276,
+          "centroidLng": -71.32589220518366,
+          "centroidLat": 41.77640986971921
         }
       },
       {
@@ -14576,7 +15358,9 @@
           "jobCount": 184,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 17334,
-          "homeToWorkCommuteDistance": 16315
+          "homeToWorkCommuteDistance": 16315,
+          "centroidLng": -71.31689900154643,
+          "centroidLat": 41.740437055170226
         }
       },
       {
@@ -14613,7 +15397,9 @@
           "jobCount": 112,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 20531,
-          "homeToWorkCommuteDistance": 15064
+          "homeToWorkCommuteDistance": 15064,
+          "centroidLng": -71.31689900154643,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -14650,7 +15436,9 @@
           "jobCount": 0,
           "pointDensity": 1,
           "workToHomeCommuteDistance": -1,
-          "homeToWorkCommuteDistance": 14402
+          "homeToWorkCommuteDistance": 14402,
+          "centroidLng": -71.31689900154643,
+          "centroidLat": 41.7943962769937
         }
       },
       {
@@ -14687,7 +15475,9 @@
           "jobCount": 844,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 18698,
-          "homeToWorkCommuteDistance": 14731
+          "homeToWorkCommuteDistance": 14731,
+          "centroidLng": -71.30790579790917,
+          "centroidLat": 41.740437055170226
         }
       },
       {
@@ -14724,7 +15514,9 @@
           "jobCount": 14,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 28570,
-          "homeToWorkCommuteDistance": 28251
+          "homeToWorkCommuteDistance": 28251,
+          "centroidLng": -71.29891259427194,
+          "centroidLat": 41.66849142607226
         }
       },
       {
@@ -14761,7 +15553,9 @@
           "jobCount": 14,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15403,
-          "homeToWorkCommuteDistance": 10489
+          "homeToWorkCommuteDistance": 10489,
+          "centroidLng": -71.29891259427194,
+          "centroidLat": 41.75842346244472
         }
       },
       {
@@ -14798,7 +15592,9 @@
           "jobCount": 29,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 15557,
-          "homeToWorkCommuteDistance": 20556
+          "homeToWorkCommuteDistance": 20556,
+          "centroidLng": -71.28991939063468,
+          "centroidLat": 41.68647783334675
         }
       },
       {
@@ -14835,7 +15631,9 @@
           "jobCount": 258,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 19508,
-          "homeToWorkCommuteDistance": 20744
+          "homeToWorkCommuteDistance": 20744,
+          "centroidLng": -71.28991939063468,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -14872,7 +15670,9 @@
           "jobCount": 221,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 9568,
-          "homeToWorkCommuteDistance": 34392
+          "homeToWorkCommuteDistance": 34392,
+          "centroidLng": -71.28092618699745,
+          "centroidLat": 41.66849142607226
         }
       },
       {
@@ -14909,7 +15709,9 @@
           "jobCount": 310,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 23359,
-          "homeToWorkCommuteDistance": 24612
+          "homeToWorkCommuteDistance": 24612,
+          "centroidLng": -71.28092618699745,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -14946,7 +15748,9 @@
           "jobCount": 121,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 6244,
-          "homeToWorkCommuteDistance": 23063
+          "homeToWorkCommuteDistance": 23063,
+          "centroidLng": -71.28092618699745,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -14983,7 +15787,9 @@
           "jobCount": 386,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 21629,
-          "homeToWorkCommuteDistance": 21501
+          "homeToWorkCommuteDistance": 21501,
+          "centroidLng": -71.28092618699745,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -15020,7 +15826,9 @@
           "jobCount": 231,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 22677,
-          "homeToWorkCommuteDistance": 19065
+          "homeToWorkCommuteDistance": 19065,
+          "centroidLng": -71.28092618699745,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -15057,7 +15865,9 @@
           "jobCount": 624,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 26071,
-          "homeToWorkCommuteDistance": 32687
+          "homeToWorkCommuteDistance": 32687,
+          "centroidLng": -71.27193298336019,
+          "centroidLat": 41.66849142607226
         }
       },
       {
@@ -15094,7 +15904,9 @@
           "jobCount": 492,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 24495,
-          "homeToWorkCommuteDistance": 30619
+          "homeToWorkCommuteDistance": 30619,
+          "centroidLng": -71.27193298336019,
+          "centroidLat": 41.677484629709504
         }
       },
       {
@@ -15131,7 +15943,9 @@
           "jobCount": 346,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 31795,
-          "homeToWorkCommuteDistance": 25950
+          "homeToWorkCommuteDistance": 25950,
+          "centroidLng": -71.27193298336019,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -15168,7 +15982,9 @@
           "jobCount": 393,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 21560,
-          "homeToWorkCommuteDistance": 25245
+          "homeToWorkCommuteDistance": 25245,
+          "centroidLng": -71.27193298336019,
+          "centroidLat": 41.70446424062124
         }
       },
       {
@@ -15205,7 +16021,9 @@
           "jobCount": 445,
           "pointDensity": 3,
           "workToHomeCommuteDistance": 18746,
-          "homeToWorkCommuteDistance": 22028
+          "homeToWorkCommuteDistance": 22028,
+          "centroidLng": -71.27193298336019,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -15242,7 +16060,9 @@
           "jobCount": 67,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 26106,
-          "homeToWorkCommuteDistance": 28999
+          "homeToWorkCommuteDistance": 28999,
+          "centroidLng": -71.27193298336019,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -15279,7 +16099,9 @@
           "jobCount": 247,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 18809,
-          "homeToWorkCommuteDistance": 20968
+          "homeToWorkCommuteDistance": 20968,
+          "centroidLng": -71.27193298336019,
+          "centroidLat": 41.740437055170226
         }
       },
       {
@@ -15316,7 +16138,9 @@
           "jobCount": 151,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 20763,
-          "homeToWorkCommuteDistance": 4720
+          "homeToWorkCommuteDistance": 4720,
+          "centroidLng": -71.27193298336019,
+          "centroidLat": 41.74943025880747
         }
       },
       {
@@ -15353,7 +16177,9 @@
           "jobCount": 2193,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 32510,
-          "homeToWorkCommuteDistance": 31248
+          "homeToWorkCommuteDistance": 31248,
+          "centroidLng": -71.26293977972296,
+          "centroidLat": 41.650505018797766
         }
       },
       {
@@ -15390,7 +16216,9 @@
           "jobCount": 263,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 14476,
-          "homeToWorkCommuteDistance": 31295
+          "homeToWorkCommuteDistance": 31295,
+          "centroidLng": -71.26293977972296,
+          "centroidLat": 41.66849142607226
         }
       },
       {
@@ -15427,7 +16255,9 @@
           "jobCount": 138,
           "pointDensity": 2,
           "workToHomeCommuteDistance": 26463,
-          "homeToWorkCommuteDistance": 23724
+          "homeToWorkCommuteDistance": 23724,
+          "centroidLng": -71.26293977972296,
+          "centroidLat": 41.677484629709504
         }
       },
       {
@@ -15464,7 +16294,9 @@
           "jobCount": 199,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 26414,
-          "homeToWorkCommuteDistance": 27065
+          "homeToWorkCommuteDistance": 27065,
+          "centroidLng": -71.26293977972296,
+          "centroidLat": 41.68647783334675
         }
       },
       {
@@ -15501,7 +16333,9 @@
           "jobCount": 1,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 1060,
-          "homeToWorkCommuteDistance": 26918
+          "homeToWorkCommuteDistance": 26918,
+          "centroidLng": -71.26293977972296,
+          "centroidLat": 41.695471036983996
         }
       },
       {
@@ -15538,7 +16372,9 @@
           "jobCount": 146,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 18372,
-          "homeToWorkCommuteDistance": 25794
+          "homeToWorkCommuteDistance": 25794,
+          "centroidLng": -71.26293977972296,
+          "centroidLat": 41.71345744425849
         }
       },
       {
@@ -15575,7 +16411,9 @@
           "jobCount": 29,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 6965,
-          "homeToWorkCommuteDistance": 20775
+          "homeToWorkCommuteDistance": 20775,
+          "centroidLng": -71.26293977972296,
+          "centroidLat": 41.722450647895734
         }
       },
       {
@@ -15612,7 +16450,9 @@
           "jobCount": 168,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 18581,
-          "homeToWorkCommuteDistance": 26915
+          "homeToWorkCommuteDistance": 26915,
+          "centroidLng": -71.26293977972296,
+          "centroidLat": 41.73144385153298
         }
       },
       {
@@ -15649,7 +16489,9 @@
           "jobCount": 173,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 28992,
-          "homeToWorkCommuteDistance": 29990
+          "homeToWorkCommuteDistance": 29990,
+          "centroidLng": -71.2539465760857,
+          "centroidLat": 41.677484629709504
         }
       },
       {
@@ -15686,7 +16528,9 @@
           "jobCount": 130,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 33993,
-          "homeToWorkCommuteDistance": 29959
+          "homeToWorkCommuteDistance": 29959,
+          "centroidLng": -71.2539465760857,
+          "centroidLat": 41.68647783334675
         }
       },
       {
@@ -15723,7 +16567,9 @@
           "jobCount": 104,
           "pointDensity": 1,
           "workToHomeCommuteDistance": 14519,
-          "homeToWorkCommuteDistance": 30520
+          "homeToWorkCommuteDistance": 30520,
+          "centroidLng": -71.2539465760857,
+          "centroidLat": 41.695471036983996
         }
       }
     ]
