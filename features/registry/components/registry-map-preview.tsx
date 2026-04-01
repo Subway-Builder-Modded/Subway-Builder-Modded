@@ -1,12 +1,46 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AlertCircle, MapPin } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { cn } from '@/lib/utils';
 
 type Bbox = [number, number, number, number];
-type MapBoundsSnapshot = {
-  boundsByMap?: Record<string, Bbox>;
+type MetricId =
+  | 'residentCount'
+  | 'jobCount'
+  | 'pointDensity'
+  | 'workToHomeCommuteDistance'
+  | 'homeToWorkCommuteDistance';
+
+type GridFeature = {
+  type: 'Feature';
+  geometry: {
+    type: 'Polygon' | 'MultiPolygon';
+    coordinates: unknown;
+  };
+  properties: Record<MetricId, number>;
+};
+
+type GridSnapshot = {
+  mapId: string;
+  bbox: Bbox;
+  featureCount: number;
+  metrics: Record<
+    MetricId,
+    {
+      min: number;
+      max: number;
+      p95: number;
+      p98: number;
+      recommendedMax: number;
+      nonZeroCount: number;
+    }
+  >;
+  geojson: {
+    type: 'FeatureCollection';
+    features: GridFeature[];
+  };
 };
 
 type MapLibreBoundsLike = [[number, number], [number, number]];
@@ -16,10 +50,14 @@ type MapInstance = {
     bounds: MapLibreBoundsLike,
     options?: { padding?: number; duration?: number; maxZoom?: number },
   ) => void;
+  addSource: (id: string, source: unknown) => void;
+  addLayer: (layer: Record<string, unknown>) => void;
+  setLayoutProperty: (layerId: string, name: string, value: unknown) => void;
   remove: () => void;
   on: (...args: unknown[]) => void;
   off: (...args: unknown[]) => void;
   isStyleLoaded?: () => boolean;
+  getSource?: (id: string) => unknown;
 };
 
 type MapLibreGlobal = {
@@ -56,6 +94,57 @@ const MAPLIBRE_SCRIPT_SRC =
   'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js';
 const MAPLIBRE_SCRIPT_ID = 'maplibre-gl-script';
 const BASE_STYLE_URL = 'https://tiles.openfreemap.org/styles/liberty';
+const GRID_SOURCE_ID = 'registry-grid-source';
+const OUTLINE_LAYER_ID = 'registry-grid-outline';
+const HEAT_LAYER_PREFIX = 'registry-grid-heat-';
+
+const METRIC_CONFIG: Record<
+  MetricId,
+  { label: string; shortLabel: string; unit?: string }
+> = {
+  residentCount: {
+    label: 'Resident Count',
+    shortLabel: 'Residents',
+  },
+  jobCount: {
+    label: 'Job Count',
+    shortLabel: 'Jobs',
+  },
+  pointDensity: {
+    label: 'Point Density',
+    shortLabel: 'Points',
+  },
+  workToHomeCommuteDistance: {
+    label: 'Work->Home Commute Distance',
+    shortLabel: 'Work->Home',
+    unit: 'm',
+  },
+  homeToWorkCommuteDistance: {
+    label: 'Home->Work Commute Distance',
+    shortLabel: 'Home->Work',
+    unit: 'm',
+  },
+};
+
+const METRIC_ORDER: MetricId[] = [
+  'residentCount',
+  'jobCount',
+  'pointDensity',
+  'workToHomeCommuteDistance',
+  'homeToWorkCommuteDistance',
+];
+
+const HEAT_COLORS = [
+  '#130f2e',
+  '#26135f',
+  '#4a1b9d',
+  '#7c29bf',
+  '#b43bb8',
+  '#e95f8f',
+  '#f78a5b',
+  '#f7bc74',
+  '#fff3bf',
+];
 
 const THEME_COLORS: Record<ResolvedTheme, SubwayThemeColors> = {
   light: {
@@ -74,19 +163,19 @@ const THEME_COLORS: Record<ResolvedTheme, SubwayThemeColors> = {
     cityLabelHalo: '#FFFFFF',
   },
   dark: {
-    roads: '#4A4A4A',
-    buildings: '#454957',
-    water: '#062036',
-    background: '#0F1A24',
-    parks: '#0B1715',
-    airports: '#181C28',
-    runways: '#242938',
-    roadLabel: '#6E6E6E',
-    roadLabelHalo: '#000000',
-    neighborhoodLabel: '#6B7280',
-    neighborhoodLabelHalo: '#000000',
-    cityLabel: '#AFB3BA',
-    cityLabelHalo: '#000000',
+    roads: '#3d4250',
+    buildings: '#2a3040',
+    water: '#0d1722',
+    background: '#05070d',
+    parks: '#111720',
+    airports: '#141a24',
+    runways: '#1f2733',
+    roadLabel: '#5a6272',
+    roadLabelHalo: '#0a0d15',
+    neighborhoodLabel: '#687284',
+    neighborhoodLabelHalo: '#0a0d15',
+    cityLabel: '#8e98ac',
+    cityLabelHalo: '#0a0d15',
   },
 };
 
@@ -261,18 +350,11 @@ async function buildThemedStyle(theme: ResolvedTheme): Promise<MapStyle> {
   };
 }
 
-function isValidBbox(value: unknown): value is Bbox {
-  return (
-    Array.isArray(value) &&
-    value.length === 4 &&
-    value.every((part) => Number.isFinite(Number(part)))
-  );
-}
-
 function loadMapLibre(): Promise<MapLibreGlobal> {
   if (typeof window === 'undefined') {
     return Promise.reject(new Error('Window is not available'));
   }
+
   const existingMapLibre = (window as Window & { maplibregl?: MapLibreGlobal })
     .maplibregl;
   if (existingMapLibre) return Promise.resolve(existingMapLibre);
@@ -319,42 +401,65 @@ function loadMapLibre(): Promise<MapLibreGlobal> {
   });
 }
 
+function compactNumber(value: number) {
+  if (!Number.isFinite(value)) return '0';
+  return new Intl.NumberFormat('en-US', {
+    notation: 'compact',
+    maximumFractionDigits: value >= 100 ? 0 : 1,
+  }).format(value);
+}
+
+function formatMetricValue(metricId: MetricId, value: number) {
+  const unit = METRIC_CONFIG[metricId].unit;
+  if (unit === 'm') {
+    const kilometers = value / 1000;
+    const rounded = Number(
+      kilometers >= 100 ? kilometers.toFixed(0) : kilometers.toFixed(1),
+    );
+    return `${rounded} km`;
+  }
+  const formatted = value >= 1000 ? compactNumber(value) : value.toFixed(1);
+  return unit ? `${formatted} ${unit}` : formatted;
+}
+
 export function RegistryMapPreview({ mapId }: { mapId: string }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<MapInstance | null>(null);
   const { resolvedTheme } = useTheme();
-  const [bbox, setBbox] = useState<Bbox | null>(null);
+  const [snapshot, setSnapshot] = useState<GridSnapshot | null>(null);
   const [status, setStatus] = useState<'loading' | 'ready' | 'empty' | 'error'>(
     'loading',
   );
+  const [activeMetric, setActiveMetric] = useState<MetricId>('residentCount');
 
   const mapTheme: ResolvedTheme = isMapTheme(resolvedTheme)
     ? resolvedTheme
-    : 'light';
+    : 'dark';
 
   useEffect(() => {
     let canceled = false;
     setStatus('loading');
-    setBbox(null);
+    setSnapshot(null);
 
     void (async () => {
       try {
-        const response = await fetch('/railyard/map-bounds.json', {
-          cache: 'no-store',
-        });
+        const response = await fetch(
+          `/railyard/map-grids/${encodeURIComponent(mapId)}.json`,
+          { cache: 'no-store' },
+        );
         if (!response.ok) {
-          if (!canceled) setStatus('error');
+          if (!canceled) setStatus('empty');
           return;
         }
 
-        const snapshot = (await response.json()) as MapBoundsSnapshot;
-        const raw = snapshot.boundsByMap?.[mapId];
-        if (!isValidBbox(raw)) {
+        const payload = (await response.json()) as GridSnapshot;
+        if (!Array.isArray(payload?.geojson?.features) || !payload.bbox) {
           if (!canceled) setStatus('empty');
           return;
         }
 
         if (!canceled) {
-          setBbox(raw);
+          setSnapshot(payload);
           setStatus('ready');
         }
       } catch {
@@ -368,7 +473,7 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
   }, [mapId]);
 
   useEffect(() => {
-    if (status !== 'ready' || !bbox || !containerRef.current) return;
+    if (status !== 'ready' || !snapshot || !containerRef.current) return;
 
     let disposed = false;
     let map: MapInstance | null = null;
@@ -384,21 +489,100 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
           container: containerRef.current,
           style,
           attributionControl: true,
-          interactive: false,
+          interactive: true,
           dragRotate: false,
           pitchWithRotate: false,
           touchPitch: false,
           renderWorldCopies: false,
         });
+        mapRef.current = map;
 
         handleLoad = () => {
           if (!map || disposed) return;
+          if (!map.getSource?.(GRID_SOURCE_ID)) {
+            map.addSource(GRID_SOURCE_ID, {
+              type: 'geojson',
+              data: snapshot.geojson,
+            });
+
+            for (const metricId of METRIC_ORDER) {
+              const stats = snapshot.metrics?.[metricId];
+              const recommendedMax =
+                stats?.recommendedMax && stats.recommendedMax > 0
+                  ? stats.recommendedMax
+                  : 1;
+              const stops = HEAT_COLORS.map((color, index) => [
+                (recommendedMax * index) / (HEAT_COLORS.length - 1),
+                color,
+              ]);
+
+              map.addLayer({
+                id: `${HEAT_LAYER_PREFIX}${metricId}`,
+                type: 'fill',
+                source: GRID_SOURCE_ID,
+                layout: {
+                  visibility: metricId === METRIC_ORDER[0] ? 'visible' : 'none',
+                },
+                paint: {
+                  'fill-color': [
+                    'interpolate',
+                    ['linear'],
+                    ['coalesce', ['get', metricId], 0],
+                    ...stops.flat(),
+                  ],
+                  'fill-opacity': [
+                    'interpolate',
+                    ['linear'],
+                    ['coalesce', ['get', metricId], 0],
+                    0,
+                    0,
+                    Math.max(recommendedMax * 0.1, 1),
+                    0.45,
+                    recommendedMax,
+                    0.95,
+                  ],
+                },
+              });
+            }
+
+            map.addLayer({
+              id: OUTLINE_LAYER_ID,
+              type: 'line',
+              source: GRID_SOURCE_ID,
+              paint: {
+                'line-color': 'rgba(255,255,255,0.17)',
+                'line-width': [
+                  'interpolate',
+                  ['linear'],
+                  ['zoom'],
+                  7,
+                  0.3,
+                  10,
+                  0.6,
+                  13,
+                  0.85,
+                ],
+                'line-opacity': [
+                  'interpolate',
+                  ['linear'],
+                  ['zoom'],
+                  7,
+                  0.25,
+                  11,
+                  0.4,
+                  14,
+                  0.5,
+                ],
+              },
+            });
+          }
+
           map.fitBounds(
             [
-              [bbox[0], bbox[1]],
-              [bbox[2], bbox[3]],
+              [snapshot.bbox[0], snapshot.bbox[1]],
+              [snapshot.bbox[2], snapshot.bbox[3]],
             ],
-            { padding: 30, duration: 0, maxZoom: 12 },
+            { padding: 20, duration: 0, maxZoom: 12 },
           );
         };
 
@@ -412,25 +596,47 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
     return () => {
       disposed = true;
       if (map && handleLoad) map.off('load', handleLoad);
+      mapRef.current = null;
       map?.remove();
     };
-  }, [bbox, mapTheme, status]);
+  }, [mapTheme, snapshot, status]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    for (const metricId of METRIC_ORDER) {
+      map.setLayoutProperty(
+        `${HEAT_LAYER_PREFIX}${metricId}`,
+        'visibility',
+        metricId === activeMetric ? 'visible' : 'none',
+      );
+    }
+  }, [activeMetric]);
+
+  const metricStats = snapshot?.metrics?.[activeMetric];
+  const legendMin = metricStats?.min ?? 0;
+  const legendMax = metricStats?.recommendedMax ?? metricStats?.max ?? 0;
+
+  const summaryText = useMemo(() => {
+    if (!snapshot || !metricStats) return '';
+    return `${compactNumber(metricStats.nonZeroCount)} active cells`;
+  }, [metricStats, snapshot]);
 
   if (status === 'loading') {
     return (
-      <div className="flex h-[19rem] items-center justify-center rounded-xl border border-border/65 bg-muted/25 text-sm text-muted-foreground">
-        Loading map preview...
+      <div className="flex h-[26rem] items-center justify-center rounded-xl border border-border/65 bg-muted/25 text-sm text-muted-foreground">
+        Loading map layers...
       </div>
     );
   }
 
   if (status === 'empty') {
     return (
-      <div className="flex h-[19rem] items-center justify-center rounded-xl border border-dashed border-border bg-muted/20 px-4 text-center">
+      <div className="flex h-[26rem] items-center justify-center rounded-xl border border-dashed border-border bg-muted/20 px-4 text-center">
         <div className="space-y-2">
           <MapPin className="mx-auto size-5 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
-            Map bounds are not available for this city yet.
+            Heatmap grid data is not available for this map yet.
           </p>
         </div>
       </div>
@@ -439,11 +645,11 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
 
   if (status === 'error') {
     return (
-      <div className="flex h-[19rem] items-center justify-center rounded-xl border border-dashed border-border bg-muted/20 px-4 text-center">
+      <div className="flex h-[26rem] items-center justify-center rounded-xl border border-dashed border-border bg-muted/20 px-4 text-center">
         <div className="space-y-2">
           <AlertCircle className="mx-auto size-5 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
-            Unable to load this map preview right now.
+            Unable to load map heatmap data right now.
           </p>
         </div>
       </div>
@@ -451,13 +657,52 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border/60 bg-card/65 p-1.5 ring-1 ring-foreground/5">
-      <div className="h-[19rem] w-full overflow-hidden rounded-lg">
-        <div
-          ref={containerRef}
-          className="h-full w-full"
-          aria-label="City map"
-        />
+    <div className="space-y-3">
+      <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
+        {METRIC_ORDER.map((metricId) => {
+          const isActive = activeMetric === metricId;
+          return (
+            <button
+              key={metricId}
+              type="button"
+              onClick={() => setActiveMetric(metricId)}
+              className={cn(
+                'group rounded-lg border px-3 py-2 text-left transition-all',
+                isActive
+                  ? 'border-[#7c29bf] bg-[#2a1a4d]/65 text-foreground shadow-[0_0_0_1px_rgba(124,41,191,0.35)]'
+                  : 'border-border/70 bg-card/65 text-muted-foreground hover:border-[#7c29bf]/60 hover:bg-[#2a1a4d]/65 hover:text-foreground',
+              )}
+            >
+              <p className="text-[0.66rem] font-bold uppercase tracking-[0.16em]">
+                Layer
+              </p>
+              <p className="mt-0.5 text-sm font-semibold leading-tight">
+                {METRIC_CONFIG[metricId].shortLabel}
+              </p>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="overflow-hidden rounded-xl border border-border/60 bg-card/65 p-1.5 ring-1 ring-foreground/5">
+        <div className="relative h-[26rem] w-full overflow-hidden rounded-lg">
+          <div
+            ref={containerRef}
+            className="h-full w-full"
+            aria-label="City map"
+          />
+          <div className="pointer-events-none absolute inset-x-2 bottom-2 z-10 rounded-lg border border-border/70 bg-[#0b0f17]/90 px-3 py-2 backdrop-blur-sm">
+            <div className="flex items-center justify-between gap-3 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <span>{METRIC_CONFIG[activeMetric].label}</span>
+              <span>{summaryText}</span>
+            </div>
+            <div className="mt-2 h-2 w-full rounded-sm bg-gradient-to-r from-[#130f2e] via-[#b43bb8] to-[#fff3bf]" />
+            <div className="mt-1 flex items-center justify-between text-xs text-muted-foreground">
+              <span>{formatMetricValue(activeMetric, legendMin)}</span>
+              <span>{formatMetricValue(activeMetric, legendMax)}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

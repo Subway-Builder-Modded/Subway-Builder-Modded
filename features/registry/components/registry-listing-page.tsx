@@ -47,6 +47,7 @@ import {
 } from './registry-shared';
 import { SortableNumberHeader } from '@/components/shared/sortable-number-header';
 import { usePersistedState } from '@/lib/use-persisted-state';
+import { RegistryMapPreview } from '@/features/registry/components/registry-map-preview';
 
 const STAT_HEADER_CLS =
   'text-xs font-semibold uppercase tracking-wider text-muted-foreground';
@@ -438,6 +439,17 @@ export function RegistryListingPage({
           <StatDescription>last 7 days</StatDescription>
         </Stat>
       </div>
+
+      {type === 'map' && (
+        <section className="mb-12">
+          <SectionHeader
+            icon={MapPin}
+            title="Population Density"
+            accent={color}
+          />
+          <RegistryMapPreview mapId={id} />
+        </section>
+      )}
 
       {/* Daily download history */}
       {analytics.dailyData.length > 0 && (
