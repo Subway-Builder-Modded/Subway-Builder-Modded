@@ -2,9 +2,9 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const ROOT = process.cwd();
-const OUTPUT_DIR = path.join(ROOT, 'public', 'railyard', 'map-grids');
+const OUTPUT_DIR = path.join(ROOT, 'public', 'registry', 'map-grids');
 const INDEX_FILE = path.join(OUTPUT_DIR, 'index.json');
-const LEGACY_BOUNDS_FILE = path.join(ROOT, 'public', 'railyard', 'map-data.json');
+const LEGACY_BOUNDS_FILE = path.join(ROOT, 'public', 'registry', 'map-data.json');
 
 const REPO_OWNER = 'Subway-Builder-Modded';
 const REPO_NAME = 'The-Railyard';
@@ -58,7 +58,7 @@ function readJson(file, fallback) {
 }
 
 function writeJson(file, value) {
-  writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`);
+  writeFileSync(file, JSON.stringify(value));
 }
 
 function buildHeaders() {

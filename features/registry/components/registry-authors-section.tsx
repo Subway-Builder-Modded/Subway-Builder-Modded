@@ -170,7 +170,7 @@ function AuthorRow({
       </td>
       <td className={TABLE_CELL_CLS}>
         <Link
-          href={`/registry/author/${encodeURIComponent(row.author)}`}
+          href={`/registry/authors/${encodeURIComponent(row.author)}`}
           className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
           style={registryLinkStyle('var(--primary)')}
         >
@@ -281,7 +281,7 @@ function AuthorSearchResultsTable({
               <tr key={row.author} className={TABLE_ROW_CLS}>
                 <td className={TABLE_CELL_CLS}>
                   <Link
-                    href={`/registry/author/${encodeURIComponent(row.author)}`}
+                    href={`/registry/authors/${encodeURIComponent(row.author)}`}
                     className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
                     style={registryLinkStyle('var(--primary)')}
                   >

@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getModeHex, PROJECT_COLOR_SCHEMES } from '@/config/theme/colors';
 import { getCountryFlagIcon } from '@/lib/railyard/flags';
-import { formatSourceQuality } from '@/lib/railyard/map-filter-values';
+import { formatDataQuality } from '@/lib/railyard/map-filter-values';
 import type { MapManifest, ModManifest, VersionInfo } from '@/types/registry';
 
 interface ProjectHeaderProps {
@@ -38,7 +38,7 @@ export function ProjectHeader({
   const badges = mapItem
     ? [
         mapItem.location,
-        formatSourceQuality(mapItem.source_quality ?? ''),
+        formatDataQuality(mapItem.source_quality ?? ''),
         mapItem.level_of_detail,
         ...(mapItem.special_demand ?? []),
       ].filter((v): v is string => Boolean(v))
@@ -53,7 +53,7 @@ export function ProjectHeader({
     window.location.href = `railyard://open?type=${encodeURIComponent(type)}&id=${encodeURIComponent(item.id)}`;
   };
   const handleViewAnalytics = () => {
-    window.location.href = `/registry/map/${encodeURIComponent(item.id)}`;
+    window.location.href = `/registry/maps/${encodeURIComponent(item.id)}`;
   };
   const registryAccent = getModeHex(
     PROJECT_COLOR_SCHEMES.registry.accentColor,

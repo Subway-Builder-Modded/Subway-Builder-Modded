@@ -515,7 +515,7 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
     void (async () => {
       try {
         const response = await fetch(
-          `/railyard/map-grids/${encodeURIComponent(mapId)}.json`,
+          `/registry/map-grids/${encodeURIComponent(mapId)}.json`,
           { cache: 'no-store' },
         );
         if (!response.ok) {

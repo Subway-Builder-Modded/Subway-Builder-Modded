@@ -4,15 +4,15 @@ import { useMemo } from 'react';
 import Link from 'next/link';
 import {
   Download,
-  Grid3x3,
   Github,
   MapPin,
   Package,
-  ShieldCheck,
   TrainTrack,
   TrendingUp,
   History,
   Trophy,
+  BadgeCheck,
+  Layers,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import {
@@ -271,7 +271,7 @@ function SiblingsSection({
               <tr key={s.id} className={TABLE_ROW_CLS}>
                 <td className={TABLE_CELL_CLS}>
                   <Link
-                    href={`/registry/${s.listing_type}/${s.id}`}
+                    href={`/registry/${s.listing_type === 'map' ? 'maps' : 'mods'}/${s.id}`}
                     className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
                     style={registryLinkStyle(getListingColor(s.listing_type))}
                   >
@@ -312,7 +312,7 @@ export function RegistryListingPage({
   id: string;
   dailyData: DailyDataPoint[];
   mapMetadata?: {
-    sourceQuality?: string | null;
+    dataQuality?: string | null;
     levelOfDetail?: string | null;
   } | null;
 }) {
@@ -338,7 +338,7 @@ export function RegistryListingPage({
       </RegistryDetailShell>
     );
   }
-  const authorHref = `/registry/author/${encodeURIComponent(listing.author)}`;
+  const authorHref = `/registry/authors/${encodeURIComponent(listing.author)}`;
   const normalizeQualityValue = (value?: string | null) => {
     const lower = (value ?? '').trim().toLowerCase();
     if (!lower) return null;
@@ -347,23 +347,21 @@ export function RegistryListingPage({
     if (lower.includes('low')) return 'Low';
     return null;
   };
-  const normalizedDataQuality = normalizeQualityValue(
-    mapMetadata?.sourceQuality,
-  );
+  const normalizedDataQuality = normalizeQualityValue(mapMetadata?.dataQuality);
   const normalizedDetail = normalizeQualityValue(mapMetadata?.levelOfDetail);
   const metadataBadges =
     type === 'map'
       ? [
           normalizedDetail
             ? {
-                icon: Grid3x3,
+                icon: Layers,
                 value: normalizedDetail,
                 tooltip: 'Level of Detail',
               }
             : null,
           normalizedDataQuality
             ? {
-                icon: ShieldCheck,
+                icon: BadgeCheck,
                 value: normalizedDataQuality,
                 tooltip: 'Data Quality',
               }
@@ -494,7 +492,7 @@ export function RegistryListingPage({
 
           <SectionHeader
             icon={MapPin}
-            title="Population Density"
+            title="Population Statistics"
             accent={color}
           />
           <RegistryMapPreview mapId={id} />

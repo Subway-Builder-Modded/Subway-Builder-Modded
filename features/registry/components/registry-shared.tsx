@@ -276,7 +276,7 @@ export function getAuthorAttributionHref(author: {
 }): string {
   return (
     author.attribution_link?.trim() ||
-    `/registry/author/${encodeURIComponent(author.author)}`
+    `/registry/authors/${encodeURIComponent(author.author)}`
   );
 }
 

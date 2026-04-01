@@ -226,7 +226,7 @@ function SearchGroup({
                 <tr key={row.id} className={TABLE_ROW_CLS}>
                   <td className={TABLE_CELL_CLS}>
                     <Link
-                      href={`/registry/${row.listing_type}/${row.id}`}
+                      href={`/registry/${row.listing_type === 'map' ? 'maps' : 'mods'}/${row.id}`}
                       className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
                       style={registryLinkStyle(accent)}
                     >
@@ -237,7 +237,7 @@ function SearchGroup({
                     className={`hidden ${TABLE_CELL_CLS} text-muted-foreground sm:table-cell`}
                   >
                     <Link
-                      href={`/registry/author/${encodeURIComponent(row.author)}`}
+                      href={`/registry/authors/${encodeURIComponent(row.author)}`}
                       className={REGISTRY_LINK_HOVER_CLS}
                       style={registryLinkStyle(accent)}
                     >
@@ -439,7 +439,7 @@ function TypeTable({
                   </td>
                   <td className={TABLE_CELL_CLS}>
                     <Link
-                      href={`/registry/${type}/${row.id}`}
+                      href={`/registry/${type === 'map' ? 'maps' : 'mods'}/${row.id}`}
                       className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
                       style={registryLinkStyle(color)}
                     >
@@ -450,7 +450,7 @@ function TypeTable({
                     className={`hidden ${TABLE_CELL_CLS} text-muted-foreground sm:table-cell`}
                   >
                     <Link
-                      href={`/registry/author/${encodeURIComponent(row.author)}`}
+                      href={`/registry/authors/${encodeURIComponent(row.author)}`}
                       className={REGISTRY_LINK_HOVER_CLS}
                       style={registryLinkStyle(color)}
                     >
