@@ -143,6 +143,14 @@ function mergeBbox(left, right) {
   ];
 }
 
+function centroidFromBbox(bbox) {
+  if (!bbox) return null;
+  return {
+    lng: (bbox[0] + bbox[2]) / 2,
+    lat: (bbox[1] + bbox[3]) / 2,
+  };
+}
+
 function numericValue(value) {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : 0;
@@ -184,12 +192,17 @@ function normalizeFeature(feature) {
   const geometry = feature?.geometry;
   const type = geometry?.type;
   if (type !== 'Polygon' && type !== 'MultiPolygon') return null;
+  const bbox = geometryBbox(geometry);
+  const centroid = centroidFromBbox(bbox);
+  if (!centroid) return null;
 
   const props = feature?.properties ?? {};
   const properties = {};
   for (const metric of METRICS) {
     properties[metric.id] = numericValue(props[metric.sourceKey]);
   }
+  properties.centroidLng = centroid.lng;
+  properties.centroidLat = centroid.lat;
 
   return {
     type: 'Feature',

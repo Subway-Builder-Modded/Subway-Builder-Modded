@@ -19,7 +19,10 @@ type GridFeature = {
     type: 'Polygon' | 'MultiPolygon';
     coordinates: unknown;
   };
-  properties: Record<MetricId, number>;
+  properties: Record<MetricId, number> & {
+    centroidLng?: number;
+    centroidLat?: number;
+  };
 };
 
 type GridSnapshot = {
@@ -53,11 +56,25 @@ type MapInstance = {
   addSource: (id: string, source: unknown) => void;
   addLayer: (layer: Record<string, unknown>) => void;
   setLayoutProperty: (layerId: string, name: string, value: unknown) => void;
+  queryRenderedFeatures?: (
+    point?: { x: number; y: number },
+    options?: { layers?: string[] },
+  ) => Array<{
+    properties?: Record<string, unknown>;
+  }>;
   remove: () => void;
   on: (...args: unknown[]) => void;
   off: (...args: unknown[]) => void;
   isStyleLoaded?: () => boolean;
   getSource?: (id: string) => unknown;
+};
+
+type HoverInfo = {
+  x: number;
+  y: number;
+  values: Record<MetricId, number>;
+  centroidLng: number | null;
+  centroidLat: number | null;
 };
 
 type MapLibreGlobal = {
@@ -115,13 +132,13 @@ const METRIC_CONFIG: Record<
     shortLabel: 'Points',
   },
   workToHomeCommuteDistance: {
-    label: 'Work->Home Commute Distance',
-    shortLabel: 'Work->Home',
+    label: 'Work -> Home Commute Distance',
+    shortLabel: 'Work -> Home',
     unit: 'm',
   },
   homeToWorkCommuteDistance: {
-    label: 'Home->Work Commute Distance',
-    shortLabel: 'Home->Work',
+    label: 'Home -> Work Commute Distance',
+    shortLabel: 'Home -> Work',
     unit: 'm',
   },
 };
@@ -410,6 +427,14 @@ function compactNumber(value: number) {
 }
 
 function formatMetricValue(metricId: MetricId, value: number) {
+  if (
+    metricId === 'residentCount' ||
+    metricId === 'jobCount' ||
+    metricId === 'pointDensity'
+  ) {
+    if (value >= 1000) return compactNumber(value);
+    return Math.round(value).toLocaleString('en-US');
+  }
   const unit = METRIC_CONFIG[metricId].unit;
   if (unit === 'm') {
     const kilometers = value / 1000;
@@ -422,6 +447,20 @@ function formatMetricValue(metricId: MetricId, value: number) {
   return unit ? `${formatted} ${unit}` : formatted;
 }
 
+function readNumericProperty(
+  properties: Record<string, unknown>,
+  key: string,
+): number {
+  const raw = properties[key];
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function formatCoord(value: number | null) {
+  if (!Number.isFinite(value ?? NaN)) return '—';
+  return Number(value).toFixed(4);
+}
+
 export function RegistryMapPreview({ mapId }: { mapId: string }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapInstance | null>(null);
@@ -431,6 +470,7 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
     'loading',
   );
   const [activeMetric, setActiveMetric] = useState<MetricId>('residentCount');
+  const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
 
   const mapTheme: ResolvedTheme = isMapTheme(resolvedTheme)
     ? resolvedTheme
@@ -440,6 +480,7 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
     let canceled = false;
     setStatus('loading');
     setSnapshot(null);
+    setHoverInfo(null);
 
     void (async () => {
       try {
@@ -613,6 +654,62 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
     }
   }, [activeMetric]);
 
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    const activeLayerId = `${HEAT_LAYER_PREFIX}${activeMetric}`;
+
+    const handleMove = (event: unknown) => {
+      const e = event as { point?: { x: number; y: number } } | undefined;
+      if (!e?.point || !map.queryRenderedFeatures) return;
+      const features = map.queryRenderedFeatures(e.point, {
+        layers: [activeLayerId],
+      });
+      const feature = features?.[0];
+      const properties = (feature?.properties ?? {}) as Record<string, unknown>;
+      if (!feature || !properties) {
+        setHoverInfo(null);
+        return;
+      }
+
+      const values = METRIC_ORDER.reduce(
+        (acc, metricId) => {
+          acc[metricId] = readNumericProperty(properties, metricId);
+          return acc;
+        },
+        {} as Record<MetricId, number>,
+      );
+
+      const centroidLng = (() => {
+        const value = Number(properties['centroidLng']);
+        return Number.isFinite(value) ? value : null;
+      })();
+      const centroidLat = (() => {
+        const value = Number(properties['centroidLat']);
+        return Number.isFinite(value) ? value : null;
+      })();
+
+      setHoverInfo({
+        x: e.point.x,
+        y: e.point.y,
+        values,
+        centroidLng,
+        centroidLat,
+      });
+    };
+
+    const handleLeave = () => setHoverInfo(null);
+
+    map.on('mousemove', handleMove);
+    map.on('mouseleave', handleLeave);
+
+    return () => {
+      map.off('mousemove', handleMove);
+      map.off('mouseleave', handleLeave);
+    };
+  }, [activeMetric, status, snapshot]);
+
   const metricStats = snapshot?.metrics?.[activeMetric];
   const legendMin = metricStats?.min ?? 0;
   const legendMax = metricStats?.recommendedMax ?? metricStats?.max ?? 0;
@@ -684,14 +781,58 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
         })}
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-border/60 bg-card/65 p-1.5 ring-1 ring-foreground/5">
-        <div className="relative h-[26rem] w-full overflow-hidden rounded-lg">
-          <div
-            ref={containerRef}
-            className="h-full w-full"
-            aria-label="City map"
-          />
-          <div className="pointer-events-none absolute inset-x-2 bottom-2 z-10 rounded-lg border border-border/70 bg-[#0b0f17]/90 px-3 py-2 backdrop-blur-sm">
+      <div className="overflow-visible rounded-xl border border-border/60 bg-card/65 p-1.5 ring-1 ring-foreground/5">
+        <div className="relative h-[26rem] w-full overflow-visible rounded-lg">
+          <div className="h-full w-full overflow-hidden rounded-lg">
+            <div
+              ref={containerRef}
+              className="h-full w-full"
+              aria-label="City map"
+            />
+          </div>
+          {hoverInfo ? (
+            <div
+              className="pointer-events-none absolute z-40 w-[15rem] rounded-lg border border-border/70 bg-[#0b0f17]/94 p-3 backdrop-blur-sm"
+              style={{
+                left: `${hoverInfo.x}px`,
+                top: `${hoverInfo.y}px`,
+                transform: 'translate(14px, 14px)',
+              }}
+            >
+              <p className="text-[0.66rem] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                Grid Cell
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {formatCoord(hoverInfo.centroidLat)},{' '}
+                {formatCoord(hoverInfo.centroidLng)}
+              </p>
+              <div className="mt-2 space-y-1.5">
+                {METRIC_ORDER.map((metricId) => {
+                  const isActive = metricId === activeMetric;
+                  return (
+                    <div
+                      key={metricId}
+                      className={cn(
+                        'flex items-center justify-between text-xs',
+                        isActive
+                          ? 'font-semibold text-foreground'
+                          : 'text-muted-foreground',
+                      )}
+                    >
+                      <span>{METRIC_CONFIG[metricId].shortLabel}</span>
+                      <span>
+                        {formatMetricValue(
+                          metricId,
+                          hoverInfo.values[metricId],
+                        )}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null}
+          <div className="pointer-events-none absolute inset-x-2 bottom-2 z-20 rounded-lg border border-border/70 bg-[#0b0f17]/90 px-3 py-2 backdrop-blur-sm">
             <div className="flex items-center justify-between gap-3 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               <span>{METRIC_CONFIG[activeMetric].label}</span>
               <span>{summaryText}</span>

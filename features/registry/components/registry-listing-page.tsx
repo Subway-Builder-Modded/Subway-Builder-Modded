@@ -442,6 +442,8 @@ export function RegistryListingPage({
 
       {type === 'map' && (
         <section className="mb-12">
+          <PopulationCard analytics={analytics} />
+
           <SectionHeader
             icon={MapPin}
             title="Population Density"
@@ -505,7 +507,6 @@ export function RegistryListingPage({
         </div>
       </section>
 
-      <PopulationCard analytics={analytics} />
       <SiblingsSection analytics={analytics} type={type} />
     </RegistryDetailShell>
   );
