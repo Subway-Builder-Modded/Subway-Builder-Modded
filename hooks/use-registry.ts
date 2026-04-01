@@ -260,29 +260,30 @@ export function useRegistry(): RegistryState {
           ),
         ]);
 
+        const liveMods = fetchedMods.filter((m) => !m.is_test);
+        const liveMaps = fetchedMaps.filter((m) => !m.is_test);
+
         const [modLastUpdated, mapLastUpdated] = await Promise.all([
-          resolveLastUpdatedBatch(fetchedMods),
-          resolveLastUpdatedBatch(fetchedMaps),
+          resolveLastUpdatedBatch(liveMods),
+          resolveLastUpdatedBatch(liveMaps),
         ]);
 
-        const modsWithLastUpdated = fetchedMods.map((manifest) => ({
+        const modsWithLastUpdated = liveMods.map((manifest) => ({
           ...manifest,
           last_updated: modLastUpdated[manifest.id] ?? 0,
         }));
 
-        const mapsWithLastUpdated = fetchedMaps.map((manifest) => ({
+        const mapsWithLastUpdated = liveMaps.map((manifest) => ({
           ...manifest,
           last_updated: mapLastUpdated[manifest.id] ?? 0,
         }));
 
         const filteredMods = modsWithLastUpdated.filter(
           (manifest) =>
-            !manifest.test &&
             modsIntegrity.listings?.[manifest.id]?.has_complete_version,
         );
         const filteredMaps = mapsWithLastUpdated.filter(
           (manifest) =>
-            !manifest.test &&
             mapsIntegrity.listings?.[manifest.id]?.has_complete_version,
         );
 

@@ -284,6 +284,45 @@ function normalizePerPage(value: unknown): PerPage {
   return PER_PAGE_OPTIONS.includes(value as PerPage) ? (value as PerPage) : 12;
 }
 
+function normalizeAssetFilterState(
+  raw: unknown,
+  fallback: AssetFilterState,
+): AssetFilterState {
+  if (!raw || typeof raw !== 'object') return fallback;
+  const r = raw as Record<string, unknown>;
+  const rawMod = r.mod as Record<string, unknown> | undefined;
+  const rawMap = r.map as Record<string, unknown> | undefined;
+  return {
+    sort:
+      r.sort && typeof r.sort === 'object'
+        ? { ...(r.sort as SortState) }
+        : { ...fallback.sort },
+    randomSeed:
+      typeof r.randomSeed === 'number' ? r.randomSeed : fallback.randomSeed,
+    page:
+      typeof r.page === 'number' && Number.isFinite(r.page) && r.page > 0
+        ? Math.floor(r.page)
+        : fallback.page,
+    mod: {
+      tags: Array.isArray(rawMod?.tags) ? [...(rawMod.tags as string[])] : [],
+    },
+    map: {
+      locations: Array.isArray(rawMap?.locations)
+        ? [...(rawMap.locations as string[])]
+        : [],
+      dataQuality: Array.isArray(rawMap?.dataQuality)
+        ? [...(rawMap.dataQuality as string[])]
+        : [],
+      levelOfDetail: Array.isArray(rawMap?.levelOfDetail)
+        ? [...(rawMap.levelOfDetail as string[])]
+        : [],
+      specialDemand: Array.isArray(rawMap?.specialDemand)
+        ? [...(rawMap.specialDemand as string[])]
+        : [],
+    },
+  };
+}
+
 function parsePersistedState(
   raw: string | null,
   initialType?: AssetType,
@@ -338,8 +377,17 @@ function parsePersistedState(
         ? Math.floor(parsed.page)
         : 1;
 
-    const scopedByType =
-      parsed.scopedByType ?? createFilterByAssetType(filters, page);
+    const fallbackScopedByType = createFilterByAssetType(filters, page);
+    const scopedByType: FilterByAssetType = {
+      mod: normalizeAssetFilterState(
+        parsed.scopedByType?.mod,
+        fallbackScopedByType.mod,
+      ),
+      map: normalizeAssetFilterState(
+        parsed.scopedByType?.map,
+        fallbackScopedByType.map,
+      ),
+    };
     return {
       filters,
       page,
