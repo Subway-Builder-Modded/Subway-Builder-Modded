@@ -16,9 +16,6 @@ type MapInstance = {
     bounds: MapLibreBoundsLike,
     options?: { padding?: number; duration?: number; maxZoom?: number },
   ) => void;
-  addSource: (id: string, source: unknown) => void;
-  addLayer: (layer: Record<string, unknown>) => void;
-  getSource?: (id: string) => unknown;
   remove: () => void;
   on: (...args: unknown[]) => void;
   off: (...args: unknown[]) => void;
@@ -55,17 +52,10 @@ type SubwayThemeColors = {
   cityLabelHalo: string;
 };
 
-declare global {
-  interface Window {
-    maplibregl?: MapLibreGlobal;
-  }
-}
-
 const MAPLIBRE_SCRIPT_SRC =
   'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js';
 const MAPLIBRE_SCRIPT_ID = 'maplibre-gl-script';
 const BASE_STYLE_URL = 'https://tiles.openfreemap.org/styles/liberty';
-const BOUNDS_SOURCE_ID = 'registry-map-preview-bounds';
 
 const THEME_COLORS: Record<ResolvedTheme, SubwayThemeColors> = {
   light: {
@@ -279,36 +269,13 @@ function isValidBbox(value: unknown): value is Bbox {
   );
 }
 
-function bboxToPolygon(bbox: Bbox) {
-  const [minLng, minLat, maxLng, maxLat] = bbox;
-  return {
-    type: 'FeatureCollection',
-    features: [
-      {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'Polygon',
-          coordinates: [
-            [
-              [minLng, minLat],
-              [maxLng, minLat],
-              [maxLng, maxLat],
-              [minLng, maxLat],
-              [minLng, minLat],
-            ],
-          ],
-        },
-      },
-    ],
-  };
-}
-
 function loadMapLibre(): Promise<MapLibreGlobal> {
   if (typeof window === 'undefined') {
     return Promise.reject(new Error('Window is not available'));
   }
-  if (window.maplibregl) return Promise.resolve(window.maplibregl);
+  const existingMapLibre = (window as Window & { maplibregl?: MapLibreGlobal })
+    .maplibregl;
+  if (existingMapLibre) return Promise.resolve(existingMapLibre);
 
   return new Promise((resolve, reject) => {
     const existing = document.getElementById(
@@ -316,7 +283,12 @@ function loadMapLibre(): Promise<MapLibreGlobal> {
     ) as HTMLScriptElement | null;
     if (existing) {
       existing.addEventListener('load', () => {
-        if (window.maplibregl) resolve(window.maplibregl);
+        const loadedMapLibre = (
+          window as Window & {
+            maplibregl?: MapLibreGlobal;
+          }
+        ).maplibregl;
+        if (loadedMapLibre) resolve(loadedMapLibre);
       });
       existing.addEventListener('error', () =>
         reject(new Error('Failed to load MapLibre script')),
@@ -329,13 +301,18 @@ function loadMapLibre(): Promise<MapLibreGlobal> {
     script.src = MAPLIBRE_SCRIPT_SRC;
     script.async = true;
     script.onload = () => {
-      if (!window.maplibregl) {
+      const loadedMapLibre = (
+        window as Window & {
+          maplibregl?: MapLibreGlobal;
+        }
+      ).maplibregl;
+      if (!loadedMapLibre) {
         reject(
           new Error('MapLibre script loaded but window.maplibregl is missing'),
         );
         return;
       }
-      resolve(window.maplibregl);
+      resolve(loadedMapLibre);
     };
     script.onerror = () => reject(new Error('Failed to load MapLibre script'));
     document.head.appendChild(script);
@@ -416,31 +393,6 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
 
         handleLoad = () => {
           if (!map || disposed) return;
-          if (!map.getSource?.(BOUNDS_SOURCE_ID)) {
-            map.addSource(BOUNDS_SOURCE_ID, {
-              type: 'geojson',
-              data: bboxToPolygon(bbox),
-            });
-            map.addLayer({
-              id: `${BOUNDS_SOURCE_ID}-fill`,
-              type: 'fill',
-              source: BOUNDS_SOURCE_ID,
-              paint: {
-                'fill-color': '#1c7ed6',
-                'fill-opacity': 0.12,
-              },
-            });
-            map.addLayer({
-              id: `${BOUNDS_SOURCE_ID}-line`,
-              type: 'line',
-              source: BOUNDS_SOURCE_ID,
-              paint: {
-                'line-color': '#1c7ed6',
-                'line-width': 2,
-                'line-opacity': 0.9,
-              },
-            });
-          }
           map.fitBounds(
             [
               [bbox[0], bbox[1]],
@@ -501,7 +453,11 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
   return (
     <div className="overflow-hidden rounded-xl border border-border/60 bg-card/65 p-1.5 ring-1 ring-foreground/5">
       <div className="h-[19rem] w-full overflow-hidden rounded-lg">
-        <div ref={containerRef} className="h-full w-full" aria-label="City map" />
+        <div
+          ref={containerRef}
+          className="h-full w-full"
+          aria-label="City map"
+        />
       </div>
     </div>
   );
