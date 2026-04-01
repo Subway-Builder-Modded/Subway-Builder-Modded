@@ -571,7 +571,7 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
                     ['coalesce', ['get', metricId], 0],
                     ...stops.flat(),
                   ],
-                  'fill-opacity': 0.8
+                  'fill-opacity': 0.8,
                 },
               });
             }
@@ -593,7 +593,7 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
                   13,
                   0.75,
                 ],
-                'line-opacity': 1
+                'line-opacity': 1,
               },
             });
           }
