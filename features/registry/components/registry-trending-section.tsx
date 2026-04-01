@@ -221,20 +221,17 @@ function SearchGroup({
             </tr>
           </thead>
           <tbody>
-            {sortedRows.map((row, index) => {
+            {sortedRows.map((row) => {
               return (
                 <tr key={row.id} className={TABLE_ROW_CLS}>
                   <td className={TABLE_CELL_CLS}>
-                    <span className="inline-flex items-center gap-2">
-                      <RankBadge rank={index + 1} />
-                      <Link
-                        href={`/registry/${row.listing_type}/${row.id}`}
-                        className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
-                        style={registryLinkStyle(accent)}
-                      >
-                        {row.name}
-                      </Link>
-                    </span>
+                    <Link
+                      href={`/registry/${row.listing_type}/${row.id}`}
+                      className={`font-medium ${REGISTRY_LINK_HOVER_CLS}`}
+                      style={registryLinkStyle(accent)}
+                    >
+                      {row.name}
+                    </Link>
                   </td>
                   <td
                     className={`hidden ${TABLE_CELL_CLS} text-muted-foreground sm:table-cell`}

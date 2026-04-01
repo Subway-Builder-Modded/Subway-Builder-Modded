@@ -56,6 +56,16 @@ type MapInstance = {
   addSource: (id: string, source: unknown) => void;
   addLayer: (layer: Record<string, unknown>) => void;
   setLayoutProperty: (layerId: string, name: string, value: unknown) => void;
+  getZoom: () => number;
+  getBounds: () => {
+    toArray: () => MapLibreBoundsLike;
+  };
+  setMinZoom: (zoom: number) => void;
+  setMaxBounds: (bounds: MapLibreBoundsLike) => void;
+  dragPan?: {
+    enable: () => void;
+    disable: () => void;
+  };
   queryRenderedFeatures?: (
     point?: { x: number; y: number },
     options?: { layers?: string[] },
@@ -114,6 +124,7 @@ const BASE_STYLE_URL = 'https://tiles.openfreemap.org/styles/liberty';
 const GRID_SOURCE_ID = 'registry-grid-source';
 const OUTLINE_LAYER_ID = 'registry-grid-outline';
 const HEAT_LAYER_PREFIX = 'registry-grid-heat-';
+const INITIAL_BOUNDS_EXPANSION_FACTOR = 3;
 
 const METRIC_CONFIG: Record<
   MetricId,
@@ -461,9 +472,24 @@ function formatCoord(value: number | null) {
   return Number(value).toFixed(4);
 }
 
+function expandBboxByFactor(bbox: Bbox, factor: number): Bbox {
+  const [minLng, minLat, maxLng, maxLat] = bbox;
+  const centerLng = (minLng + maxLng) / 2;
+  const centerLat = (minLat + maxLat) / 2;
+  const halfLng = ((maxLng - minLng) / 2) * factor;
+  const halfLat = ((maxLat - minLat) / 2) * factor;
+  return [
+    centerLng - halfLng,
+    centerLat - halfLat,
+    centerLng + halfLng,
+    centerLat + halfLat,
+  ];
+}
+
 export function RegistryMapPreview({ mapId }: { mapId: string }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapInstance | null>(null);
+  const activeMetricRef = useRef<MetricId>('residentCount');
   const { resolvedTheme } = useTheme();
   const [snapshot, setSnapshot] = useState<GridSnapshot | null>(null);
   const [status, setStatus] = useState<'loading' | 'ready' | 'empty' | 'error'>(
@@ -471,6 +497,10 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
   );
   const [activeMetric, setActiveMetric] = useState<MetricId>('residentCount');
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
+
+  useEffect(() => {
+    activeMetricRef.current = activeMetric;
+  }, [activeMetric]);
 
   const mapTheme: ResolvedTheme = isMapTheme(resolvedTheme)
     ? resolvedTheme
@@ -562,7 +592,8 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
                 type: 'fill',
                 source: GRID_SOURCE_ID,
                 layout: {
-                  visibility: metricId === METRIC_ORDER[0] ? 'visible' : 'none',
+                  visibility:
+                    metricId === activeMetricRef.current ? 'visible' : 'none',
                 },
                 paint: {
                   'fill-color': [
@@ -598,13 +629,86 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
             });
           }
 
-          map.fitBounds(
-            [
-              [snapshot.bbox[0], snapshot.bbox[1]],
-              [snapshot.bbox[2], snapshot.bbox[3]],
-            ],
-            { padding: 20, duration: 0, maxZoom: 12 },
+          const initialBounds = expandBboxByFactor(
+            snapshot.bbox,
+            INITIAL_BOUNDS_EXPANSION_FACTOR,
           );
+          const boundsForMap: MapLibreBoundsLike = [
+            [initialBounds[0], initialBounds[1]],
+            [initialBounds[2], initialBounds[3]],
+          ];
+
+          map.fitBounds(boundsForMap, {
+            padding: 20,
+            duration: 0,
+            maxZoom: 12,
+          });
+          const initialZoom = map.getZoom();
+          const initialViewportBounds = map.getBounds().toArray();
+          map.setMinZoom(initialZoom);
+          map.setMaxBounds(initialViewportBounds);
+          const updatePanLock = () => {
+            if (!map?.dragPan) return;
+            if (map.getZoom() <= initialZoom + 0.0001) {
+              map.dragPan.disable();
+            } else {
+              map.dragPan.enable();
+            }
+          };
+          updatePanLock();
+          map.on('zoom', updatePanLock);
+          map.on('zoomend', updatePanLock);
+          const handleMove = (event: unknown) => {
+            const e = event as { point?: { x: number; y: number } } | undefined;
+            if (!e?.point || !map?.queryRenderedFeatures) return;
+            const activeLayerId = `${HEAT_LAYER_PREFIX}${activeMetricRef.current}`;
+            let features: Array<{ properties?: Record<string, unknown> }> = [];
+            try {
+              features = map.queryRenderedFeatures(e.point, {
+                layers: [activeLayerId],
+              });
+            } catch {
+              return;
+            }
+            const feature = features?.[0];
+            const properties = (feature?.properties ?? {}) as Record<
+              string,
+              unknown
+            >;
+            if (!feature || !properties) {
+              setHoverInfo(null);
+              return;
+            }
+
+            const values = METRIC_ORDER.reduce(
+              (acc, metricId) => {
+                acc[metricId] = readNumericProperty(properties, metricId);
+                return acc;
+              },
+              {} as Record<MetricId, number>,
+            );
+
+            const centroidLng = (() => {
+              const value = Number(properties['centroidLng']);
+              return Number.isFinite(value) ? value : null;
+            })();
+            const centroidLat = (() => {
+              const value = Number(properties['centroidLat']);
+              return Number.isFinite(value) ? value : null;
+            })();
+
+            setHoverInfo({
+              x: e.point.x,
+              y: e.point.y,
+              values,
+              centroidLng,
+              centroidLat,
+            });
+          };
+
+          const handleLeave = () => setHoverInfo(null);
+          map.on('mousemove', handleMove);
+          map.on('mouseleave', handleLeave);
         };
 
         map.on('load', handleLoad);
@@ -633,62 +737,6 @@ export function RegistryMapPreview({ mapId }: { mapId: string }) {
       );
     }
   }, [activeMetric]);
-
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map) return;
-
-    const activeLayerId = `${HEAT_LAYER_PREFIX}${activeMetric}`;
-
-    const handleMove = (event: unknown) => {
-      const e = event as { point?: { x: number; y: number } } | undefined;
-      if (!e?.point || !map.queryRenderedFeatures) return;
-      const features = map.queryRenderedFeatures(e.point, {
-        layers: [activeLayerId],
-      });
-      const feature = features?.[0];
-      const properties = (feature?.properties ?? {}) as Record<string, unknown>;
-      if (!feature || !properties) {
-        setHoverInfo(null);
-        return;
-      }
-
-      const values = METRIC_ORDER.reduce(
-        (acc, metricId) => {
-          acc[metricId] = readNumericProperty(properties, metricId);
-          return acc;
-        },
-        {} as Record<MetricId, number>,
-      );
-
-      const centroidLng = (() => {
-        const value = Number(properties['centroidLng']);
-        return Number.isFinite(value) ? value : null;
-      })();
-      const centroidLat = (() => {
-        const value = Number(properties['centroidLat']);
-        return Number.isFinite(value) ? value : null;
-      })();
-
-      setHoverInfo({
-        x: e.point.x,
-        y: e.point.y,
-        values,
-        centroidLng,
-        centroidLat,
-      });
-    };
-
-    const handleLeave = () => setHoverInfo(null);
-
-    map.on('mousemove', handleMove);
-    map.on('mouseleave', handleLeave);
-
-    return () => {
-      map.off('mousemove', handleMove);
-      map.off('mouseleave', handleLeave);
-    };
-  }, [activeMetric, status, snapshot]);
 
   const metricStats = snapshot?.metrics?.[activeMetric];
   const legendMin = metricStats?.min ?? 0;
