@@ -121,6 +121,12 @@ export const FOOTER_NAV_SECTIONS: FooterNavSection[] = [
         icon: Download,
       },
       {
+        id: 'railyard-analytics',
+        label: 'Analytics',
+        href: '/railyard/analytics',
+        icon: ChartLine,
+      },
+      {
         id: 'railyard-browse',
         label: 'Browse',
         href: '/railyard/browse',
