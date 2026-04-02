@@ -5,7 +5,8 @@ import { loadWebsiteAnalytics } from '@/lib/website-analytics';
 
 export const metadata: Metadata = buildEmbedMetadata({
   title: 'Website',
-  description: 'Public website traffic analytics and audience insights.',
+  description:
+    'Central place for docs, analytics, and community resources across all Subway Builder Modded projects.',
 });
 
 export default function WebsitePageRoute() {

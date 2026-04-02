@@ -173,7 +173,7 @@ export const HOME_PROJECT_SECTION = {
       id: 'website',
       title: 'Website',
       description:
-        'Central place for docs, updates, and community resources across all Subway Builder Modded projects.',
+        'Central place for docs, analytics, and community resources across all Subway Builder Modded projects.',
       scheme: 'website',
       icon: Globe,
       image: {
@@ -183,19 +183,19 @@ export const HOME_PROJECT_SECTION = {
       },
       buttons: [
         {
-          label: 'Contribute',
-          href: 'https://github.com/Subway-Builder-Modded/website',
-          external: true,
+          label: 'Analytics',
+          href: '/website',
           variant: 'solid',
-          icon: GitPullRequestArrow,
+          icon: ChartLine,
           scheme: 'website',
           size: 'md',
         },
         {
-          label: 'Credits',
-          href: '/credits',
+          label: 'Contribute',
+          href: 'https://github.com/Subway-Builder-Modded/website',
+          external: true,
           variant: 'outline',
-          icon: Users,
+          icon: GitPullRequestArrow,
           scheme: 'website',
           size: 'md',
         },
