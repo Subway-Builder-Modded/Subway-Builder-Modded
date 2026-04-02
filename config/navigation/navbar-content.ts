@@ -3,6 +3,7 @@ import {
   Download,
   FileSearchCorner,
   Globe,
+  Heart,
   HeartHandshake,
   Home,
   Megaphone,
@@ -215,8 +216,27 @@ export const APP_NAVBAR_ITEMS: AppNavbarItem[] = [
     icon: HeartHandshake,
     position: 'right',
     dropdown: [
-      { id: 'credits', title: 'Credits', href: '/credits', icon: Users },
-      { id: 'license', title: 'License', href: '/license', icon: Scale },
+      {
+        id: 'contribute',
+        title: 'Contribute',
+        href: '/contribute',
+        activeMatchPaths: ['/contribute'],
+        icon: Heart,
+      },
+      {
+        id: 'credits',
+        title: 'Credits',
+        href: '/credits',
+        activeMatchPaths: ['/credits'],
+        icon: Users,
+      },
+      {
+        id: 'license',
+        title: 'License',
+        href: '/license',
+        activeMatchPaths: ['/license'],
+        icon: Scale,
+      },
     ],
   },
   {
