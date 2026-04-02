@@ -54,10 +54,10 @@ function formatTimeLabel(timestamp: string, period: TimelinePeriod): string {
   if (isSubDaily(period)) {
     const dt = new Date(timestamp);
     if (Number.isNaN(dt.getTime())) return timestamp;
-    const month = String(dt.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(dt.getUTCDate()).padStart(2, '0');
-    const hour = String(dt.getUTCHours()).padStart(2, '0');
-    const minute = String(dt.getUTCMinutes()).padStart(2, '0');
+    const month = String(dt.getMonth() + 1).padStart(2, '0');
+    const day = String(dt.getDate()).padStart(2, '0');
+    const hour = String(dt.getHours()).padStart(2, '0');
+    const minute = String(dt.getMinutes()).padStart(2, '0');
     if (period === '1') return `${hour}:${minute}`;
     return `${month}/${day} ${hour}:${minute}`;
   }

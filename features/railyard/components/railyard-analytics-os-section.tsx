@@ -5,6 +5,8 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
+  Line,
+  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -34,8 +36,8 @@ import {
 } from './railyard-analytics-shared';
 
 type TimelinePeriod = 'all' | '1' | '3' | '7' | '14';
-type OsKey = 'windows' | 'macos' | 'linux';
-type OsField = 'build' | 'downloads' | 'share';
+type OsKey = 'all' | 'windows' | 'macos' | 'linux';
+type OsField = 'build' | 'os' | 'downloads' | 'share';
 
 type OsConfig = {
   key: OsKey;
@@ -49,12 +51,22 @@ type OsConfig = {
 
 type OsAssetRow = {
   id: string;
+  os: string;
   build: string;
   downloads: number;
   share: number;
 };
 
 const OS_CONFIGS: OsConfig[] = [
+  {
+    key: 'all',
+    label: 'All',
+    stroke: '#19D89C',
+    dotColor: '#19D89C',
+    bgClass: 'bg-primary/6',
+    ringClass: 'ring-primary/20',
+    borderClass: 'border-primary/25',
+  },
   {
     key: 'windows',
     label: 'Windows',
@@ -100,10 +112,10 @@ function formatTimeLabel(timestamp: string, period: TimelinePeriod): string {
   if (isSubDaily(period)) {
     const dt = new Date(timestamp);
     if (Number.isNaN(dt.getTime())) return timestamp;
-    const month = String(dt.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(dt.getUTCDate()).padStart(2, '0');
-    const hour = String(dt.getUTCHours()).padStart(2, '0');
-    const minute = String(dt.getUTCMinutes()).padStart(2, '0');
+    const month = String(dt.getMonth() + 1).padStart(2, '0');
+    const day = String(dt.getDate()).padStart(2, '0');
+    const hour = String(dt.getHours()).padStart(2, '0');
+    const minute = String(dt.getMinutes()).padStart(2, '0');
     if (period === '1') return `${hour}:${minute}`;
     return `${month}/${day} ${hour}:${minute}`;
   }
@@ -128,7 +140,17 @@ function buildLabel(args: {
   version: string;
   assetLabel: string;
 }): string {
-  const arch = args.arch.toLowerCase() === 'unknown' ? 'unknown' : args.arch;
+  const normalizedArch = args.arch.toLowerCase();
+  const arch =
+    normalizedArch === 'unknown'
+      ? 'Unknown'
+      : normalizedArch === 'arm64'
+        ? 'ARM64'
+        : normalizedArch === 'x64'
+          ? 'x64'
+          : normalizedArch === 'universal'
+            ? 'Universal'
+            : args.arch;
   const pkg = packageLabel(args.packageType, args.assetLabel);
   return `${arch} (${pkg}) - v${args.version}`;
 }
@@ -143,6 +165,12 @@ function sortOsRows(
       return direction === 'asc'
         ? a.build.localeCompare(b.build)
         : b.build.localeCompare(a.build);
+    }
+
+    if (field === 'os') {
+      return direction === 'asc'
+        ? a.os.localeCompare(b.os)
+        : b.os.localeCompare(a.os);
     }
 
     const lv = a[field];
@@ -167,11 +195,12 @@ export function RailyardAnalyticsOsSection({
   );
   const [activeOs, setActiveOs] = usePersistedState<OsKey>(
     'railyard.analytics.os.active',
-    'windows',
+    'all',
   );
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [carouselHeight, setCarouselHeight] = useState<number | null>(null);
   const slideRefs = useRef<Record<OsKey, HTMLDivElement | null>>({
+    all: null,
     windows: null,
     macos: null,
     linux: null,
@@ -179,6 +208,7 @@ export function RailyardAnalyticsOsSection({
   const [sortState, setSortState] = useState<
     Record<OsKey, { field: OsField; direction: SortDirection }>
   >({
+    all: { field: 'downloads', direction: 'desc' },
     windows: { field: 'downloads', direction: 'desc' },
     macos: { field: 'downloads', direction: 'desc' },
     linux: { field: 'downloads', direction: 'desc' },
@@ -265,6 +295,7 @@ export function RailyardAnalyticsOsSection({
           .filter((asset) => asset.os === osLabel)
           .map((asset) => ({
             id: `${version.version}-${asset.assetName}`,
+            os: osLabel,
             build: buildLabel({
               arch: asset.arch,
               packageType: asset.packageType,
@@ -286,6 +317,7 @@ export function RailyardAnalyticsOsSection({
       windows: makeRows('Windows'),
       macos: makeRows('macOS'),
       linux: makeRows('Linux'),
+      all: [...makeRows('Windows'), ...makeRows('macOS'), ...makeRows('Linux')],
     };
   }, [data.versions]);
 
@@ -334,7 +366,7 @@ export function RailyardAnalyticsOsSection({
       <RailyardSectionHeader icon={MonitorCog} title="OS Breakdown" />
 
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div className="inline-flex items-center gap-1 rounded-lg border border-border/80 bg-background/80 p-0.5">
+        <div className="inline-flex h-10 items-center gap-1 rounded-lg border border-border/80 bg-background/80 p-0.5">
           {OS_CONFIGS.map((os) => {
             const isActive = activeOs === os.key;
             return (
@@ -342,7 +374,7 @@ export function RailyardAnalyticsOsSection({
                 key={os.key}
                 type="button"
                 onClick={() => setActiveOs(os.key)}
-                className="inline-flex h-8 items-center gap-1.5 rounded-md px-3 text-xs font-semibold uppercase tracking-wider transition-colors"
+                className="inline-flex h-9 items-center gap-1.5 rounded-md px-3.5 text-sm font-semibold transition-colors"
                 style={
                   isActive
                     ? {
@@ -379,19 +411,19 @@ export function RailyardAnalyticsOsSection({
               setPeriod(next);
             }
           }}
-          className="h-8 rounded-lg border border-border/80 bg-background/80 p-0.5"
+          className="h-10 rounded-lg border border-border/80 bg-background/80 p-0.5"
         >
           {[
-            ['all', 'All'],
-            ['1', '1d'],
-            ['3', '3d'],
-            ['7', '7d'],
-            ['14', '14d'],
+            ['all', 'All Time'],
+            ['1', 'Last 24 Hours'],
+            ['3', 'Last 3 Days'],
+            ['7', 'Last Week'],
+            ['14', 'Last 2 Weeks'],
           ].map(([value, label]) => (
             <ToggleGroupItem
               key={value}
               value={value}
-              className="h-7 rounded-md px-2.5 text-xs font-semibold text-muted-foreground hover:bg-accent/45 hover:text-primary data-[state=on]:bg-accent/45 data-[state=on]:text-primary"
+              className="h-9 rounded-md px-3.5 text-sm font-semibold text-muted-foreground hover:bg-accent/45 hover:text-primary data-[state=on]:bg-accent/45 data-[state=on]:text-primary"
             >
               {label}
             </ToggleGroupItem>
@@ -413,7 +445,7 @@ export function RailyardAnalyticsOsSection({
               state.field,
               state.direction,
             );
-            const total = totals[os.key];
+            const total = os.key === 'all' ? totals.downloads : totals[os.key];
             const share =
               totals.downloads > 0 ? (total / totals.downloads) * 100 : 0;
 
@@ -450,89 +482,177 @@ export function RailyardAnalyticsOsSection({
                         height="100%"
                         debounce={50}
                       >
-                        <AreaChart
-                          data={periodSeries}
-                          margin={{ top: 8, right: 14, bottom: 8, left: 0 }}
-                        >
-                          <defs>
-                            <linearGradient
-                              id={`railyard-os-${os.key}-grad`}
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor={os.stroke}
-                                stopOpacity={0.26}
-                              />
-                              <stop
-                                offset="95%"
-                                stopColor={os.stroke}
-                                stopOpacity={0.02}
-                              />
-                            </linearGradient>
-                          </defs>
-                          <CartesianGrid
-                            horizontal
-                            vertical={false}
-                            stroke="var(--border)"
-                            strokeOpacity={0.5}
-                          />
-                          <XAxis
-                            dataKey="label"
-                            tick={{
-                              fontSize: 10,
-                              fill: 'var(--muted-foreground)',
-                            }}
-                            axisLine={false}
-                            tickLine={false}
-                            interval={xInterval}
-                            tickMargin={6}
-                          />
-                          <YAxis
-                            tick={{
-                              fontSize: 10,
-                              fill: 'var(--muted-foreground)',
-                            }}
-                            axisLine={false}
-                            tickLine={false}
-                            tickFormatter={(value: number) =>
-                              formatCompactNumber(value)
-                            }
-                            width={40}
-                          />
-                          <Tooltip
-                            content={({ active, payload, label }) => {
-                              if (!active || !payload?.length) return null;
-                              const value = Number(payload[0]?.value ?? 0);
-                              return (
-                                <div className="rounded-lg bg-overlay/95 p-2.5 text-xs text-overlay-fg ring ring-current/20 backdrop-blur-lg">
-                                  <div className="font-semibold">
-                                    {label as string}
+                        {os.key === 'all' ? (
+                          <LineChart
+                            data={periodSeries}
+                            margin={{ top: 8, right: 14, bottom: 8, left: 0 }}
+                          >
+                            <CartesianGrid
+                              horizontal
+                              vertical={false}
+                              stroke="var(--border)"
+                              strokeOpacity={0.5}
+                            />
+                            <XAxis
+                              dataKey="label"
+                              tick={{
+                                fontSize: 10,
+                                fill: 'var(--muted-foreground)',
+                              }}
+                              axisLine={false}
+                              tickLine={false}
+                              interval={xInterval}
+                              tickMargin={6}
+                            />
+                            <YAxis
+                              tick={{
+                                fontSize: 10,
+                                fill: 'var(--muted-foreground)',
+                              }}
+                              axisLine={false}
+                              tickLine={false}
+                              tickFormatter={(value: number) =>
+                                formatCompactNumber(value)
+                              }
+                              width={40}
+                            />
+                            <Tooltip
+                              content={({ active, payload, label }) => {
+                                if (!active || !payload?.length) return null;
+
+                                return (
+                                  <div className="rounded-lg bg-overlay/95 p-2.5 text-xs text-overlay-fg ring ring-current/20 backdrop-blur-lg">
+                                    <div className="font-semibold">
+                                      {label as string}
+                                    </div>
+                                    {payload.map((entry) => (
+                                      <div
+                                        key={entry.dataKey as string}
+                                        className="mt-1 flex items-center justify-between gap-3"
+                                      >
+                                        <span>{String(entry.name)}</span>
+                                        <span className="font-semibold tabular-nums">
+                                          {Math.round(
+                                            Number(entry.value ?? 0),
+                                          ).toLocaleString()}
+                                        </span>
+                                      </div>
+                                    ))}
                                   </div>
-                                  <div className="mt-1 flex items-center justify-between gap-3">
-                                    <span>{os.label}</span>
-                                    <span className="font-semibold tabular-nums">
-                                      {Math.round(value).toLocaleString()}
-                                    </span>
+                                );
+                              }}
+                              wrapperStyle={{ outline: 'none' }}
+                            />
+                            <Line
+                              type="monotone"
+                              dataKey="windows"
+                              name="Windows"
+                              stroke={RAILYARD_OS_COLORS.windows}
+                              strokeWidth={2.3}
+                              dot={false}
+                            />
+                            <Line
+                              type="monotone"
+                              dataKey="macos"
+                              name="macOS"
+                              stroke={RAILYARD_OS_COLORS.macos}
+                              strokeWidth={2.3}
+                              dot={false}
+                            />
+                            <Line
+                              type="monotone"
+                              dataKey="linux"
+                              name="Linux"
+                              stroke={RAILYARD_OS_COLORS.linux}
+                              strokeWidth={2.3}
+                              dot={false}
+                            />
+                          </LineChart>
+                        ) : (
+                          <AreaChart
+                            data={periodSeries}
+                            margin={{ top: 8, right: 14, bottom: 8, left: 0 }}
+                          >
+                            <defs>
+                              <linearGradient
+                                id={`railyard-os-${os.key}-grad`}
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                              >
+                                <stop
+                                  offset="5%"
+                                  stopColor={os.stroke}
+                                  stopOpacity={0.26}
+                                />
+                                <stop
+                                  offset="95%"
+                                  stopColor={os.stroke}
+                                  stopOpacity={0.02}
+                                />
+                              </linearGradient>
+                            </defs>
+                            <CartesianGrid
+                              horizontal
+                              vertical={false}
+                              stroke="var(--border)"
+                              strokeOpacity={0.5}
+                            />
+                            <XAxis
+                              dataKey="label"
+                              tick={{
+                                fontSize: 10,
+                                fill: 'var(--muted-foreground)',
+                              }}
+                              axisLine={false}
+                              tickLine={false}
+                              interval={xInterval}
+                              tickMargin={6}
+                            />
+                            <YAxis
+                              tick={{
+                                fontSize: 10,
+                                fill: 'var(--muted-foreground)',
+                              }}
+                              axisLine={false}
+                              tickLine={false}
+                              tickFormatter={(value: number) =>
+                                formatCompactNumber(value)
+                              }
+                              width={40}
+                            />
+                            <Tooltip
+                              content={({ active, payload, label }) => {
+                                if (!active || !payload?.length) return null;
+                                const value = Number(payload[0]?.value ?? 0);
+                                return (
+                                  <div className="rounded-lg bg-overlay/95 p-2.5 text-xs text-overlay-fg ring ring-current/20 backdrop-blur-lg">
+                                    <div className="font-semibold">
+                                      {label as string}
+                                    </div>
+                                    <div className="mt-1 flex items-center justify-between gap-3">
+                                      <span>{os.label}</span>
+                                      <span className="font-semibold tabular-nums">
+                                        {Math.round(value).toLocaleString()}
+                                      </span>
+                                    </div>
                                   </div>
-                                </div>
-                              );
-                            }}
-                            wrapperStyle={{ outline: 'none' }}
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey={os.key}
-                            stroke={os.stroke}
-                            strokeWidth={2.5}
-                            fill={`url(#railyard-os-${os.key}-grad)`}
-                            dot={false}
-                            activeDot={{ r: 3, fill: os.stroke }}
-                          />
-                        </AreaChart>
+                                );
+                              }}
+                              wrapperStyle={{ outline: 'none' }}
+                            />
+                            <Area
+                              type="monotone"
+                              dataKey={os.key}
+                              stroke={os.stroke}
+                              strokeWidth={2.5}
+                              fill={`url(#railyard-os-${os.key}-grad)`}
+                              dot={false}
+                              activeDot={{ r: 3, fill: os.stroke }}
+                            />
+                          </AreaChart>
+                        )}
                       </ResponsiveContainer>
                     ) : null}
                   </SafeChartContainer>
@@ -553,6 +673,17 @@ export function RailyardAnalyticsOsSection({
                               onToggle={() => setSort(os.key, 'build')}
                             />
                           </th>
+                          {os.key === 'all' ? (
+                            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wider text-muted-foreground">
+                              <SortableNumberHeader
+                                label="OS"
+                                isActive={state.field === 'os'}
+                                direction={state.direction}
+                                accentColor={os.stroke}
+                                onToggle={() => setSort(os.key, 'os')}
+                              />
+                            </th>
+                          ) : null}
                           <th className="px-3 py-2 text-left font-semibold uppercase tracking-wider text-muted-foreground">
                             <SortableNumberHeader
                               label="Downloads"
@@ -592,6 +723,18 @@ export function RailyardAnalyticsOsSection({
                             >
                               {row.build}
                             </td>
+                            {os.key === 'all' ? (
+                              <td
+                                className={`px-3 py-2 ${state.field === 'os' ? 'font-black' : 'font-medium text-muted-foreground'}`}
+                                style={
+                                  state.field === 'os'
+                                    ? { color: os.stroke }
+                                    : undefined
+                                }
+                              >
+                                {row.os}
+                              </td>
+                            ) : null}
                             <td
                               className={`px-3 py-2 tabular-nums ${state.field === 'downloads' ? 'font-black' : 'font-medium text-muted-foreground'}`}
                               style={

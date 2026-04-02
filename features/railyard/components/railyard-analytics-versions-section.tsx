@@ -69,10 +69,26 @@ function sortRows(
 }
 
 function periodLabel(period: VersionPeriod): string {
-  if (period === '1') return 'Last Day';
+  if (period === '1') return 'Last 24 Hours';
   if (period === '3') return 'Last 3 Days';
   if (period === '7') return 'Last Week';
   return 'All Time';
+}
+
+function formatTimeLabel(timestamp: string, period: VersionPeriod): string {
+  const dt = new Date(timestamp);
+  if (Number.isNaN(dt.getTime())) return timestamp;
+
+  if (period === '1' || period === '3') {
+    const month = String(dt.getMonth() + 1).padStart(2, '0');
+    const day = String(dt.getDate()).padStart(2, '0');
+    const hour = String(dt.getHours()).padStart(2, '0');
+    const minute = String(dt.getMinutes()).padStart(2, '0');
+    if (period === '1') return `${hour}:${minute}`;
+    return `${month}/${day} ${hour}:${minute}`;
+  }
+
+  return timestamp.slice(5).replace('-', '/');
 }
 
 export function RailyardAnalyticsVersionsSection({
@@ -147,6 +163,10 @@ export function RailyardAnalyticsVersionsSection({
     return new Map(data.versionDaily.map((row) => [row.version, row.daily]));
   }, [data.versionDaily]);
 
+  const versionHourlyMap = useMemo(() => {
+    return new Map(data.versionHourly.map((row) => [row.version, row.hourly]));
+  }, [data.versionHourly]);
+
   const chartRowsByVersion = useMemo(() => {
     const map = new Map<
       string,
@@ -154,25 +174,43 @@ export function RailyardAnalyticsVersionsSection({
     >();
 
     for (const version of versionOrder) {
+      if (period === '1' || period === '3') {
+        const hourly = [...(versionHourlyMap.get(version) ?? [])]
+          .sort((a, b) => a.timestamp.localeCompare(b.timestamp))
+          .filter((row) => row.timestamp.slice(5, 10) !== '03-30');
+
+        const hours = period === '1' ? 24 : 72;
+        const filtered = hourly.slice(-hours);
+
+        map.set(
+          version,
+          filtered.map((row) => ({
+            date: row.timestamp,
+            label: formatTimeLabel(row.timestamp, period),
+            downloads: row.downloads,
+          })),
+        );
+        continue;
+      }
+
       const daily = [...(versionDailyMap.get(version) ?? [])]
         .sort((a, b) => a.date.localeCompare(b.date))
         .filter((row) => row.date.slice(5, 10) !== '03-30');
 
-      const filtered =
-        period === 'all' ? daily : daily.slice(-Number.parseInt(period, 10));
+      const filtered = period === 'all' ? daily : daily.slice(-7);
 
       map.set(
         version,
         filtered.map((row) => ({
           date: row.date,
-          label: row.date.slice(5).replace('-', '/'),
+          label: formatTimeLabel(row.date, period),
           downloads: row.downloads,
         })),
       );
     }
 
     return map;
-  }, [period, versionDailyMap, versionOrder]);
+  }, [period, versionDailyMap, versionHourlyMap, versionOrder]);
 
   const toggleSort = (nextField: SortField) => {
     if (nextField === sortField) {
@@ -189,7 +227,7 @@ export function RailyardAnalyticsVersionsSection({
 
       <div className="mb-8 rounded-xl border border-border bg-card p-5 ring-1 ring-foreground/5">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex items-center gap-1 rounded-lg border border-border/80 bg-background/80 p-0.5">
+          <div className="inline-flex h-10 items-center gap-1 rounded-lg border border-border/80 bg-background/80 p-0.5">
             <button
               type="button"
               onClick={() => {
@@ -198,14 +236,14 @@ export function RailyardAnalyticsVersionsSection({
                 const next = versionOrder[nextIndex];
                 if (next) setActiveVersion(next);
               }}
-              className="inline-flex h-8 items-center rounded-md px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:bg-accent/45 hover:text-primary disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
+              className="inline-flex h-9 items-center rounded-md px-3.5 text-sm font-semibold text-muted-foreground transition-colors hover:bg-accent/45 hover:text-primary disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
               disabled={!canGoBack}
             >
               Prev
             </button>
             <button
               type="button"
-              className="inline-flex h-8 items-center gap-1.5 rounded-md px-3 text-xs font-semibold uppercase tracking-wider"
+              className="inline-flex h-9 items-center gap-1.5 rounded-md px-3.5 text-sm font-semibold"
               style={{
                 color: RAILYARD_ACCENT_COLOR,
                 backgroundColor: `${RAILYARD_ACCENT_COLOR}18`,
@@ -228,7 +266,7 @@ export function RailyardAnalyticsVersionsSection({
                 const next = versionOrder[nextIndex];
                 if (next) setActiveVersion(next);
               }}
-              className="inline-flex h-8 items-center rounded-md px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:bg-accent/45 hover:text-primary disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
+              className="inline-flex h-9 items-center rounded-md px-3.5 text-sm font-semibold text-muted-foreground transition-colors hover:bg-accent/45 hover:text-primary disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
               disabled={!canGoNext}
             >
               Next
@@ -251,18 +289,18 @@ export function RailyardAnalyticsVersionsSection({
                 setPeriod(next);
               }
             }}
-            className="h-8 rounded-lg border border-border/80 bg-background/80 p-0.5"
+            className="h-10 rounded-lg border border-border/80 bg-background/80 p-0.5"
           >
             {[
-              ['all', 'All'],
-              ['1', '1d'],
-              ['3', '3d'],
-              ['7', '7d'],
+              ['all', 'All Time'],
+              ['1', 'Last 24 Hours'],
+              ['3', 'Last 3 Days'],
+              ['7', 'Last Week'],
             ].map(([value, label]) => (
               <ToggleGroupItem
                 key={value}
                 value={value}
-                className="h-7 rounded-md px-2.5 text-xs font-semibold text-muted-foreground hover:bg-accent/45 hover:text-primary data-[state=on]:bg-accent/45 data-[state=on]:text-primary"
+                className="h-9 rounded-md px-3.5 text-sm font-semibold text-muted-foreground hover:bg-accent/45 hover:text-primary data-[state=on]:bg-accent/45 data-[state=on]:text-primary"
               >
                 {label}
               </ToggleGroupItem>
