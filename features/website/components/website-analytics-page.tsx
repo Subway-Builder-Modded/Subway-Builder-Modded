@@ -50,7 +50,7 @@ export function WebsiteAnalyticsPage({ data }: { data: WebsiteAnalyticsData }) {
       <PageHeader
         icon={Globe}
         title="Website"
-        description="Public website traffic analytics and audience insights."
+        description="Central place for docs, analytics, and community resources across all Subway Builder Modded projects."
         colorScheme={WEBSITE_PAGE_HEADER_SCHEME}
         badges={[{ text: `Updated: \`${data.snapshotLabel}\`` }]}
       />
