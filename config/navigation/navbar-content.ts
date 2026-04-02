@@ -101,6 +101,13 @@ export const APP_NAVBAR_ITEMS: AppNavbarItem[] = [
         schemeId: 'railyard',
       },
       {
+        id: 'railyard-analytics',
+        title: 'Analytics',
+        href: '/railyard/analytics',
+        icon: ChartLine,
+        schemeId: 'railyard',
+      },
+      {
         id: 'railyard-browse',
         title: 'Browse',
         href: '/railyard/browse',
