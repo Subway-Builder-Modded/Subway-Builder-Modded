@@ -13,6 +13,9 @@ import {
   Database,
   ChartLine,
   TrendingUp,
+  Heart,
+  Wrench,
+  FileCode2,
 } from 'lucide-react';
 import {
   PROJECT_COLOR_SCHEMES,
@@ -54,6 +57,10 @@ const FOOTER_NAV_COLOR_SCHEMES = {
   website: {
     accentColor: PROJECT_COLOR_SCHEMES.website.accentColor,
     mutedColor: PROJECT_COLOR_SCHEMES.website.mutedColor,
+  },
+  tools: {
+    accentColor: PROJECT_COLOR_SCHEMES.tools.accentColor,
+    mutedColor: PROJECT_COLOR_SCHEMES.tools.mutedColor,
   },
 } as const satisfies Record<string, FooterNavColorScheme>;
 
@@ -99,6 +106,12 @@ export const FOOTER_NAV_SECTIONS: FooterNavSection[] = [
         href: '/license',
         icon: Scale,
       },
+      {
+        id: 'contribute',
+        label: 'Contribute',
+        href: '/contribute',
+        icon: Heart,
+      },
     ],
   },
   {
@@ -112,6 +125,12 @@ export const FOOTER_NAV_SECTIONS: FooterNavSection[] = [
         label: 'Download',
         href: '/railyard',
         icon: Download,
+      },
+      {
+        id: 'railyard-analytics',
+        label: 'Analytics',
+        href: '/railyard/analytics',
+        icon: ChartLine,
       },
       {
         id: 'railyard-browse',
@@ -202,6 +221,20 @@ export const FOOTER_NAV_SECTIONS: FooterNavSection[] = [
         label: 'Updates',
         href: '/website/updates',
         icon: Megaphone,
+      },
+    ],
+  },
+  {
+    id: 'tools',
+    title: 'Tools',
+    icon: Wrench,
+    colorScheme: 'tools',
+    links: [
+      {
+        id: 'tools-playground',
+        label: 'Playground',
+        href: '/tools/md-playground',
+        icon: FileCode2,
       },
     ],
   },

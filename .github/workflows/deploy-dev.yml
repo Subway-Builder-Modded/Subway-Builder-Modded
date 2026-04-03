@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - dev
+  schedule:
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 concurrency:
@@ -11,8 +13,33 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check:
+    name: Check code quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run quality control checks
+        run: pnpm run check
+
   deploy:
-    name: Deploy dev site
+    name: Deploy site (dev)
     runs-on: ubuntu-latest
     env:
       CLOUDFLARE_ZONE_TAG: ${{ secrets.CLOUDFLARE_ZONE_TAG }}
@@ -32,6 +59,16 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+
+      - name: Restore Next.js build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -64,12 +101,12 @@ jobs:
           RAILYARD_GITHUB_TOKEN: ${{ secrets.RAILYARD_GITHUB_TOKEN }}
         run: pnpm run analytics
 
-      - name: Build final deploy output
+      - name: Build
         env:
           RAILYARD_GITHUB_TOKEN: ${{ secrets.RAILYARD_GITHUB_TOKEN }}
         run: pnpm run build
 
-      - name: Publish to website-dev gh-pages
+      - name: Deploy (dev)
         shell: bash
         env:
           GH_PAT: ${{ secrets.WEBSITE_DEV_PAT }}
