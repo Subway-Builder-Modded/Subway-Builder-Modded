@@ -1,0 +1,182 @@
+[
+  {
+    "browser": "Unknown",
+    "visits": {
+      "1d": 376,
+      "7d": 2061,
+      "30d": 2472,
+      "all": 2472
+    }
+  },
+  {
+    "browser": "Chrome",
+    "visits": {
+      "1d": 208,
+      "7d": 1218,
+      "30d": 1761,
+      "all": 1761
+    }
+  },
+  {
+    "browser": "GoogleBot",
+    "visits": {
+      "1d": 159,
+      "7d": 1199,
+      "30d": 1326,
+      "all": 1326
+    }
+  },
+  {
+    "browser": "MobileSafari",
+    "visits": {
+      "1d": 50,
+      "7d": 483,
+      "30d": 834,
+      "all": 834
+    }
+  },
+  {
+    "browser": "Firefox",
+    "visits": {
+      "1d": 64,
+      "7d": 627,
+      "30d": 805,
+      "all": 805
+    }
+  },
+  {
+    "browser": "Safari",
+    "visits": {
+      "1d": 53,
+      "7d": 394,
+      "30d": 601,
+      "all": 601
+    }
+  },
+  {
+    "browser": "Edge",
+    "visits": {
+      "1d": 27,
+      "7d": 215,
+      "30d": 329,
+      "all": 329
+    }
+  },
+  {
+    "browser": "ChromeMobile",
+    "visits": {
+      "1d": 45,
+      "7d": 229,
+      "30d": 329,
+      "all": 329
+    }
+  },
+  {
+    "browser": "Opera",
+    "visits": {
+      "1d": 11,
+      "7d": 87,
+      "30d": 119,
+      "all": 119
+    }
+  },
+  {
+    "browser": "BingBot",
+    "visits": {
+      "1d": 34,
+      "7d": 76,
+      "30d": 104,
+      "all": 104
+    }
+  },
+  {
+    "browser": "AppleBot",
+    "visits": {
+      "1d": 14,
+      "7d": 35,
+      "30d": 40,
+      "all": 40
+    }
+  },
+  {
+    "browser": "MobileSafariWebview",
+    "visits": {
+      "1d": 2,
+      "7d": 8,
+      "30d": 11,
+      "all": 11
+    }
+  },
+  {
+    "browser": "OperaMobile",
+    "visits": {
+      "1d": 0,
+      "7d": 9,
+      "30d": 11,
+      "all": 11
+    }
+  },
+  {
+    "browser": "ChromeHeadless",
+    "visits": {
+      "1d": 0,
+      "7d": 8,
+      "30d": 9,
+      "all": 9
+    }
+  },
+  {
+    "browser": "ChromeMobileWebview",
+    "visits": {
+      "1d": 1,
+      "7d": 5,
+      "30d": 6,
+      "all": 6
+    }
+  },
+  {
+    "browser": "SamsungInternet",
+    "visits": {
+      "1d": 0,
+      "7d": 2,
+      "30d": 6,
+      "all": 6
+    }
+  },
+  {
+    "browser": "FirefoxMobile",
+    "visits": {
+      "1d": 0,
+      "7d": 2,
+      "30d": 2,
+      "all": 2
+    }
+  },
+  {
+    "browser": "TwitterBot",
+    "visits": {
+      "1d": 0,
+      "7d": 1,
+      "30d": 1,
+      "all": 1
+    }
+  },
+  {
+    "browser": "Silk",
+    "visits": {
+      "1d": 0,
+      "7d": 1,
+      "30d": 1,
+      "all": 1
+    }
+  },
+  {
+    "browser": "Yandex",
+    "visits": {
+      "1d": 0,
+      "7d": 1,
+      "30d": 1,
+      "all": 1
+    }
+  }
+]
